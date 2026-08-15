@@ -1273,6 +1273,7 @@ https://github.com/rapid7/metasploit-framework/blob/eb6535009f5fdafa954525687f09
 https://github.com/rapid7/metasploit-framework/blob/eb6535009f5fdafa954525687f09294918b5398d/modules/exploits/multi/http/struts_code_exec_exception_delegator.rb
 https://github.com/rapid7/metasploit-framework/blob/eb6535009f5fdafa954525687f09294918b5398d/modules/post/windows/gather/ntds_grabber.rb
 https://github.com/rapid7/metasploit-framework/pull/17407
+https://github.com/rapid7/Rapid7-Labs/blob/741c7196ec12a0a56b63463d1fd726ff14d3a97a/BPFDoor/rapid7_detect_bpfdoor.sh
 https://github.com/redcanaryco/atomic-red-team/blob/02c7d02fe1f1feb0fc7944550408ea8224273994/atomics/T1112/T1112.md#atomic-test-63---disable-remote-desktop-anti-alias-setting-through-registry
 https://github.com/redcanaryco/atomic-red-team/blob/02c7d02fe1f1feb0fc7944550408ea8224273994/atomics/T1112/T1112.md#atomic-test-64---disable-remote-desktop-security-settings-through-registry
 https://github.com/redcanaryco/atomic-red-team/blob/02cb591f75064ffe1e0df9ac3ed5972a2e491c97/atomics/T1057/T1057.md#atomic-test-6---discover-specific-process---tasklist
@@ -1928,9 +1929,11 @@ https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-microsoft-defen
 https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-microsoft-defender-antivirus?view=o365-worldwide#event-id-5010
 https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-microsoft-defender-antivirus?view=o365-worldwide#event-id-5012
 https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-microsoft-defender-antivirus?view=o365-worldwide#event-id-5101
+https://learn.microsoft.com/en-us/defender-office-365/threat-explorer-real-time-detections-about
 https://learn.microsoft.com/en-us/deployoffice/compat/office-file-format-reference
 https://learn.microsoft.com/en-us/dotnet/api/microsoft.hpc.scheduler.store.cx509enrollmentwebclassfactoryclass?view=hpc-sdk-5.1.6115
 https://learn.microsoft.com/en-us/dotnet/api/system.appdomain.load?view=net-7.0
+https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventing.reader.eventlogsession.clearlog?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-5.0#System_Diagnostics_Eventing_Reader_EventLogSession_ClearLog_System_String_
 https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient.downloadfile?view=net-8.0
 https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient.downloadstring?view=net-8.0
 https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-8.0
@@ -1941,6 +1944,7 @@ https://learn.microsoft.com/en-us/dotnet/core/runtime-config/debugging-profiling
 https://learn.microsoft.com/en-us/dotnet/framework/tools/installutil-exe-installer-tool
 https://learn.microsoft.com/en-us/dotnet/framework/tools/regasm-exe-assembly-registration-tool
 https://learn.microsoft.com/en-us/dotnet/framework/tools/regsvcs-exe-net-services-installation-tool
+https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#appid-uri-added-modified-or-removed
 https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#application-authentication-flows
 https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#application-configuration-changes
 https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#application-credentials
@@ -1974,6 +1978,7 @@ https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protectio
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#leaked-credentials
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#malicious-ip-address
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#malware-linked-ip-address-deprecated
+https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#password-spray
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#possible-attempt-to-access-primary-refresh-token-prt
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#suspicious-browser
 https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-risks#suspicious-inbox-forwarding
@@ -2110,6 +2115,7 @@ https://learn.microsoft.com/en-us/troubleshoot/windows-server/windows-security/k
 https://learn.microsoft.com/en-us/troubleshoot/windows-server/windows-security/prevent-windows-store-lm-hash-password
 https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v
 https://learn.microsoft.com/en-us/visualstudio/deployment/how-to-configure-the-clickonce-trust-prompt-behavior
+https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-terminalservices-rdp-winstationextensions-securitylayer
 https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/security-malware-windows-defender-threatseveritydefaultaction
 https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options
 https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon
@@ -2551,6 +2557,7 @@ https://paper.seebug.org/1495/
 https://paste.cryptolaemus.com/emotet/2020/12/22/emotet-malware-IoCs_12-22-20.html
 https://patrick-bareiss.com/detecting-local-user-creation-in-ad-with-sigma/
 https://pberba.github.io/security/2021/11/23/linux-threat-hunting-for-persistence-account-creation-manipulation/
+https://pberba.github.io/security/2022/01/30/linux-threat-hunting-for-persistence-systemd-timers-cron/
 https://pbs.twimg.com/media/EF3yLGoWkAEGeLa?format=jpg
 https://pbs.twimg.com/media/FtYbfsDXoAQ1Y8M?format=jpg&name=large
 https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/
@@ -2661,6 +2668,7 @@ https://redcanary.com/blog/raspberry-robin/
 https://redcanary.com/blog/rclone-mega-extortion/
 https://redcanary.com/blog/right-to-left-override/
 https://redcanary.com/blog/threat-intelligence/intelligence-insights-may-2025/
+https://redcanary.com/blog/threat-intelligence/intelligence-insights-october-2024/
 https://redcanary.com/blog/threat-intelligence/msix-installers/
 https://redcanary.com/blog/yellow-cockatoo/
 https://redcanary.com/threat-detection-report/
@@ -2672,6 +2680,7 @@ https://redmimicry.com
 https://redmimicry.com/posts/redmimicry-winnti/
 https://redmimicry.com/posts/redmimicry-winnti/#dropper
 https://regex101.com/r/RugQYK/1
+https://reliaquest.com/blog/threat-spotlight-inside-flax-typhoons-arcgis-compromise/
 https://renenyffenegger.ch/notes/Windows/registry/tree/HKEY_CURRENT_USER/Keyboard-Layout/Preload/index
 https://reqrypt.org/windivert-doc.html
 https://res.armor.com/resources/threat-intelligence/astaroth-banking-trojan/
@@ -2873,6 +2882,7 @@ https://support.microsoft.com/en-us/topic/kb5021131-how-to-manage-the-kerberos-p
 https://support.microsoft.com/en-us/topic/microsoft-security-advisory-update-to-improve-credentials-protection-and-management-may-13-2014-93434251-04ac-b7f3-52aa-9f951c14b649
 https://support.microsoft.com/en-us/topic/outlook-home-page-feature-is-missing-in-folder-properties-d207edb7-aa02-46c5-b608-5d9dbed9bd04?ui=en-us&rs=en-us&ad=us
 https://support.microsoft.com/fr-fr/topic/an-ms-dos-based-program-that-uses-the-ms-dos-protected-mode-interface-crashes-on-a-computer-that-is-running-windows-7-5dc739ea-987b-b458-15e4-d28d5cca63c7
+https://support.okta.com/help/s/article/What-is-the-systemoktacom-Account-in-Syslog-Used-For
 https://support.sitecore.com/kb?id=kb_article_view&sysparm_article=KB1000776
 https://support.solarwinds.com/SuccessCenter/s/article/Configure-ESXi-Syslog-to-LEM?language=en_US
 https://sushant747.gitbooks.io/total-oscp-guide/content/privilege_escalation_windows.html
@@ -3390,6 +3400,7 @@ https://twitter.com/t3ft3lb/status/1656194831830401024
 https://twitter.com/tccontre18/status/1480950986650832903
 https://twitter.com/tekdefense/status/1519711183162556416?s=12&t=OTsHCBkQOTNs1k3USz65Zg
 https://twitter.com/th3_protoCOL/status/1480621526764322817
+https://twitter.com/th3_protoCOL/status/1536788652889497600
 https://twitter.com/TheDFIRReport/status/1423361119926816776?s=20
 https://twitter.com/TheDFIRReport/status/1482078434327244805
 https://twitter.com/tifkin_/status/1321916444557365248
@@ -3430,6 +3441,7 @@ https://unit42.paloaltonetworks.com/bluesky-ransomware/
 https://unit42.paloaltonetworks.com/bumblebee-webshell-xhunt-campaign/
 https://unit42.paloaltonetworks.com/cloaked-ursa-phishing/
 https://unit42.paloaltonetworks.com/compromised-cloud-compute-credentials/
+https://unit42.paloaltonetworks.com/cve-2025-59287/
 https://unit42.paloaltonetworks.com/emissary-panda-attacks-middle-east-government-sharepoint-servers/
 https://unit42.paloaltonetworks.com/emissary-trojan-changelog-did-operation-lotus-blossom-cause-it-to-evolve/
 https://unit42.paloaltonetworks.com/guloader-installing-netwire-rat/
@@ -3456,6 +3468,7 @@ https://us-cert.cisa.gov/ncas/analysis-reports/ar21-126a
 https://user-images.githubusercontent.com/61026070/136518004-b68cce7d-f9b8-4e9a-9b7b-53b1568a9a94.png
 https://uvnc.com/docs/uvnc-viewer/52-ultravnc-viewer-commandline-parameters.html
 https://vanmieghem.io/stealth-outlook-persistence/
+https://vipre.com/blog/svg-phishing-attacks-the-new-trick-in-the-cybercriminals-playbook/
 https://virtualizationreview.com/articles/2020/05/21/ssh-server-on-windows-10.aspx
 https://vitux.com/how-to-hide-confidential-files-in-images-on-debian-using-steganography/
 https://vk9-sec.com/hfs-code-execution-cve-2014-6287/
@@ -3672,6 +3685,7 @@ https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon
 https://www.datadoghq.com/blog/monitor-kubernetes-audit-logs/#monitor-api-authentication-issues
 https://www.deepinstinct.com/2021/02/16/lsass-memory-dumps-are-stealthier-than-ever-before-part-2/
 https://www.deepinstinct.com/blog/nofilter-abusing-windows-filtering-platform-for-privilege-escalation
+https://www.deepwatch.com/labs/customer-advisory-fortios-ssl-vpn-vulnerability-cve-2022-42475-exploited-in-the-wild/
 https://www.dfirnotes.net/portproxy_detection/
 https://www.documentcloud.org/documents/5743766-Global-Threat-Report-2019.html
 https://www.echotrail.io/insights/search/defaultpack.exe
@@ -3775,6 +3789,7 @@ https://www.gpg4win.de/documentation.html
 https://www.gradenegger.eu/en/details-of-the-event-with-id-53-of-the-source-microsoft-windows-certificationauthority/
 https://www.greynoise.io/blog/new-scraper-botnet-concentrated-in-taiwan
 https://www.group-ib.com/blog/hunting-for-ttps-with-prefetch-files/
+https://www.group-ib.com/resources/threat-research/silence_2.0.going_global.pdf
 https://www.gteltsc.vn/blog/canh-bao-chien-dich-tan-cong-su-dung-lo-hong-zero-day-tren-microsoft-exchange-server-12714.html
 https://www.guidepointsecurity.com/blog/tunnel-vision-cloudflared-abused-in-the-wild/
 https://www.guidepointsecurity.com/supernova-solarwinds-net-webshell-analysis/
@@ -3836,6 +3851,7 @@ https://www.ired.team/offensive-security/credential-access-and-credential-dumpin
 https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
 https://www.ired.team/offensive-security/defense-evasion/parent-process-id-ppid-spoofing
 https://www.ired.team/offensive-security/lateral-movement/t1076-rdp-hijacking-for-lateral-movement
+https://www.ired.team/offensive-security/lateral-movement/winrs-for-lateral-movement
 https://www.ired.team/offensive-security/persistence/t1128-netsh-helper-dll
 https://www.joesandbox.com/analysis/411752/0/html#7048BB9A06B8F2DD9D24C77F389D7B2B58D2
 https://www.joesandbox.com/analysis/443736/0/html
@@ -4097,6 +4113,7 @@ https://www.splunk.com/en_us/blog/security/breaking-the-chain-defending-against-
 https://www.splunk.com/en_us/blog/security/darkside-ransomware-splunk-threat-update-and-detections.html
 https://www.splunk.com/en_us/blog/security/follina-for-protocol-handlers.html
 https://www.splunk.com/en_us/blog/security/inno-setup-malware-redline-stealer-campaign.html
+https://www.splunk.com/en_us/blog/security/msix-weaponization-threat-detection-splunk.html
 https://www.sprocketsecurity.com/resources/crossing-the-log4j-horizon-a-vulnerability-with-no-return
 https://www.swascan.com/cactus-ransomware-malware-analysis/
 https://www.sygnia.co/golden-saml-advisory
