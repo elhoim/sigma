@@ -6,9 +6,9 @@ description: |
     Use this rule to hunt for potential anomalies initiating from PowerShell scripts and commands.
 references:
     - https://twitter.com/ankit_anubhav/status/1518835408502620162
-author: Florian Roth (Nextron Systems), Tim Shelton
+author: Florian Roth (Nextron Systems), Tim Shelton, elhoim - David André (correction)
 date: 2022-04-26
-modified: 2024-07-16
+modified: 2026-09-24
 tags:
     - attack.execution
     - attack.t1059.001
@@ -52,7 +52,6 @@ detection:
             - 'csproduct '
             - 'computersystem '
             - ' os '
-            - ''
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - False positives are to be expected from PowerShell scripts that might make use of additional binaries such as "mshta", "bitsadmin", etc. Apply additional filters for those scripts.

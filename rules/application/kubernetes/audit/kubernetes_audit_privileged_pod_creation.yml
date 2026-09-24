@@ -10,8 +10,9 @@ references:
     - https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-kubernetes.html#privilegeescalation-kubernetes-privilegedcontainer
     - https://www.elastic.co/guide/en/security/current/kubernetes-pod-created-with-hostnetwork.html
     - https://www.elastic.co/guide/en/security/current/kubernetes-container-created-with-excessive-linux-capabilities.html
-author: Leo Tsaousis (@laripping)
+author: Leo Tsaousis (@laripping), elhoim - David André (correction)
 date: 2024-03-26
+modified: 2026-09-24
 tags:
     - attack.t1611
     - attack.privilege-escalation
@@ -23,8 +24,19 @@ detection:
     selection:
         verb: 'create'
         objectRef.resource: 'pods'
-        capabilities: '*' # Note: Add the "exists" when it's implemented in SigmaHQ/Aurora
-    condition: selection
+    selection_privileged:
+        # Note: containers and initContainers are arrays, matching depends on how the backend flattens arrays
+        - requestObject.spec.containers.securityContext.privileged: true
+        - requestObject.spec.initContainers.securityContext.privileged: true
+        - requestObject.spec.containers.securityContext.capabilities.add|contains:
+              - 'SYS_ADMIN'
+              - 'SYS_MODULE'
+              - 'SYS_PTRACE'
+              - 'NET_ADMIN'
+              - 'DAC_READ_SEARCH'
+        - requestObject.spec.hostPID: true
+        - requestObject.spec.hostNetwork: true
+    condition: all of selection*
 falsepositives:
     - Unknown
 level: low

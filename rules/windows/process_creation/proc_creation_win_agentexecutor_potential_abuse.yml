@@ -5,14 +5,14 @@ related:
       type: similar
 status: test
 description: Detects execution of the AgentExecutor.exe binary. Which can be abused as a LOLBIN to execute powershell scripts with the ExecutionPolicy "Bypass" or any binary named "powershell.exe" located in the path provided by 6th positional argument
-author: Nasreddine Bencherchali (Nextron Systems), memory-shards
+author: Nasreddine Bencherchali (Nextron Systems), memory-shards, elhoim - David André (correction)
 references:
     - https://twitter.com/lefterispan/status/1286259016436514816
     - https://lolbas-project.github.io/lolbas/OtherMSBinaries/Agentexecutor/
     - https://learn.microsoft.com/en-us/mem/intune/apps/intune-management-extension
     - https://twitter.com/jseerden/status/1247985304667066373/photo/1
 date: 2022-12-24
-modified: 2024-08-07
+modified: 2026-09-24
 tags:
     - attack.stealth
     - attack.t1218
@@ -21,7 +21,7 @@ logsource:
     product: windows
 detection:
     selection_img:
-        - Image: '\AgentExecutor.exe'
+        - Image|endswith: '\AgentExecutor.exe'
         - OriginalFileName: 'AgentExecutor.exe'
     selection_cli:
         # Example:
