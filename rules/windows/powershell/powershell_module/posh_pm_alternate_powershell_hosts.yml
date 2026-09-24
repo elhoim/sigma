@@ -4,9 +4,9 @@ status: test
 description: Detects alternate PowerShell hosts potentially bypassing detections looking for powershell.exe
 references:
     - https://threathunterplaybook.com/hunts/windows/190610-PwshAlternateHosts/notebook.html
-author: Roberto Rodriguez @Cyb3rWard0g
+author: Roberto Rodriguez @Cyb3rWard0g, elhoim - David André (correction)
 date: 2019-08-11
-modified: 2025-10-17
+modified: 2026-09-24
 tags:
     - attack.execution
     - attack.t1059.001
@@ -29,8 +29,8 @@ detection:
             - '= C:/Windows/System32/WindowsPowerShell/v1.0/powershell'
             - '= C:/Windows/SysWOW64/WindowsPowerShell/v1.0/powershell'
             # In some cases \??\C:.. is used
-            - '= \\\?\?\C:Windows\System32\WindowsPowerShell\v1.0\powershell'
-            - '= \\\?\?\C:Windows\SysWOW64\WindowsPowerShell\v1.0\powershell'
+            - '= \\\?\?\C:\Windows\System32\WindowsPowerShell\v1.0\powershell'
+            - '= \\\?\?\C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell'
     filter_sdiagnhost:
         ContextInfo|contains: '= C:\WINDOWS\System32\sdiagnhost.exe -Embedding' # When MSDT is launched for example
     filter_citrix:
