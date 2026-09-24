@@ -7,9 +7,9 @@ status: test
 description: Detects when a shell program such as the Windows command prompt or PowerShell is launched with system privileges from a uncommon parent location.
 references:
     - https://github.com/Wh04m1001/SysmonEoP
-author: frack113, Tim Shelton (update fp)
+author: frack113, Tim Shelton (update fp), elhoim - David André (correction)
 date: 2022-12-05
-modified: 2025-03-06
+modified: 2026-09-24
 tags:
     - attack.privilege-escalation
     - attack.execution
@@ -43,11 +43,16 @@ detection:
         ParentImage|contains:
             - ':\Program Files (x86)\'
             - ':\Program Files\'
-            - ':\ProgramData\'
             - ':\Windows\System32\'
             - ':\Windows\SysWOW64\'
-            - ':\Windows\Temp\' # Installers
             - ':\Windows\WinSxS\'
+    filter_optional_programdata_known:
+        ParentImage|contains:
+            - ':\ProgramData\Microsoft\Windows Defender\Platform\'
+            - ':\ProgramData\Package Cache\'
+    filter_optional_windows_temp_installers:
+        ParentImage|contains: ':\Windows\Temp\'
+        ParentImage|endswith: '.tmp'
     filter_optional_manageengine:
         # Example:
         #   ParentImage: C:/ManageEngine/ADManager Plus/pgsql/bin/postgres.exe" --forkarch 5380

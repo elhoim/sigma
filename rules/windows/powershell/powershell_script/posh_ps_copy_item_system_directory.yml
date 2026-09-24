@@ -4,9 +4,9 @@ status: test
 description: Uses PowerShell to install/copy a file into a system directory such as "System32" or "SysWOW64"
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1556.002/T1556.002.md#atomic-test-1---install-and-register-password-filter-dll
-author: frack113, Nasreddine Bencherchali (Nextron Systems)
+author: frack113, Nasreddine Bencherchali (Nextron Systems), elhoim - David André (correction)
 date: 2021-12-27
-modified: 2024-01-22
+modified: 2026-09-24
 tags:
     - attack.persistence
     - attack.credential-access
@@ -18,7 +18,8 @@ logsource:
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
     selection:
-        ScriptBlockText|re: '(Copy-Item|cpi) .{2,128} -Destination .{1,32}\\Windows\\(System32|SysWOW64)'
+        # Case-insensitive, covers the Copy-Item aliases, any abbreviation of -Destination and any parameter order
+        ScriptBlockText|re|i: '\b(?:Copy-Item|cpi|copy|cp)\s(?:[^\r\n;|]{0,256}\s)?-D[a-z]*[:\s]\s*[''"]?[a-z]:\\Windows\\(?:System32|SysWOW64)\b'
     condition: selection
 falsepositives:
     - Unknown

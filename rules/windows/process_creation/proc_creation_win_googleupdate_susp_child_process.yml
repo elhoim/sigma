@@ -7,9 +7,9 @@ status: test
 description: Detects potentially suspicious child processes of "GoogleUpdate.exe"
 references:
     - https://www.ncsc.gov.uk/static-assets/documents/malware-analysis-reports/goofy-guineapig/NCSC-MAR-Goofy-Guineapig.pdf
-author: Nasreddine Bencherchali (Nextron Systems)
+author: Nasreddine Bencherchali (Nextron Systems), elhoim - David André (correction)
 date: 2023-05-15
-modified: 2023-05-22
+modified: 2026-09-24
 tags:
     - attack.stealth
 logsource:
@@ -20,11 +20,12 @@ detection:
         ParentImage|endswith: '\GoogleUpdate.exe'
     filter_main_known_legit:
         # Some other legit child process might exist. It's better to make a baseline before running this in production
-        - Image|contains: '\Google' # Example: GoogleUpdate.exe, GoogleCrashHandler.exe, GoogleUpdateComRegisterShell64.exe
-        - Image|endswith:
-              - '\setup.exe'
-              - 'chrome_updater.exe'
-              - 'chrome_installer.exe'
+        - Image|contains: # Example: GoogleUpdate.exe, GoogleCrashHandler.exe, GoogleUpdateComRegisterShell64.exe, Install\{GUID}\setup.exe, chrome_installer.exe
+              - ':\Program Files (x86)\Google\'
+              - ':\Program Files\Google\'
+        - Image|contains|all: # Per-user installation
+              - '\AppData\Local\Google\'
+              - '\Update\'
     filter_main_image_null:
         Image: null
     condition: selection and not 1 of filter_main_*

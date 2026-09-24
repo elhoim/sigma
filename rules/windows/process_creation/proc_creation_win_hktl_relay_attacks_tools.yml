@@ -9,9 +9,14 @@ references:
     - https://hunter2.gitbook.io/darthsidious/other/war-stories/domain-admin-in-30-minutes
     - https://hunter2.gitbook.io/darthsidious/execution/responder-with-ntlm-relay-and-empire
     - https://www.localpotato.com/
-author: Florian Roth (Nextron Systems)
+    - https://github.com/BeichenDream/GodPotato
+    - https://github.com/tylerdotrar/SigmaPotato
+    - https://github.com/BeichenDream/PrintNotifyPotato
+    - https://github.com/antonioCoco/RemotePotato0
+    - https://github.com/bugch3ck/SharpEfsPotato
+author: Florian Roth (Nextron Systems), elhoim - David André (correction)
 date: 2021-07-24
-modified: 2023-02-14
+modified: 2026-09-24
 tags:
     - attack.collection
     - attack.execution
@@ -36,6 +41,11 @@ detection:
             - '\smbrelayx'
             - '\ntlmrelayx'
             - '\LocalPotato'
+            - '\GodPotato'
+            - '\SigmaPotato'
+            - '\PrintNotifyPotato'
+            - '\RemotePotato0'
+            - '\SharpEfsPotato'
     selection_script:
         CommandLine|contains:
             - 'Invoke-Tater'
