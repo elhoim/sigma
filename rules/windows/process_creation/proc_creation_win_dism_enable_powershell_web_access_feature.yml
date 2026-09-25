@@ -9,9 +9,9 @@ references:
 author: Michael Haag
 date: 2024-09-03
 tags:
-    - attack.privilege-escalation
     - attack.persistence
-    - attack.t1548.002
+    - attack.initial-access
+    - attack.t1133
 logsource:
     category: process_creation
     product: windows

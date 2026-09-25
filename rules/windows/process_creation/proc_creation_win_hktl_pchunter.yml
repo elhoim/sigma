@@ -10,7 +10,6 @@ author: Florian Roth (Nextron Systems), Nasreddine Bencherchali
 date: 2022-10-10
 modified: 2024-11-23
 tags:
-    - attack.execution
     - attack.discovery
     - attack.t1082
     - attack.t1057
