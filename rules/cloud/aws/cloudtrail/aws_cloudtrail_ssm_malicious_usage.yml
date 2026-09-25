@@ -9,10 +9,8 @@ author: jamesc-grafana
 date: 2024-07-11
 modified: 2025-12-08
 tags:
-    - attack.privilege-escalation
-    - attack.initial-access
-    - attack.t1566
-    - attack.t1566.002
+    - attack.execution
+    - attack.t1651
 logsource:
     product: aws
     service: cloudtrail
