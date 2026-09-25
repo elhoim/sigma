@@ -9,9 +9,8 @@ date: 2019-01-12
 modified: 2025-10-26
 tags:
     - attack.privilege-escalation
-    - attack.t1037.001
     - attack.persistence
-    - attack.lateral-movement
+    - attack.t1037.001
 logsource:
     category: registry_set
     product: windows

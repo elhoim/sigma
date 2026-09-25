@@ -12,7 +12,6 @@ author: Nik Seetharaman
 date: 2018-07-16
 modified: 2026-08-27
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1218.003
     - attack.g0069
