@@ -1,8 +1,8 @@
 pr1	claude/peaceful-ride-6vdud0-ds0005	[COSMETIC] Remove deprecated ATT&CK data source tag from Create Volume Shadow Copy with Powershell
-pr2	claude/peaceful-ride-6vdud0-t1574-pack1	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 1/4)
-pr3	claude/peaceful-ride-6vdud0-t1574-pack2	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 2/4)
-pr4	claude/peaceful-ride-6vdud0-t1574-pack3	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 3/4)
-pr5	claude/peaceful-ride-6vdud0-t1574-pack4	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 4/4)
+pr2	claude/peaceful-ride-6vdud0-t1574-pack1	[LOW] Correct T1574-family technique tags for ATT&CK v19.2 (pack 1/4)
+pr3	claude/peaceful-ride-6vdud0-t1574-pack2	[LOW] Correct T1574-family technique tags for ATT&CK v19.2 (pack 2/4)
+pr4	claude/peaceful-ride-6vdud0-t1574-pack3	[LOW] Correct T1574-family technique tags for ATT&CK v19.2 (pack 3/4)
+pr5	claude/peaceful-ride-6vdud0-t1574-pack4	[LOW] Correct T1574-family technique tags for ATT&CK v19.2 (pack 4/4)
 pr6	claude/peaceful-ride-6vdud0	[HIGH] Fix Sigma rules that can never fire (wrong modifiers, typos, wrong fields and event sources)
 pr7	claude/peaceful-ride-6vdud0-medium	[MEDIUM] Close detection bypasses in Sigma rule filters and case-sensitive regexes
 pr8	claude/peaceful-ride-6vdud0-low	[LOW] Reduce false positives and correct field names and metadata in Sigma rules
