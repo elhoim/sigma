@@ -13,6 +13,7 @@ tags:
     - attack.command-and-control
     - attack.g0020
     - attack.t1041
+    - attack.t1071
     - detection.emerging-threats
 logsource:
     category: firewall
