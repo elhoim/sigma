@@ -1,4 +1,4 @@
-You are opening 5 pull requests on the upstream repository SigmaHQ/sigma on behalf of the user (GitHub user `elhoim`), from branches that already exist in the user's fork `elhoim/sigma`. The user explicitly asked for these PRs to be moved from their fork to upstream. Do exactly this and nothing more.
+You are opening the pull requests listed in manifest.tsv (15) on the upstream repository SigmaHQ/sigma on behalf of the user (GitHub user `elhoim`), from branches that already exist in the user's fork `elhoim/sigma`. The user explicitly asked for these PRs to be moved from their fork to upstream. Do exactly this and nothing more.
 
 For EACH PR below, in order:
 1. Load the GitHub MCP tools with ToolSearch (`select:mcp__github__create_pull_request,mcp__github__update_pull_request,mcp__github__pull_request_read`).
@@ -7,6 +7,6 @@ For EACH PR below, in order:
 
 HARD LIMITS: do not push, commit, create or modify any branch, file or repository; do not post comments or reviews; do not request reviewers; do not close, merge or edit any other PR. Never include a Claude session link anywhere. If a create fails (e.g. a PR for that head already exists, permissions), do not work around it: record the exact error and continue with the next one.
 
-After all five: subscribe to PR activity for each created PR (mcp__github__subscribe_pr_activity) so CI results reach this session, and report a table: branch → upstream PR URL → body verified clean (yes/no). If later CI fails on one of these PRs, do not push fixes (you cannot push to the fork): tell the user which check failed and why.
+After all of them: subscribe to PR activity for each created PR (mcp__github__subscribe_pr_activity) so CI results reach this session, and report a table: branch → upstream PR URL → body verified clean (yes/no). If later CI fails on one of these PRs, do not push fixes (you cannot push to the fork): tell the user which check failed and why.
 
 Validation already done by the parent session: every branch merges cleanly onto SigmaHQ/sigma master (9e543da66), and the full repo CI replica (yamllint, test_logsource, test_rules, sigma check, 463 regression tests) passed on each; the same branches are green on the fork's GitHub Actions.

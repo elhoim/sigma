@@ -3,3 +3,13 @@ pr2	claude/peaceful-ride-6vdud0-t1574-pack1	[LOW] Align T1574-family ATT&CK tags
 pr3	claude/peaceful-ride-6vdud0-t1574-pack2	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 2/4)
 pr4	claude/peaceful-ride-6vdud0-t1574-pack3	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 3/4)
 pr5	claude/peaceful-ride-6vdud0-t1574-pack4	[LOW] Align T1574-family ATT&CK tags with v19.2 (pack 4/4)
+pr6	claude/peaceful-ride-6vdud0	[HIGH] Fix Sigma rules that can never fire (wrong modifiers, typos, wrong fields and event sources)
+pr7	claude/peaceful-ride-6vdud0-medium	[MEDIUM] Close detection bypasses in Sigma rule filters and case-sensitive regexes
+pr8	claude/peaceful-ride-6vdud0-low	[LOW] Reduce false positives and correct field names and metadata in Sigma rules
+pr9	claude/peaceful-ride-6vdud0-tags-pack1	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 1/7
+pr10	claude/peaceful-ride-6vdud0-tags-pack2	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 2/7
+pr11	claude/peaceful-ride-6vdud0-tags-pack3	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 3/7
+pr12	claude/peaceful-ride-6vdud0-tags-pack4	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 4/7
+pr13	claude/peaceful-ride-6vdud0-tags-pack5	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 5/7
+pr14	claude/peaceful-ride-6vdud0-tags-pack6	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 6/7
+pr15	claude/peaceful-ride-6vdud0-tags-pack7	[LOW] Correct unbacked ATT&CK tactic tags (v19.2), pack 7/7
