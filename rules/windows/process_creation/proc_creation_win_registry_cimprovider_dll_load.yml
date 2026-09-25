@@ -13,7 +13,7 @@ tags:
     - attack.persistence
     - attack.execution
     - attack.stealth
-    - attack.t1574
+    - attack.t1218
 logsource:
     category: process_creation
     product: windows
