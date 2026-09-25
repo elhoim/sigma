@@ -12,7 +12,6 @@ modified: 2026-09-24
 tags:
     - attack.persistence
     - attack.privilege-escalation
-    - attack.credential-access
     - attack.t1098
 logsource:
     product: aws
