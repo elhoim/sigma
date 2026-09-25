@@ -12,6 +12,7 @@ tags:
     - attack.discovery
     - attack.execution
     - attack.t1059.001
+    - attack.t1087.002
 logsource:
     product: windows
     category: ps_script
