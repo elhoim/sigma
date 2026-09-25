@@ -9,9 +9,11 @@ date: 2022-10-07
 modified: 2023-04-14
 tags:
     - attack.collection
-    - attack.execution
     - attack.credential-access
+    - attack.privilege-escalation
+    - attack.stealth
     - attack.t1557.001
+    - attack.t1134.001
 logsource:
     product: windows
     service: system

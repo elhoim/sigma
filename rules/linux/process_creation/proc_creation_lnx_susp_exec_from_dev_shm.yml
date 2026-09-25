@@ -15,7 +15,6 @@ author: Stan Beukers
 date: 2026-06-20
 tags:
     - attack.stealth
-    - attack.execution
     - attack.t1027.011
 logsource:
     category: process_creation
