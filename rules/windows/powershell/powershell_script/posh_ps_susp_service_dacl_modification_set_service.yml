@@ -15,7 +15,7 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.stealth
-    - attack.t1574.011
+    - attack.t1564
 logsource:
     product: windows
     category: ps_script
