@@ -16,8 +16,8 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.stealth
-    - attack.t1574.007
     - attack.t1548.002
+    - attack.t1574.001
 logsource:
     category: image_load
     product: windows
