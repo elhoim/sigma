@@ -13,9 +13,8 @@ author: Marco Pedrinazzi (@pedrinazziM) (InTheCyber)
 date: 2026-01-09
 tags:
     - attack.stealth
-    - attack.t1564.008
-    - attack.exfiltration
     - attack.collection
+    - attack.t1564.008
     - attack.t1114.003
     - detection.threat-hunting
 logsource:
