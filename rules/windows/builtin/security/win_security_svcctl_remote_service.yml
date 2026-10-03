@@ -10,7 +10,9 @@ modified: 2024-08-01
 tags:
     - attack.lateral-movement
     - attack.persistence
+    - attack.privilege-escalation
     - attack.t1021.002
+    - attack.t1543.003
 logsource:
     product: windows
     service: security

@@ -13,6 +13,7 @@ tags:
     - attack.privilege-escalation
     - attack.defense-impairment
     - attack.t1556
+    - attack.t1484.002
 logsource:
     product: azure
     service: auditlogs
