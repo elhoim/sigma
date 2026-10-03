@@ -12,9 +12,10 @@ author: Oddvar Moe, Sander Wiebing, oscd.community
 date: 2020-10-12
 modified: 2024-03-13
 tags:
-    - attack.exfiltration
     - attack.discovery
+    - attack.credential-access
     - attack.t1012
+    - attack.t1003.002
 logsource:
     category: process_creation
     product: windows

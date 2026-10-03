@@ -9,7 +9,7 @@ date: 2024-01-02
 tags:
     - attack.execution
     - attack.stealth
-    - attack.t1218
+    - attack.t1127
 logsource:
     category: process_creation
     product: windows
