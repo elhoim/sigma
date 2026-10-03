@@ -13,10 +13,10 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.persistence
-    - attack.t1136.002
     - attack.t1543.003
     - attack.t1570
     - attack.s0029
+    - attack.t1569.002
 logsource:
     category: file_event
     product: windows

@@ -10,7 +10,6 @@ modified: 2024-03-13
 tags:
     - attack.stealth
     - attack.t1218.011
-    - attack.execution
 logsource:
     category: network_connection
     product: windows

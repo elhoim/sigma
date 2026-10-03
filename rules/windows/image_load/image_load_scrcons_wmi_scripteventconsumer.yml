@@ -10,7 +10,6 @@ author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)
 date: 2020-09-02
 modified: 2023-02-22
 tags:
-    - attack.lateral-movement
     - attack.privilege-escalation
     - attack.persistence
     - attack.t1546.003

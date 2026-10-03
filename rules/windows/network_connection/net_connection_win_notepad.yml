@@ -14,9 +14,9 @@ modified: 2024-02-02
 tags:
     - attack.privilege-escalation
     - attack.command-and-control
-    - attack.execution
     - attack.stealth
     - attack.t1055
+    - attack.t1071
 logsource:
     category: network_connection
     product: windows
