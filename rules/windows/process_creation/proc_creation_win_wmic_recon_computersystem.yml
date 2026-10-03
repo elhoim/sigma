@@ -11,6 +11,7 @@ tags:
     - attack.discovery
     - attack.execution
     - attack.t1047
+    - attack.t1082
 logsource:
     product: windows
     category: process_creation

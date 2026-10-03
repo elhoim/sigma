@@ -13,7 +13,8 @@ date: 2023-04-11
 tags:
     - attack.execution
     - attack.stealth
-    - attack.t1218
+    - attack.t1127
+    - attack.t1036.003
 logsource:
     category: process_creation
     product: windows

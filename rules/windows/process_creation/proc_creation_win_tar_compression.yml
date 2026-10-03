@@ -12,7 +12,6 @@ author: Nasreddine Bencherchali (Nextron Systems), AdmU3
 date: 2023-12-19
 tags:
     - attack.collection
-    - attack.exfiltration
     - attack.t1560
     - attack.t1560.001
 logsource:

@@ -11,8 +11,9 @@ tags:
     - attack.privilege-escalation
     - attack.persistence
     - attack.execution
-    - attack.t1053.005
     - attack.command-and-control
+    - attack.t1053.005
+    - attack.t1572
 logsource:
     product: windows
     category: process_creation
