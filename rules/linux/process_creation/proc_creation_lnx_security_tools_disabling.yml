@@ -4,9 +4,9 @@ status: test
 description: Detects disabling security tools
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1562.004/T1562.004.md
-author: Ömer Günal, Alejandro Ortuno, oscd.community
+author: Ömer Günal, Alejandro Ortuno, oscd.community, elhoim - David André (correction)
 date: 2020-06-17
-modified: 2022-10-09
+modified: 2026-09-24
 tags:
     - attack.defense-impairment
     - attack.t1686
@@ -28,12 +28,12 @@ detection:
         Image|endswith: '/chkconfig'
         CommandLine|contains|all:
             - 'iptables'
-            - 'stop'
+            - 'off'
     selection_iptables_4:
         Image|endswith: '/chkconfig'
         CommandLine|contains|all:
             - 'ip6tables'
-            - 'stop'
+            - 'off'
     selection_firewall_1:
         Image|endswith: '/systemctl'
         CommandLine|contains|all:
@@ -66,7 +66,9 @@ detection:
             - 'disable'
     selection_selinux:
         Image|endswith: '/setenforce'
-        CommandLine|contains: '0'
+        CommandLine|contains:
+            - '0'
+            - 'Permissive'
     selection_crowdstrike_1:
         Image|endswith: '/systemctl'
         CommandLine|contains|all:

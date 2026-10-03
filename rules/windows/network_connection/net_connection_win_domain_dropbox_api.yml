@@ -5,8 +5,9 @@ description: Detects an executable that isn't dropbox but communicates with the 
 references:
     - https://app.any.run/tasks/7e906adc-9d11-447f-8641-5f40375ecebb
     - https://www.zscaler.com/blogs/security-research/new-espionage-attack-molerats-apt-targeting-users-middle-east
-author: Florian Roth (Nextron Systems)
+author: Florian Roth (Nextron Systems), elhoim - David André (correction)
 date: 2022-04-20
+modified: 2026-09-24
 tags:
     - attack.command-and-control
     - attack.exfiltration
@@ -23,8 +24,15 @@ detection:
             - 'content.dropboxapi.com'
     filter_main_legit_dropbox:
         # Note: It's better to add a specific path to the exact location(s) where dropbox is installed
-        Image|contains: '\Dropbox'
-    condition: selection and not 1 of filter_main_*
+        Image|contains:
+            - ':\Program Files (x86)\Dropbox\'
+            - ':\Program Files\Dropbox\'
+    filter_optional_dropbox_user_install:
+        Image|contains:
+            - '\AppData\Local\Dropbox\Client\'
+            - '\AppData\Roaming\Dropbox\bin\'
+        Image|endswith: '\Dropbox.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Legitimate use of the API with a tool that the author wasn't aware of
 level: high
