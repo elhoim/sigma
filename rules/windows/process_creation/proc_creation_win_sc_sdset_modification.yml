@@ -20,7 +20,7 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.stealth
-    - attack.t1574.011
+    - attack.t1564
 logsource:
     category: process_creation
     product: windows
