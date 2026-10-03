@@ -14,9 +14,9 @@ description: |
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1074.001/T1074.001.md
     - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a
-author: Nasreddine Bencherchali (Nextron Systems), frack113
+author: Nasreddine Bencherchali (Nextron Systems), frack113, elhoim - David André (correction)
 date: 2021-07-20
-modified: 2023-12-18
+modified: 2026-09-24
 tags:
     - attack.collection
     - attack.t1074.001
@@ -26,7 +26,7 @@ logsource:
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     selection:
-        ContextInfo|contains|all:
+        ContextInfo|contains:
             - 'Compress-Archive -Path*-DestinationPath $env:TEMP'
             - 'Compress-Archive -Path*-DestinationPath*\AppData\Local\Temp\'
             - 'Compress-Archive -Path*-DestinationPath*:\Windows\Temp\'
