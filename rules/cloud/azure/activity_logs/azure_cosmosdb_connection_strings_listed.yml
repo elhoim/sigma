@@ -1,0 +1,25 @@
+title: Azure Cosmos DB Connection Strings Listed
+id: 697242bd-2774-4b4e-ab4e-344113d7ed47
+status: experimental
+description: |
+    Detects when the connection strings of an Azure Cosmos DB account are listed.
+    The connection strings contain the account keys, which grant full data plane access to the databases of the account.
+    Adversaries may retrieve them to access or exfiltrate the stored data.
+references:
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/databases
+    - https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/database-accounts/list-connection-strings
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1552
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/LISTCONNECTIONSTRINGS/ACTION'
+    condition: selection
+falsepositives:
+    - Administrators or applications retrieving connection strings through the Azure portal or CLI
+level: medium

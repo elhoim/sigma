@@ -1,0 +1,29 @@
+title: SharePoint or OneDrive Item Shared Externally
+id: 9ba9cdde-73cb-4885-a1a1-816a18df38ef
+status: experimental
+description: |
+    Detects when a SharePoint or OneDrive item is shared outside of the organization, either through the creation of an anonymous ("Anyone") link or through a sharing invitation sent to a guest user.
+    Adversaries with access to a compromised account may share documents externally to exfiltrate data while blending in with normal collaboration.
+references:
+    - https://learn.microsoft.com/en-us/purview/audit-log-sharing
+    - https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#sharepoint-sharing-schema
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.collection
+    - attack.t1213.002
+    - attack.exfiltration
+    - attack.t1567
+logsource:
+    service: audit
+    product: m365
+detection:
+    selection_anonymous:
+        Operation: 'AnonymousLinkCreated'
+    selection_guest:
+        Operation: 'SharingInvitationCreated'
+        TargetUserOrGroupType: 'Guest'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate external collaboration. Consider filtering on sensitive sites or known partner domains.
+level: low
