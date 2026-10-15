@@ -1,0 +1,26 @@
+title: AWS S3 Account-Level Public Access Block Deleted
+id: ddbc4d65-9b69-4e62-9186-c32ad9ffa2ad
+status: experimental
+description: |
+    Detects the deletion of the account-level Amazon S3 Block Public Access configuration.
+    Removing this guardrail allows buckets of the account to be exposed publicly through bucket policies or ACLs, which can be used for data exfiltration.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_DeletePublicAccessBlock.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html
+    - https://docs.datadoghq.com/security/default_rules/4cd-f56-dfa/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'DeleteAccountPublicAccessBlock'
+    condition: selection
+falsepositives:
+    - Legitimate administrative change, for example to host a public static website
+level: medium

@@ -1,0 +1,29 @@
+title: Azure Virtual Machine Run Command Executed
+id: 23219d18-095c-4456-a973-35a73c8bf46b
+status: experimental
+description: |
+    Detects the execution of a Run Command on an Azure virtual machine or virtual machine scale set instance.
+    Run Command allows executing scripts as SYSTEM or root inside the guest operating system through the Azure control plane and is abused by adversaries for remote execution and lateral movement from the cloud to the host.
+references:
+    - https://learn.microsoft.com/en-us/azure/virtual-machines/run-command-overview
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/compute
+    - https://docs.datadoghq.com/security/default_rules/e7n-akg-cid/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.t1651
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName:
+            - 'MICROSOFT.COMPUTE/VIRTUALMACHINES/RUNCOMMAND/ACTION'
+            - 'MICROSOFT.COMPUTE/VIRTUALMACHINES/RUNCOMMANDS/WRITE'
+            - 'MICROSOFT.COMPUTE/VIRTUALMACHINESCALESETS/VIRTUALMACHINES/RUNCOMMAND/ACTION'
+            - 'MICROSOFT.COMPUTE/VIRTUALMACHINESCALESETS/VIRTUALMACHINES/RUNCOMMANDS/WRITE'
+    condition: selection
+falsepositives:
+    - Legitimate administration or automation using Run Command
+level: medium

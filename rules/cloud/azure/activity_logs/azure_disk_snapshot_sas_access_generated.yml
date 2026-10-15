@@ -1,0 +1,27 @@
+title: Azure Managed Disk Or Snapshot SAS Export URI Generated
+id: 86fa280d-cb34-4c8e-a8b0-ee3cc004c7b4
+status: experimental
+description: |
+    Detects the generation of a shared access signature (SAS) URI granting read access to an Azure managed disk or snapshot.
+    Adversaries can use such a URI to download a full copy of a virtual machine disk from outside of the tenant, for example to extract credentials offline.
+references:
+    - https://learn.microsoft.com/en-us/azure/virtual-machines/windows/download-vhd
+    - https://learn.microsoft.com/en-us/rest/api/compute/disks/grant-access
+    - https://docs.datadoghq.com/security/default_rules/7r2-807-3pa/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName:
+            - 'MICROSOFT.COMPUTE/DISKS/BEGINGETACCESS/ACTION'
+            - 'MICROSOFT.COMPUTE/SNAPSHOTS/BEGINGETACCESS/ACTION'
+    condition: selection
+falsepositives:
+    - Legitimate disk export for migration, backup or forensic purposes
+level: medium

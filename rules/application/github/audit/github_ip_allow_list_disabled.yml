@@ -1,0 +1,29 @@
+title: Github IP Allow List Disabled Or Entry Deleted
+id: a8d43bdf-f9d9-4d29-aa8c-04bfe46d4284
+status: experimental
+description: |
+    Detects when the IP allow list of a GitHub organization or enterprise is disabled, disabled for installed GitHub Apps, or when an entry is removed from it.
+    Adversaries may weaken network access restrictions to access organization resources from their own infrastructure.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
+    - https://docs.github.com/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/managing-allowed-ip-addresses-for-your-organization
+    - https://docs.datadoghq.com/security/default_rules/def-000-nf7/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action:
+            - 'ip_allow_list.disable'
+            - 'ip_allow_list.disable_for_installed_apps'
+            - 'ip_allow_list_entry.destroy'
+    condition: selection
+falsepositives:
+    - Legitimate maintenance of the IP allow list by organization owners
+level: medium

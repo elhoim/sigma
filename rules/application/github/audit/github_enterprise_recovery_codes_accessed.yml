@@ -1,0 +1,32 @@
+title: Github Enterprise SSO Recovery Codes Accessed
+id: 7c23d105-8ed3-4839-bdfb-e319d89e7f85
+status: experimental
+description: |
+    Detects when the single sign-on recovery codes of a GitHub enterprise are viewed, downloaded, printed or regenerated.
+    Recovery codes allow bypassing the identity provider to access the enterprise and can be abused by an adversary to retain access.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/managing-recovery-codes-for-your-enterprise
+    - https://docs.datadoghq.com/security/default_rules/def-000-p9r/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1556
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action:
+            - 'business.recovery_codes_downloaded'
+            - 'business.recovery_codes_generated'
+            - 'business.recovery_codes_printed'
+            - 'business.recovery_codes_viewed'
+    condition: selection
+falsepositives:
+    - Legitimate retrieval of recovery codes by enterprise owners after configuring SSO
+level: medium

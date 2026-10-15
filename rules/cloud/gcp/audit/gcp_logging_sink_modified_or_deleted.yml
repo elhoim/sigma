@@ -1,0 +1,27 @@
+title: GCP Cloud Logging Sink Modified Or Deleted
+id: f1af117d-812b-4113-9c38-4bf19a3495a1
+status: experimental
+description: |
+    Detects the update or deletion of a Cloud Logging sink.
+    Sinks route logs to destinations such as a SIEM. Adversaries may delete a sink, or change its filter or destination, to prevent logs from reaching security monitoring.
+references:
+    - https://cloud.google.com/logging/docs/export/configure_export_v2
+    - https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
+    - https://docs.datadoghq.com/security/default_rules/e74-752-b34/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name:
+            - 'google.logging.v2.ConfigServiceV2.DeleteSink'
+            - 'google.logging.v2.ConfigServiceV2.UpdateSink'
+    condition: selection
+falsepositives:
+    - Legitimate reconfiguration of log routing by administrators or infrastructure-as-code tooling
+level: medium
