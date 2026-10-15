@@ -1,0 +1,28 @@
+title: AWS Bedrock Foundation Model Access Enabled
+id: 5ba63740-8791-45f0-9a5b-819004137393
+status: experimental
+description: |
+    Detects the submission of a model access use case or the creation of a foundation model agreement in Amazon Bedrock.
+    Adversaries abusing stolen credentials for LLMjacking enable access to third-party foundation models before invoking them at the victim's expense.
+references:
+    - https://docs.aws.amazon.com/bedrock/latest/APIReference/API_PutUseCaseForModelAccess.html
+    - https://docs.aws.amazon.com/bedrock/latest/APIReference/API_CreateFoundationModelAgreement.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-61e/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1496.004
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'bedrock.amazonaws.com'
+        eventName:
+            - 'CreateFoundationModelAgreement'
+            - 'PutUseCaseForModelAccess'
+    condition: selection
+falsepositives:
+    - Legitimate enablement of foundation models by AI or platform teams
+level: medium

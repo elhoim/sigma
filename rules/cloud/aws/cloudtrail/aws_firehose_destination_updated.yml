@@ -1,0 +1,25 @@
+title: AWS Kinesis Data Firehose Destination Updated
+id: c6636e22-d663-4dd3-8d6c-47593f8a7081
+status: experimental
+description: |
+    Detects the destination of an Amazon Data Firehose (Kinesis Data Firehose) delivery stream being updated.
+    Firehose streams frequently deliver logs to SIEM or archive storage, and adversaries may redirect them to stop log delivery or to exfiltrate the streamed data.
+references:
+    - https://docs.aws.amazon.com/firehose/latest/APIReference/API_UpdateDestination.html
+    - https://docs.datadoghq.com/security/default_rules/1y1-elh-nph/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'firehose.amazonaws.com'
+        eventName: 'UpdateDestination'
+    condition: selection
+falsepositives:
+    - Legitimate changes of delivery streams by administrators or infrastructure-as-code pipelines
+level: low

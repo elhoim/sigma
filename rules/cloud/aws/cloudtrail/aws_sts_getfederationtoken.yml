@@ -1,0 +1,27 @@
+title: AWS STS GetFederationToken Called By IAM User
+id: bdc27f1a-e52d-4a47-ad28-5b6977cd9c04
+status: experimental
+description: |
+    Detects an IAM user requesting temporary federated credentials using STS GetFederationToken.
+    Adversaries may use GetFederationToken with stolen long-term access keys to obtain temporary credentials, including console sessions, that survive the deletion of the original access key.
+references:
+    - https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-a9s/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.lateral-movement
+    - attack.stealth
+    - attack.t1550.001
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sts.amazonaws.com'
+        eventName: 'GetFederationToken'
+        userIdentity.type: 'IAMUser'
+    condition: selection
+falsepositives:
+    - Custom identity brokers that legitimately use GetFederationToken
+level: medium

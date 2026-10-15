@@ -1,0 +1,30 @@
+title: AWS RDS Snapshot Shared Publicly
+id: f77361fe-e8b2-4a12-9aa0-77609f21d560
+status: experimental
+description: |
+    Detects an Amazon RDS DB snapshot or DB cluster snapshot being made public by adding "all" to its restore attribute.
+    Adversaries may share snapshots publicly to exfiltrate database content to an account they control.
+references:
+    - https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ModifyDBSnapshotAttribute.html
+    - https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ModifyDBClusterSnapshotAttribute.html
+    - https://docs.datadoghq.com/security/default_rules/237-412-287/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'rds.amazonaws.com'
+        eventName:
+            - 'ModifyDBClusterSnapshotAttribute'
+            - 'ModifyDBSnapshotAttribute'
+        requestParameters.attributeName: 'restore'
+        requestParameters.valuesToAdd|contains: 'all'
+    condition: selection
+falsepositives:
+    - Intentional publication of snapshots containing public datasets
+level: high
