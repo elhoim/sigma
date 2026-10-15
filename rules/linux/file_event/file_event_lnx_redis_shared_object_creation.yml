@@ -1,0 +1,30 @@
+title: Shared Object File Created By Redis Server
+id: c42d7b36-a69f-46da-8720-5387d9a122ac
+status: experimental
+description: |
+    Detects the Redis server process writing a shared object (".so") file.
+    Attackers abusing an exposed Redis instance commonly use the rogue master replication technique ("SLAVEOF"/"REPLICAOF" to an attacker-controlled server) to make Redis write a malicious module to disk, which is then loaded with "MODULE LOAD" to obtain command execution.
+    Redis does not write shared objects during normal operation; its persistence files are RDB and AOF files.
+    Note that Redis writes the replicated payload to a temporary "temp-*.rdb" file and then renames it, so the file event source must record the final path of renamed files.
+references:
+    - https://github.com/n0b0dyCN/redis-rogue-server
+    - https://redis.io/docs/latest/commands/module-load/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - attack.execution
+    - attack.t1129
+logsource:
+    product: linux
+    category: file_event
+    definition: 'Requirements: The file event source must log rename operations with the destination path (e.g. auditd PATH records or an EDR/FIM sensor), as Redis renames a temporary file to the final module filename.'
+detection:
+    selection:
+        Image|endswith: '/redis-server'
+        TargetFilename|endswith: '.so'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
