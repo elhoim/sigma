@@ -1,0 +1,61 @@
+title: OS Command Injection Strings In URI
+id: 23339ed1-20ad-4eb6-9e59-28e4ef586773
+related:
+    - id: 7ff9db12-1b94-4a79-ba68-a2402c5d6729
+      type: similar
+status: experimental
+description: |
+    Detects HTTP requests whose query string contains a shell command separator or command substitution (";", "|", "$()" or backticks), in clear or URL-encoded form, followed by common reconnaissance commands such as "whoami", "id", "uname" or "cat /etc/".
+    This is typical of OS command injection exploitation attempts against web applications.
+references:
+    - https://owasp.org/www-community/attacks/Command_Injection
+    - https://github.com/swisskyrepo/PayloadsAllTheThings/tree/4.1/Command%20Injection
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.execution
+    - attack.t1190
+    - attack.t1059.004
+logsource:
+    category: webserver
+detection:
+    selection:
+        cs-uri-query|contains:
+            - ';whoami'
+            - '%3Bwhoami'
+            - '|whoami'
+            - '%7Cwhoami'
+            - '$(whoami)'
+            - '%24%28whoami%29'
+            - '`whoami`'
+            - '%60whoami%60'
+            - ';id;'
+            - '%3Bid%3B'
+            - '|id;'
+            - '%7Cid%3B'
+            - '$(id)'
+            - '%24%28id%29'
+            - '`id`'
+            - '%60id%60'
+            - ';uname%20-a'
+            - ';uname+-a'
+            - '%3Buname%20-a'
+            - '%3Buname+-a'
+            - '|uname%20-a'
+            - '%7Cuname%20-a'
+            - '%7Cuname+-a'
+            - ';cat%20/etc/'
+            - ';cat+/etc/'
+            - '%3Bcat%20%2Fetc%2F'
+            - '%3Bcat+%2Fetc%2F'
+            - '|cat%20/etc/'
+            - '%7Ccat%20%2Fetc%2F'
+            - '%7Ccat+%2Fetc%2F'
+    filter_main_status:
+        sc-status: 404
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Internal vulnerability scanners
+    - Web sites like wikis with articles on shell commands that include such strings in their URLs
+level: high
