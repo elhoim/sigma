@@ -1,0 +1,23 @@
+title: Okta Identity Threat Protection User Risk Detected
+id: 774d64d4-e914-43dc-a74f-311a27a8b963
+status: experimental
+description: |
+    Detects when Okta Identity Threat Protection (ITP) associates a user with risk activity or context, such as brute force or MFA attacks against the account.
+    The details of the detection are available in the debug context of the event.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1110
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType: 'user.risk.detect'
+    condition: selection
+falsepositives:
+    - Benign user behaviour that Okta evaluates as risky, such as travel or new devices
+level: medium
