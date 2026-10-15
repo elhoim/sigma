@@ -1,0 +1,37 @@
+title: Privileged Domain Security Group Changed
+id: 7e8d84d4-2353-405a-8e02-826f3062143d
+status: experimental
+description: |
+    Detects changes to the attributes of the "Domain Admins", "Enterprise Admins" or "Schema Admins" security-enabled global or universal groups (event IDs 4737 and 4755), for example a rename, a change of group type or scope, or the modification of its SID history.
+    These groups are rarely modified, and adversaries may alter them to hide or establish privileged access in the domain.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4737
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4755
+    - https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: windows
+    service: security
+detection:
+    selection_eid:
+        EventID:
+            - 4737 # A security-enabled global group was changed
+            - 4755 # A security-enabled universal group was changed
+    selection_group:
+        - TargetUserName:
+              - 'Domain Admins'
+              - 'Enterprise Admins'
+              - 'Schema Admins'
+        - TargetSid|endswith:
+              - '-512' # Domain Admins
+              - '-518' # Schema Admins
+              - '-519' # Enterprise Admins
+    condition: all of selection_*
+falsepositives:
+    - Legitimate administrative changes to these groups
+level: medium
