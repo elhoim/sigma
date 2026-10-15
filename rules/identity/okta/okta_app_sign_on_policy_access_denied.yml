@@ -1,0 +1,28 @@
+title: Okta User Access Denied by Application Sign-On Policy
+id: 07d79b3d-6e97-468a-a489-ebbf94d63d89
+status: experimental
+description: |
+    Detects when Okta denies a user access to an application because of the application sign-on policy.
+    Repeated denials may indicate an attacker attempting to access applications with compromised credentials from a context not allowed by policy.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+    - https://docs.datadoghq.com/security/default_rules/888-4d9-8a3/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078.004
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType: 'application.policy.sign_on.deny_access'
+    condition: selection
+falsepositives:
+    - Legitimate users accessing applications from a device or network not allowed by the sign-on policy
+    - Users lacking an enrolled authenticator that satisfies the application assurance requirements
+level: low

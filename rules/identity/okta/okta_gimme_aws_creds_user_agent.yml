@@ -1,0 +1,27 @@
+title: Okta Activity via Gimme-AWS-Creds Tool
+id: a742ef09-0a63-4811-844f-1bbb4c754a4f
+status: experimental
+description: |
+    Detects Okta activity originating from the open source "gimme-aws-creds" tool, which uses Okta single sign-on to obtain temporary AWS credentials.
+    Attackers with stolen Okta credentials can use such tooling to obtain AWS access from the command line.
+references:
+    - https://github.com/Nike-Inc/gimme-aws-creds
+    - https://docs.datadoghq.com/security/default_rules/def-000-yab/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078.004
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        client.userAgent.rawUserAgent|contains: 'gimme-aws-creds'
+    condition: selection
+falsepositives:
+    - Organizations where gimme-aws-creds is an approved tool for obtaining AWS credentials
+level: low
