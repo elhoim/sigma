@@ -1,0 +1,26 @@
+title: AWS S3 Bucket MFA Delete Disabled
+id: 346a2474-00d7-4e9b-80b5-16b4e5baf795
+status: experimental
+description: |
+    Detects MFA Delete being disabled on an S3 bucket.
+    MFA Delete protects object versions from permanent deletion. Adversaries may disable it before deleting objects or versions for data destruction or ransom.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1490
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'PutBucketVersioning'
+        requestParameters.VersioningConfiguration.MfaDelete: 'Disabled'
+    condition: selection
+falsepositives:
+    - Root user administration of bucket versioning settings
+level: medium

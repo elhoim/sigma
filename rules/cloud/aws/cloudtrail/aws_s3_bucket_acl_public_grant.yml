@@ -1,0 +1,28 @@
+title: AWS S3 Bucket ACL Grants Access To All Or Authenticated Users
+id: 1a830bd9-ac5a-437a-97e9-8b6637a2d33f
+status: experimental
+description: |
+    Detects an S3 bucket ACL being set with a grant to the global "AllUsers" or "AuthenticatedUsers" groups.
+    Such grants expose the bucket to anyone on the internet or to any AWS account and may be used to exfiltrate data or weaken the security posture.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketAcl.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'PutBucketAcl'
+        requestParameters|contains:
+            - 'acs.amazonaws.com/groups/global/AllUsers'
+            - 'acs.amazonaws.com/groups/global/AuthenticatedUsers'
+    condition: selection
+falsepositives:
+    - Buckets intentionally hosting public content
+level: high

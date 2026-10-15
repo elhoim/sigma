@@ -1,0 +1,25 @@
+title: AWS Bedrock Service Quota Increase Requested
+id: e9f128dd-ded3-4046-831a-6928d108f641
+status: experimental
+description: |
+    Detects a service quota increase request for Amazon Bedrock.
+    Adversaries abusing stolen credentials for LLMjacking may request higher Bedrock quotas to increase the volume of model invocations they can perform.
+references:
+    - https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_RequestServiceQuotaIncrease.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1496.004
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'servicequotas.amazonaws.com'
+        eventName: 'RequestServiceQuotaIncrease'
+        requestParameters.serviceCode: 'bedrock'
+    condition: selection
+falsepositives:
+    - Legitimate capacity planning for generative AI workloads
+level: medium

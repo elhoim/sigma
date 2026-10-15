@@ -1,0 +1,25 @@
+title: AWS ECR Public Repository Image Pushed
+id: 80841b11-52fa-4374-9117-26e46753dc30
+status: experimental
+description: |
+    Detects an image being pushed to an Amazon ECR Public repository.
+    Adversaries may push backdoored images to public repositories consumed by others, or publish internal images to exfiltrate code and secrets.
+references:
+    - https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_PutImage.html
+    - https://docs.aws.amazon.com/AmazonECR/latest/public/logging-using-cloudtrail.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.t1525
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr-public.amazonaws.com'
+        eventName: 'PutImage'
+    condition: selection
+falsepositives:
+    - Legitimate releases of public container images
+level: low

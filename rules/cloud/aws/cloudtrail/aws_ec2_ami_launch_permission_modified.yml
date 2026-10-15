@@ -1,0 +1,27 @@
+title: AWS EC2 AMI Launch Permission Modified
+id: 1c2efa41-268f-4138-b3e3-689dbf296a02
+status: experimental
+description: |
+    Detects modification of the launch permissions of an Amazon Machine Image (AMI).
+    Adding the "all" group makes the image public, while adding an account ID shares it with another AWS account.
+    Adversaries may share AMIs to exfiltrate data, credentials or proprietary software contained in the image to an account they control.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyImageAttribute.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharingamis-intro.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'ModifyImageAttribute'
+        requestParameters|contains: 'launchPermission'
+    condition: selection
+falsepositives:
+    - Legitimate sharing of AMIs with other accounts of the organization or with partners
+level: medium
