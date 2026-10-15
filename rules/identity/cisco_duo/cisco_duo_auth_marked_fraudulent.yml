@@ -1,0 +1,25 @@
+title: Cisco Duo Authentication Marked As Fraudulent By User
+id: 8157a217-7731-414a-9269-baade291a48a
+status: experimental
+description: |
+    Detects when a user reports a Duo authentication request as fraudulent.
+    A user marking a push or authentication request as fraud usually indicates that someone else knows the user's primary credentials and is attempting to log in, for example as part of an MFA fatigue attack.
+references:
+    - https://duo.com/docs/adminapi#authentication-logs
+    - https://docs.datadoghq.com/security/default_rules/def-000-onq/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1621
+logsource:
+    product: cisco
+    service: duo
+detection:
+    selection:
+        event_type: 'authentication'
+        result: 'fraud'
+    condition: selection
+falsepositives:
+    - Users mistakenly marking a legitimate login request they initiated themselves as fraudulent
+level: high

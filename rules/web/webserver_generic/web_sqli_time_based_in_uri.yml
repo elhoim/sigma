@@ -1,0 +1,50 @@
+title: Time-Based Blind SQL Injection Strings In URI
+id: d8736c8d-d24a-49df-978c-39496beedb70
+related:
+    - id: 5513deaf-f49a-46c2-a6c8-3f111b5cb453
+      type: similar
+status: experimental
+description: |
+    Detects HTTP requests whose query string contains database delay functions used in time-based blind SQL injection, such as "WAITFOR DELAY" (MSSQL), "pg_sleep" (PostgreSQL), "BENCHMARK" or "SLEEP" (MySQL) and "DBMS_LOCK.SLEEP" or "DBMS_PIPE.RECEIVE_MESSAGE" (Oracle).
+references:
+    - https://owasp.org/www-community/attacks/Blind_SQL_Injection
+    - https://portswigger.net/web-security/sql-injection/blind
+    - https://github.com/swisskyrepo/PayloadsAllTheThings/tree/4.1/SQL%20Injection
+    - https://docs.datadoghq.com/security/default_rules/def-000-5yb/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1190
+logsource:
+    category: webserver
+detection:
+    selection:
+        cs-uri-query|contains:
+            - 'waitfor delay'
+            - 'waitfor%20delay'
+            - 'waitfor+delay'
+            - 'pg_sleep('
+            - 'pg_sleep%28'
+            - 'benchmark('
+            - 'benchmark%28'
+            - 'dbms_lock.sleep'
+            - 'dbms_pipe.receive_message'
+            - 'and sleep('
+            - 'and%20sleep%28'
+            - 'and+sleep%28'
+            - 'or sleep('
+            - 'or%20sleep%28'
+            - 'or+sleep%28'
+            - 'select sleep('
+            - 'select%20sleep%28'
+            - 'select+sleep%28'
+            - '(sleep('
+            - '%28sleep%28'
+    filter_main_status:
+        sc-status: 404
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Internal vulnerability scanners
+    - User searches in search boxes of the respective website
+level: high

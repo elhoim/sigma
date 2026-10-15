@@ -1,0 +1,44 @@
+title: Sensitive OS File Reference In URI - Potential LFI
+id: 25f4d01e-4eb1-4745-8467-e4ce86422833
+related:
+    - id: 7745c2ea-24a5-4290-b680-04359cb84b35
+      type: similar
+status: experimental
+description: |
+    Detects HTTP requests whose URI references well-known sensitive operating system files such as "/etc/passwd", "/etc/shadow", "/proc/self/environ" or "win.ini".
+    These files are the classic targets of local file inclusion (LFI) and arbitrary file read exploitation attempts, including payloads using absolute paths or wrappers that do not require "../" directory traversal sequences.
+references:
+    - https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion
+    - https://book.hacktricks.xyz/pentesting-web/file-inclusion
+    - https://docs.datadoghq.com/security/default_rules/def-000-4u6/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1190
+logsource:
+    category: webserver
+detection:
+    selection_query:
+        cs-uri-query|contains:
+            - 'etc/passwd'
+            - 'etc%2Fpasswd'
+            - 'etc/shadow'
+            - 'etc%2Fshadow'
+            - 'proc/self/environ'
+            - 'proc%2Fself%2Fenviron'
+            - 'win.ini'
+            - 'system.ini'
+            - 'boot.ini'
+    selection_stem:
+        cs-uri-stem|contains:
+            - '/etc/passwd'
+            - '/etc/shadow'
+            - '/proc/self/environ'
+            - '/windows/win.ini'
+            - '/windows/system.ini'
+    condition: 1 of selection_*
+falsepositives:
+    - Internal vulnerability scanners
+    - Documentation or knowledge base websites that reference these file names in their URLs
+level: medium
