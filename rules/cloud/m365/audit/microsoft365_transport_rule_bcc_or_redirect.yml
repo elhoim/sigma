@@ -1,0 +1,30 @@
+title: Exchange Online Transport Rule Redirecting Or Copying Mail
+id: 9a3af666-9815-4ddb-8ab0-5a79e6f33494
+status: experimental
+description: |
+    Detects the creation or modification of an Exchange Online mail flow (transport) rule that blind copies or redirects messages.
+    Adversaries may use such rules to collect email of the whole organization by silently sending copies to an address they control.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/new-transportrule?view=exchange-ps
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-transportrule?view=exchange-ps
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.collection
+    - attack.t1114.003
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'Parameters' field is a list of dict. A correct mapping to the 'Value' field inside is recommended to avoid greedy search"
+detection:
+    selection:
+        Operation:
+            - 'New-TransportRule'
+            - 'Set-TransportRule'
+        Parameters|contains:
+            - 'BlindCopyTo'
+            - 'RedirectMessageTo'
+    condition: selection
+falsepositives:
+    - Legitimate journaling, compliance or mail routing rules
+level: medium
