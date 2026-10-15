@@ -1,0 +1,27 @@
+title: PUA - AWS ScoutSuite Or Stratus Red Team Execution
+id: efed27ca-3ab3-433c-9d3e-ec94533d11ae
+status: experimental
+description: |
+    Detects AWS API calls with the user agent of ScoutSuite, a multi-cloud security auditing tool, or Stratus Red Team, a cloud attack emulation tool.
+    These tools are used by security teams but may also be used by adversaries to enumerate misconfigurations or execute attack techniques.
+references:
+    - https://github.com/nccgroup/ScoutSuite
+    - https://stratus-red-team.cloud/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.discovery
+    - attack.t1526
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        userAgent|contains:
+            - 'Scout Suite'
+            - 'ScoutSuite'
+            - 'stratus-red-team'
+    condition: selection
+falsepositives:
+    - Authorized security assessments or attack simulations
+level: medium

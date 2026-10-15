@@ -1,0 +1,25 @@
+title: AWS CloudTrail Event Selectors Modified
+id: 46f24d0a-51f3-42c7-9707-c2330f3d6317
+status: experimental
+description: |
+    Detects modification of the event selectors of an AWS CloudTrail trail.
+    Adversaries may change the (advanced) event selectors of a trail to exclude management or data events, silently reducing the visibility of their actions without stopping or deleting the trail.
+references:
+    - https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_PutEventSelectors.html
+    - https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-events-with-cloudtrail.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'cloudtrail.amazonaws.com'
+        eventName: 'PutEventSelectors'
+    condition: selection
+falsepositives:
+    - Legitimate changes of the trail configuration by administrators or infrastructure-as-code pipelines
+level: medium
