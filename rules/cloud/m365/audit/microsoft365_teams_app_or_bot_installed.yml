@@ -1,0 +1,26 @@
+title: Microsoft Teams App or Bot Installed
+id: 0c125c9f-1478-4b03-8b86-c77eb7011ec3
+status: experimental
+description: |
+    Detects the installation of an app or the addition of a bot to Microsoft Teams.
+    Adversaries may install malicious or attacker-controlled apps and bots in Teams to keep access to conversations and files, or to send phishing messages to users from within the tenant.
+references:
+    - https://learn.microsoft.com/en-us/microsoftteams/audit-app-management-activities
+    - https://learn.microsoft.com/en-us/purview/audit-log-activities#teams-activities
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.t1671
+logsource:
+    service: audit
+    product: m365
+detection:
+    selection:
+        Operation:
+            - 'AppInstalled'
+            - 'BotAddedToTeam'
+    condition: selection
+falsepositives:
+    - Legitimate installation of approved apps and bots by users or administrators
+level: low

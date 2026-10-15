@@ -1,0 +1,27 @@
+title: Azure Bastion Shareable Link Created
+id: bf8c3909-4c7a-4709-a851-cae61dacef11
+status: experimental
+description: |
+    Detects the creation or retrieval of Azure Bastion shareable links.
+    A shareable link allows anyone holding the URL to connect to a virtual machine through Bastion without access to the Azure portal.
+    Adversaries may create such links to maintain direct access to virtual machines that survives the revocation of their Azure credentials.
+references:
+    - https://learn.microsoft.com/en-us/azure/bastion/shareable-link
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/networking
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.lateral-movement
+    - attack.t1021.008
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName:
+            - 'MICROSOFT.NETWORK/BASTIONHOSTS/CREATESHAREABLELINKS/ACTION'
+            - 'MICROSOFT.NETWORK/BASTIONHOSTS/GETSHAREABLELINKS/ACTION'
+    condition: selection
+falsepositives:
+    - Legitimate use of shareable links to give temporary virtual machine access to users without Azure portal access
+level: medium
