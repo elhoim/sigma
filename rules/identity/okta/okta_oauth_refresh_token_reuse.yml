@@ -1,0 +1,29 @@
+title: Okta OAuth Refresh Token Reuse Detected
+id: 670f6c9d-fe9f-4100-82d8-cd8246b8d274
+status: experimental
+description: |
+    Detects when Okta identifies the reuse of an already-used rotating refresh token.
+    Refresh token reuse may indicate that a token has been stolen and replayed by an adversary.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+    - https://developer.okta.com/docs/guides/refresh-tokens/main/#refresh-token-reuse-detection
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1528
+    - attack.stealth
+    - attack.lateral-movement
+    - attack.t1550.001
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType:
+            - 'app.oauth2.as.token.detect_reuse'
+            - 'app.oauth2.token.detect_reuse'
+    condition: selection
+falsepositives:
+    - Client applications with buggy token refresh handling or network retries
+level: high
