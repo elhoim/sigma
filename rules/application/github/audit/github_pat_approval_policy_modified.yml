@@ -1,0 +1,31 @@
+title: GitHub Fine-Grained Personal Access Token Approval Policy Modified
+id: b57f4c64-8389-48d0-b70c-ebe1aef64474
+status: experimental
+description: |
+    Detects changes to the organization or enterprise policy that controls whether fine-grained personal access tokens require approval before accessing organization resources, or the removal of the personal access token access restriction.
+    Threat actors may relax these policies so that tokens they create can access organization resources without review.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#personal_access_token
+    - https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action:
+            - 'auto_approve_personal_access_token_requests.disable'
+            - 'auto_approve_personal_access_token_requests.enable'
+            - 'personal_access_token.access_restriction_disabled'
+            - 'personal_access_token.auto_approve_grant_requests_disabled'
+            - 'personal_access_token.auto_approve_grant_requests_enabled'
+            - 'personal_access_token.auto_approve_grant_requests_reset'
+    condition: selection
+falsepositives:
+    - Approved changes to the personal access token policy by organization or enterprise owners.
+level: medium
