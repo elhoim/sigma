@@ -1,0 +1,35 @@
+title: Entra Administrative Unit Created, Modified or Restored
+id: 71a01b80-1b9e-4ee8-a672-313933b73926
+related:
+    - id: 410d2a41-1e6d-452f-85e5-abdd8257a823 # Azure Application Deleted (covers "Delete administrative unit")
+      type: similar
+status: experimental
+description: |
+    Detects the creation, modification or restoration of an administrative unit in Microsoft Entra ID.
+    This includes restricted management administrative units, whose creation is logged as "Add administrative unit" with the "IsMemberManagementRestricted" property set to true.
+    Objects placed in a restricted management administrative unit cannot be modified by tenant-scoped administrators, including Global Administrators, which adversaries may abuse to protect backdoor accounts from remediation.
+references:
+    - https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units
+    - https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management
+    - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities#core-directory
+    - https://docs.datadoghq.com/security/default_rules/def-000-b90/
+    - https://docs.datadoghq.com/security/default_rules/def-000-a89/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: azure
+    service: auditlogs
+detection:
+    selection:
+        properties.message:
+            - 'Add administrative unit'
+            - 'Update administrative unit'
+            - 'Restore administrative unit'
+    condition: selection
+falsepositives:
+    - Legitimate delegation changes by identity administrators
+level: medium

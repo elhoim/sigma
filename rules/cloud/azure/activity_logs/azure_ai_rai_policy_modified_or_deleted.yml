@@ -1,0 +1,27 @@
+title: Azure AI Content Filter Policy Modified or Deleted
+id: f8e4b040-d49b-406f-ba8c-705994339ffa
+status: experimental
+description: |
+    Detects the creation, modification or deletion of a Responsible AI (RAI) policy, also known as a content filter, on an Azure AI Foundry / Azure OpenAI account.
+    Adversaries with access to an Azure AI account may weaken or remove content filters to abuse the deployed models for generating harmful content.
+references:
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/ai-machine-learning
+    - https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter
+    - https://docs.datadoghq.com/security/default_rules/def-000-o0o/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName:
+            - 'MICROSOFT.COGNITIVESERVICES/ACCOUNTS/RAIPOLICIES/WRITE'
+            - 'MICROSOFT.COGNITIVESERVICES/ACCOUNTS/RAIPOLICIES/DELETE'
+    condition: selection
+falsepositives:
+    - Legitimate tuning of content filters by AI platform administrators
+level: medium
