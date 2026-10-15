@@ -1,0 +1,42 @@
+title: Linux RC Startup Script Created Or Modified
+id: 3fd20ebd-e243-43f6-8eb1-9724033179b4
+status: experimental
+description: |
+    Detects the creation or modification of SysV/BSD style RC startup scripts ("/etc/rc.local", "/etc/rc.common", "/etc/rc.d/" and "/etc/init.d/") by a process other than a package manager.
+    Adversaries may add commands to these scripts to establish persistence, as they are executed with root privileges during system boot.
+references:
+    - https://man7.org/linux/man-pages/man8/systemd-rc-local-generator.8.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-qe5/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037.004
+logsource:
+    product: linux
+    category: file_event
+detection:
+    selection:
+        - TargetFilename:
+              - '/etc/rc.common'
+              - '/etc/rc.local'
+        - TargetFilename|startswith:
+              - '/etc/init.d/'
+              - '/etc/rc.d/'
+    filter_main_package_managers:
+        Image|endswith:
+            - '/apk'
+            - '/apt'
+            - '/apt-get'
+            - '/dnf'
+            - '/dpkg'
+            - '/pacman'
+            - '/rpm'
+            - '/yum'
+            - '/zypper'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Software installed outside of a package manager (e.g. vendor installers or "make install") registering an init script
+    - Administrators or configuration management tools editing "/etc/rc.local"
+level: medium
