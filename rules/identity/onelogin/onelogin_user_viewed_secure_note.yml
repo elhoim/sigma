@@ -1,0 +1,24 @@
+title: OneLogin User Viewed Secure Note
+id: 46af2d9f-a444-43fd-80f4-a92ab329ee0b
+status: experimental
+description: |
+    Detects when a OneLogin user views a secure note.
+    Secure notes can contain sensitive information such as credentials that attackers may harvest after compromising an account.
+references:
+    - https://developers.onelogin.com/api-docs/1/events/event-types
+    - https://docs.datadoghq.com/security/default_rules/xbm-10x-93a/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1555
+logsource:
+    product: onelogin
+    service: onelogin.events
+detection:
+    selection:
+        event_type_id: 87 # USER_VIEWED_NOTE
+    condition: selection
+falsepositives:
+    - Legitimate users viewing their own secure notes
+level: low
