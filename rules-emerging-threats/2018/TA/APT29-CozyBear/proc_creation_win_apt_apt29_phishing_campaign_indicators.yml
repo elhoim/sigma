@@ -16,6 +16,7 @@ tags:
     - attack.execution
     - attack.stealth
     - attack.t1218.011
+    - attack.t1059.001
     - detection.emerging-threats
 logsource:
     category: process_creation
