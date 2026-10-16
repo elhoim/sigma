@@ -1,0 +1,27 @@
+title: Github Enterprise Owner Added
+id: 24d06519-6289-4d09-a4bd-c63a4658ee14
+status: experimental
+description: |
+    Detects when a user is added as an owner of a GitHub enterprise account.
+    Enterprise owners have full control over all organizations of the enterprise, which makes this role a target for privilege escalation and persistence.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/inviting-people-to-manage-your-enterprise
+    - https://docs.datadoghq.com/security/default_rules/def-000-4y6/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'business.add_admin'
+    condition: selection
+falsepositives:
+    - Legitimate addition of enterprise owners
+level: medium
