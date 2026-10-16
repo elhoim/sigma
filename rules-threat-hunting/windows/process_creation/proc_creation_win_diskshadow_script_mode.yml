@@ -23,7 +23,6 @@ modified: 2024-03-13
 tags:
     - attack.stealth
     - attack.t1218
-    - attack.execution
     - detection.threat-hunting
 logsource:
     category: process_creation
