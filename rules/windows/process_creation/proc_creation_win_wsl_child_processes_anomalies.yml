@@ -12,7 +12,6 @@ author: Nasreddine Bencherchali (Nextron Systems)
 date: 2023-01-23
 modified: 2023-08-15
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1218
     - attack.t1202
