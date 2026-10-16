@@ -1,0 +1,26 @@
+title: GitHub User Blocked From Organization
+id: ffbf3dc0-e60f-4587-b9a7-a5c94a0362ab
+status: experimental
+description: |
+    Detects when an organization owner blocks a user from accessing the organization's repositories.
+    A threat actor with owner privileges could block legitimate users to disrupt their access.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#org
+    - https://docs.github.com/en/communities/maintaining-your-safety-on-github/blocking-a-user-from-your-organization
+    - https://docs.datadoghq.com/security/default_rules/def-000-q3r/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1531
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'org.block_user'
+    condition: selection
+falsepositives:
+    - Moderation of abusive or spam accounts by organization owners.
+level: low

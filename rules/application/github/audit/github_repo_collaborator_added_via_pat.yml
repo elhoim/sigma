@@ -1,0 +1,28 @@
+title: GitHub Repository Collaborator Added Via Personal Access Token
+id: 0f85ccea-3bfb-4d8b-bfe5-10c7fddfaaf3
+status: experimental
+description: |
+    Detects when a collaborator is added to a GitHub repository using a personal access token (classic or fine-grained) rather than an interactive session.
+    Threat actors who steal a personal access token may add an account they control as a collaborator to maintain access to the repository.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#repo
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/identifying-audit-log-events-performed-by-an-access-token
+    - https://docs.datadoghq.com/security/default_rules/def-000-t9l/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'repo.add_member'
+        programmatic_access_type|contains: 'personal access token'
+    condition: selection
+falsepositives:
+    - Automation scripts that manage repository access using personal access tokens.
+level: medium

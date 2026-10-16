@@ -1,0 +1,26 @@
+title: GitHub Organization Removed From Enterprise
+id: 1f90e84a-2d33-4773-8f84-2b00ab9e2a29
+status: experimental
+description: |
+    Detects when an organization is removed from a GitHub enterprise account.
+    Removing an organization detaches it from enterprise-level security policies, audit log streaming and billing, and can be used by a threat actor to disrupt operations or to evade enterprise controls.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#business
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-organizations-in-your-enterprise/removing-organizations-from-your-enterprise
+    - https://docs.datadoghq.com/security/default_rules/def-000-hdx/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1531
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'business.remove_organization'
+    condition: selection
+falsepositives:
+    - Planned restructuring of the enterprise by enterprise owners.
+level: medium

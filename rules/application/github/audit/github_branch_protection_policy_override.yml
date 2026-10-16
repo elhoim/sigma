@@ -1,0 +1,26 @@
+title: GitHub Branch Protection Requirement Overridden
+id: b12c7680-4346-46b2-a226-401d7f376f16
+status: experimental
+description: |
+    Detects when a repository administrator overrides a branch protection requirement, for example by merging a pull request without the required reviews or status checks.
+    Threat actors with administrative access may bypass branch protections to push malicious code into protected branches without review.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#protected_branch
+    - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+    - https://docs.datadoghq.com/security/default_rules/def-000-aoc/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'protected_branch.policy_override'
+    condition: selection
+falsepositives:
+    - Emergency fixes merged by repository administrators in accordance with change management procedures.
+level: medium
