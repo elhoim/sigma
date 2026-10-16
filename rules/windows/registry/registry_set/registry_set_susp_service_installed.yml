@@ -6,9 +6,9 @@ description: |
   Both services are used in the tool Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU (https://github.com/hfiref0x/KDU)
 references:
     - https://web.archive.org/web/20200419024230/https://blog.dylan.codes/evading-sysmon-and-windows-event-logging/
-author: xknow (@xknow_infosec), xorxes (@xor_xes)
+author: xknow (@xknow_infosec), xorxes (@xor_xes), elhoim - David André (correction)
 date: 2019-04-08
-modified: 2026-06-29
+modified: 2026-09-24
 tags:
     - attack.defense-impairment
     - attack.t1685
@@ -20,7 +20,7 @@ detection:
         TargetObject:
             - 'HKLM\System\CurrentControlSet\Services\NalDrv\ImagePath'
             - 'HKLM\System\CurrentControlSet\Services\PROCEXP152\ImagePath'
-    filter:
+    filter_sysinternals_image:
         Image|endswith:
             # Please add the full paths that you use in your environment to tighten the rule
             - '\procexp64.exe'
@@ -32,8 +32,14 @@ detection:
             - '\handle.exe'
             - '\handle64.exe'
             - '\handle64a.exe'
-        Details|contains: '\WINDOWS\system32\Drivers\PROCEXP152.SYS'
-    condition: selection and not filter
+    filter_sysinternals_driver:
+        # Note: ':' can only appear as the drive separator, so this anchors the driver to the root system32 folder
+        - Details|endswith: ':\WINDOWS\system32\Drivers\PROCEXP152.SYS'
+        - Details:
+              - '%SystemRoot%\System32\Drivers\PROCEXP152.SYS'
+              - '\SystemRoot\System32\Drivers\PROCEXP152.SYS'
+              - 'System32\Drivers\PROCEXP152.SYS'
+    condition: selection and not (filter_sysinternals_image and filter_sysinternals_driver)
 falsepositives:
     - Other legimate tools using this service names and drivers. Note - clever attackers may easily bypass this detection by just renaming the services. Therefore just Medium-level and don't rely on it.
 level: medium
