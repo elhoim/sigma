@@ -1,0 +1,54 @@
+title: Container Escape Enumeration Tool Or Container Runtime Socket Abuse
+id: bdac3544-7fd7-49db-9ed6-d732690c26f2
+status: experimental
+description: |
+    Detects the execution of well-known container breakout and enumeration tools (DEEPCE, CDK, amicontained, Break Out The Box), as well as command-line HTTP clients talking directly to a container runtime socket (Docker, containerd or CRI-O).
+    Adversaries who have gained access to a container use these tools to enumerate capabilities, mounts and runtime sockets, and abuse a mounted runtime socket to start a privileged container and escape to the host.
+references:
+    - https://github.com/stealthcopter/deepce
+    - https://github.com/cdk-team/CDK
+    - https://github.com/genuinetools/amicontained
+    - https://github.com/brompwnie/botb
+    - https://docs.docker.com/engine/api/
+    - https://docs.datadoghq.com/security/default_rules/def-000-f39/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.privilege-escalation
+    - attack.t1611
+    - attack.discovery
+    - attack.t1613
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_tools_image:
+        - Image|endswith:
+              - '/amicontained'
+              - '/botb'
+              - '/deepce.sh'
+        - Image|contains:
+              - '/botb-linux'
+              - '/cdk_linux'
+    selection_tools_cli:
+        CommandLine|contains: 'deepce.sh'
+    selection_cdk_cli:
+        Image|endswith: '/cdk'
+        CommandLine|contains:
+            - ' auto-escape'
+            - ' eva'
+            - ' run shim-pwn'
+            - ' run mount-cgroup'
+            - ' run mount-disk'
+    selection_socket_client:
+        CommandLine|contains: '--unix-socket'
+    selection_socket_path:
+        CommandLine|contains:
+            - 'containerd.sock'
+            - 'crio.sock'
+            - 'docker.sock'
+    condition: 1 of selection_tools_* or selection_cdk_cli or all of selection_socket_*
+falsepositives:
+    - Authorized container security assessments
+    - Monitoring or orchestration scripts that query the Docker Engine API through its UNIX socket with curl
+level: high

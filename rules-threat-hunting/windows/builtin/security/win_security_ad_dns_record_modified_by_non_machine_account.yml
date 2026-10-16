@@ -1,0 +1,41 @@
+title: AD-Integrated DNS Record Created Or Modified By Non-Machine Account
+id: 7dafdbfb-ff13-43fa-89d2-33bef458f8bd
+related:
+    - id: b07e58cf-cacc-4135-8473-ccb2eba63dd2 # Potential Kerberos Coercion by Spoofing SPNs via DNS Manipulation
+      type: similar
+status: experimental
+description: |
+    Detects the creation or modification of a DNS record ("dnsNode" object) in an Active Directory integrated DNS zone by an account that is not a machine account.
+    By default, authenticated users can create records in AD-integrated zones; adversaries abuse this (ADIDNS spoofing, e.g. with Powermad or the krbrelayx "dnstool.py" script) to add wildcard or targeted records that redirect name resolution to attacker-controlled hosts for credential relaying or interception.
+    Dynamic updates performed by DNS clients and DHCP servers are usually made by machine accounts; records changed by user accounts should be reviewed.
+references:
+    - https://www.netspi.com/blog/technical-blog/network-penetration-testing/exploiting-adidns/
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-5136
+    - https://github.com/OTRF/Set-AuditRule
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.collection
+    - attack.t1557
+    - detection.threat-hunting
+logsource:
+    product: windows
+    service: security
+    definition: |
+      By default these events are not logged by default for MicrosoftDNS objects in Active Directory.
+      To enable detection, configure an AuditRule on the DNS zone containers ("CN=MicrosoftDNS") for create and write operations for the "Everyone" principal and enable "Audit Directory Service Changes".
+      This can be accomplished using tools such as Set-AuditRule (see https://github.com/OTRF/Set-AuditRule).
+detection:
+    selection:
+        EventID:
+            - 5136 # A directory service object was modified
+            - 5137 # A directory service object was created
+        ObjectClass: 'dnsNode'
+    filter_main_machine_account:
+        SubjectUserName|endswith: '$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - DNS administrators manually managing records
+    - DHCP servers configured with dedicated user credentials for dynamic DNS updates
+level: low

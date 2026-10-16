@@ -1,0 +1,47 @@
+title: Linux PAM Configuration Or Module Modified
+id: 2c11115e-debc-4dea-b328-6e438e0216b9
+status: experimental
+description: |
+    Detects the creation or modification of Pluggable Authentication Modules (PAM) configuration files under "/etc/pam.d/" or of PAM module shared objects ("pam_*.so") by a process other than a package manager or the distribution PAM configuration helpers.
+    Adversaries may add a malicious PAM module or alter the PAM stack to capture credentials, accept a hard-coded password or execute code on every authentication.
+references:
+    - https://man7.org/linux/man-pages/man5/pam.d.5.html
+    - https://github.com/zephrax/linux-pam-backdoor
+    - https://docs.datadoghq.com/security/default_rules/tz1-6vg-1yz/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.credential-access
+    - attack.t1556.003
+logsource:
+    product: linux
+    category: file_event
+detection:
+    selection_config:
+        TargetFilename|startswith: '/etc/pam.d/'
+    selection_module:
+        TargetFilename|contains: '/security/pam_'
+        TargetFilename|endswith: '.so'
+    filter_main_package_managers:
+        Image|endswith:
+            - '/apk'
+            - '/apt'
+            - '/apt-get'
+            - '/dnf'
+            - '/dpkg'
+            - '/pacman'
+            - '/rpm'
+            - '/yum'
+            - '/zypper'
+    filter_main_pam_helpers:
+        Image|endswith:
+            - '/authconfig'
+            - '/authselect'
+            - '/pam-auth-update'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Configuration management tools (Ansible, Puppet, Chef, Salt) or administrators hardening the PAM stack
+    - Third-party authentication agents (e.g. SSSD, Duo, Okta ASA) installing their own PAM module outside a package manager
+level: medium

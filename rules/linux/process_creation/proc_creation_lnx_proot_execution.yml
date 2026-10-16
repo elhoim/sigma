@@ -1,0 +1,30 @@
+title: PRoot Bring Your Own Filesystem Tool Execution
+id: 146bfae8-ad3d-4876-937c-4c9702de531c
+status: experimental
+description: |
+    Detects the execution of "proot", a user-space implementation of chroot and bind mounts, or of the "freeroot" root filesystem launcher script.
+    Adversaries have been observed using PRoot to run a complete attacker-supplied Linux distribution ("bring your own filesystem") on compromised hosts, which lets them use their own tools and libraries without installing packages or requiring root privileges.
+references:
+    - https://proot-me.github.io/
+    - https://sysdig.com/blog/proot-post-explotation-cryptomining/
+    - https://github.com/foxytouxxx/freeroot
+    - https://docs.datadoghq.com/security/default_rules/def-000-xx1/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.stealth
+    - attack.t1564.006
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_img:
+        Image|endswith: '/proot'
+    selection_freeroot:
+        CommandLine|contains: '/freeroot/root.sh'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate use of PRoot by developers or in CI pipelines to build or test software for other distributions or architectures
+level: medium
