@@ -1,0 +1,24 @@
+title: Cisco Duo Log Export Started
+id: 0fb1e4a0-1819-4048-8889-95a113fdd6b6
+status: experimental
+description: |
+    Detects when a Duo administrator starts a log export.
+    Exported Duo logs contain usernames, applications, devices, phone numbers and IP addresses of users, and can be abused by an attacker with administrative access for reconnaissance and data collection.
+references:
+    - https://duo.com/docs/adminapi#administrator-logs
+    - https://docs.datadoghq.com/security/default_rules/def-000-9l7/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.collection
+    - attack.t1213
+logsource:
+    product: cisco
+    service: duo
+detection:
+    selection:
+        action: 'log_export_start'
+    condition: selection
+falsepositives:
+    - Administrators exporting logs for audits, troubleshooting or reporting purposes
+level: low
