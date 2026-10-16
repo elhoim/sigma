@@ -1,0 +1,25 @@
+title: AWS ECS Cluster Deleted
+id: 48c8fbaf-486b-4450-ad1d-6be2ba2858ec
+status: experimental
+description: |
+    Detects the deletion of an Amazon ECS cluster.
+    Adversaries may delete clusters to disrupt the availability of containerized workloads.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeleteCluster.html
+    - https://docs.datadoghq.com/security/default_rules/9d1-0fa-76a/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1485
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 'DeleteCluster'
+    condition: selection
+falsepositives:
+    - Decommissioning of clusters by administrators or infrastructure-as-code pipelines
+level: low

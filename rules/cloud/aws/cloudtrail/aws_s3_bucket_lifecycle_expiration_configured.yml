@@ -1,0 +1,28 @@
+title: AWS S3 Bucket Lifecycle Expiration Configured
+id: 6b2c8b90-4b2f-4032-b99e-7a8a2c2a2061
+status: experimental
+description: |
+    Detects an S3 bucket lifecycle configuration that contains an expiration action.
+    Adversaries may add short expiration rules to have S3 itself delete objects (lifecycle-triggered deletion), or alter existing expiration rules to tamper with data retention.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+    - https://docs.datadoghq.com/security/default_rules/zhb-369-800/
+    - https://docs.datadoghq.com/security/default_rules/gzr-098-e6b/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1485.001
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'PutBucketLifecycle'
+        requestParameters|contains: 'Expiration'
+    condition: selection
+falsepositives:
+    - Legitimate retention management of logs or temporary data by administrators or infrastructure-as-code pipelines
+level: medium

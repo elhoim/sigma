@@ -1,0 +1,30 @@
+title: AWS EKS Cluster Admin Access Policy Associated
+id: 1ce14c6b-5f33-431f-a523-06949cc50e13
+status: experimental
+description: |
+    Detects the association of the "AmazonEKSClusterAdminPolicy" or "AmazonEKSAdminPolicy" EKS access policy with an access entry.
+    Adversaries may associate these policies with an IAM principal they control in order to obtain administrative access to the Kubernetes cluster.
+references:
+    - https://docs.aws.amazon.com/eks/latest/APIReference/API_AssociateAccessPolicy.html
+    - https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-cm5/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.006
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'eks.amazonaws.com'
+        eventName: 'AssociateAccessPolicy'
+        requestParameters.policyArn|endswith:
+            - ':cluster-access-policy/AmazonEKSClusterAdminPolicy'
+            - ':cluster-access-policy/AmazonEKSAdminPolicy'
+    condition: selection
+falsepositives:
+    - Legitimate granting of cluster administration rights by platform administrators or infrastructure-as-code pipelines
+level: medium

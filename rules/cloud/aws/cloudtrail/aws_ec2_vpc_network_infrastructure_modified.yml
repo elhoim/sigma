@@ -1,0 +1,38 @@
+title: AWS VPC Gateway, Peering Or Subnet Created Or Deleted
+id: 5b621ec8-16c2-48e0-b9fa-773d39b02872
+status: experimental
+description: |
+    Detects the creation or attachment of internet or customer gateways, the creation or acceptance of VPC peering connections, and the deletion of VPCs or subnets.
+    Adversaries may add gateways or peering connections to open network paths for exfiltration or command and control, or delete network infrastructure to disrupt workloads.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateInternetGateway.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateVpcPeeringConnection.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteSubnet.html
+    - https://docs.datadoghq.com/security/default_rules/6b3-f52-84e/
+    - https://docs.datadoghq.com/security/default_rules/f6b-3b4-aef/
+    - https://docs.datadoghq.com/security/default_rules/506-0ba-81f/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.impact
+    - attack.t1686.001
+    - attack.t1485
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName:
+            - 'AcceptVpcPeeringConnection'
+            - 'AttachInternetGateway'
+            - 'CreateCustomerGateway'
+            - 'CreateInternetGateway'
+            - 'CreateVpcPeeringConnection'
+            - 'DeleteSubnet'
+            - 'DeleteVpc'
+    condition: selection
+falsepositives:
+    - Network changes by administrators or infrastructure-as-code pipelines
+level: low

@@ -1,0 +1,25 @@
+title: AWS CloudWatch Logs Log Group Deleted
+id: 1624498f-b5b2-48a2-87e9-0caa6cb96261
+status: experimental
+description: |
+    Detects the deletion of an Amazon CloudWatch Logs log group.
+    Adversaries may delete log groups to remove evidence of their activity or to disrupt monitoring of workloads.
+references:
+    - https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_DeleteLogGroup.html
+    - https://docs.datadoghq.com/security/default_rules/bif-xha-5if/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'logs.amazonaws.com'
+        eventName: 'DeleteLogGroup'
+    condition: selection
+falsepositives:
+    - Cleanup of log groups by administrators or infrastructure-as-code pipelines when resources are decommissioned
+level: low

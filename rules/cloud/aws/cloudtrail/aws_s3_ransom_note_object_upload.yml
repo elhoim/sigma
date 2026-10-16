@@ -1,0 +1,35 @@
+title: AWS S3 Object Written With Potential Ransom Note Name
+id: 6395d965-0156-40d2-9455-0a49fe504fb1
+status: experimental
+description: |
+    Detects S3 objects being written with key names commonly used for ransom notes or decryption instructions.
+    Adversaries that encrypt or delete bucket contents commonly upload a ransom note to the affected bucket. Requires S3 data events to be logged.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-7u5/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName:
+            - 'CopyObject'
+            - 'PutObject'
+        requestParameters.key|contains:
+            - 'decrypt'
+            - 'how_to_recover'
+            - 'how_to_restore'
+            - 'ransom'
+            - 'recover_files'
+            - 'restore_files'
+    condition: selection
+falsepositives:
+    - Objects legitimately named with these keywords, for example documentation about backup restore procedures
+level: medium

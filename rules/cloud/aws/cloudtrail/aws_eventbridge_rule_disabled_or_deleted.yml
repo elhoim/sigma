@@ -1,0 +1,30 @@
+title: AWS EventBridge Rule Disabled Or Deleted
+id: 48d167f0-1bc5-4cc0-90c6-234f773ff462
+status: experimental
+description: |
+    Detects an Amazon EventBridge rule being disabled or deleted.
+    EventBridge rules are commonly used to forward security events or trigger automated responses, and adversaries may disable them to impair detection and remediation.
+references:
+    - https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_DisableRule.html
+    - https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_DeleteRule.html
+    - https://docs.datadoghq.com/security/default_rules/998-f99-7bd/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'events.amazonaws.com'
+        eventName:
+            - 'DeleteRule'
+            - 'DisableRule'
+    filter_main_service:
+        userIdentity.type: 'AWSService'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legitimate maintenance of EventBridge rules by administrators or infrastructure-as-code pipelines
+level: low
