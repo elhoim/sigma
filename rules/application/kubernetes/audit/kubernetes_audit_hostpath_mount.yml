@@ -8,8 +8,9 @@ description: |
 references:
     - https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Writable%20hostPath%20mount/
     - https://blog.appsecco.com/kubernetes-namespace-breakout-using-insecure-host-path-volume-part-1-b382f2a6e216
-author: Leo Tsaousis (@laripping)
+author: Leo Tsaousis (@laripping), elhoim - David André (correction)
 date: 2024-03-26
+modified: 2026-09-24
 tags:
     - attack.t1611
     - attack.privilege-escalation
@@ -21,7 +22,8 @@ detection:
     selection:
         verb: 'create'
         objectRef.resource: 'pods'
-        hostPath: '*' # Note: Add the "exists" when it's implemented in SigmaHQ/Aurora
+        # Note: volumes is an array, matching depends on how the backend flattens arrays
+        requestObject.spec.volumes.hostPath.path|exists: true
     condition: selection
 falsepositives:
     - The DaemonSet controller creates pods with hostPath volumes within the kube-system namespace.

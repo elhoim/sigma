@@ -10,9 +10,9 @@ references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketEncryption.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/setting-repl-config-perm-overview.html
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_RestoreObject.html
-author: Austin Songer @austinsonger
+author: Austin Songer @austinsonger, elhoim - David André (correction)
 date: 2021-07-24
-modified: 2022-10-09
+modified: 2026-09-24
 tags:
     - attack.exfiltration
     - attack.t1537
@@ -25,11 +25,12 @@ detection:
         eventName:
             - PutBucketLogging
             - PutBucketWebsite
-            - PutEncryptionConfiguration
-            - PutLifecycleConfiguration
-            - PutReplicationConfiguration
-            - ReplicateObject
-            - RestoreObject
+            - PutBucketEncryption
+            - DeleteBucketEncryption
+            - PutBucketLifecycle
+            - PutBucketReplication
+            - DeleteBucketReplication
+            - RestoreObject # Data event, requires S3 data event logging
     condition: selection
 falsepositives:
     - A S3 configuration change may be done by a system or network administrator. Verify whether the user identity, user agent, and/or hostname should be making changes in your environment. S3 configuration change from unfamiliar users or hosts should be investigated. If known behavior is causing false positives, it can be exempted from the rule.

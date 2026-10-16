@@ -7,9 +7,9 @@ description: |
 references:
     - http://www.hexacorn.com/blog/2013/01/19/beyond-good-ol-run-key-part-3/
     - https://eqllib.readthedocs.io/en/latest/analytics/14f90406-10a0-4d36-a672-31cabe149f2f.html
-author: Ilyas Ochkov, oscd.community
+author: Ilyas Ochkov, oscd.community, elhoim - David André (correction)
 date: 2019-10-25
-modified: 2021-11-27
+modified: 2026-09-24
 tags:
     - attack.privilege-escalation
     - attack.persistence
@@ -19,10 +19,10 @@ logsource:
     product: windows
 detection:
     selection:
-        # Sysmon gives us HKLM\SYSTEM\CurrentControlSet\.. if ControlSetXX is the selected one
-        - TargetObject: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\AppCertDlls'
+        # Covers the key itself and any value set under it (Sysmon appends the value name to TargetObject)
+        - TargetObject|contains: '\Control\Session Manager\AppCertDlls'
         # key rename
-        - NewName: 'HKLM\SYSTEM\CurentControlSet\Control\Session Manager\AppCertDlls'
+        - NewName|contains: '\Control\Session Manager\AppCertDlls'
     condition: selection
 falsepositives:
     - Unknown

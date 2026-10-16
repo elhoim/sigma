@@ -3,10 +3,11 @@ id: 12310575-e8b1-475c-a976-57ed540b349c
 status: test
 description: |
     Detects unusual domain resolutions originating from CScript/WScript that can identify malicious javascript files executing in an environment, often as a result from a phishing or watering hole attack.
-author: Josh Nickels, Marius Rothenbücher
+author: Josh Nickels, Marius Rothenbücher, elhoim - David André (correction)
 references:
     - Internal Research
 date: 2024-09-06
+modified: 2026-09-24
 tags:
     - attack.execution
     - attack.t1059
@@ -27,9 +28,9 @@ detection:
               - 'ocsp.usertrust.com'
               - 'officecdn.microsoft.com'
               - 'oneocsp.microsoft.com'
-              - 'oscp.comodoca.com'
-              - 'oscp.sectigo.com'
-              - 'oscp.starfieldtech.com'
+              - 'ocsp.comodoca.com'
+              - 'ocsp.sectigo.com'
+              - 'ocsp.starfieldtech.com'
               - 'www.python.org'
         - QueryName|endswith:
               - '.digicert.com'

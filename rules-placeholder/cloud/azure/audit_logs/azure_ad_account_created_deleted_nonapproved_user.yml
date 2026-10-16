@@ -4,9 +4,9 @@ status: test
 description: Detects accounts that are created or deleted by non-approved users.
 references:
     - https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/security-operations-user-accounts#short-lived-accounts
-author: Mark Morowczynski '@markmorow', MikeDuddington, '@dudders1'
+author: Mark Morowczynski '@markmorow', MikeDuddington, '@dudders1', elhoim - David André (correction)
 date: 2022-08-11
-modified: 2023-12-15
+modified: 2026-09-24
 tags:
     - attack.initial-access
     - attack.persistence
@@ -21,10 +21,10 @@ detection:
         properties.message:
             - Add user
             - Delete user
-        Status: Sucess
-    valid_admin:
-        Initiatied.By|expand: '%ApprovedUserUpn%'
-    condition: selection and not valid_admin
+        Status: Success
+    filter_main_approved:
+        properties.initiatedBy|contains|expand: '%ApprovedUserUpn%'
+    condition: selection and not 1 of filter_main_*
 falsepositives:
     - Legit administrative action
 level: medium
