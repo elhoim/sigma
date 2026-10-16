@@ -14,7 +14,8 @@ modified: 2024-03-15
 tags:
     - attack.lateral-movement
     - attack.credential-access
-    - attack.t1558.003
+    - attack.t1558
+    - attack.t1550.003
 logsource:
     product: windows
     service: security
