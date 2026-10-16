@@ -13,6 +13,7 @@ tags:
     - attack.execution
     - attack.stealth
     - attack.t1574
+    - attack.t1068
     - cve.2021-1675
 logsource:
     category: registry_set
