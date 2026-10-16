@@ -1,0 +1,26 @@
+title: Google Workspace Admin Role Created
+id: 8e2b6157-6aba-4bfc-a947-dade913b485c
+status: experimental
+description: |
+    Detects the creation of a new administrator role in Google Workspace.
+    Adversaries with administrative access may create custom admin roles bundling sensitive privileges, which can then be assigned to accounts they control.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/admin-delegated-admin-settings
+    - https://docs.datadoghq.com/security/default_rules/ab5-5lm-x2n/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: gcp
+    service: google_workspace.admin
+detection:
+    selection:
+        eventService: admin.googleapis.com
+        eventName: CREATE_ROLE
+    condition: selection
+falsepositives:
+    - Admin roles created by legitimate Google Workspace administrators
+level: medium

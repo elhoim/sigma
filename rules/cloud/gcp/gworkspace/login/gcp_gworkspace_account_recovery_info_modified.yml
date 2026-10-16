@@ -1,0 +1,29 @@
+title: Google Workspace User Account Recovery Information Modified
+id: 893bb66c-dfd1-4bae-8e18-75a10b102b63
+status: experimental
+description: |
+    Detects when a Google Workspace user changes the account recovery email, recovery phone, or recovery secret question and answer.
+    Adversaries who have compromised an account may change recovery information to maintain access or regain it after a password reset.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/login
+    - https://docs.datadoghq.com/security/default_rules/def-000-cl5/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: gcp
+    service: google_workspace.login
+detection:
+    selection:
+        protoPayload.serviceName: 'login.googleapis.com'
+        protoPayload.metadata.event.eventName:
+            - 'recovery_email_edit'
+            - 'recovery_phone_edit'
+            - 'recovery_secret_qa_edit'
+    condition: selection
+falsepositives:
+    - Users legitimately updating their account recovery information
+level: low

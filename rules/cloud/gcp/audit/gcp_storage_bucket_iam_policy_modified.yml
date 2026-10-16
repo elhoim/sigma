@@ -1,0 +1,28 @@
+title: GCP Storage Bucket IAM Policy Modified
+id: e9d56fcb-d24a-46d5-826c-7653455dffb9
+status: experimental
+description: |
+    Detects changes to the IAM policy of a Cloud Storage bucket or managed folder.
+    Adversaries may modify bucket permissions to grant access to an external principal, or to "allUsers" or "allAuthenticatedUsers", in order to exfiltrate data or expose it publicly.
+references:
+    - https://cloud.google.com/storage/docs/audit-logging
+    - https://cloud.google.com/storage/docs/access-control/using-iam-permissions
+    - https://docs.datadoghq.com/security/default_rules/a7f-017-9cc/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name: 'storage.setIamPermissions'
+    condition: selection
+falsepositives:
+    - Bucket permission changes performed by administrators or infrastructure-as-code pipelines
+level: medium

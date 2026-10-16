@@ -1,0 +1,28 @@
+title: GCP VPC Network or Route Created
+id: 48817d54-fb5e-4e09-a731-666ade1a640f
+status: experimental
+description: |
+    Detects the creation of a VPC network or of a route in Google Compute Engine.
+    Adversaries may create networks or routes to stage infrastructure for resource hijacking, or to redirect traffic through instances they control.
+references:
+    - https://cloud.google.com/compute/docs/logging/audit-logging
+    - https://cloud.google.com/vpc/docs/routes
+    - https://docs.datadoghq.com/security/default_rules/def-000-6fd/
+    - https://docs.datadoghq.com/security/default_rules/3b3-32c-73c/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1578.005
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name|endswith:
+            - .compute.networks.insert
+            - .compute.routes.insert
+    condition: selection
+falsepositives:
+    - Network changes performed by administrators or infrastructure-as-code pipelines
+level: low

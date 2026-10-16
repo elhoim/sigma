@@ -1,0 +1,30 @@
+title: Google Workspace User Disabled 2-Step Verification or Advanced Protection
+id: d48dcd83-f847-4007-ac79-ba3fe193fc63
+status: experimental
+description: |
+    Detects when a Google Workspace user disables 2-step verification or unenrolls from the Advanced Protection Program.
+    Adversaries who have compromised an account may weaken its authentication requirements to ease future access.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/login
+    - https://docs.datadoghq.com/security/default_rules/def-000-5em/
+    - https://docs.datadoghq.com/security/default_rules/def-000-2kn/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.credential-access
+    - attack.t1556.006
+logsource:
+    product: gcp
+    service: google_workspace.login
+detection:
+    selection:
+        protoPayload.serviceName: 'login.googleapis.com'
+        protoPayload.metadata.event.eventName:
+            - '2sv_disable'
+            - 'titanium_unenroll'
+    condition: selection
+falsepositives:
+    - Users legitimately disabling 2-step verification or leaving Advanced Protection, for example when replacing a security key
+level: medium

@@ -1,0 +1,28 @@
+title: GCP IAM Custom Role Created or Updated
+id: cfd05958-6873-40b4-8433-a25c02bd6560
+status: experimental
+description: |
+    Detects the creation or update of a custom IAM role in Google Cloud.
+    Adversaries may create or modify custom roles to bundle sensitive permissions and grant themselves or a controlled principal elevated access.
+references:
+    - https://cloud.google.com/iam/docs/audit-logging
+    - https://cloud.google.com/iam/docs/creating-custom-roles
+    - https://docs.datadoghq.com/security/default_rules/d24-0f0-62d/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name:
+            - google.iam.admin.v1.CreateRole
+            - google.iam.admin.v1.UpdateRole
+    condition: selection
+falsepositives:
+    - Custom roles created or updated by administrators or infrastructure-as-code pipelines
+level: low

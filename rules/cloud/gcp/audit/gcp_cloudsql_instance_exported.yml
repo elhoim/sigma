@@ -1,0 +1,26 @@
+title: GCP Cloud SQL Instance Data Exported
+id: d1b2f5da-fcda-47c0-933b-a829fff0acb4
+status: experimental
+description: |
+    Detects when data from a Cloud SQL instance is exported to a Cloud Storage bucket.
+    Adversaries may export databases to a bucket they control, or later share, in order to exfiltrate data.
+    The "cloudsql.instances.export" method is recorded in Data Access audit logs, which must be enabled for Cloud SQL.
+references:
+    - https://cloud.google.com/sql/docs/mysql/audit-logging
+    - https://cloud.google.com/sql/docs/mysql/import-export/import-export-sql
+    - https://docs.datadoghq.com/security/default_rules/def-000-ptr/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name: 'cloudsql.instances.export'
+    condition: selection
+falsepositives:
+    - Scheduled or administrative database exports used for backups or migrations
+level: medium

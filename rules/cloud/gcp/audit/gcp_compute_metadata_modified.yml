@@ -1,0 +1,34 @@
+title: GCP Compute Engine Instance or Project Metadata Modified
+id: c9d88eed-4783-4185-9db7-9bd5a8effff7
+status: experimental
+description: |
+    Detects modification of Compute Engine instance metadata or project-wide common instance metadata.
+    Adversaries can abuse metadata to add SSH public keys under the "ssh-keys" key or to add or replace a "startup-script", gaining persistent access or code execution on virtual machines.
+    Cloud Audit Logs redact the metadata portion of the request, so investigate the change with the affected instance or project metadata to determine which keys were added or modified.
+references:
+    - https://cloud.google.com/compute/docs/logging/audit-logging
+    - https://cloud.google.com/compute/docs/connect/add-ssh-keys
+    - https://cloud.google.com/compute/docs/instances/startup-scripts/linux
+    - https://docs.datadoghq.com/security/default_rules/k9n-l4e-i45/
+    - https://docs.datadoghq.com/security/default_rules/dry-uqc-aui/
+    - https://docs.datadoghq.com/security/default_rules/xyy-l4x-zf2/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.004
+    - attack.t1037
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name|endswith:
+            - .compute.instances.setMetadata
+            - .compute.projects.setCommonInstanceMetadata
+    condition: selection
+falsepositives:
+    - Legitimate administration, including "gcloud compute ssh" or the Cloud Console SSH button, which push temporary SSH keys to instance or project metadata
+    - Infrastructure-as-code or configuration management tooling that manages instance metadata
+level: medium
