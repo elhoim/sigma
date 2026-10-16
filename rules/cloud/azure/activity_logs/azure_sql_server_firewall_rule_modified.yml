@@ -1,0 +1,25 @@
+title: Azure SQL Server Firewall Rule Created or Modified
+id: ee2ae8f7-3acf-40a0-94de-38800d3d6ea1
+status: experimental
+description: |
+    Detects the creation or modification of a server-level firewall rule on an Azure SQL logical server.
+    Adversaries may add firewall rules, such as a rule allowing the whole IPv4 range, to reach the database from attacker controlled infrastructure.
+references:
+    - https://learn.microsoft.com/en-us/azure/azure-sql/database/firewall-configure
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/databases
+    - https://docs.datadoghq.com/security/default_rules/aoc-jdx-q3d/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1686.001
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.SQL/SERVERS/FIREWALLRULES/WRITE'
+    condition: selection
+falsepositives:
+    - Legitimate firewall rule changes by database administrators or infrastructure-as-code pipelines
+level: medium

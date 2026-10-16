@@ -1,0 +1,27 @@
+title: Microsoft 365 Copilot Cross Prompt Injection Attack Detected
+id: ff409a91-4a82-41b8-afc6-4b39bd9564ae
+status: experimental
+description: |
+    Detects Microsoft 365 Copilot interactions where a cross prompt injection attack (XPIA), also known as indirect prompt injection, was detected in one of the resources accessed by Copilot.
+    Adversaries may plant instructions in emails, documents or web content to manipulate Copilot into exfiltrating data or misleading the user.
+references:
+    - https://learn.microsoft.com/en-us/purview/audit-copilot
+    - https://learn.microsoft.com/en-us/office/office-365-management-api/copilot-schema
+    - https://docs.datadoghq.com/security/default_rules/def-000-qd7/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1566
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'CopilotEventData.AccessedResources' field is a list of dict. A correct mapping to the 'XPIADetected' field inside is required"
+detection:
+    selection:
+        Operation: 'CopilotInteraction'
+        CopilotEventData.AccessedResources.XPIADetected: 'true'
+    condition: selection
+falsepositives:
+    - Benign content wrongly classified as prompt injection
+level: medium

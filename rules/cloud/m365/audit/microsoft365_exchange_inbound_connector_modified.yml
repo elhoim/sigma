@@ -1,0 +1,30 @@
+title: Exchange Online Inbound Connector Created or Modified
+id: eed12f96-fe1e-4f06-b20f-afbf469d05fb
+status: experimental
+description: |
+    Detects the creation or modification of an inbound connector in Exchange Online.
+    Inbound connectors define which external mail servers are trusted to relay mail into the organization.
+    Adversaries may add a connector trusting infrastructure they control to bypass anti-spam and anti-phishing filtering or to deliver spoofed internal emails.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/new-inboundconnector?view=exchange-ps
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-inboundconnector?view=exchange-ps
+    - https://docs.datadoghq.com/security/default_rules/def-000-m3t/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+    - attack.stealth
+    - attack.t1684.002
+logsource:
+    service: audit
+    product: m365
+detection:
+    selection:
+        Operation:
+            - 'New-InboundConnector'
+            - 'Set-InboundConnector'
+    condition: selection
+falsepositives:
+    - Legitimate mail flow configuration changes, for example when onboarding a third-party email security gateway
+level: medium

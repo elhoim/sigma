@@ -1,0 +1,25 @@
+title: Copilot Studio Agent Application Insights Logging Modified
+id: bb0aec8e-1c52-4c4e-b90b-f5ebfb26b734
+status: experimental
+description: |
+    Detects changes to the Application Insights logging configuration of a Microsoft Copilot Studio agent.
+    Adversaries may disable or redirect the telemetry of an agent to hide its malicious use or to exfiltrate conversation data to an Application Insights resource they control.
+references:
+    - https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-logging-copilot-studio
+    - https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-bot-framework-composer-capture-telemetry
+    - https://docs.datadoghq.com/security/default_rules/def-000-uxh/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    service: audit
+    product: m365
+detection:
+    selection:
+        Operation|endswith: 'BotAppInsightsUpdate'
+    condition: selection
+falsepositives:
+    - Legitimate monitoring configuration by agent makers or administrators
+level: low
