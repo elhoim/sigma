@@ -1,0 +1,42 @@
+title: Uncommon Binary Executed By Windows Update Client From Update Install Folder
+id: 53212e36-395a-4cb9-b270-75cc6b2292df
+related:
+    - id: f575aebb-b99d-46ad-9215-8c01175bf3d2
+      type: similar
+status: experimental
+description: |
+    Detects the Windows Update client "wuauclt.exe" executing a binary from the update installation folder "SoftwareDistribution\Download\Install" that is not a known Microsoft Defender or Malicious Software Removal Tool update package.
+    Tools such as wsuks, PyWSUS or SharpWSUS abuse a compromised or spoofed WSUS server to deliver any Microsoft-signed binary (e.g. PsExec or other Sysinternals tools) together with an arbitrary command line, which the Windows Update client then executes as SYSTEM.
+    Since any signed binary can be delivered, this rule keys on the parent/child relationship and the install path rather than on the binary name.
+references:
+    - https://github.com/NeffIsBack/wsuks
+    - https://github.com/GoSecure/pywsus
+    - https://www.elastic.co/guide/en/security/8.19/potential-wsus-abuse-for-lateral-movement.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.lateral-movement
+    - attack.t1072
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\wuauclt.exe'
+        Image|contains: '\SoftwareDistribution\Download\Install\'
+    filter_optional_defender:
+        Image|contains:
+            - '\AM_Delta_Patch_'
+            - '\AM_Engine_Patch_'
+            - '\am_delta'
+            - '\am_base'
+            - '\mpam-fe'
+    filter_optional_msrt:
+        Image|contains: '\Windows-KB890830-'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Legitimate third-party or custom updates published through a WSUS server (e.g. via WSUS Package Publisher or Configuration Manager third-party updates)
+    - Other legitimate Microsoft update packages executed from the install folder that are not covered by the filters
+level: low
