@@ -1,0 +1,26 @@
+title: Google Workspace Data Transfer Request Created
+id: 1eb0d9d4-d389-4fc7-8f5a-2da981925356
+status: experimental
+description: |
+    Detects when an administrator creates a data transfer request, which transfers ownership of a user's data (such as Drive files or Calendar events) to another user.
+    Adversaries with administrative access may abuse data transfers to gain access to another user's data.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/admin-user-settings
+    - https://support.google.com/a/answer/1247799
+    - https://docs.datadoghq.com/security/default_rules/def-000-hw5/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: gcp
+    service: google_workspace.admin
+detection:
+    selection:
+        eventService: admin.googleapis.com
+        eventName: CREATE_DATA_TRANSFER_REQUEST
+    condition: selection
+falsepositives:
+    - Data transfers performed during employee offboarding
+level: medium
