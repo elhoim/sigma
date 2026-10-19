@@ -1,0 +1,33 @@
+title: LocalAccountTokenFilterPolicy Enabled - Remote UAC Restrictions Disabled
+id: f383c216-b67a-4521-9046-fa12a62e71a4
+related:
+    - id: 83314318-052a-4c90-a1ad-660ece38d276 # BlackByte Ransomware Registry
+      type: similar
+status: experimental
+description: |
+    Detects the "LocalAccountTokenFilterPolicy" registry value being set to 1.
+    This disables UAC remote restrictions, so that local administrator accounts receive a full, non-filtered access token when authenticating over the network.
+    Attackers and tools such as wsuks or various ransomware families set this value so that a created or compromised local administrator account can be used for lateral movement (e.g. via SMB, PsExec, WMI or WinRM).
+references:
+    - https://github.com/NeffIsBack/wsuks
+    - https://learn.microsoft.com/en-us/troubleshoot/windows-server/windows-security/user-account-control-and-remote-restriction
+    - https://redcanary.com/blog/blackbyte-ransomware/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.t1112
+    - attack.privilege-escalation
+    - attack.t1548.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+falsepositives:
+    - Administrators or management/deployment tooling (e.g. configuration scripts preparing hosts for remote administration via WinRM or Ansible) intentionally disabling UAC remote restrictions
+level: medium
