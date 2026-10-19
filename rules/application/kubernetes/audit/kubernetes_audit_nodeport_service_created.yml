@@ -1,0 +1,29 @@
+title: Kubernetes Service With NodePort Created
+id: 857de5b5-5f4e-42f8-abbc-dbc3d03f6901
+status: experimental
+description: |
+    Detects the creation of a Kubernetes service of type "NodePort".
+    A NodePort service exposes a workload on a static port of every node in the cluster, bypassing ingress controllers and load balancers, which an attacker can abuse to expose a backdoor or a vulnerable workload to the network.
+references:
+    - https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+    - https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Exposed%20sensitive%20interfaces/
+    - https://docs.datadoghq.com/security/default_rules/6b4-f87-bcd/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.t1133
+logsource:
+    category: application
+    product: kubernetes
+    service: audit
+detection:
+    selection:
+        verb: 'create'
+        objectRef.resource: 'services'
+        type: 'NodePort'
+    condition: selection
+falsepositives:
+    - Legitimate services exposed via NodePort by cluster administrators, for example in bare-metal clusters without a load balancer.
+level: low

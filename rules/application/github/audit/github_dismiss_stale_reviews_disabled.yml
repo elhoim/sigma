@@ -1,0 +1,28 @@
+title: GitHub Branch Protection Stale Review Dismissal Disabled
+id: 43114fc7-f8fc-489b-9ff6-1b0a418ed79d
+status: experimental
+description: |
+    Detects when the branch protection setting that dismisses stale pull request approvals on new pushes is disabled.
+    With this setting disabled, a threat actor can get a pull request approved and then push additional malicious commits that are merged without a new review.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#protected_branch
+    - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule
+    - https://docs.datadoghq.com/security/default_rules/def-000-a0l/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'protected_branch.dismiss_stale_reviews'
+        dismiss_stale_reviews_on_push: false
+    condition: selection
+falsepositives:
+    - Approved changes to branch protection rules by repository administrators.
+    - Branches other than the default branch, consider filtering on the branch name if this setting is only enforced on default branches.
+level: medium
