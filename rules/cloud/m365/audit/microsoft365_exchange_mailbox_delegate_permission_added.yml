@@ -1,0 +1,48 @@
+title: Exchange Online Mailbox Delegate Permission Added
+id: 0122ab85-886f-43ba-b161-da02b13d33e9
+status: experimental
+description: |
+    Detects the granting of mailbox delegate permissions in Exchange Online that are commonly abused in business email compromise.
+    This covers "FullAccess" permissions on a mailbox, "SendAs" permissions on a recipient, and folder permissions granted to the "Default" or "Anonymous" users, which expose the folder to every user of the organization or to unauthenticated users.
+    Adversaries may grant such permissions to keep access to a mailbox or to send emails on behalf of a victim.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-mailboxpermission?view=exchange-ps
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-recipientpermission?view=exchange-ps
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-mailboxfolderpermission?view=exchange-ps
+    - https://docs.datadoghq.com/security/default_rules/def-000-tq6/
+    - https://docs.datadoghq.com/security/default_rules/def-000-jgy/
+    - https://docs.datadoghq.com/security/default_rules/def-000-zat/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.002
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'Parameters' field is a list of dict. A correct mapping to the 'Value' field inside is recommended to avoid greedy search"
+detection:
+    selection_full_access:
+        Operation: 'Add-MailboxPermission'
+        Parameters|contains: 'FullAccess'
+    selection_send_as:
+        Operation: 'Add-RecipientPermission'
+        Parameters|contains: 'SendAs'
+    selection_folder_operation:
+        Operation:
+            - 'Add-MailboxFolderPermission'
+            - 'Set-MailboxFolderPermission'
+    selection_folder_user:
+        Parameters|contains:
+            - 'Default'
+            - 'Anonymous'
+    filter_main_folder_none:
+        Operation:
+            - 'Add-MailboxFolderPermission'
+            - 'Set-MailboxFolderPermission'
+        Parameters|contains: 'None'
+    condition: selection_full_access or selection_send_as or (all of selection_folder_* and not 1 of filter_main_*)
+falsepositives:
+    - Legitimate delegation for shared mailboxes, executive assistants or service accounts
+level: medium

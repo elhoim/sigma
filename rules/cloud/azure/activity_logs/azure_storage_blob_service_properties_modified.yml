@@ -1,0 +1,27 @@
+title: Azure Storage Blob Service Properties Modified
+id: c0eb7090-2a11-4675-9c4e-9ad23375ff27
+status: experimental
+description: |
+    Detects modifications of the blob service properties of an Azure Storage account.
+    These properties hold the data protection settings of the account, such as blob soft delete, container soft delete and versioning.
+    Adversaries may disable these protections before deleting or encrypting blobs to prevent recovery of the data.
+    Review the request body of the operation to determine whether a data protection setting was disabled.
+references:
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/storage
+    - https://learn.microsoft.com/en-us/azure/storage/blobs/data-protection-overview
+    - https://docs.datadoghq.com/security/default_rules/def-000-i2h/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1490
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.STORAGE/STORAGEACCOUNTS/BLOBSERVICES/WRITE'
+    condition: selection
+falsepositives:
+    - Legitimate configuration changes of storage accounts by administrators or infrastructure-as-code pipelines
+level: low
