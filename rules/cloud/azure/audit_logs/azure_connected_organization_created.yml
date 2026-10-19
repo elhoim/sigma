@@ -1,0 +1,26 @@
+title: Entra Entitlement Management Connected Organization Created
+id: 8432b0eb-eb35-4011-ad4b-710f4f6513d9
+status: experimental
+description: |
+    Detects the creation of a connected organization in Microsoft Entra entitlement management.
+    A connected organization allows users of an external tenant or domain to request access packages. Adversaries with Identity Governance privileges may add their own tenant to obtain persistent cross-tenant access.
+references:
+    - https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-organization
+    - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities
+    - https://docs.datadoghq.com/security/default_rules/def-000-tau/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.t1199
+logsource:
+    product: azure
+    service: auditlogs
+detection:
+    selection:
+        properties.message: 'Create connected organization'
+    condition: selection
+falsepositives:
+    - Legitimate onboarding of a partner organization
+level: medium

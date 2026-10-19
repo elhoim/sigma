@@ -1,0 +1,25 @@
+title: Google Workspace Trusted Domain Added
+id: 1c3c3a2f-3385-46c7-9e2a-bc52fc57195f
+status: experimental
+description: |
+    Detects the addition of a domain to the trusted domains list of a Google Workspace organization.
+    Data, such as Drive files, can be shared with users of trusted domains, which adversaries may abuse to exfiltrate data to a domain they control.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/admin-domain-settings#ADD_TRUSTED_DOMAINS
+    - https://docs.datadoghq.com/security/default_rules/def-000-o5b/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: gcp
+    service: google_workspace.admin
+detection:
+    selection:
+        eventService: 'admin.googleapis.com'
+        eventName: 'ADD_TRUSTED_DOMAINS'
+    condition: selection
+falsepositives:
+    - Legitimate addition of a partner domain by administrators
+level: medium

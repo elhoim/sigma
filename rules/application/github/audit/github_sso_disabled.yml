@@ -1,0 +1,31 @@
+title: Github SAML Or OIDC Single Sign-On Disabled
+id: bac18d95-bf95-4c37-9d9a-986e9b75718a
+status: experimental
+description: |
+    Detects when SAML single sign-on is disabled for a GitHub organization or enterprise, or when OIDC single sign-on is disabled for an enterprise.
+    Disabling SSO removes the identity provider controls, such as MFA and conditional access, from access to the organization.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
+    - https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-saml-single-sign-on-for-your-organization
+    - https://docs.datadoghq.com/security/default_rules/def-000-p4l/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1556
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action:
+            - 'business.disable_oidc'
+            - 'business.disable_saml'
+            - 'org.disable_saml'
+    condition: selection
+falsepositives:
+    - Legitimate migration between identity providers
+level: high

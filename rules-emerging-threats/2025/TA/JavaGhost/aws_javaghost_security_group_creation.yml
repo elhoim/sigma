@@ -1,0 +1,33 @@
+title: AWS Security Group Creation By JavaGhost Threat Actor
+id: 5294e524-0867-49a4-81dc-bd989ff66214
+status: experimental
+description: |
+    Detects the creation of an EC2 security group named "Java_Ghost" or with the description "We Are There But Not Visible".
+    These security groups are created by the JavaGhost threat actor as a marker after compromising AWS access keys to abuse Amazon SES for phishing.
+references:
+    - https://unit42.paloaltonetworks.com/javaghost-cloud-phishing/
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSecurityGroup.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-60z/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078.004
+    - detection.emerging-threats
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_event:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'CreateSecurityGroup'
+    selection_name:
+        - requestParameters.groupName: 'Java_Ghost'
+        - requestParameters.groupDescription: 'We Are There But Not Visible'
+    condition: all of selection_*
+falsepositives:
+    - Unlikely
+level: high

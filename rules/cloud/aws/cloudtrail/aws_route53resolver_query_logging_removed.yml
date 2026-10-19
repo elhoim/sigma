@@ -1,0 +1,28 @@
+title: AWS Route 53 Resolver Query Logging Removed
+id: 65330730-eaca-40d2-833b-de5c72a23ad6
+status: experimental
+description: |
+    Detects the deletion or disassociation of an Amazon Route 53 Resolver query logging configuration.
+    Adversaries may remove DNS query logging from a VPC to hide command and control or exfiltration traffic.
+references:
+    - https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_DeleteResolverQueryLogConfig.html
+    - https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_DisassociateResolverQueryLogConfig.html
+    - https://docs.datadoghq.com/security/default_rules/aqn-nem-2ud/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'route53resolver.amazonaws.com'
+        eventName:
+            - 'DeleteResolverQueryLogConfig'
+            - 'DisassociateResolverQueryLogConfig'
+    condition: selection
+falsepositives:
+    - Legitimate reconfiguration or decommissioning of VPCs and their logging
+level: medium

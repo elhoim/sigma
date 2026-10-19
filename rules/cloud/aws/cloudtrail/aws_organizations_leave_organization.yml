@@ -1,0 +1,25 @@
+title: AWS Account Removed From Organization
+id: 54392822-0ce7-4e96-b08a-82e1387cd1ff
+status: experimental
+description: |
+    Detects an AWS account calling "LeaveOrganization" to remove itself from its AWS Organization.
+    Leaving the organization removes the account from the reach of organization-wide guardrails such as Service Control Policies, organization CloudTrail trails and delegated security services.
+references:
+    - https://docs.aws.amazon.com/organizations/latest/APIReference/API_LeaveOrganization.html
+    - https://docs.datadoghq.com/security/default_rules/f70-oqy-yer/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1666
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'organizations.amazonaws.com'
+        eventName: 'LeaveOrganization'
+    condition: selection
+falsepositives:
+    - Legitimate account migration between organizations or account decommissioning
+level: high

@@ -1,0 +1,25 @@
+title: AWS Security Hub Disabled
+id: 3475e0e1-5423-478e-9c12-2ce590e558a4
+status: experimental
+description: |
+    Detects when AWS Security Hub is disabled in an account and region.
+    Disabling Security Hub stops the aggregation of security findings, which adversaries may use to avoid detection.
+references:
+    - https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_DisableSecurityHub.html
+    - https://docs.datadoghq.com/security/default_rules/m4l-btf-8cs/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'securityhub.amazonaws.com'
+        eventName: 'DisableSecurityHub'
+    condition: selection
+falsepositives:
+    - Legitimate decommissioning of Security Hub in an unused region or account
+level: high

@@ -1,0 +1,28 @@
+title: Google Workspace User Signed Out Due To Suspicious Session Cookie
+id: 47a909eb-966c-4620-98d1-f9cc58def9c7
+status: experimental
+description: |
+    Detects when Google signs out a Workspace user because a suspicious session cookie was detected.
+    This may indicate that a session cookie of the user was stolen, for example by an infostealer, and replayed by an adversary.
+references:
+    - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/login#user_signed_out_due_to_suspicious_session_cookie
+    - https://docs.datadoghq.com/security/default_rules/def-000-qd2/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1539
+    - attack.stealth
+    - attack.lateral-movement
+    - attack.t1550.004
+logsource:
+    product: gcp
+    service: google_workspace.login
+detection:
+    selection:
+        protoPayload.serviceName: 'login.googleapis.com'
+        protoPayload.metadata.event.eventName: 'user_signed_out_due_to_suspicious_session_cookie'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
