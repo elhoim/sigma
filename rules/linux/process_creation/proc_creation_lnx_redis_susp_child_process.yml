@@ -1,0 +1,42 @@
+title: Suspicious Child Process Of Redis Server
+id: 593b18f7-77e5-4087-97d0-10a3742e9dab
+status: experimental
+description: |
+    Detects the Redis server process spawning a shell, scripting interpreter or download utility.
+    Redis does not spawn such processes during normal operation; this behaviour is typical of exploitation of an exposed Redis instance, for example the Debian/Ubuntu Lua sandbox escape (CVE-2022-0543) that uses "package.loadlib" to call "io.popen", or a malicious module loaded through rogue replication.
+references:
+    - https://www.ubercomp.com/posts/2022-01-20_redis_on_debian_rce
+    - https://nvd.nist.gov/vuln/detail/CVE-2022-0543
+    - https://docs.datadoghq.com/security/default_rules/def-000-8w8/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith: '/redis-server'
+        Image|endswith:
+            - '/ash'
+            - '/bash'
+            - '/curl'
+            - '/dash'
+            - '/ksh'
+            - '/nc'
+            - '/ncat'
+            - '/perl'
+            - '/python'
+            - '/python2'
+            - '/python3'
+            - '/sh'
+            - '/wget'
+            - '/zsh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
