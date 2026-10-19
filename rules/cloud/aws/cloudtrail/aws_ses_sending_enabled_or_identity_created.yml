@@ -1,0 +1,39 @@
+title: AWS SES Sending Enabled Or Sending Identity Created
+id: 5719bf76-d6c9-43ff-9150-ef17d0e16d6a
+status: experimental
+description: |
+    Detects email sending being enabled for Amazon SES in a region, or a sending identity being created or verified by an IAM user.
+    Adversaries abusing compromised access keys enable SES sending and verify identities in order to send phishing or spam from the victim's account.
+references:
+    - https://docs.aws.amazon.com/ses/latest/APIReference/API_UpdateAccountSendingEnabled.html
+    - https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_PutAccountSendingAttributes.html
+    - https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_CreateEmailIdentity.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-wwz/
+    - https://docs.datadoghq.com/security/default_rules/def-000-3xr/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.resource-development
+    - attack.t1583.006
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_source:
+        eventSource: 'ses.amazonaws.com'
+    selection_enable_v1:
+        eventName: 'UpdateAccountSendingEnabled'
+        requestParameters.enabled: 'true'
+    selection_enable_v2:
+        eventName: 'PutAccountSendingAttributes'
+        requestParameters.sendingEnabled: 'true'
+    selection_identity:
+        eventName:
+            - 'CreateEmailIdentity'
+            - 'VerifyDomainIdentity'
+            - 'VerifyEmailIdentity'
+        userIdentity.type: 'IAMUser'
+    condition: selection_source and (1 of selection_enable_* or selection_identity)
+falsepositives:
+    - Legitimate setup of SES for transactional email
+level: medium

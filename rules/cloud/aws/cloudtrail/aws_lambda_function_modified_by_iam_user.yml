@@ -1,0 +1,34 @@
+title: AWS Lambda Function Code Or Resource Policy Modified By IAM User
+id: 7f37782d-6949-4414-b84a-499fd0b21830
+status: experimental
+description: |
+    Detects updates of the code or resource-based policy of an AWS Lambda function performed with long-term IAM user credentials.
+    Adversaries may backdoor function code or add invocation permissions for an external principal to establish persistence. Deployments are usually performed by roles of CI/CD pipelines rather than IAM users.
+references:
+    - https://docs.aws.amazon.com/lambda/latest/api/API_UpdateFunctionCode.html
+    - https://docs.aws.amazon.com/lambda/latest/api/API_AddPermission.html
+    - https://docs.aws.amazon.com/lambda/latest/dg/logging-using-cloudtrail.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-ser/
+    - https://docs.datadoghq.com/security/default_rules/def-000-b61/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'lambda.amazonaws.com'
+        eventName|startswith:
+            - 'AddPermission'
+            - 'UpdateFunctionCode'
+        userIdentity.type: 'IAMUser'
+    filter_main_code_signing:
+        eventName|startswith: 'UpdateFunctionCodeSigningConfig'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Developers deploying functions manually with IAM user credentials
+level: medium

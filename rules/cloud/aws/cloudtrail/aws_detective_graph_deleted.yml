@@ -1,0 +1,26 @@
+title: AWS Detective Behavior Graph Deleted
+id: d5ba0b8c-36f2-4f0f-83de-654a32591707
+status: experimental
+description: |
+    Detects the deletion of an Amazon Detective behavior graph.
+    Deleting the behavior graph disables Amazon Detective for the account and removes the collected investigation data, which adversaries may do to hinder incident response.
+references:
+    - https://docs.aws.amazon.com/detective/latest/APIReference/API_DeleteGraph.html
+    - https://docs.aws.amazon.com/detective/latest/adminguide/logging-using-cloudtrail.html
+    - https://docs.datadoghq.com/security/default_rules/9fq-2av-prp/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'detective.amazonaws.com'
+        eventName: 'DeleteGraph'
+    condition: selection
+falsepositives:
+    - Legitimate decommissioning of Amazon Detective by an administrator
+level: high

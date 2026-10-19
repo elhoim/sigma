@@ -1,0 +1,26 @@
+title: AWS Account Root User Email Update Started
+id: 4062dfcf-7841-4a2f-82d9-a3f3a1fd9f0e
+status: experimental
+description: |
+    Detects a request to change the primary (root user) email address of a member account through the AWS Account Management API.
+    Controlling the root email address allows an adversary to reset the root password and take over the account.
+references:
+    - https://docs.aws.amazon.com/accounts/latest/reference/API_StartPrimaryEmailUpdate.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-6my/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'account.amazonaws.com'
+        eventName: 'StartPrimaryEmailUpdate'
+    condition: selection
+falsepositives:
+    - Legitimate change of the root email address of a member account by the organization administrators
+level: high

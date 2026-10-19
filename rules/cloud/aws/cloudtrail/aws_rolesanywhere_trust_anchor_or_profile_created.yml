@@ -1,0 +1,29 @@
+title: AWS IAM Roles Anywhere Trust Anchor Or Profile Created
+id: 18f93f50-9a54-4b4f-8038-6b372c6d1b0f
+status: experimental
+description: |
+    Detects the creation of an IAM Roles Anywhere trust anchor or profile.
+    An adversary who registers a certificate authority they control as a trust anchor can obtain temporary AWS credentials from outside of AWS using X.509 certificates, establishing persistent access.
+references:
+    - https://docs.aws.amazon.com/rolesanywhere/latest/APIReference/API_CreateTrustAnchor.html
+    - https://docs.aws.amazon.com/rolesanywhere/latest/APIReference/API_CreateProfile.html
+    - https://docs.datadoghq.com/security/default_rules/def-000-bf8/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'rolesanywhere.amazonaws.com'
+        eventName:
+            - 'CreateProfile'
+            - 'CreateTrustAnchor'
+    condition: selection
+falsepositives:
+    - Legitimate onboarding of workloads running outside of AWS to IAM Roles Anywhere
+level: medium

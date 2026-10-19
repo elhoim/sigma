@@ -1,0 +1,29 @@
+title: AWS KMS Key Disabled Or Scheduled For Deletion
+id: 7b581e7c-3cd9-4dff-af3f-3686cc14f4fd
+status: experimental
+description: |
+    Detects an AWS KMS key being disabled or scheduled for deletion.
+    Data encrypted with a deleted key becomes unrecoverable, which adversaries may abuse to destroy data or to hold it for ransom.
+references:
+    - https://docs.aws.amazon.com/kms/latest/APIReference/API_DisableKey.html
+    - https://docs.aws.amazon.com/kms/latest/APIReference/API_ScheduleKeyDeletion.html
+    - https://docs.datadoghq.com/security/default_rules/432-8db-b8b/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1485
+    - attack.t1486
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'kms.amazonaws.com'
+        eventName:
+            - 'DisableKey'
+            - 'ScheduleKeyDeletion'
+    condition: selection
+falsepositives:
+    - Legitimate key lifecycle management by administrators or infrastructure-as-code pipelines
+level: medium
