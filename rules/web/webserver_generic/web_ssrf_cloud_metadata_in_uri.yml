@@ -1,0 +1,39 @@
+title: Cloud Instance Metadata Endpoint In URI - Potential SSRF
+id: 35b87fa4-b69a-41b8-ab5d-b1d74ed907c5
+status: experimental
+description: |
+    Detects HTTP requests whose query string references a cloud instance metadata service (IMDS) address or path.
+    Attackers abuse server-side request forgery (SSRF) vulnerabilities to make the web application query the metadata service of the underlying cloud instance in order to steal temporary credentials and instance information.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+    - https://cloud.google.com/compute/docs/metadata/querying-metadata
+    - https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service
+    - https://github.com/swisskyrepo/PayloadsAllTheThings/blob/38716075f02f13979f0594427c05e48c9e9f704e/Server%20Side%20Request%20Forgery/SSRF-Cloud-Instances.md
+    - https://docs.datadoghq.com/security/default_rules/def-000-6ji/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.credential-access
+    - attack.t1190
+    - attack.t1552.005
+logsource:
+    category: webserver
+detection:
+    selection:
+        cs-uri-query|contains:
+            - '169.254.169.254'
+            - '0xa9fea9fe' # Hex representation of 169.254.169.254
+            - '2852039166' # Decimal representation of 169.254.169.254
+            - 'fd00:ec2::254'
+            - 'fd00%3Aec2%3A%3A254'
+            - 'metadata.google.internal'
+            - '/latest/meta-data'
+            - '%2Flatest%2Fmeta-data'
+            - '/computeMetadata/v1'
+            - '%2FcomputeMetadata%2Fv1'
+    condition: selection
+falsepositives:
+    - Web applications that legitimately pass cloud metadata URLs as parameters (e.g. cloud management consoles)
+    - Internal vulnerability scanners
+level: high
