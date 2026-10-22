@@ -14,6 +14,7 @@ tags:
     - attack.execution
     - attack.stealth
     - attack.t1574
+    - attack.t1546
 logsource:
     category: registry_set
     product: windows
