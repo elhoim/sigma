@@ -8,10 +8,11 @@ author: Christopher Peacock @securepeacock, SCYTHE @scythe_io
 date: 2023-04-28
 modified: 2024-03-12
 tags:
-    - attack.execution
     - attack.command-and-control
     - attack.stealth
-    - attack.t1218.011
+    - attack.privilege-escalation
+    - attack.t1055
+    - attack.t1071
 logsource:
     category: network_connection
     product: windows

@@ -12,7 +12,6 @@ tags:
     - attack.stealth
     - attack.t1055
     - attack.t1218
-    - attack.execution
 logsource:
     product: windows
     category: file_event
