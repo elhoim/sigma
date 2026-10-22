@@ -5,9 +5,9 @@ description: Detects usage of attrib.exe to hide files from users.
 references:
     - https://unit42.paloaltonetworks.com/unit42-sure-ill-take-new-combojack-malware-alters-clipboards-steal-cryptocurrency/
     - https://www.uptycs.com/blog/lolbins-are-no-laughing-matter
-author: Sami Ruohonen
+author: Sami Ruohonen, elhoim - David André (correction)
 date: 2019-01-16
-modified: 2023-03-14
+modified: 2026-09-24
 tags:
     - attack.stealth
     - attack.t1564.001
@@ -24,8 +24,9 @@ detection:
         CommandLine|contains: '\desktop.ini '
     filter_optional_intel:
         ParentImage|endswith: '\cmd.exe'
-        CommandLine: '+R +H +S +A \\\*.cui'
-        ParentCommandLine: 'C:\\WINDOWS\\system32\\\*.bat'
+        CommandLine|contains: '+R +H +S +A '
+        CommandLine|endswith: '.cui'
+        ParentCommandLine|re|i: '\\system32\\[^\\" ]+\.bat'
     condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - IgfxCUIService.exe hiding *.cui files via .bat script (attrib.exe a child of cmd.exe and igfxCUIService.exe is the parent of the cmd.exe)

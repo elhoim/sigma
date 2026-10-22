@@ -14,8 +14,9 @@ references:
     - https://research.splunk.com/endpoint/7215831c-8252-4ae3-8d43-db588e82f952
     - https://gist.github.com/Dump-GUY/8daef859f382b895ac6fd0cf094555d2
     - https://thedfirreport.com/2021/10/18/icedid-to-xinglocker-ransomware-in-24-hours/
-author: 'Matt Anderson (Huntress)'
+author: 'Matt Anderson (Huntress), elhoim - David André (correction)'
 date: 2025-07-11
+modified: 2026-09-24
 tags:
     - attack.defense-impairment
     - attack.t1685
@@ -25,22 +26,9 @@ logsource:
 detection:
     selection_cmdlet:
         CommandLine|contains: 'Set-MpPreference'
-    selection_action:
-        CommandLine|contains:
-            - '-LowThreatDefaultAction'
-            - '-ModerateThreatDefaultAction'
-            - '-HighThreatDefaultAction'
-            - '-SevereThreatDefaultAction'
-            - '-ltdefac '
-            - '-mtdefac '
-            - '-htdefac '
-            - '-stdefac '
-    selection_value:
-        CommandLine|contains:
-            - 'Allow'
-            - '6'
-            - 'NoAction'
-            - '9'
+    selection_action_value:
+        # Binds the value to the parameter, supports "-Param value", "-Param:value" and quoted values
+        CommandLine|re|i: '-(Low|Moderate|High|Severe)ThreatDefaultAction[\s:]+["'']?(6|9|Allow|NoAction)\b|-(lt|mt|ht|st)defac[\s:]+["'']?(6|9|Allow|NoAction)\b'
     condition: all of selection_*
 falsepositives:
     - Highly unlikely
