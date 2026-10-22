@@ -7,9 +7,9 @@ status: test
 description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes
 references:
     - https://twitter.com/menasec1/status/1104489274387451904
-author: Samir Bousseaden, @neu5ron, Tim Shelton
+author: Samir Bousseaden, @neu5ron, Tim Shelton, elhoim - David André (correction)
 date: 2020-04-02
-modified: 2022-12-27
+modified: 2026-09-24
 tags:
     - attack.lateral-movement
     - attack.t1021.002
@@ -18,25 +18,26 @@ logsource:
     service: smb_files
 detection:
     selection:
-        path: '\\\\\*\\IPC$' # Looking for the string \\*\IPC$
-    filter_keywords:
-        - 'samr'
-        - 'lsarpc'
-        - 'winreg'
-        - 'netlogon'
-        - 'srvsvc'
-        - 'protected_storage'
-        - 'wkssvc'
-        - 'browser'
-        - 'netdfs'
-        - 'svcctl'
-        - 'spoolss'
-        - 'ntsvcs'
-        - 'LSM_API_service'
-        - 'HydraLsPipe'
-        - 'TermSrv_API_service'
-        - 'MsFteWds'
-    condition: selection and not 1 of filter_*
+        path|endswith: '\IPC$'
+    filter_main_known_pipes:
+        name|contains: # Zeek may prefix the pipe name with a backslash
+            - 'samr'
+            - 'lsarpc'
+            - 'winreg'
+            - 'netlogon'
+            - 'srvsvc'
+            - 'protected_storage'
+            - 'wkssvc'
+            - 'browser'
+            - 'netdfs'
+            - 'svcctl'
+            - 'spoolss'
+            - 'ntsvcs'
+            - 'LSM_API_service'
+            - 'HydraLsPipe'
+            - 'TermSrv_API_service'
+            - 'MsFteWds'
+    condition: selection and not 1 of filter_main_*
 falsepositives:
     - Update the excluded named pipe to filter out any newly observed legit named pipe
 level: high
