@@ -8,7 +8,6 @@ author: Markus Neis, Swisscom
 date: 2019-06-04
 modified: 2023-02-03
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1036.003
 logsource:
