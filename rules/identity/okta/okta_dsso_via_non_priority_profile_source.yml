@@ -1,0 +1,26 @@
+title: Okta Desktop SSO Authentication via Non-Priority Profile Source
+id: 8a9879bd-444b-4570-b733-3ac01ca7683d
+status: experimental
+description: |
+    Detects Okta Desktop Single Sign On (DSSO) authentication attempts that use a profile source that is not the highest priority profile source for the Okta user.
+    This may indicate an attempt to authenticate a user from a compromised or rogue Active Directory domain linked to the Okta org.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType: 'user.authentication.dsso_via_non_priority_source'
+    condition: selection
+falsepositives:
+    - Environments with multiple Active Directory profile sources where users legitimately authenticate through a secondary domain
+level: medium
