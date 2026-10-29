@@ -1,0 +1,30 @@
+title: AWS S3 Bucket Access Policy, ACL Or CORS Modified
+id: 40990eef-6ee2-4893-9168-b2ff8bd81540
+status: experimental
+description: |
+    Detects changes of the bucket policy, ACL or CORS configuration of an S3 bucket.
+    Adversaries may modify these access controls to grant external principals access to data or to remove restrictions protecting the bucket.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketPolicy.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketCors.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName:
+            - 'DeleteBucketPolicy'
+            - 'PutBucketAcl'
+            - 'PutBucketCors'
+            - 'PutBucketPolicy'
+    condition: selection
+falsepositives:
+    - Legitimate bucket administration by administrators or infrastructure-as-code pipelines
+level: low
