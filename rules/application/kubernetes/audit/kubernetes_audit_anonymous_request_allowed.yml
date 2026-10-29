@@ -1,0 +1,33 @@
+title: Kubernetes Anonymous Request Authorized
+id: 6b10efee-4bc2-4702-9f31-9bd9db0ff2e5
+status: experimental
+description: |
+    Detects successful requests to the Kubernetes API server performed by the anonymous user, excluding health check endpoints.
+    Misconfigured RBAC bindings granting permissions to "system:anonymous" or "system:unauthenticated" allow unauthenticated adversaries to interact with the cluster.
+references:
+    - https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.t1190
+logsource:
+    category: application
+    product: kubernetes
+    service: audit
+detection:
+    selection:
+        user.username: 'system:anonymous'
+        responseStatus.code:
+            - 200
+            - 201
+    filter_main_health:
+        requestURI|startswith:
+            - '/healthz'
+            - '/livez'
+            - '/readyz'
+            - '/version'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Clusters intentionally exposing additional endpoints to anonymous users
+level: high
