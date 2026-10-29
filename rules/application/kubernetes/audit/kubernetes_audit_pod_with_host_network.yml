@@ -1,0 +1,30 @@
+title: Kubernetes Pod With hostNetwork Created
+id: eea0eea2-4fe1-4475-8b60-8b9aac1c1f33
+related:
+    - id: c5cd1b20-36bb-488d-8c05-486be3d0cb97
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a pod that uses the host's network namespace via the "hostNetwork" setting.
+    A pod with hostNetwork can sniff traffic on the node, reach services bound to the node's loopback interface and bypass network policies, which attackers can abuse to escalate privileges or move from the container to the node.
+references:
+    - https://kubernetes.io/docs/concepts/security/pod-security-standards/
+    - https://www.elastic.co/guide/en/security/current/kubernetes-pod-created-with-hostnetwork.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.privilege-escalation
+    - attack.t1611
+logsource:
+    category: application
+    product: kubernetes
+    service: audit
+detection:
+    selection:
+        verb: 'create'
+        objectRef.resource: 'pods'
+        hostNetwork: true
+    condition: selection
+falsepositives:
+    - System components such as CNI plugins, kube-proxy and node monitoring agents, which are usually deployed as DaemonSets within the kube-system namespace.
+level: medium
