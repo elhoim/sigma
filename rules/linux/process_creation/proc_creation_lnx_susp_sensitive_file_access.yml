@@ -7,7 +7,7 @@ description: |
     Attackers often target these files to maintain persistence, escalate privileges, or disrupt system operations.
 references:
     - https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-overview#which-files-should-i-monitor
-author: '@d4ns4n_ (Wuerth-Phoenix), elhoim - David André (correction)'
+author: '@d4ns4n_ (Wuerth-Phoenix)'
 date: 2023-05-30
 modified: 2026-09-24
 tags:

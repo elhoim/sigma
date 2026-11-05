@@ -5,7 +5,7 @@ description: Detects usage of attrib.exe to hide files from users.
 references:
     - https://unit42.paloaltonetworks.com/unit42-sure-ill-take-new-combojack-malware-alters-clipboards-steal-cryptocurrency/
     - https://www.uptycs.com/blog/lolbins-are-no-laughing-matter
-author: Sami Ruohonen, elhoim - David André (correction)
+author: Sami Ruohonen
 date: 2019-01-16
 modified: 2026-09-24
 tags:
