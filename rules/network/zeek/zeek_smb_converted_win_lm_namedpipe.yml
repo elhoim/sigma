@@ -9,7 +9,7 @@ references:
     - https://twitter.com/menasec1/status/1104489274387451904
 author: Samir Bousseaden, @neu5ron, Tim Shelton
 date: 2020-04-02
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.lateral-movement
     - attack.t1021.002

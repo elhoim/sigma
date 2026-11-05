@@ -12,7 +12,7 @@ references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_RestoreObject.html
 author: Austin Songer @austinsonger
 date: 2021-07-24
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.exfiltration
     - attack.t1537

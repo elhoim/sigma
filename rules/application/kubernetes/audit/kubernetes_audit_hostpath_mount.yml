@@ -10,7 +10,7 @@ references:
     - https://blog.appsecco.com/kubernetes-namespace-breakout-using-insecure-host-path-volume-part-1-b382f2a6e216
 author: Leo Tsaousis (@laripping)
 date: 2024-03-26
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.t1611
     - attack.privilege-escalation

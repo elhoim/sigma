@@ -12,7 +12,7 @@ references:
     - https://www.elastic.co/guide/en/security/current/kubernetes-container-created-with-excessive-linux-capabilities.html
 author: Leo Tsaousis (@laripping)
 date: 2024-03-26
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.t1611
     - attack.privilege-escalation
