@@ -7,7 +7,7 @@ status: test
 description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes
 references:
     - https://twitter.com/menasec1/status/1104489274387451904
-author: Samir Bousseaden, @neu5ron, Tim Shelton, elhoim - David André (correction)
+author: Samir Bousseaden, @neu5ron, Tim Shelton
 date: 2020-04-02
 modified: 2026-09-24
 tags:

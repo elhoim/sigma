@@ -6,7 +6,7 @@ description: |
     Use this rule to hunt for potential anomalies initiating from PowerShell scripts and commands.
 references:
     - https://twitter.com/ankit_anubhav/status/1518835408502620162
-author: Florian Roth (Nextron Systems), Tim Shelton, elhoim - David André (correction)
+author: Florian Roth (Nextron Systems), Tim Shelton
 date: 2022-04-26
 modified: 2026-09-24
 tags:

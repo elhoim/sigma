@@ -11,7 +11,7 @@ description: |
     Once a connection has been started, an investigator can verify the connection details by viewing the "incoming_connections.txt" log file in the TeamViewer folder.
 references:
     - Internal Research
-author: Josh Nickels, Qi Nan, elhoim - David André (correction)
+author: Josh Nickels, Qi Nan
 date: 2024-03-11
 modified: 2026-09-24
 tags:

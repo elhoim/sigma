@@ -5,7 +5,7 @@ description: 'Detects executable access via webdav6. Can be seen in APT 29 such 
 references:
     - http://carnal0wnage.attackresearch.com/2012/06/webdav-server-to-download-custom.html
     - https://github.com/OTRF/detection-hackathon-apt29
-author: 'SOC Prime, Adam Swan, elhoim - David André (correction)'
+author: 'SOC Prime, Adam Swan'
 date: 2020-05-01
 modified: 2026-09-24
 tags:
