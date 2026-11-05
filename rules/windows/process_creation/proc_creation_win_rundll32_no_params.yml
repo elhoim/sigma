@@ -5,7 +5,7 @@ description: Detects suspicious start of rundll32.exe without any parameters as 
 references:
     - https://www.cobaltstrike.com/help-opsec
     - https://twitter.com/ber_m1ng/status/1397948048135778309
-author: Florian Roth (Nextron Systems), elhoim - David André (correction)
+author: Florian Roth (Nextron Systems)
 date: 2021-05-27
 modified: 2026-09-24
 tags:
