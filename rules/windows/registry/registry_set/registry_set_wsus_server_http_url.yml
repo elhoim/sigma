@@ -1,0 +1,34 @@
+title: WSUS Client Configured With Unencrypted HTTP Update Server
+id: 3c4ba775-6799-4560-b41c-5191e33affab
+status: experimental
+description: |
+    Detects the Windows Update client policy values "WUServer" or "WUStatusServer" being set to a plain HTTP (non-TLS) URL.
+    Clients that fetch updates from a WSUS server over HTTP can be targeted by man-in-the-middle tools such as wsuks or PyWSUS (e.g. combined with ARP spoofing), which serve a malicious update that executes a Microsoft-signed binary such as PsExec as SYSTEM.
+    An attacker may also point the client at a rogue update server they control.
+references:
+    - https://github.com/NeffIsBack/wsuks
+    - https://github.com/GoSecure/pywsus
+    - https://learn.microsoft.com/en-us/windows/deployment/update/waas-wu-settings#configuring-automatic-updates-by-editing-the-registry
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-server-update-services/deploy/2-configure-wsus#configure-ssl-on-the-wsus-server
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.lateral-movement
+    - attack.t1072
+    - attack.credential-access
+    - attack.collection
+    - attack.t1557
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\WUServer'
+            - '\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\WUStatusServer'
+        Details|startswith: 'http://'
+    condition: selection
+falsepositives:
+    - Environments that legitimately operate WSUS over HTTP (default port 8530). Such configurations are typically applied via Group Policy and should be reviewed and migrated to HTTPS, or the expected server URL should be filtered.
+level: low
