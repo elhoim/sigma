@@ -9,7 +9,7 @@ references:
     - https://github.com/Wh04m1001/SysmonEoP
 author: frack113, Tim Shelton (update fp)
 date: 2022-12-05
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.privilege-escalation
     - attack.execution

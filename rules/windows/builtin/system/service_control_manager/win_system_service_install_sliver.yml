@@ -7,7 +7,7 @@ references:
     - https://www.microsoft.com/security/blog/2022/08/24/looking-for-the-sliver-lining-hunting-for-emerging-command-and-control-frameworks/
 author: Florian Roth (Nextron Systems), Nasreddine Bencherchali (Nextron Systems)
 date: 2022-08-25
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.persistence
     - attack.execution

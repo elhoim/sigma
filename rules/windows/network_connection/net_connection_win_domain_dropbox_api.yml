@@ -7,7 +7,7 @@ references:
     - https://www.zscaler.com/blogs/security-research/new-espionage-attack-molerats-apt-targeting-users-middle-east
 author: Florian Roth (Nextron Systems)
 date: 2022-04-20
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.command-and-control
     - attack.exfiltration

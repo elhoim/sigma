@@ -16,7 +16,7 @@ references:
     - https://github.com/bugch3ck/SharpEfsPotato
 author: Florian Roth (Nextron Systems)
 date: 2021-07-24
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.collection
     - attack.credential-access

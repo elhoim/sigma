@@ -10,7 +10,7 @@ references:
     - https://www.fortalicesolutions.com/posts/hiding-behind-the-front-door-with-azure-domain-fronting
 author: Isaac Dunham
 date: 2024-11-07
-modified: 2026-09-24
+modified: 2026-11-05
 tags:
     - attack.command-and-control
     - attack.t1102.002
