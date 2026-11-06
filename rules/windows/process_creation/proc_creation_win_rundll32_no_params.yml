@@ -15,18 +15,21 @@ logsource:
     category: process_creation
     product: windows
 detection:
-    selection:
+    selection_cli:
         CommandLine|endswith:
             - '\rundll32.exe'
             - '\rundll32.exe"'
             - '\rundll32'
+    selection_cli_trailing_space:
+        # Command lines built by cmd.exe or Start-Process carry one or more trailing spaces
+        CommandLine|re|i: '\\rundll32(?:\.exe)?"?\s+$'
     filter_optional_edge:
         ParentImage|contains:
             - ':\Program Files (x86)\Microsoft\Edge\'
             - ':\Program Files (x86)\Microsoft\EdgeUpdate\'
             - ':\Program Files\Microsoft\Edge\'
             - ':\Program Files\Microsoft\EdgeUpdate\'
-    condition: selection and not 1 of filter_optional_*
+    condition: 1 of selection_* and not 1 of filter_optional_*
 falsepositives:
     - Possible but rare
 level: high
