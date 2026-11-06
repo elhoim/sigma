@@ -48,11 +48,15 @@ detection:
             - ':\ProgramData\Microsoft\Windows Defender\Platform\'
             - ':\Windows\System32\'
             - ':\Windows\SysWOW64\'
-    filter_optional_admin_tools:
-        # Console tools run by an administrator that open lsass with full access (e.g. "tasklist /m", "MpCmdRun.exe -GetFiles")
-        SourceImage:
-            - 'C:\Windows\System32\tasklist.exe'
-            - 'C:\Program Files\Windows Defender\MpCmdRun.exe'
+    filter_optional_tasklist:
+        # "tasklist /m" run by an administrator: every frame of the call trace must belong to tasklist.exe or the system ntdll/kernel32/kernelbase/dbghelp.
+        # Injected or unknown code (e.g. UNKNOWN(...) frames or other modules) in the trace keeps the event alerting.
+        SourceImage: 'C:\Windows\System32\tasklist.exe'
+        CallTrace|re|i: '^(?:(?:C:\\Windows\\System32\\(?:ntdll|kernel32|kernelbase|dbghelp)\.dll|C:\\Windows\\System32\\tasklist\.exe)\+[0-9a-f]+(?:\||$))+$'
+    filter_optional_mpcmdrun:
+        # "MpCmdRun.exe -GetFiles" run by an administrator: every frame of the call trace must belong to MpCmdRun.exe or the system ntdll/kernel32/kernelbase.
+        SourceImage: 'C:\Program Files\Windows Defender\MpCmdRun.exe'
+        CallTrace|re|i: '^(?:(?:C:\\Windows\\System32\\(?:ntdll|kernel32|kernelbase)\.dll|C:\\Program Files\\Windows Defender\\MpCmdRun\.exe)\+[0-9a-f]+(?:\||$))+$'
     filter_optional_thor:
         CallTrace|contains|all:
             - ':\Windows\Temp\asgard2-agent\'
