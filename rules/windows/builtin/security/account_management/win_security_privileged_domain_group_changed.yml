@@ -31,7 +31,10 @@ detection:
               - '-512' # Domain Admins
               - '-518' # Schema Admins
               - '-519' # Enterprise Admins
-    condition: all of selection_*
+    filter_main_anonymous_logon:
+        # The domain controller itself logs these events for every built-in group as ANONYMOUS LOGON, without any changed attribute
+        SubjectUserSid: 'S-1-5-7'
+    condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Legitimate administrative changes to these groups
 level: medium
