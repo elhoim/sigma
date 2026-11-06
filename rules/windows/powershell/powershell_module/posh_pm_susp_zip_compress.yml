@@ -16,7 +16,7 @@ references:
     - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a
 author: Nasreddine Bencherchali (Nextron Systems), frack113
 date: 2021-07-20
-modified: 2023-12-18
+modified: 2026-11-05
 tags:
     - attack.collection
     - attack.t1074.001
@@ -26,7 +26,7 @@ logsource:
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     selection:
-        ContextInfo|contains|all:
+        ContextInfo|contains:
             - 'Compress-Archive -Path*-DestinationPath $env:TEMP'
             - 'Compress-Archive -Path*-DestinationPath*\AppData\Local\Temp\'
             - 'Compress-Archive -Path*-DestinationPath*:\Windows\Temp\'
