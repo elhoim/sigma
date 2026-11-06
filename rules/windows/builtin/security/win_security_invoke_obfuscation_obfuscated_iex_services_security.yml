@@ -26,8 +26,8 @@ detection:
         - ServiceFileName|re|i: '\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\['
         - ServiceFileName|re|i: '\$env:ComSpec\[(\s*\d{1,3}\s*,){2}'
         - ServiceFileName|re|i: '\*mdr\*\W\s*\)\.Name'
-        - ServiceFileName|re|i: '\$VerbosePreference\.ToString\(\s*\)\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
-        - ServiceFileName|re|i: '\[String\]\s*\$VerbosePreference\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
+        - ServiceFileName|re|i: '\$VerbosePreference\.ToString\(\s*\)[\s)]*\['
+        - ServiceFileName|re|i: '\[String\]\s*\$VerbosePreference[\s)]*\['
     condition: all of selection_*
 falsepositives:
     - Unknown
