@@ -23,6 +23,7 @@ detection:
             - '/cat'
             - '/cp'
             - '/find'
+            - '/gnucp' # Ubuntu 25.10+ (rust-coreutils): /usr/bin/cp resolves to /usr/bin/gnucp
             - '/locate'
             - '/plocate'
             - '/rsync'
