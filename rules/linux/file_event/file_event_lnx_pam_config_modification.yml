@@ -39,6 +39,11 @@ detection:
             - '/authconfig'
             - '/authselect'
             - '/pam-auth-update'
+    filter_main_pam_auth_update:
+        # pam-auth-update (Debian/Ubuntu) is a Perl script, so the writing image is the Perl interpreter; it stages each managed "common-*" file as "<name>.pam-new" before renaming it
+        Image|endswith: '/perl'
+        TargetFilename|startswith: '/etc/pam.d/common-'
+        TargetFilename|endswith: '.pam-new'
     condition: 1 of selection_* and not 1 of filter_main_*
 falsepositives:
     - Configuration management tools (Ansible, Puppet, Chef, Salt) or administrators hardening the PAM stack

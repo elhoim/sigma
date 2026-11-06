@@ -22,7 +22,9 @@ logsource:
     definition: 'Requirements: The file event source must log rename operations with the destination path (e.g. auditd PATH records or an EDR/FIM sensor), as Redis renames a temporary file to the final module filename.'
 detection:
     selection:
-        Image|endswith: '/redis-server'
+        Image|endswith:
+            - '/redis-check-rdb' # Debian/Ubuntu: /usr/bin/redis-server is a symlink to redis-check-rdb, which is the image reported for the server process
+            - '/redis-server'
         TargetFilename|endswith: '.so'
     condition: selection
 falsepositives:
