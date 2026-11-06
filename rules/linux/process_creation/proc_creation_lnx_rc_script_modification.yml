@@ -27,6 +27,8 @@ detection:
         Image|endswith:
             - '/cp'
             - '/dd'
+            - '/gnucp' # Ubuntu 25.10+ (rust-coreutils): /usr/bin/cp and /usr/bin/mv resolve to gnucp and gnumv
+            - '/gnumv'
             - '/install'
             - '/ln'
             - '/mv'
