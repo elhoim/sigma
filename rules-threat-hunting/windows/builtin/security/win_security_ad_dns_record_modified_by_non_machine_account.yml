@@ -34,6 +34,8 @@ detection:
         ObjectClass: 'dnsNode'
     filter_main_machine_account:
         SubjectUserName|endswith: '$'
+    filter_main_local_system:
+        SubjectUserSid: 'S-1-5-18' # DNS Server service on the DC updating, aging or tombstoning records
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - DNS administrators manually managing records
