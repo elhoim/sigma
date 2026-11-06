@@ -8,15 +8,16 @@ author: Florian Roth (Nextron Systems), David ANDRE (additional keywords)
 date: 2017-01-10
 modified: 2022-01-05
 tags:
-    - attack.s0002
     - attack.lateral-movement
     - attack.credential-access
-    - car.2013-07-001
-    - car.2019-04-004
+    - attack.s0002
     - attack.t1003.002
     - attack.t1003.004
     - attack.t1003.001
     - attack.t1003.006
+    - attack.t1550.003
+    - car.2013-07-001
+    - car.2019-04-004
 logsource:
     product: windows
 detection:

@@ -16,9 +16,6 @@ tags:
     - attack.impact
     - attack.credential-access
     - attack.collection
-    - attack.initial-access
-    - attack.privilege-escalation
-    - attack.execution
     - attack.t1557
     - attack.t1565.002
 logsource:
