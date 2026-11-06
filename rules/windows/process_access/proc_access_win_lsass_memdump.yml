@@ -11,7 +11,7 @@ references:
     - https://research.splunk.com/endpoint/windows_possible_credential_dumping/
 author: Samir Bousseaden, Michael Haag
 date: 2019-04-03
-modified: 2026-11-05
+modified: 2026-11-06
 tags:
     - attack.credential-access
     - attack.t1003.001
@@ -48,6 +48,11 @@ detection:
             - ':\ProgramData\Microsoft\Windows Defender\Platform\'
             - ':\Windows\System32\'
             - ':\Windows\SysWOW64\'
+    filter_optional_admin_tools:
+        # Console tools run by an administrator that open lsass with full access (e.g. "tasklist /m", "MpCmdRun.exe -GetFiles")
+        SourceImage:
+            - 'C:\Windows\System32\tasklist.exe'
+            - 'C:\Program Files\Windows Defender\MpCmdRun.exe'
     filter_optional_thor:
         CallTrace|contains|all:
             - ':\Windows\Temp\asgard2-agent\'
@@ -60,5 +65,6 @@ detection:
             - ':\Windows\Sysmon64a.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
+    - Administrative tools that enumerate lsass modules with full access, such as tasklist.exe /m
     - Unknown
 level: medium
