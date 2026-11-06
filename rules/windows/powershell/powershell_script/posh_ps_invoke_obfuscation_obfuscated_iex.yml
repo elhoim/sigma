@@ -23,8 +23,8 @@ detection:
         - ScriptBlockText|re|i: '\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\['
         - ScriptBlockText|re|i: '\$env:ComSpec\[(\s*\d{1,3}\s*,){2}'
         - ScriptBlockText|re|i: '\*mdr\*\W\s*\)\.Name'
-        - ScriptBlockText|re|i: '\$VerbosePreference\.ToString\(\s*\)\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
-        - ScriptBlockText|re|i: '\[String\]\s*\$VerbosePreference\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
+        - ScriptBlockText|re|i: '\$VerbosePreference\.ToString\(\s*\)[\s)]*\['
+        - ScriptBlockText|re|i: '\[String\]\s*\$VerbosePreference[\s)]*\['
     condition: selection_iex
 falsepositives:
     - Unknown
