@@ -19,15 +19,17 @@ detection:
     selection_aout:
         Image|endswith: '/a.out'
     selection_compiler_img:
-        Image|endswith:
-            - '/c++'
-            - '/cc'
-            - '/clang'
-            - '/clang++'
-            - '/g++'
-            - '/gcc'
-            - '/go'
-            - '/tcc'
+        - Image|endswith:
+              - '/c++'
+              - '/cc'
+              - '/clang'
+              - '/clang++'
+              - '/g++'
+              - '/gcc'
+              - '/go'
+              - '/tcc'
+        # Debian/Ubuntu resolve gcc, g++, cc and c++ to versioned target-triplet binaries such as /usr/bin/x86_64-linux-gnu-gcc-15
+        - Image|re: '-linux-gnu-(gcc|g\+\+)-[0-9]+$'
     selection_compiler_cli:
         CommandLine|contains:
             - ' /dev/shm/'
