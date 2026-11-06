@@ -11,7 +11,7 @@ references:
     - https://research.splunk.com/endpoint/windows_possible_credential_dumping/
 author: Samir Bousseaden, Michael Haag
 date: 2019-04-03
-modified: 2026-06-29
+modified: 2026-11-06
 tags:
     - attack.credential-access
     - attack.t1003.001
@@ -42,6 +42,21 @@ detection:
         SourceUser|contains: # Covers many language settings
             - 'AUTHORI'
             - 'AUTORI'
+        SourceImage|contains:
+            - ':\Program Files (x86)\'
+            - ':\Program Files\'
+            - ':\ProgramData\Microsoft\Windows Defender\Platform\'
+            - ':\Windows\System32\'
+            - ':\Windows\SysWOW64\'
+    filter_optional_tasklist:
+        # "tasklist /m" run by an administrator: every frame of the call trace must belong to tasklist.exe or the system ntdll/kernel32/kernelbase/dbghelp.
+        # Injected or unknown code (e.g. UNKNOWN(...) frames or other modules) in the trace keeps the event alerting.
+        SourceImage: 'C:\Windows\System32\tasklist.exe'
+        CallTrace|re|i: '^(?:(?:C:\\Windows\\System32\\(?:ntdll|kernel32|kernelbase|dbghelp)\.dll|C:\\Windows\\System32\\tasklist\.exe)\+[0-9a-f]+(?:\||$))+$'
+    filter_optional_mpcmdrun:
+        # "MpCmdRun.exe -GetFiles" run by an administrator: every frame of the call trace must belong to MpCmdRun.exe or the system ntdll/kernel32/kernelbase.
+        SourceImage: 'C:\Program Files\Windows Defender\MpCmdRun.exe'
+        CallTrace|re|i: '^(?:(?:C:\\Windows\\System32\\(?:ntdll|kernel32|kernelbase)\.dll|C:\\Program Files\\Windows Defender\\MpCmdRun\.exe)\+[0-9a-f]+(?:\||$))+$'
     filter_optional_thor:
         CallTrace|contains|all:
             - ':\Windows\Temp\asgard2-agent\'
@@ -54,5 +69,6 @@ detection:
             - ':\Windows\Sysmon64a.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
+    - Administrative tools that enumerate lsass modules with full access, such as tasklist.exe /m
     - Unknown
 level: medium

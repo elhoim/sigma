@@ -9,7 +9,7 @@ references:
     - https://github.com/Wh04m1001/SysmonEoP
 author: frack113, Tim Shelton (update fp)
 date: 2022-12-05
-modified: 2025-03-06
+modified: 2026-11-06
 tags:
     - attack.privilege-escalation
     - attack.execution
@@ -43,11 +43,16 @@ detection:
         ParentImage|contains:
             - ':\Program Files (x86)\'
             - ':\Program Files\'
-            - ':\ProgramData\'
             - ':\Windows\System32\'
             - ':\Windows\SysWOW64\'
-            - ':\Windows\Temp\' # Installers
             - ':\Windows\WinSxS\'
+    filter_optional_programdata_known:
+        ParentImage|contains:
+            - ':\ProgramData\Microsoft\Windows Defender\Platform\'
+            - ':\ProgramData\Package Cache\'
+    filter_optional_windows_temp_installers:
+        ParentImage|contains: ':\Windows\Temp\'
+        ParentImage|endswith: '.tmp'
     filter_optional_manageengine:
         # Example:
         #   ParentImage: C:/ManageEngine/ADManager Plus/pgsql/bin/postgres.exe" --forkarch 5380
@@ -68,5 +73,6 @@ detection:
             - '-'
     condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
+    - Administrators running commands as SYSTEM through PsExec (parent C:\Windows\PSEXESVC.exe)
     - Some legitimate applications may spawn shells from uncommon parent locations. Apply additional filters and perform an initial baseline before deploying.
 level: medium
