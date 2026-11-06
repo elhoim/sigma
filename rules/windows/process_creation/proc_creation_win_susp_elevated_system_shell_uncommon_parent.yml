@@ -9,7 +9,7 @@ references:
     - https://github.com/Wh04m1001/SysmonEoP
 author: frack113, Tim Shelton (update fp)
 date: 2022-12-05
-modified: 2026-11-05
+modified: 2026-11-06
 tags:
     - attack.privilege-escalation
     - attack.execution
@@ -73,5 +73,6 @@ detection:
             - '-'
     condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
+    - Administrators running commands as SYSTEM through PsExec (parent C:\Windows\PSEXESVC.exe)
     - Some legitimate applications may spawn shells from uncommon parent locations. Apply additional filters and perform an initial baseline before deploying.
 level: medium
