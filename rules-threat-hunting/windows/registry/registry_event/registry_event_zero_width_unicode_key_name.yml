@@ -1,8 +1,8 @@
-title: Registry Value Set With Invisible Zero-Width Unicode Characters In Key Or Value Name
+title: Registry Key Or Value With Invisible Zero-Width Unicode Characters In Name
 id: 4482284b-1a59-4a63-9097-86a535220126
 status: experimental
 description: |
-    Detects a registry value being set where the key or value name contains an invisible zero-width Unicode character (U+200B, U+200C, U+200D, U+2060 or U+FEFF).
+    Detects a registry key being created, renamed or a value being set where the key or value name contains an invisible zero-width Unicode character (U+200B, U+200C, U+200D, U+2060 or U+FEFF).
     Adversaries use such characters to create keys, values or environment variables (e.g. "PATH" followed by U+200C under "HKCU\Environment") that look identical to legitimate ones, hiding configuration data or persistence entries from administrators performing manual audits.
     As zero-width characters can legitimately appear in registry paths that embed user controlled file or folder names, this rule is intended for threat hunting.
 references:
@@ -14,17 +14,24 @@ tags:
     - attack.t1027.018
     - detection.threat-hunting
 logsource:
-    category: registry_set
+    category: registry_event
     product: windows
 detection:
-    selection:
+    selection_key_value:
         TargetObject|contains:
             - '​' # U+200B Zero Width Space
             - '‌' # U+200C Zero Width Non-Joiner
             - '‍' # U+200D Zero Width Joiner
             - '⁠' # U+2060 Word Joiner
             - '﻿' # U+FEFF Zero Width No-Break Space (BOM)
-    condition: selection
+    selection_rename:
+        NewName|contains:
+            - '​' # U+200B Zero Width Space
+            - '‌' # U+200C Zero Width Non-Joiner
+            - '‍' # U+200D Zero Width Joiner
+            - '⁠' # U+2060 Word Joiner
+            - '﻿' # U+FEFF Zero Width No-Break Space (BOM)
+    condition: 1 of selection_*
 falsepositives:
     - Registry keys that embed user controlled file or folder names (e.g. MRU, shell bags or application usage tracking) where those names contain zero-width characters or emoji sequences
 level: low
