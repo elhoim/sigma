@@ -33,7 +33,10 @@ detection:
               - '-519' # Enterprise Admins
     filter_main_anonymous_logon:
         # The domain controller itself logs these events for every built-in group as ANONYMOUS LOGON, without any changed attribute
+        # Only drop those no-op events, so an anonymous change of the name or SID history is still reported
         SubjectUserSid: 'S-1-5-7'
+        SamAccountName: '-'
+        SidHistory: '-'
     condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Legitimate administrative changes to these groups
