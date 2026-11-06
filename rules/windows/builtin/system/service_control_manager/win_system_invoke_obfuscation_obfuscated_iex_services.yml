@@ -22,8 +22,8 @@ detection:
         - ImagePath|re|i: '\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\['
         - ImagePath|re|i: '\$env:ComSpec\[(\s*\d{1,3}\s*,){2}'
         - ImagePath|re|i: '\*mdr\*\W\s*\)\.Name'
-        - ImagePath|re|i: '\$VerbosePreference\.ToString\(\s*\)\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
-        - ImagePath|re|i: '\[String\]\s*\$VerbosePreference\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
+        - ImagePath|re|i: '\$VerbosePreference\.ToString\(\s*\)[\s)]*\['
+        - ImagePath|re|i: '\[String\]\s*\$VerbosePreference[\s)]*\['
     condition: all of selection_*
 falsepositives:
     - Unknown
