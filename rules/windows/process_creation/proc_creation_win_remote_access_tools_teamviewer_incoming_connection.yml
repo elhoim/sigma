@@ -25,7 +25,7 @@ detection:
     selection:
         Image|endswith: '\TeamViewer_Desktop.exe'
         ParentImage|endswith: '\TeamViewer_Service.exe'
-        CommandLine|endswith: 'TeamViewer_Desktop.exe --IPCport 5939 --Module 1'
+        CommandLine|endswith: ' --IPCport 5939 --Module 1' # The binary path is usually quoted, e.g. "C:\Program Files\TeamViewer\TeamViewer_Desktop.exe" --IPCport ...
     condition: selection
 falsepositives:
     - Legitimate usage of TeamViewer
