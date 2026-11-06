@@ -58,6 +58,7 @@ detection:
             - ' /ntlm:NTLMhash '
             - 'Invoke-PetitPotam'
             - '.exe -t * -p '  # JuicyPotatoNG pattern https://github.com/antonioCoco/JuicyPotatoNG
+            - '.exe" -t * -p '  # Same pattern when the binary path is quoted
     selection_juicypotato_enum:  # appears when JuicyPotatoNG is used with -b
         CommandLine|contains: '.exe -c "{'
         CommandLine|endswith: '}" -z'
