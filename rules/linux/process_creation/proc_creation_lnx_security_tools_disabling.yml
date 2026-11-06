@@ -6,7 +6,7 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1562.004/T1562.004.md
 author: Ömer Günal, Alejandro Ortuno, oscd.community
 date: 2020-06-17
-modified: 2026-11-05
+modified: 2026-11-06
 tags:
     - attack.defense-impairment
     - attack.t1686
@@ -15,12 +15,13 @@ logsource:
     product: linux
 detection:
     selection_iptables_1:
-        Image|endswith: '/service'
+        # "service" is a shell script, so the process image is the shell (e.g. "/bin/sh /usr/sbin/service iptables stop")
+        CommandLine|contains: '/service '
         CommandLine|contains|all:
             - 'iptables'
             - 'stop'
     selection_iptables_2:
-        Image|endswith: '/service'
+        CommandLine|contains: '/service '
         CommandLine|contains|all:
             - 'ip6tables'
             - 'stop'
@@ -45,7 +46,7 @@ detection:
             - 'firewalld'
             - 'disable'
     selection_carbonblack_1:
-        Image|endswith: '/service'
+        CommandLine|contains: '/service '
         CommandLine|contains|all:
             - 'cbdaemon'
             - 'stop'
