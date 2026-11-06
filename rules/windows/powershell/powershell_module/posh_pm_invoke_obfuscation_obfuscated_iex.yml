@@ -26,8 +26,8 @@ detection:
         - Payload|re|i: '\$env:Public\[\s*\d{1,3}\s*\]\s*\+\s*\$env:Public\['
         - Payload|re|i: '\$env:ComSpec\[(\s*\d{1,3}\s*,){2}'
         - Payload|re|i: '\*mdr\*\W\s*\)\.Name'
-        - Payload|re|i: '\$VerbosePreference\.ToString\(\s*\)\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
-        - Payload|re|i: '\[String\]\s*\$VerbosePreference\s*\)?\s*\[\s*\d{1,3}\s*[,\]]'
+        - Payload|re|i: '\$VerbosePreference\.ToString\(\s*\)[\s)]*\['
+        - Payload|re|i: '\[String\]\s*\$VerbosePreference[\s)]*\['
     condition: selection_payload
 falsepositives:
     - Unknown
