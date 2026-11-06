@@ -1,0 +1,23 @@
+title: Windows Hosts File Created Or Modified
+id: 047314fc-3401-4a7a-974b-a70611dcfed9
+status: experimental
+description: |
+    Detects the creation or modification of the Windows "hosts" file located in "\System32\drivers\etc\".
+    Adversaries may add entries to the hosts file to redirect security product update or telemetry domains to an unreachable address, or to redirect legitimate domains to attacker-controlled infrastructure.
+references:
+    - https://en.wikipedia.org/wiki/Hosts_(file)
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1565.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\System32\drivers\etc\hosts'
+    condition: selection
+falsepositives:
+    - Administrators, ad-blocking or privacy tools and some VPN, development or security software legitimately editing the hosts file
+level: medium

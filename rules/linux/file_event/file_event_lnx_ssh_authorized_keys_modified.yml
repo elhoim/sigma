@@ -1,0 +1,33 @@
+title: SSH Authorized Keys File Created Or Modified
+id: 820324d8-4c8f-4ca1-a81f-42720555c2bf
+status: experimental
+description: |
+    Detects the creation or modification of an SSH "authorized_keys" or "authorized_keys2" file inside a user ".ssh" directory.
+    Adversaries may add their own public key to these files to maintain persistent password-less SSH access to the host.
+references:
+    - https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.004
+logsource:
+    product: linux
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains: '/.ssh/'
+        TargetFilename|endswith:
+            - '/authorized_keys'
+            - '/authorized_keys2'
+    filter_optional_cloud_agents:
+        Image|endswith:
+            - '/cloud-init'
+            - '/google_guest_agent'
+            - '/waagent'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Legitimate key provisioning by administrators, configuration management tools or cloud guest agents
+    - Users adding their own keys with "ssh-copy-id"
+level: medium
