@@ -1,0 +1,32 @@
+title: User Assigned Entra Role Scoped Over Administrative Unit
+id: b2cfe2f1-7c57-4de6-a0d2-20cb03f5e6e9
+related:
+    - id: b04934b2-0a68-4845-8a19-bdfed3a68a7a # App Assigned To Azure RBAC/Microsoft Entra Role
+      type: similar
+status: experimental
+description: |
+    Detects when a user is assigned a Microsoft Entra role scoped over an administrative unit, including restricted management administrative units.
+    A scoped role assignment over a restricted management administrative unit is the only way to manage the protected objects, and adversaries may grant themselves such an assignment to control accounts that tenant-scoped administrators cannot modify.
+references:
+    - https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-assign-roles
+    - https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management
+    - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities#core-directory
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: azure
+    service: auditlogs
+detection:
+    selection:
+        targetResources.type: 'User'
+        properties.message:
+            - 'Add scoped member to role'
+            - 'Add member to role scoped over Restricted Management Administrative Unit'
+    condition: selection
+falsepositives:
+    - Legitimate delegation of administrative unit management to regional or departmental administrators
+level: medium

@@ -1,0 +1,26 @@
+title: Exchange Online Junk Email Trusted Senders Modified
+id: 69d8dc66-599e-4e68-ae14-d842f028d419
+status: experimental
+description: |
+    Detects changes to the trusted senders and domains list of a mailbox junk email configuration in Exchange Online.
+    Adversaries controlling a mailbox may add their own addresses or domains to the trusted senders list so that their phishing emails bypass the junk email filter.
+    Changes performed from VPN or anonymising infrastructure are of particular interest.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-mailboxjunkemailconfiguration?view=exchange-ps
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.stealth
+    - attack.t1564.008
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'Parameters' field is a list of dict. A correct mapping to the 'Name' field inside is recommended to avoid greedy search"
+detection:
+    selection:
+        Operation: 'Set-MailboxJunkEmailConfiguration'
+        Parameters|contains: 'TrustedSendersAndDomains'
+    condition: selection
+falsepositives:
+    - Users or administrators legitimately adding trusted senders
+level: low

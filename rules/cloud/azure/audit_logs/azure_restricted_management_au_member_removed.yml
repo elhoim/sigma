@@ -1,0 +1,26 @@
+title: Member Removed From Entra Restricted Management Administrative Unit
+id: 592282a8-9370-4f86-b8ca-745f03467110
+status: experimental
+description: |
+    Detects when an object is removed from a restricted management administrative unit in Microsoft Entra ID.
+    Restricted management administrative units protect sensitive accounts from modification by tenant-scoped administrators.
+    Adversaries may remove an account from such a unit to make it modifiable again before taking it over, for example by resetting its password or credentials.
+references:
+    - https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management
+    - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities#core-directory
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: azure
+    service: auditlogs
+detection:
+    selection:
+        properties.message: 'Remove member from restricted management administrative unit'
+    condition: selection
+falsepositives:
+    - Legitimate removal of accounts that no longer require protection
+level: medium
