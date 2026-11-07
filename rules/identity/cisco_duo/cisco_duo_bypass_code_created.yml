@@ -1,0 +1,29 @@
+title: Cisco Duo Bypass Code Created
+id: addd9fea-3a22-4739-9c79-e03181e7bc25
+related:
+    - id: 6f7e1c10-2dc9-4312-adb6-9574ff09a5c8
+      type: similar
+status: experimental
+description: |
+    Detects when a Duo administrator creates one or more bypass codes for a user.
+    Bypass codes allow a user to complete Duo two-factor authentication without their enrolled device. An attacker with access to the Duo Admin Panel or Admin API could create bypass codes for a compromised account in order to circumvent MFA.
+references:
+    - https://duo.com/docs/adminapi#administrator-logs
+    - https://help.duo.com/s/article/6327?language=en_US
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1556
+logsource:
+    product: cisco
+    service: duo
+detection:
+    selection:
+        action: 'bypass_create'
+    condition: selection
+falsepositives:
+    - Helpdesk staff or administrators issuing bypass codes to users who lost or cannot use their enrolled device
+level: medium

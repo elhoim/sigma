@@ -1,0 +1,23 @@
+title: Cisco Duo Administrator Locked Out
+id: d170b9cc-991f-4776-a9d4-2994054ccade
+status: experimental
+description: |
+    Detects when a Duo administrator account is locked out after too many failed login attempts to the Duo Admin Panel.
+    This could indicate a password guessing or brute force attempt against a privileged Duo administrator account.
+references:
+    - https://duo.com/docs/adminapi#administrator-logs
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.t1110
+logsource:
+    product: cisco
+    service: duo
+detection:
+    selection:
+        action: 'admin_lockout'
+    condition: selection
+falsepositives:
+    - Administrators repeatedly mistyping their password
+level: medium
