@@ -15,7 +15,8 @@ tags:
     - attack.execution
     - attack.lateral-movement
     - attack.t1053
-    - attack.t1053.002
+    - attack.t1053.005
+    - attack.t1021.002
 logsource:
     product: rpc_firewall
     category: application
