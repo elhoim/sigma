@@ -1,0 +1,27 @@
+title: AWS IAM Login Profile Created For Another User
+id: e973fb8c-e2f4-48b8-9567-277bcaddbcf2
+status: experimental
+description: |
+    Detects the creation of a console login profile (password) for an IAM user by a different identity.
+    Adversaries may add a console password to an existing IAM user that has none in order to obtain persistent console access.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateLoginProfile.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 'CreateLoginProfile'
+    filter_main_same_user:
+        userIdentity.userName|fieldref: requestParameters.userName
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legitimate onboarding of IAM users by administrators
+level: medium

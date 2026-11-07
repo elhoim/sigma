@@ -1,0 +1,29 @@
+title: AWS API Call From Offensive Security Linux Distribution
+id: cd1dc561-df20-4844-a542-6e7cb0e80467
+status: experimental
+description: |
+    Detects AWS API calls whose user agent reveals that the client runs on an offensive security Linux distribution such as Kali, Parrot or Pentoo.
+    AWS SDKs and the AWS CLI include the operating system and kernel release in the user agent, which reveals these distributions.
+references:
+    - https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-record-contents.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078.004
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        userAgent|contains:
+            - 'kali'
+            - 'parrot'
+            - 'pentoo'
+    condition: selection
+falsepositives:
+    - Authorized security assessments or red team exercises
+level: medium

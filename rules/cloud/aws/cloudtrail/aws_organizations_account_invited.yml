@@ -1,0 +1,24 @@
+title: AWS Organizations Account Invited To Organization
+id: 97505ef3-a495-4df4-b76b-22559e5d4578
+status: experimental
+description: |
+    Detects an invitation of an AWS account to join an AWS Organization.
+    Adversaries with access to a management account may invite an account they control, or move a compromised account into an organization they control, to modify the cloud resource hierarchy and evade organization-level controls.
+references:
+    - https://docs.aws.amazon.com/organizations/latest/APIReference/API_InviteAccountToOrganization.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1666
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'organizations.amazonaws.com'
+        eventName: 'InviteAccountToOrganization'
+    condition: selection
+falsepositives:
+    - Legitimate onboarding of accounts into the organization
+level: medium

@@ -1,0 +1,28 @@
+title: AWS Bedrock Long-Term API Key Created Without Expiration
+id: 972c7308-071b-48c4-bd05-cc2f98136142
+status: experimental
+description: |
+    Detects the creation of a long-term Amazon Bedrock API key (IAM service-specific credential) without an expiration date.
+    When "CredentialAgeDays" is not specified, the credential never expires. Adversaries may create such keys as a persistent backdoor to abuse Bedrock models (LLMjacking).
+references:
+    - https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateServiceSpecificCredential.html
+    - https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.001
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 'CreateServiceSpecificCredential'
+        requestParameters.serviceName: 'bedrock.amazonaws.com'
+        requestParameters.credentialAgeDays: null
+    condition: selection
+falsepositives:
+    - Legitimate creation of non-expiring Bedrock API keys for applications, although expiring keys or short-term credentials are recommended
+level: medium

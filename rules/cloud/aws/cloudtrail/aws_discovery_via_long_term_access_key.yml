@@ -1,0 +1,44 @@
+title: AWS Backup, Resource Explorer Or SES Discovery Via Long-Term Access Key
+id: b87e61a5-413b-4331-ad6b-3c0a3d47852f
+status: experimental
+description: |
+    Detects enumeration of AWS Backup, AWS Resource Explorer or Amazon SES using long-term IAM user access keys (AKIA).
+    Adversaries using leaked access keys commonly query these services to inventory resources and backups or to assess whether the account can be abused for sending email.
+references:
+    - https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
+    - https://docs.aws.amazon.com/resource-explorer/latest/apireference/API_Search.html
+    - https://docs.aws.amazon.com/ses/latest/APIReference/API_GetSendQuota.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.discovery
+    - attack.t1580
+    - attack.t1526
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_key:
+        userIdentity.accessKeyId|startswith: 'AKIA'
+    selection_backup:
+        eventSource: 'backup.amazonaws.com'
+        eventName:
+            - 'ListBackupPlans'
+            - 'ListBackupVaults'
+            - 'ListProtectedResources'
+    selection_resource_explorer:
+        eventSource: 'resource-explorer-2.amazonaws.com'
+        eventName:
+            - 'CreateIndex'
+            - 'ListResources'
+            - 'Search'
+    selection_ses:
+        eventSource: 'ses.amazonaws.com'
+        eventName:
+            - 'GetAccount'
+            - 'GetAccountSendingEnabled'
+            - 'GetSendQuota'
+    condition: selection_key and (selection_backup or selection_resource_explorer or selection_ses)
+falsepositives:
+    - Administrators or scripts using IAM user access keys to manage these services
+level: low

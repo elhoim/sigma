@@ -1,0 +1,27 @@
+title: AWS GuardDuty Threat Intel Set Or Publishing Destination Deleted
+id: 5a28939b-320f-42d5-a3d6-756f26893fb2
+status: experimental
+description: |
+    Detects the deletion of an Amazon GuardDuty threat intelligence set or findings publishing destination.
+    Adversaries may remove threat intelligence lists so that their infrastructure no longer triggers findings, or remove the publishing destination to stop findings from being exported to the security team.
+references:
+    - https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DeleteThreatIntelSet.html
+    - https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DeletePublishingDestination.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'guardduty.amazonaws.com'
+        eventName:
+            - 'DeletePublishingDestination'
+            - 'DeleteThreatIntelSet'
+    condition: selection
+falsepositives:
+    - Legitimate maintenance of the GuardDuty configuration by security administrators
+level: medium
