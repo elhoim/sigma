@@ -1,0 +1,27 @@
+title: GCP Pub/Sub Subscription or Topic Modified or Deleted
+id: 2522bbf9-580e-4f08-82a9-c410cb1384ae
+status: experimental
+description: |
+    Detects when a Pub/Sub subscription is updated or deleted, or when a Pub/Sub topic is deleted.
+    Pub/Sub is commonly used to forward Cloud Logging sinks to SIEM and other security tooling, and adversaries may tamper with it to disrupt log delivery.
+references:
+    - https://cloud.google.com/pubsub/docs/audit-logging
+    - https://cloud.google.com/logging/docs/export/pubsub
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name:
+            - google.pubsub.v1.Subscriber.UpdateSubscription
+            - google.pubsub.v1.Subscriber.DeleteSubscription
+            - google.pubsub.v1.Publisher.DeleteTopic
+    condition: selection
+falsepositives:
+    - Pub/Sub subscriptions and topics updated or deleted by administrators, applications or infrastructure-as-code pipelines
+level: low

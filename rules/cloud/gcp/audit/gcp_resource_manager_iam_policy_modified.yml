@@ -1,0 +1,26 @@
+title: GCP Project, Folder or Organization IAM Policy Modified
+id: ff5a5d42-d17d-4bf2-8682-400c1d6e880a
+status: experimental
+description: |
+    Detects changes to the IAM allow policy of a Google Cloud project, folder or organization through the Resource Manager API.
+    Adversaries may add role bindings at the resource hierarchy level to maintain persistent or elevated access across the environment.
+references:
+    - https://cloud.google.com/resource-manager/docs/audit-logging
+    - https://cloud.google.com/iam/docs/granting-changing-revoking-access
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        data.protoPayload.serviceName: 'cloudresourcemanager.googleapis.com'
+        data.protoPayload.methodName|endswith: 'SetIamPolicy'
+    condition: selection
+falsepositives:
+    - IAM policy changes performed by administrators or infrastructure-as-code pipelines
+level: low

@@ -1,0 +1,27 @@
+title: GCP Cloud Logging API Disabled
+id: 2f5bede2-ed34-4da3-b722-e34ce76bf170
+status: experimental
+description: |
+    Detects when the Cloud Logging API (logging.googleapis.com) is disabled on a Google Cloud project through the Service Usage API.
+    Adversaries may disable the logging service to stop log ingestion and impair the visibility of defenders.
+references:
+    - https://cloud.google.com/service-usage/docs/audit-logging
+    - https://cloud.google.com/service-usage/docs/reference/rest/v1/services/disable
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        data.protoPayload.serviceName: 'serviceusage.googleapis.com'
+        data.protoPayload.methodName|endswith: '.ServiceUsage.DisableService'
+    keywords:
+        - 'logging.googleapis.com'
+    condition: selection and keywords
+falsepositives:
+    - Decommissioning of a project by an administrator
+level: high
