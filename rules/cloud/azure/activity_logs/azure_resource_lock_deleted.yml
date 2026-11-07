@@ -1,0 +1,23 @@
+title: Azure Resource Lock Deleted
+id: 583a5c8c-c294-4705-a2fa-25fb9c74a14c
+status: experimental
+description: |
+    Detects the deletion of an Azure management lock.
+    Locks prevent accidental or malicious deletion or modification of resources. Adversaries may remove them before destroying resources or tampering with their configuration.
+references:
+    - https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+    - attack.t1485
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.AUTHORIZATION/LOCKS/DELETE'
+    condition: selection
+falsepositives:
+    - Legitimate maintenance requiring the temporary removal of a lock
+level: medium
