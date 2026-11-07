@@ -1,0 +1,27 @@
+title: Okta Active Directory Agent Created or Connected
+id: 156df002-060b-425a-9a9e-70a601f06983
+status: experimental
+description: |
+    Detects the creation of a new Okta Active Directory agent or an Active Directory agent being connected to the Okta org.
+    Attackers with administrative access to an Okta tenant can link an Active Directory domain under their control in order to inject or delegate authentication for users (hybrid identity abuse).
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1556.007
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType:
+            - 'system.agent.ad.create'
+            - 'system.agent.ad.connect'
+    condition: selection
+falsepositives:
+    - Legitimate deployment, reinstallation or upgrade of Okta Active Directory agents by administrators
+level: medium

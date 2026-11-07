@@ -1,0 +1,24 @@
+title: OneLogin Privilege Granted to User
+id: 5564542d-7a3e-41eb-942b-5102d39d7bc0
+status: experimental
+description: |
+    Detects when a OneLogin privilege, such as an administrative privilege, is granted directly to a user.
+    Attackers may grant privileges to accounts under their control in order to escalate privileges or maintain persistence.
+references:
+    - https://developers.onelogin.com/api-docs/1/events/event-types
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: onelogin
+    service: onelogin.events
+detection:
+    selection:
+        event_type_id: 72 # PRIVILEGE_GRANTED_TO_USER
+    condition: selection
+falsepositives:
+    - Legitimate privilege assignments by administrators
+level: medium
