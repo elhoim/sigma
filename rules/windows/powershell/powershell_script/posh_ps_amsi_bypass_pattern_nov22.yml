@@ -10,7 +10,6 @@ date: 2022-11-09
 tags:
     - attack.defense-impairment
     - attack.t1685
-    - attack.execution
 logsource:
     product: windows
     category: ps_script

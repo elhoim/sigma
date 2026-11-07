@@ -18,6 +18,7 @@ tags:
     - attack.stealth
     - attack.t1185
     - attack.t1564.003
+    - attack.t1539
 logsource:
     category: process_creation
     product: windows

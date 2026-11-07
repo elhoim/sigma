@@ -12,7 +12,9 @@ modified: 2023-06-23
 tags:
     - attack.execution
     - attack.credential-access
+    - attack.stealth
     - attack.t1003.001
+    - attack.t1127
 logsource:
     category: process_creation
     product: windows
