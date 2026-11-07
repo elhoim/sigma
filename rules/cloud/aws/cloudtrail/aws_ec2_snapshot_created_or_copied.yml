@@ -1,0 +1,30 @@
+title: AWS EC2 EBS Snapshot Created Or Copied
+id: ecb1b82b-0069-410b-93bf-77b7282b022e
+status: experimental
+description: |
+    Detects the creation or copy of Amazon EBS snapshots.
+    Threat actors can snapshot a volume and mount the copy on an instance they control, or copy it to another region or account, to read its data without touching the original instance.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshots.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CopySnapshot.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1578.001
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName:
+            - 'CopySnapshot'
+            - 'CreateSnapshot'
+            - 'CreateSnapshots'
+    condition: selection
+falsepositives:
+    - Scheduled backups through AWS Backup, Amazon Data Lifecycle Manager or third-party backup tooling. Verify the user identity, user agent and source IP address and exclude known backup roles.
+    - Snapshots created by administrators during maintenance or migrations.
+level: medium

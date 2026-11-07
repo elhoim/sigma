@@ -1,0 +1,28 @@
+title: Azure Compute Disk Snapshot Created
+id: 2d4b0fc3-14f9-4f55-85c7-90b0a7a9ffce
+related:
+    - id: c1182e02-49a3-481c-b3de-0fadc4091488 # Rare Subscription-level Operations In Azure
+      type: similar
+status: experimental
+description: |
+    Detects the creation or update of an Azure managed disk snapshot.
+    Threat actors can snapshot a disk and attach the copy to a virtual machine they control, or export it via a SAS URI, to read its data without touching the original virtual machine.
+references:
+    - https://learn.microsoft.com/en-us/rest/api/compute/snapshots/create-or-update
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/compute#microsoftcompute
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1578.001
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.COMPUTE/SNAPSHOTS/WRITE'
+    condition: selection
+falsepositives:
+    - Scheduled backups through Azure Backup or third-party backup tooling. Verify the caller identity and exclude known backup service principals.
+    - Snapshots created by administrators during maintenance or migrations.
+level: medium

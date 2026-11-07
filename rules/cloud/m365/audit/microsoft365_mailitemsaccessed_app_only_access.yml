@@ -1,0 +1,36 @@
+title: Mailbox Items Accessed By Application Without Signed-In User
+id: a05d8cd7-0330-429b-9834-cfa69811b243
+status: experimental
+description: |
+    Detects "MailItemsAccessed" Exchange Online audit events where the actor is a Microsoft Entra application or service principal rather than a user.
+    This happens when an application reads mail with app-only access, for example the Microsoft Graph "Mail.Read" application permission or the EWS "full_access_as_app" role, and so can read any mailbox in the tenant without a signed-in user.
+    Threat actors such as Midnight Blizzard have abused OAuth applications with such permissions to collect email from targeted mailboxes.
+references:
+    - https://learn.microsoft.com/en-us/purview/audit-log-investigate-accounts
+    - https://learn.microsoft.com/en-us/purview/audit-log-detailed-properties#usertype-and-userkey-scenarios
+    - https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#common-schema
+    - https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.collection
+    - attack.t1114.002
+logsource:
+    service: audit
+    product: m365
+detection:
+    selection_operation:
+        Workload: 'Exchange'
+        Operation: 'MailItemsAccessed'
+    selection_actor:
+        # The Office 365 Management Activity API emits the numeric enum, Purview exports the member name
+        UserType:
+            - 5
+            - 6
+            - 'Application'
+            - 'ServicePrincipal'
+    condition: all of selection_*
+falsepositives:
+    - Legitimate applications granted app-only mailbox access, such as backup, archiving, eDiscovery, CRM or security tooling. Baseline the "AppId" / "AppAccessContext.ClientAppId" values and exclude known ones.
+    - Microsoft first-party Exchange Online infrastructure applications, which can also generate these records.
+level: medium

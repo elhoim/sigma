@@ -1,0 +1,29 @@
+title: Google Cloud Compute Disk Snapshot Created
+id: 066cf9c5-9606-4fb6-bb1d-ca53379147db
+status: experimental
+description: |
+    Detects the creation of a Google Cloud Compute Engine persistent disk snapshot.
+    Threat actors can snapshot a disk and create a new disk from the copy on an instance they control to read its data without touching the original instance.
+references:
+    - https://cloud.google.com/compute/docs/reference/rest/v1/disks/createSnapshot
+    - https://cloud.google.com/compute/docs/reference/rest/v1/regionDisks/createSnapshot
+    - https://cloud.google.com/compute/docs/reference/rest/v1/snapshots/insert
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1578.001
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name|endswith:
+            - '.compute.disks.createSnapshot'
+            - '.compute.regionDisks.createSnapshot'
+            - '.compute.snapshots.insert'
+    condition: selection
+falsepositives:
+    - Scheduled snapshot schedules (resource policies) or backup tooling. Verify whether the user identity, user agent and/or hostname should be creating snapshots in your environment and exclude known service accounts.
+    - Snapshots created by administrators during maintenance or migrations.
+level: medium
