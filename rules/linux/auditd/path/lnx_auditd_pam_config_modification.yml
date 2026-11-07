@@ -8,7 +8,7 @@ description: |
 references:
     - https://x-c3ll.github.io/posts/PAM-backdoor-DNS/
     - https://www.group-ib.com/blog/pluggable-authentication-module/
-    - https://github.com/Neo23x0/auditd/blob/master/audit.rules
+    - https://github.com/Neo23x0/auditd/blob/6111069472c26c4120002933b67cef9855dfbad5/audit.rules
     - https://www.elastic.co/security-labs/approaching-the-summit-on-persistence
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1556.003/T1556.003.md
 author: elhoim
