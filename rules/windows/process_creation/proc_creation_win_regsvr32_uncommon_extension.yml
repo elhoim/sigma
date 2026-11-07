@@ -11,8 +11,8 @@ tags:
     - attack.privilege-escalation
     - attack.persistence
     - attack.stealth
-    - attack.t1574
     - attack.execution
+    - attack.t1218.010
 logsource:
     category: process_creation
     product: windows
