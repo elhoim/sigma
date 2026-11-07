@@ -1,0 +1,33 @@
+title: FortiGate - Fake or Offending Wireless Access Point Detected
+id: 9562bfbd-a054-45bd-ad72-0209009068b6
+status: experimental
+description: |
+    Detects FortiGate wireless controller events reporting a fake access point (an uncontrolled AP broadcasting an SSID managed by the FortiGate)
+    or an offending access point (an AP broadcasting an SSID matching a configured phishing pattern).
+    Such access points are commonly used in evil twin attacks to intercept traffic or harvest Wi-Fi credentials from nearby clients.
+references:
+    - https://docs.fortinet.com/document/fortiap/7.4.0/fortiwifi-and-fortiap-configuration-guide/127520
+    - https://docs.fortinet.com/document/fortigate/7.4.3/fortios-log-message-reference/43567
+    - https://docs.fortinet.com/document/fortigate/6.4.3/fortios-log-message-reference/43620
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.collection
+    - attack.t1557
+logsource:
+    product: fortigate
+    service: event
+detection:
+    selection:
+        subtype: 'wireless'
+        action:
+            - 'fake-ap-detected'
+            - 'fake-ap-on-air'
+            - 'offending-ap-detected'
+            - 'offending-ap-on-air'
+    condition: selection
+falsepositives:
+    - Neighbouring organisations or personal hotspots broadcasting an SSID identical or similar to a corporate SSID.
+    - Overly broad offending SSID patterns.
+level: medium
