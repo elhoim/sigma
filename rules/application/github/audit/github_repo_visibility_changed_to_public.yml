@@ -1,0 +1,31 @@
+title: GitHub Repository Visibility Changed To Public
+id: 81ec1ed2-02af-4070-8faf-c06c1d7e2fcd
+status: experimental
+description: |
+    Detects when the visibility of a private or internal GitHub repository is changed to public.
+    Threat actors with access to an organization can make private repositories public to exfiltrate source code, secrets and intellectual property.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#repo
+    - https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.collection
+    - attack.t1213.003
+    - attack.exfiltration
+    - attack.t1567.001
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'repo.access'
+        visibility: 'public'
+        previous_visibility:
+            - 'private'
+            - 'internal'
+    condition: selection
+falsepositives:
+    - Intentional open-sourcing of a repository by an authorized administrator.
+level: high
