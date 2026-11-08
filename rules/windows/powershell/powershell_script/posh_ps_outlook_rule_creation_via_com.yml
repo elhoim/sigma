@@ -48,3 +48,4 @@ simulation:
       name: Outlook Rule - Auto-Forward Emails to External Address via COM Object
       technique: T1137.005
       atomic_guid: b0bd3d76-a57c-4699-83f4-8cd798dd09bd
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_outlook_rule_creation_via_com/info.yml
