@@ -31,3 +31,4 @@ simulation:
       name: Exfiltrate data with HTTP POST to text storage sites - pastebin.com (Windows)
       technique: T1567.003
       atomic_guid: c2e8ab6e-431e-460a-a2aa-3bc6a32022e3
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_pastebin_api_upload/info.yml
