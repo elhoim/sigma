@@ -24,3 +24,4 @@ detection:
 falsepositives:
     - Likely
 level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/powershell/powershell_script/posh_ps_compress_archive_usage/info.yml
