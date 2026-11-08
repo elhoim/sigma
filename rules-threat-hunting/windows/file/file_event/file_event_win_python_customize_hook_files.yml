@@ -38,3 +38,4 @@ simulation:
       name: Python Startup Hook - usercustomize.py (Windows)
       technique: T1546.018
       atomic_guid: 05cc7a2c-ce32-46f2-a358-f27f76718c39
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_python_customize_hook_files/info.yml
