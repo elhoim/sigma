@@ -41,3 +41,4 @@ detection:
 falsepositives:
     - Legitimate administrative changes to these groups
 level: medium
+regression_tests_path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed/info.yml

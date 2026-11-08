@@ -41,3 +41,4 @@ falsepositives:
     - DNS administrators manually managing records
     - DHCP servers configured with dedicated user credentials for dynamic DNS updates
 level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/builtin/security/win_security_ad_dns_record_modified_by_non_machine_account/info.yml
