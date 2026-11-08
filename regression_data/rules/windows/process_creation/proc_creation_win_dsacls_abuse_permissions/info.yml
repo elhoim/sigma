@@ -1,0 +1,13 @@
+id: 70966f45-8580-44b1-8e82-06c4fabb8767
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 01c42d3c-242d-4655-85b2-34f1739632f7
+      title: Potentially Over Permissive Permissions Granted Using Dsacls.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_dsacls_abuse_permissions/01c42d3c-242d-4655-85b2-34f1739632f7.evtx

@@ -29,3 +29,4 @@ falsepositives:
     - Legitimate administrators granting over permissive permissions to users
     - Legitimate administrators granting read-only access (GR) to a group on an organizational unit
 level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_dsacls_abuse_permissions/info.yml
