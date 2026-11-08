@@ -22,3 +22,4 @@ falsepositives:
     - Need to use extra processing with 'unique_count' / 'filter' to focus on outliers as opposed to commonly seen artifacts
     - Legit usage of scripts
 level: low
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_pcwrun/info.yml

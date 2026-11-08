@@ -1,0 +1,13 @@
+id: 71058b10-c198-4f9c-a13b-d658c4c5f1b3
+description: Atomic Red Team replay of real events captured on the lab VMs (T1087.002-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: e5d36acd-acb4-4c6f-a13f-9eb203d50099
+      title: Active Directory Structure Export Via Csvde.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_csvde_export/e5d36acd-acb4-4c6f-a13f-9eb203d50099.evtx

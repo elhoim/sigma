@@ -1,0 +1,13 @@
+id: d59ac87a-5c70-4ce1-b21f-c610e60171ee
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-4 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 9c8c7000-3065-44a8-a555-79bcba5d9955
+      title: MSDT Execution Via Answer File
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_msdt_answer_file_exec/9c8c7000-3065-44a8-a555-79bcba5d9955.evtx
