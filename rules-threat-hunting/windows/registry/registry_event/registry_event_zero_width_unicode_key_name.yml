@@ -40,3 +40,4 @@ simulation:
       name: Invisible Unicode in Environment Variables
       technique: T1027.018
       atomic_guid: 125b1b41-bcef-42c3-acaa-a44303e3ffc1
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name/info.yml
