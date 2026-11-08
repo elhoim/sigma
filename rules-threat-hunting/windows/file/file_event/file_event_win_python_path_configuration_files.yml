@@ -40,3 +40,4 @@ detection:
 falsepositives:
     - Although .pth files are discouraged due to potential security implications, these are legitimate files by specification.
 level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_python_path_configuration_files/info.yml
