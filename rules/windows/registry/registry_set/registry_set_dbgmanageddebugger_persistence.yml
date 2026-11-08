@@ -27,3 +27,4 @@ detection:
 falsepositives:
     - Legitimate use of the key to setup a debugger. Which is often the case on developers machines
 level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_dbgmanageddebugger_persistence/info.yml

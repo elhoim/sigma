@@ -1,0 +1,13 @@
+id: 9d6660fc-a099-4814-aee8-fd7bbc2a6995
+description: Atomic Red Team replay of real events captured on the lab VMs (T1112-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: e0813366-0407-449a-9869-a2db1119dc41
+      title: Suspicious Printer Driver Empty Manufacturer
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_susp_printer_driver/e0813366-0407-449a-9869-a2db1119dc41.evtx

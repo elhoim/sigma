@@ -36,3 +36,4 @@ detection:
 falsepositives:
     - Alerts on legitimate printer drivers that do not set any more details in the Manufacturer value
 level: high
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_susp_printer_driver/info.yml
