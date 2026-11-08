@@ -37,3 +37,4 @@ simulation:
       name: Injecting a Macro into the Word Normal.dotm Template for Persistence via PowerShell
       technique: T1137.001
       atomic_guid: 940db09e-80b6-4dd0-8d4d-7764f89b47a8
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_word_normal_template_vba_injection/info.yml
