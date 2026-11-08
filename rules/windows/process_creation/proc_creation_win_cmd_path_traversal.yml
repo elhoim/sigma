@@ -37,3 +37,4 @@ detection:
 falsepositives:
     - Java tools are known to produce false-positive when loading libraries
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_path_traversal/info.yml

@@ -34,3 +34,4 @@ detection:
 falsepositives:
     - Unknown
 level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_module/posh_pm_susp_zip_compress/info.yml
