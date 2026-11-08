@@ -71,3 +71,4 @@ detection:
 falsepositives:
     - Legitimate files with these rare hacktool names
 level: critical
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_relay_attacks_tools/info.yml

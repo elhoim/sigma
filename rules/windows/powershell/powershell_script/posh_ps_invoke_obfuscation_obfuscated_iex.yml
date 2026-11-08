@@ -29,3 +29,4 @@ detection:
 falsepositives:
     - Unknown
 level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_invoke_obfuscation_obfuscated_iex/info.yml
