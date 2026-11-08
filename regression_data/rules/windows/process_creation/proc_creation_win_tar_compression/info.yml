@@ -1,0 +1,23 @@
+id: eb0d9b60-71cf-4f06-93b8-51e0043872cd
+description: Atomic Red Team replay of real events captured on the lab VMs (T1560.001-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 418a3163-3247-4b7b-9933-dcfcb7c52ea9
+      title: Compressed File Creation Via Tar.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_tar_compression/418a3163-3247-4b7b-9933-dcfcb7c52ea9.evtx
+    - name: Atomic Red Team replay 02 (T1560.001-1, event 1) - create CommandLine -r
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_tar_compression-art02/418a3163-3247-4b7b-9933-dcfcb7c52ea9.evtx
+    - name: Atomic Red Team replay 03 (T1560.001-1, event 1) - create CommandLine -u
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_tar_compression-art03/418a3163-3247-4b7b-9933-dcfcb7c52ea9.evtx

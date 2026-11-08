@@ -1,0 +1,13 @@
+id: 32ae6206-28d3-4540-ad88-377d7ef1b9eb
+description: Atomic Red Team replay of real events captured on the lab VMs (T1003.002-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: f0e53e89-8d22-46ea-9db5-9d4796ee2f8a
+      title: Exports Registry Key To a File
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_regedit_export_keys/f0e53e89-8d22-46ea-9db5-9d4796ee2f8a.evtx
