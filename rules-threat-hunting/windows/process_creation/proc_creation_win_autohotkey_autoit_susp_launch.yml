@@ -51,3 +51,4 @@ simulation:
       name: AutoHotKey script execution
       technique: T1059.010
       atomic_guid: 7b5d350e-f758-43cc-a761-8e3f6b052a03
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch/info.yml
