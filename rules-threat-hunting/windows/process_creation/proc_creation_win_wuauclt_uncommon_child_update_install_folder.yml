@@ -40,3 +40,4 @@ falsepositives:
     - Legitimate third-party or custom updates published through a WSUS server (e.g. via WSUS Package Publisher or Configuration Manager third-party updates)
     - Other legitimate Microsoft update packages executed from the install folder that are not covered by the filters
 level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_wuauclt_uncommon_child_update_install_folder/info.yml

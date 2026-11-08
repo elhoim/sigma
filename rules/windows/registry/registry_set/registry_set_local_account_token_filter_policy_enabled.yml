@@ -31,3 +31,4 @@ detection:
 falsepositives:
     - Administrators or management/deployment tooling (e.g. configuration scripts preparing hosts for remote administration via WinRM or Ansible) intentionally disabling UAC remote restrictions
 level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_local_account_token_filter_policy_enabled/info.yml

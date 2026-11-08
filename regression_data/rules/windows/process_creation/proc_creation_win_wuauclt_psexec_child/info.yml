@@ -1,0 +1,13 @@
+id: 29150ec5-85cf-4f24-b71a-04c7b6eb4423
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: f575aebb-b99d-46ad-9215-8c01175bf3d2
+      title: PsExec Executed By Windows Update Client - Potential WSUS Abuse
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_psexec_child/f575aebb-b99d-46ad-9215-8c01175bf3d2.evtx

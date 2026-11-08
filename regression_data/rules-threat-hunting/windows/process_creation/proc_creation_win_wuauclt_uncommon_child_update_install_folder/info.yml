@@ -1,0 +1,13 @@
+id: d3d1ea60-ae84-410a-84e2-9b53295a1353
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 53212e36-395a-4cb9-b270-75cc6b2292df
+      title: Uncommon Binary Executed By Windows Update Client From Update Install Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_wuauclt_uncommon_child_update_install_folder/53212e36-395a-4cb9-b270-75cc6b2292df.evtx
