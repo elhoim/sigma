@@ -1,0 +1,13 @@
+id: e5c3cbf9-96f2-450f-bf82-0e8841b2a1b9
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 63332011-f057-496c-ad8d-d2b6afb27f96
+      title: Suspicious Tasklist Discovery Command
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_tasklist_basic_execution/63332011-f057-496c-ad8d-d2b6afb27f96.evtx

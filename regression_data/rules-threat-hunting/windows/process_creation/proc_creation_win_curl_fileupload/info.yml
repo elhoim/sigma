@@ -1,0 +1,13 @@
+id: 5c941c38-4afe-4ecd-83ec-5c184b89257a
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 00bca14a-df4e-4649-9054-3f2aa676bc04
+      title: Potential Data Exfiltration Via Curl.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_curl_fileupload/00bca14a-df4e-4649-9054-3f2aa676bc04.evtx

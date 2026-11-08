@@ -1,0 +1,13 @@
+id: 19a0084e-3d3b-4aa0-9bfb-2a5b2b0d5d1d
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 0ef56343-059e-4cb6-adc1-4c3c967c5e46
+      title: Suspicious Execution of Systeminfo
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_systeminfo_execution/0ef56343-059e-4cb6-adc1-4c3c967c5e46.evtx
