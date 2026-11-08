@@ -1,0 +1,13 @@
+id: d5c96ae8-9f35-4475-9d05-6b9563d83e15
+description: Atomic Red Team replay of real events captured on the lab VMs (T1090.001-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: a54f842a-3713-4b45-8c84-5f136fdebd3c
+      title: New PortProxy Registry Entry Added
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_event/registry_event_portproxy_registry_key/a54f842a-3713-4b45-8c84-5f136fdebd3c.evtx
