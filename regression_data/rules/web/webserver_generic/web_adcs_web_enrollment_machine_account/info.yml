@@ -12,9 +12,9 @@ regression_tests_info:
       pipelines:
           - regression_data/pipelines/webserver_fieldmapping.yml
       path: regression_data/rules/web/webserver_generic/web_adcs_web_enrollment_machine_account/18cee689-1bf7-4c41-a39d-c719dce50275.json
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 14)
+    - name: Atomic Red Team replay 01 (T1649 test 14, IIS W3C line) - /certsrv/ requested by the WSUS01 machine account
       type: json
       match_count: 1
       pipelines:
           - regression_data/pipelines/webserver_fieldmapping.yml
-      path: regression_data/rules/web/webserver_generic/web_adcs_web_enrollment_machine_account-art/18cee689-1bf7-4c41-a39d-c719dce50275.json
+      path: regression_data/rules/web/webserver_generic/web_adcs_web_enrollment_machine_account-art01/18cee689-1bf7-4c41-a39d-c719dce50275.json

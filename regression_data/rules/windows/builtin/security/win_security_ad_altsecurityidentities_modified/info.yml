@@ -11,8 +11,8 @@ regression_tests_info:
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_modified/585251a0-c851-4e65-a4a7-dc4cfe2ccc01.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 12)
+    - name: Atomic Red Team replay 01 (T1649 test 12, event 5136) - selection
       type: evtx
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
-      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_modified-art/585251a0-c851-4e65-a4a7-dc4cfe2ccc01.evtx
+      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_modified-art01/585251a0-c851-4e65-a4a7-dc4cfe2ccc01.evtx

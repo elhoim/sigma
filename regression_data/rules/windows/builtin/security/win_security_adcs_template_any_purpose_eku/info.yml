@@ -11,8 +11,18 @@ regression_tests_info:
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules/windows/builtin/security/win_security_adcs_template_any_purpose_eku/0277cbb6-a8a2-430c-ac66-e78add9d8dd0.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 5)
+    - name: Atomic Red Team replay 01 (T1649 test 5, event 4898) - 4898
       type: evtx
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
-      path: regression_data/rules/windows/builtin/security/win_security_adcs_template_any_purpose_eku-art/0277cbb6-a8a2-430c-ac66-e78add9d8dd0.evtx
+      path: regression_data/rules/windows/builtin/security/win_security_adcs_template_any_purpose_eku-art01/0277cbb6-a8a2-430c-ac66-e78add9d8dd0.evtx
+    - name: Atomic Red Team replay 02 (T1649 test 5, event 5136) - 5136; 5136 AttributeLDAPDisplayName pKIExtendedKeyUsage
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_adcs_template_any_purpose_eku-art02/0277cbb6-a8a2-430c-ac66-e78add9d8dd0.evtx
+    - name: Atomic Red Team replay 03 (T1649 test 18, event 5136) - 5136 AttributeLDAPDisplayName msPKI-Certificate-Application-Policy
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_adcs_template_any_purpose_eku-art03/0277cbb6-a8a2-430c-ac66-e78add9d8dd0.evtx

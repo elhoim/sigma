@@ -11,8 +11,18 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/registry/registry_set/registry_set_adcs_ca_policy_flags_modified/35718680-13a9-43ce-96c9-3783edc73103.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 1)
+    - name: Atomic Red Team replay 01 (T1649 test 1, event 13) - base; value; value TargetObject \PolicyModules\CertificateAuthority_MicrosoftDefault.Policy\EditFlags
       type: evtx
       provider: Microsoft-Windows-Sysmon
       match_count: 1
-      path: regression_data/rules/windows/registry/registry_set/registry_set_adcs_ca_policy_flags_modified-art/35718680-13a9-43ce-96c9-3783edc73103.evtx
+      path: regression_data/rules/windows/registry/registry_set/registry_set_adcs_ca_policy_flags_modified-art01/35718680-13a9-43ce-96c9-3783edc73103.evtx
+    - name: Atomic Red Team replay 02 (T1649 test 3, event 13) - value TargetObject \PolicyModules\CertificateAuthority_MicrosoftDefault.Policy\DisableExtensionList
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_adcs_ca_policy_flags_modified-art02/35718680-13a9-43ce-96c9-3783edc73103.evtx
+    - name: Atomic Red Team replay 03 (T1649 test 2, event 13) - value TargetObject \InterfaceFlags
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_adcs_ca_policy_flags_modified-art03/35718680-13a9-43ce-96c9-3783edc73103.evtx

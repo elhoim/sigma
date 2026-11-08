@@ -11,8 +11,83 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 13)
+    - name: Atomic Red Team replay 01 (T1649 test 13, event 13) - selection; selection Details DWORD (0x0000001f)
       type: evtx
       provider: Microsoft-Windows-Sysmon
       match_count: 1
-      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art01/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 02 (T1649 test 21, event 13) - selection Details DWORD (0x00000004)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art02/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 03 (T1649 test 21, event 13) - selection Details DWORD (0x00000005)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art03/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 04 (T1649 test 21, event 13) - selection Details DWORD (0x00000006)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art04/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 05 (T1649 test 21, event 13) - selection Details DWORD (0x00000007)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art05/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 06 (T1649 test 21, event 13) - selection Details DWORD (0x0000000c)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art06/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 07 (T1649 test 21, event 13) - selection Details DWORD (0x0000000d)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art07/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 08 (T1649 test 21, event 13) - selection Details DWORD (0x0000000e)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art08/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 09 (T1649 test 21, event 13) - selection Details DWORD (0x0000000f)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art09/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 10 (T1649 test 21, event 13) - selection Details DWORD (0x00000014)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art10/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 11 (T1649 test 21, event 13) - selection Details DWORD (0x00000015)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art11/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 12 (T1649 test 21, event 13) - selection Details DWORD (0x00000016)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art12/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 13 (T1649 test 21, event 13) - selection Details DWORD (0x00000017)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art13/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 14 (T1649 test 21, event 13) - selection Details DWORD (0x0000001c)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art14/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 15 (T1649 test 21, event 13) - selection Details DWORD (0x0000001d)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art15/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx
+    - name: Atomic Red Team replay 16 (T1649 test 21, event 13) - selection Details DWORD (0x0000001e)
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dc_weak_certificate_mapping-art16/f823f0f0-3eba-4a4f-a414-e4bc24f5dbb5.evtx

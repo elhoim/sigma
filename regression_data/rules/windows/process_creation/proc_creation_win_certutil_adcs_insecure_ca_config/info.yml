@@ -11,8 +11,23 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config/32a1966a-c4cb-4d86-a667-365256a1be60.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 1)
+    - name: Atomic Red Team replay 01 (T1649 test 1, event 1) - img; cli_setreg; flag_esc6; ...
       type: evtx
       provider: Microsoft-Windows-Sysmon
       match_count: 1
-      path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config-art/32a1966a-c4cb-4d86-a667-365256a1be60.evtx
+      path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config-art01/32a1966a-c4cb-4d86-a667-365256a1be60.evtx
+    - name: Atomic Red Team replay 02 (T1649 test 20, event 1) - flag_esc6 CommandLine EDITF_ATTRIBUTESUBJECTALTNAME2
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config-art02/32a1966a-c4cb-4d86-a667-365256a1be60.evtx
+    - name: Atomic Red Team replay 03 (T1649 test 2, event 1) - flag_esc11
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config-art03/32a1966a-c4cb-4d86-a667-365256a1be60.evtx
+    - name: Atomic Red Team replay 04 (T1649 test 3, event 1) - esc16
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_certutil_adcs_insecure_ca_config-art04/32a1966a-c4cb-4d86-a667-365256a1be60.evtx

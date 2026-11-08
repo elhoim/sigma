@@ -11,8 +11,18 @@ regression_tests_info:
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_weak_mapping_added/32c33920-67e6-4f66-a161-e48dca1339e1.evtx
-    - name: Positive Detection Test - Atomic Red Team replay (T1649 test 12)
+    - name: Atomic Red Team replay 01 (T1649 test 12, event 5136) - attribute; weak_subject_rfc822; weak_subject_rfc822 AttributeValue X509 <RFC822>
       type: evtx
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
-      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_weak_mapping_added-art/32c33920-67e6-4f66-a161-e48dca1339e1.evtx
+      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_weak_mapping_added-art01/32c33920-67e6-4f66-a161-e48dca1339e1.evtx
+    - name: Atomic Red Team replay 02 (T1649 test 12, event 5136) - weak_subject_rfc822 AttributeValue X509 <S>
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_weak_mapping_added-art02/32c33920-67e6-4f66-a161-e48dca1339e1.evtx
+    - name: Atomic Red Team replay 03 (T1649 test 12, event 5136) - weak_issuer_subject
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_ad_altsecurityidentities_weak_mapping_added-art03/32c33920-67e6-4f66-a161-e48dca1339e1.evtx
