@@ -9,7 +9,7 @@ references:
     - https://www.picussecurity.com/resource/blog/as-rep-roasting-attack-explained-mitre-attack-t1558.004
 author: ANosir
 date: 2025-05-22
-modified: 2026-10-01
+modified: 2026-11-09
 tags:
     - attack.credential-access
     - attack.t1558.004
