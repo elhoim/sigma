@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: c8983560-7fda-44ac-9a3b-1b553156a219
-      title: Python Usercustomize Or Sitecustomize Startup Hook Created - Windows
+      title: Potential Python Usercustomize Or Sitecustomize Startup Hook Created - Windows
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
