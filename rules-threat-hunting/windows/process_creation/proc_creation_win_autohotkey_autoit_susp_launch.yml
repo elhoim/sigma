@@ -3,9 +3,10 @@ id: e159e9de-5f90-40d0-a5e3-4035b13c011d
 status: experimental
 description: |
     Detects the execution of the AutoHotkey or AutoIt3 script interpreters when they are spawned by a command or script interpreter, or when the interpreter or its script resides in a user writable location.
-    Malware families such as DarkGate, Lumma Stealer or XLoader drop a legitimate AutoIt or AutoHotkey interpreter together with a malicious script and launch it from a shell, a scripting host or a temporary folder.
+    Malware such as DarkGate drops a legitimate AutoIt interpreter together with a malicious script and launches it from a shell, a scripting host or a temporary folder.
 references:
     - https://www.autohotkey.com/docs/v2/Scripts.htm
+    - https://github.security.telekom.com/2023/08/darkgate-loader.html
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1059.010/T1059.010.md
 author: elhoim
 date: 2026-10-01
