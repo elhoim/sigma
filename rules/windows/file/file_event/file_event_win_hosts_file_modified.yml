@@ -5,7 +5,7 @@ description: |
     Detects the creation or modification of the Windows "hosts" file located in "\System32\drivers\etc\".
     Adversaries may add entries to the hosts file to redirect security product update or telemetry domains to an unreachable address, or to redirect legitimate domains to attacker-controlled infrastructure.
 references:
-    - https://en.wikipedia.org/wiki/Hosts_(file)
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/impact_hosts_file_modified.toml
 author: elhoim
 date: 2026-10-15
 tags:

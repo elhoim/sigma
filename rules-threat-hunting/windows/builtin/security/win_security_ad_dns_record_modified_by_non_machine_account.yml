@@ -23,7 +23,7 @@ logsource:
     product: windows
     service: security
     definition: |
-      By default these events are not logged by default for MicrosoftDNS objects in Active Directory.
+      By default these events are not logged for MicrosoftDNS objects in Active Directory.
       To enable detection, configure an AuditRule on the DNS zone containers ("CN=MicrosoftDNS") for create and write operations for the "Everyone" principal and enable "Audit Directory Service Changes".
       This can be accomplished using tools such as Set-AuditRule (see https://github.com/OTRF/Set-AuditRule).
 detection:

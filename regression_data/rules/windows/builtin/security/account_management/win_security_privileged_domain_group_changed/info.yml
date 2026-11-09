@@ -11,7 +11,7 @@ regression_tests_info:
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed/7e8d84d4-2353-405a-8e02-826f3062143d.evtx
-    - name: Atomic Red Team replay 01 (T1098-1, event 4737) - eid; eid EventID 4737; group; ...
+    - name: Atomic Red Team replay 01 (T1098-1, event 4737) - group TargetUserName Domain Admins; group TargetSid -512
       type: evtx
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
