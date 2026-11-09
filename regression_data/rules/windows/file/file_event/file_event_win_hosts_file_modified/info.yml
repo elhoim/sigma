@@ -11,3 +11,8 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/file/file_event/file_event_win_hosts_file_modified/047314fc-3401-4a7a-974b-a70611dcfed9.evtx
+    - name: Atomic Red Team replay 01 (T1565.001-1, event 11) - selection
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_hosts_file_modified-art01/047314fc-3401-4a7a-974b-a70611dcfed9.evtx
