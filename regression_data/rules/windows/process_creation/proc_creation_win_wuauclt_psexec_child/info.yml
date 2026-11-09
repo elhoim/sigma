@@ -11,3 +11,18 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_psexec_child/f575aebb-b99d-46ad-9215-8c01175bf3d2.evtx
+    - name: Atomic Red Team replay 01 (T1036.005-5, event 1) - parent; img; img group0 Image; ...
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_psexec_child-art01/f575aebb-b99d-46ad-9215-8c01175bf3d2.evtx
+    - name: Atomic Red Team replay 02 (T1021.002-1, event 1) - img group1 OriginalFileName
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_psexec_child-art02/f575aebb-b99d-46ad-9215-8c01175bf3d2.evtx
+    - name: Atomic Red Team replay 03 (T1036.005-5, event 1) - img Image \PsExec64.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_psexec_child-art03/f575aebb-b99d-46ad-9215-8c01175bf3d2.evtx

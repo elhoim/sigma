@@ -11,3 +11,13 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules/windows/registry/registry_set/registry_set_wsus_server_http_url/3c4ba775-6799-4560-b41c-5191e33affab.evtx
+    - name: Atomic Red Team replay 01 (T1112-1, event 13) - selection; selection TargetObject \SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\WUServer
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_wsus_server_http_url-art01/3c4ba775-6799-4560-b41c-5191e33affab.evtx
+    - name: Atomic Red Team replay 02 (T1112-1, event 13) - selection TargetObject \SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\WUStatusServer
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_wsus_server_http_url-art02/3c4ba775-6799-4560-b41c-5191e33affab.evtx
