@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: 73ba98d8-0f2a-4a98-931e-b72ea935b817
-      title: Cloud Instance Metadata Credential Or Token Request Via CommandLine - Windows
+      title: Potential Cloud Instance Metadata Credential Or Token Request Via CommandLine - Windows
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
