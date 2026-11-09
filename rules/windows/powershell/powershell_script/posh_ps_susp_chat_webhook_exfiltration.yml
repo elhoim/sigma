@@ -5,8 +5,8 @@ description: |
     Detects PowerShell script blocks that send data to a Discord, Slack or Microsoft Teams incoming webhook URL or to the Telegram Bot API using a web request cmdlet or .NET web client.
     Infostealers and adversaries abuse these webhooks as an easy, authenticated-by-URL exfiltration channel to reputable domains that are rarely blocked.
 references:
-    - https://discord.com/developers/docs/resources/webhook
-    - https://api.slack.com/messaging/webhooks
+    - https://docs.discord.com/developers/resources/webhook
+    - https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/
     - https://core.telegram.org/bots/api
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1567.004/T1567.004.md
 author: elhoim
