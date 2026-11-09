@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: 6ce549c5-dd81-495e-8e60-96c6de4d6eef
-      title: Outlook Inbox Rule With Forward Or Delete Action Created Via PowerShell COM
+      title: Potential Outlook Inbox Rule With Forward Or Delete Action Created Via PowerShell COM
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
