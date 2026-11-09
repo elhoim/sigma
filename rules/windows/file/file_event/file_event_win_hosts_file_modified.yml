@@ -20,5 +20,5 @@ detection:
     condition: selection
 falsepositives:
     - Administrators, ad-blocking or privacy tools and some VPN, development or security software legitimately editing the hosts file
-level: medium
+level: low
 regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_hosts_file_modified/info.yml
