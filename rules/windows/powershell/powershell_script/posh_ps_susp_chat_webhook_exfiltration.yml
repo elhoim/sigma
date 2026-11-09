@@ -24,8 +24,8 @@ detection:
             - 'api.telegram.org/bot' # Telegram Bot API
             - 'discord.com/api/webhooks/' # Also covers canary/ptb sub domains
             - 'discordapp.com/api/webhooks/'
-            - 'hooks.slack.com/services/'
-            - '.webhook.office.com/webhookb2/' # Microsoft Teams incoming webhook
+            - 'hooks.slack.com/'
+            - '.webhook.office.com/' # Microsoft Teams incoming webhook
     selection_request:
         ScriptBlockText|contains:
             - 'Invoke-RestMethod'
