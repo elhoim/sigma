@@ -11,3 +11,53 @@ regression_tests_info:
       provider: Microsoft-Windows-Sysmon
       match_count: 1
       path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 01 (T1036.005-1, event 12) - key_value; key_value TargetObject ​
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art01/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 02 (T1036.005-1, event 12) - key_value TargetObject ‌
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art02/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 03 (T1036.005-1, event 12) - key_value TargetObject ‍
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art03/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 04 (T1036.005-1, event 12) - key_value TargetObject ⁠
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art04/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 05 (T1036.005-1, event 12) - key_value TargetObject ﻿
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art05/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 06 (T1036.005-1, event 14) - rename; rename NewName ​
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art06/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 07 (T1036.005-1, event 14) - rename NewName ‌
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art07/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 08 (T1036.005-1, event 14) - rename NewName ‍
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art08/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 09 (T1036.005-1, event 14) - rename NewName ⁠
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art09/4482284b-1a59-4a63-9097-86a535220126.evtx
+    - name: Atomic Red Team replay 10 (T1036.005-1, event 14) - rename NewName ﻿
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_event/registry_event_zero_width_unicode_key_name-art10/4482284b-1a59-4a63-9097-86a535220126.evtx
