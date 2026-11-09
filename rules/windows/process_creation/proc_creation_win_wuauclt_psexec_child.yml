@@ -1,11 +1,12 @@
-title: PsExec Executed By Windows Update Client - Potential WSUS Abuse
+title: Suspicious PsExec Executed By Windows Update Client
 id: f575aebb-b99d-46ad-9215-8c01175bf3d2
 related:
     - id: 53212e36-395a-4cb9-b270-75cc6b2292df
       type: similar
 status: experimental
 description: |
-    Detects the execution of PsExec by the Windows Update client "wuauclt.exe" from the update installation folder "SoftwareDistribution\Download\Install".
+    Detects the execution of PsExec by the Windows Update client "wuauclt.exe".
+    In a WSUS attack the binary is dropped in the update installation folder "SoftwareDistribution\Download\Install" and launched from there.
     Tools such as wsuks, PyWSUS or SharpWSUS abuse a compromised or spoofed (man-in-the-middle over HTTP) WSUS server to deliver a Microsoft-signed binary, PsExec by default, together with an arbitrary command line.
     The Windows Update client then executes it as SYSTEM, typically to create a local administrator or run a payload.
 references:

@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: f383c216-b67a-4521-9046-fa12a62e71a4
-      title: LocalAccountTokenFilterPolicy Enabled - Remote UAC Restrictions Disabled
+      title: Potential Remote UAC Restrictions Disabled Via LocalAccountTokenFilterPolicy
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx

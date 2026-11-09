@@ -28,9 +28,8 @@ detection:
         Image|contains: '\SoftwareDistribution\Download\Install\'
     filter_optional_defender:
         Image|contains:
-            - '\AM_Delta_Patch_'
-            - '\AM_Engine_Patch_'
             - '\am_delta'
+            - '\AM_Engine_Patch_'
             - '\am_base'
             - '\mpam-fe'
     filter_optional_msrt:

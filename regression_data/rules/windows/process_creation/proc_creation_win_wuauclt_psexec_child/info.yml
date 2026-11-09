@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: f575aebb-b99d-46ad-9215-8c01175bf3d2
-      title: PsExec Executed By Windows Update Client - Potential WSUS Abuse
+      title: Suspicious PsExec Executed By Windows Update Client
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
