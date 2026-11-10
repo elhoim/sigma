@@ -1,0 +1,41 @@
+title: Potential Computer Account DnsHostName Spoofing By User Account
+id: 7fab41ca-75f9-4fe9-aa2e-14b86de7bcd4
+status: experimental
+description: |
+    Detects a change of the "dNSHostName" attribute of a computer account performed by a user account instead of the computer account itself.
+    A low privileged domain user can create a computer account (MachineAccountQuota), clear its SPNs and set its "dNSHostName" to the name of a domain controller to obtain a certificate as that domain controller (Certifried, CVE-2022-26923).
+    Domain-joined computers update their own "dNSHostName" with their machine account. A change made by a user account mostly corresponds to a domain join or a computer rename performed by an administrator, so review whether the new "DnsHostName" matches the "TargetUserName" of the changed account.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_suspicious_dnshostname_update.toml
+    - https://www.thehacker.recipes/ad/movement/adcs/certifried
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4742
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1068
+    - attack.t1078.002
+    - cve.2022-26923
+    - detection.threat-hunting
+logsource:
+    product: windows
+    service: security
+    definition: 'Requirements: The "Audit Computer Account Management" subcategory must be enabled on the domain controllers'
+detection:
+    selection:
+        EventID: 4742
+    filter_main_dnshostname_unchanged:
+        DnsHostName: '-'
+    filter_main_machine_account:
+        SubjectUserName|endswith: '$'
+    filter_main_local_system:
+        SubjectUserSid: 'S-1-5-18'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Domain join or computer rename performed with the credentials of an administrator or helpdesk account
+    - Provisioning or deployment tools (MDT, SCCM/MECM task sequences, offline domain join) that create computer accounts with a service user account
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/builtin/security/account_management/win_security_computer_account_dnshostname_changed_by_user/info.yml
