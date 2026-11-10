@@ -1,0 +1,13 @@
+id: 96b72ef8-30d2-41b3-832e-142fe1aa578d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 92346402-b1c4-4ae4-804f-5928f275caf1
+      title: Potential C2 Channel Setup - Free SSL Certificate Provider Resolved By Native Windows Binary
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/dns_query/dns_query_win_free_ssl_cert_provider_by_native_binary/92346402-b1c4-4ae4-804f-5928f275caf1.evtx

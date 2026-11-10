@@ -1,0 +1,53 @@
+title: Potential C2 Channel Setup - Free SSL Certificate Provider Resolved By Native Windows Binary
+id: 92346402-b1c4-4ae4-804f-5928f275caf1
+status: experimental
+description: |
+    Detects a DNS query for a free SSL certificate provider domain (letsencrypt.org, zerossl.com, sslforfree.com, freessl.org) issued by a native Windows binary located in System32, SysWOW64, the .NET Framework folders, explorer.exe or notepad.exe, excluding the service host and Edge components that legitimately validate certificates.
+    Native Windows utilities have no reason to contact a certificate authority's web or ACME endpoints; malware that obtains or validates a free certificate for its encrypted command and control channel, or that is injected into or masquerading as a system binary, produces this lookup.
+references:
+    - https://letsencrypt.org/docs/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_encrypted_channel_freesslcert.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1573
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection_domain:
+        QueryName|endswith:
+            - '.letsencrypt.org'
+            - '.sslforfree.com'
+            - '.zerossl.com'
+            - '.freessl.org'
+    selection_domain_apex:
+        QueryName:
+            - 'letsencrypt.org'
+            - 'sslforfree.com'
+            - 'zerossl.com'
+            - 'freessl.org'
+    selection_native_image:
+        Image|startswith:
+            - 'C:\Windows\explorer.exe'
+            - 'C:\Windows\Microsoft.NET\Framework'
+            - 'C:\Windows\notepad.exe'
+            - 'C:\Windows\System\'
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    filter_main_svchost:
+        Image:
+            - 'C:\Windows\System32\svchost.exe'
+            - 'C:\Windows\SysWOW64\svchost.exe'
+    filter_main_edge:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft\Edge\Application\'
+            - 'C:\Program Files (x86)\Microsoft\EdgeUpdate\'
+            - 'C:\Program Files\Microsoft\Edge\Application\'
+            - 'C:\Windows\SystemApps\Microsoft.MicrosoftEdge_'
+    condition: 1 of selection_domain* and selection_native_image and not 1 of filter_main_*
+falsepositives:
+    - Administrative scripts (powershell.exe, curl.exe, certreq.exe) interacting with ACME providers to request certificates; add the script host or the issuing server to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_free_ssl_cert_provider_by_native_binary/info.yml
