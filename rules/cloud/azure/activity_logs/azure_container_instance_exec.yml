@@ -1,0 +1,24 @@
+title: Azure Container Instance Command Execution
+id: d30c116d-c5f1-4bdf-a469-b2c475614347
+status: experimental
+description: |
+    Detects the execution of a command inside an Azure Container Instances container through the control plane.
+    Adversaries may use this capability to run commands in running containers, for example to access mounted secrets or managed identity tokens.
+references:
+    - https://learn.microsoft.com/en-us/azure/container-instances/container-instances-exec
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/containers
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.t1609
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName: 'MICROSOFT.CONTAINERINSTANCE/CONTAINERGROUPS/CONTAINERS/EXEC/ACTION'
+    condition: selection
+falsepositives:
+    - Legitimate troubleshooting of container instances by developers or administrators
+level: medium

@@ -1,0 +1,24 @@
+title: Azure Diagnostic Setting Deleted
+id: ddc09e2b-64bb-4432-8fa4-e4df5d1b2ed7
+status: experimental
+description: |
+    Detects the deletion of an Azure Monitor diagnostic setting.
+    Diagnostic settings forward platform and resource logs to a Log Analytics workspace, storage account or event hub. Adversaries may delete them to stop logs from reaching the SIEM.
+references:
+    - https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/diagnostic-settings
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/monitor
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        operationName|endswith: 'MICROSOFT.INSIGHTS/DIAGNOSTICSETTINGS/DELETE'
+    condition: selection
+falsepositives:
+    - Legitimate reconfiguration of logging pipelines or decommissioning of resources
+level: medium
