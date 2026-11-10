@@ -1,0 +1,13 @@
+id: 65bb3865-2ca1-4852-a199-a0ad43341fed
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: abddddd6-e4f1-41a8-adca-eb0a829e7e75
+      title: Suspicious RPC Runtime Hooking Via NdrClientCall In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_rpc_runtime_hooking_ndrclientcall/abddddd6-e4f1-41a8-adca-eb0a829e7e75.evtx
