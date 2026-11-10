@@ -1,0 +1,48 @@
+title: PowerShell Script With Symmetric Encryption Or Decryption Routine
+id: 5bfe058d-12f5-44cb-90b0-c21a8fce340e
+related:
+    - id: 1c2a3268-3881-414a-80af-a5b313b14c0e
+      type: similar
+status: experimental
+description: |
+    Detects a PowerShell script block that builds a .NET symmetric cipher (AES, Rijndael, SymmetricAlgorithm or a password-derived key), sets its cipher and padding mode and creates an encryptor or decryptor.
+    Loaders use this routine to decrypt a staged payload in memory, and PowerShell ransomware uses it to encrypt files. Administrative scripts also use the same classes to protect credentials, so this rule is meant for hunting and for correlation with the script's origin and parent.
+references:
+    - https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.symmetricalgorithm.createdecryptor
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_encryption.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.impact
+    - attack.stealth
+    - attack.t1027.013
+    - attack.t1140
+    - attack.t1486
+    - detection.threat-hunting
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_class:
+        ScriptBlockText|contains:
+            - 'Cryptography.AesManaged'
+            - 'Cryptography.AesCryptoServiceProvider'
+            - 'Cryptography.RijndaelManaged'
+            - 'Cryptography.SymmetricAlgorithm'
+            - 'PasswordDeriveBytes'
+            - 'Rfc2898DeriveBytes'
+    selection_mode:
+        ScriptBlockText|contains|all:
+            - 'CipherMode'
+            - 'PaddingMode'
+    selection_transform:
+        ScriptBlockText|contains:
+            - '.CreateEncryptor'
+            - '.CreateDecryptor'
+    condition: all of selection_*
+falsepositives:
+    - Deployment, backup and credential-handling scripts that encrypt or decrypt configuration data with AES
+    - Octopus Deploy bootstrap scripts; there is no content-based exclusion because an attacker could add the same strings to a script block, exclude them by script path or hash in the environment
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/powershell/powershell_script/posh_ps_symmetric_encryption_decryption_routine/info.yml
