@@ -11,9 +11,11 @@ references:
     - https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
 author: Alexandr Yampolskyi, SOC Prime
 date: 2019-03-26
-modified: 2022-11-18
+modified: 2026-09-24
 tags:
     - attack.credential-access
+    - attack.discovery
+    - attack.t1040
     # - CSC4
     # - CSC4.5
     # - CSC14
@@ -79,5 +81,6 @@ detection:
             - 5904
     condition: selection
 falsepositives:
-    - Unknown
+    - Ports carrying TLS negotiated in-band (e.g. HTTP to HTTPS redirects on port 80, TLS-enabled MSSQL/MySQL/MongoDB/Oracle sessions)
+    - Legitimate use of cleartext services on these ports in environments where it is accepted
 level: low
