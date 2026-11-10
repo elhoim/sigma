@@ -1,0 +1,46 @@
+title: Suspicious AMSI DLL Created Outside Of System Directories
+id: 1cd7dbd4-875f-44c5-89d7-10db1a390cb3
+related:
+    - id: 6ec86d9e-912e-4726-91a2-209359b999b9
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a file named "amsi.dll" in a location other than the Windows system directories and servicing/update staging folders.
+    Scripting hosts and other AMSI clients load "amsi.dll" by name; an attacker who drops a rogue copy next to a copied script host (or in a directory that comes first in the DLL search order) replaces the Antimalware Scan Interface with a stub that never forwards content to the antivirus engine.
+    The legitimate library only exists under System32, SysWOW64, WinSxS and in Windows Update / setup staging folders.
+references:
+    - https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell/blob/0ea6512afe012ec063c86f50974001e445daa6a8/README.md
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_amsi_bypass_dllhijack.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+    - attack.t1685
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\amsi.dll'
+    filter_main_system_locations:
+        TargetFilename|startswith:
+            - 'C:\$SysReset\CloudImage\'
+            - 'C:\$WINDOWS.~BT\'
+            - 'C:\Windows\CbsTemp\'
+            - 'C:\Windows\servicing\'
+            - 'C:\Windows\SoftwareDistribution\Download\'
+            - 'C:\Windows\System32\amsi.dll'
+            - 'C:\Windows\SystemTemp\'
+            - 'C:\Windows\SysWOW64\amsi.dll'
+            - 'C:\Windows\WinSxS\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Offline Windows image servicing (DISM mount folders) and OS deployment tools that extract the system file to a working directory
+    - Security research hosts
+level: high
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_amsi_dll_creation_outside_system_directories/info.yml
