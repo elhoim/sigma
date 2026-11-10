@@ -1,0 +1,28 @@
+title: Potential Hidden Data Storage Via Alternate Data Stream At Volume Root
+id: 0a932ed2-ad88-4fe8-87c3-8a3a301c7171
+related:
+    - id: b69888d4-380c-45ce-9cf9-d9ce46e67821
+      type: similar
+status: experimental
+description: |
+    Detects the creation of an NTFS alternate data stream attached to the root directory of a volume (a path of the form "C:\:streamname").
+    Streams on the volume root are not shown by Explorer, "dir" or most file system utilities and are not listed as files, which makes them a convenient place to stage tools and payloads. The technique was observed in ALPHA SPIDER ransomware intrusions.
+references:
+    - https://www.crowdstrike.com/en-us/blog/anatomy-of-alpha-spider-ransomware/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_root_dir_ads_creation.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1564.004
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|re: '^[A-Za-z]:\\:[^\\]+$'
+    condition: selection
+falsepositives:
+    - Backup, indexing or deployment software that stores metadata in a stream on the volume root
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_ads_creation_at_volume_root/info.yml
