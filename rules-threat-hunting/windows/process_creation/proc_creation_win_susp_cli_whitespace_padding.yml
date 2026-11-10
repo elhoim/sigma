@@ -1,0 +1,33 @@
+title: Potential Command Line Obfuscation Via Long Whitespace Padding
+id: 958635c3-e31b-43b8-9021-94931d318a58
+related:
+    - id: 3ae9974a-eb09-4044-8e70-8980a50c12c8
+      type: similar
+    - id: dd8756e7-a3a0-4768-b47e-8f545d1a751c
+      type: similar
+status: experimental
+description: |
+    Detects a process whose command line contains a run of 100 or more consecutive space characters.
+    Adversaries pad a command with whitespace to push the real payload out of the visible part of a Run dialog, a shortcut properties window, a console title or a truncated log field, and to break naive signature matching on the surrounding tokens.
+    The related rules require an explorer.exe parent with a '#' marker or an LNK parent; this rule applies to any parent and is meant for hunting.
+references:
+    - https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/defense_evasion_whitespace_padding_command_line.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1027.010
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        CommandLine|re: ' {100,}'
+    condition: selection
+falsepositives:
+    - Installers and build tools that pass fixed-width or padded argument blocks
+    - Scripts that embed a padded here-string or table on the command line
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_susp_cli_whitespace_padding/info.yml
