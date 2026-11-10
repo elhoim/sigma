@@ -1,0 +1,94 @@
+title: Potential DNS Query To Abused Top Level Domain By GenAI Tool Process
+id: 876e684b-19ab-4de9-9ffe-cf7e0f54ae18
+related:
+    - id: a2636f66-9ba1-414b-90e1-dfb3c2e449af
+      type: similar
+status: experimental
+description: |
+    Detects a generative AI desktop tool, local LLM runtime or AI coding assistant (Ollama, LM Studio, Jan, GPT4All, KoboldCpp, llama.cpp server, text-generation-webui, Claude, Cursor, Copilot, Codex, Gemini CLI, Grok, Qwen) resolving a domain under a top level domain that is heavily abused for phishing and malware infrastructure.
+    These tools talk to a small set of vendor and model hosting domains under established TLDs; a query to an abused TLD points at a malicious plugin, extension or model package, a compromised tool, or AI-generated code that was executed by the tool and connects to attacker infrastructure.
+references:
+    - https://www.cybercrimeinfocenter.org/top-20-tlds-by-malicious-phishing-domains
+    - https://www.elastic.co/security-labs/elastic-advances-llm-security
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_genai_process_suspicious_tld_connection.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1071.004
+    - detection.threat-hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\claude.exe'
+            - '\codex.exe'
+            - '\copilot.exe'
+            - '\cursor.exe'
+            - '\gemini-cli.exe'
+            - '\genaiscript.exe'
+            - '\gpt4all.exe'
+            - '\grok.exe'
+            - '\jan.exe'
+            - '\koboldcpp.exe'
+            - '\llama-cli.exe'
+            - '\llama-server.exe'
+            - '\LM Studio.exe'
+            - '\lmstudio.exe'
+            - '\ollama.exe'
+            - '\ollama app.exe'
+            - '\oobabooga.exe'
+            - '\qwen.exe'
+            - '\text-generation-webui.exe'
+            - '\textgen.exe'
+    selection_tld:
+        QueryName|endswith:
+            - '.accountant'
+            - '.bar'
+            - '.beauty'
+            - '.boats'
+            - '.bond'
+            - '.buzz'
+            - '.cam'
+            - '.cf'
+            - '.cfd'
+            - '.christmas'
+            - '.click'
+            - '.country'
+            - '.cyou'
+            - '.date'
+            - '.download'
+            - '.faith'
+            - '.ga'
+            - '.gq'
+            - '.hair'
+            - '.icu'
+            - '.loan'
+            - '.lol'
+            - '.makeup'
+            - '.men'
+            - '.ml'
+            - '.mom'
+            - '.monster'
+            - '.motorcycles'
+            - '.onion'
+            - '.party'
+            - '.quest'
+            - '.racing'
+            - '.rest'
+            - '.review'
+            - '.science'
+            - '.skin'
+            - '.surf'
+            - '.tk'
+            - '.top'
+            - '.win'
+            - '.xyz'
+            - '.zip'
+    condition: all of selection_*
+falsepositives:
+    - Model repositories, community plugin registries or documentation sites legitimately hosted under one of these TLDs
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/dns_query/dns_query_win_genai_tool_susp_tld/info.yml
