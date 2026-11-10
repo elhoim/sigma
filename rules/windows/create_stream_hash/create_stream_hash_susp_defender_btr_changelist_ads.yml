@@ -1,0 +1,42 @@
+title: Suspicious Defender Boot-Time Removal Driver Configuration ADS Creation
+id: 7526766d-911c-4683-a5ca-b471f586969a
+status: experimental
+description: |
+    Detects the creation of an NTFS alternate data stream named ":changelist" by a process other than the Microsoft Defender engine, the Malicious Software Removal Tool or the System process.
+    Microsoft Defender's Boot-Time Removal driver (BTR.sys) reads its RC4-encrypted transaction list from a ":changelist" stream attached to the driver file, referenced by the "Args" value of a transient service key.
+    Tools such as BTR_CLI reproduce this staging outside of Defender to abuse the Microsoft-signed driver as a kernel primitive for arbitrary file and registry operations during early boot, for example to delete security product binaries and service keys.
+references:
+    - https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/
+    - https://github.com/Dump-GUY/BTR_CLI/tree/41be33406324aa10eeb279b8a977afa16bfebb81
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_boot_time_removal_tool.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1543.003
+    - attack.t1564.004
+    - attack.t1685
+logsource:
+    product: windows
+    category: create_stream_hash
+detection:
+    selection:
+        TargetFilename|endswith: ':changelist'
+    filter_main_defender_engine:
+        Image|startswith:
+            - 'C:\ProgramData\Microsoft\Windows Defender\Platform\'
+            - 'C:\Program Files\Windows Defender\'
+            - 'C:\Program Files (x86)\Windows Defender\'
+        Image|endswith: '\MsMpEng.exe'
+    filter_main_mrt:
+        Image: 'C:\Windows\System32\MRT.exe'
+    filter_main_system:
+        Image: 'System'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Defender engine binaries running from a non-standard platform path or other Microsoft anti-malware components staging a legitimate reboot remediation
+level: high
+regression_tests_path: regression_data/rules/windows/create_stream_hash/create_stream_hash_susp_defender_btr_changelist_ads/info.yml
