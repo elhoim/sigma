@@ -1,0 +1,26 @@
+title: GCP Cloud Logging Log Bucket Or Log Deleted
+id: 5f3f9419-792e-4156-9ac2-672196ba13c1
+status: experimental
+description: |
+    Detects the deletion of a Cloud Logging log bucket or of all entries of a log.
+    Adversaries may delete logs or the buckets storing them to remove evidence of their activity.
+references:
+    - https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.locations.buckets/delete
+    - https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    product: gcp
+    service: gcp.audit
+detection:
+    selection:
+        gcp.audit.method_name:
+            - 'google.logging.v2.ConfigServiceV2.DeleteBucket'
+            - 'google.logging.v2.LoggingServiceV2.DeleteLog'
+    condition: selection
+falsepositives:
+    - Legitimate cleanup of logging resources by administrators
+level: medium
