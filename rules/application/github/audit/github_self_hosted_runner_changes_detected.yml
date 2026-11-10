@@ -11,7 +11,6 @@ references:
     - https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#about-self-hosted-runners
     - https://docs.github.com/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/reviewing-the-audit-log-for-your-organization#search-based-on-operation
 tags:
-    - attack.impact
     - attack.discovery
     - attack.collection
     - attack.persistence
