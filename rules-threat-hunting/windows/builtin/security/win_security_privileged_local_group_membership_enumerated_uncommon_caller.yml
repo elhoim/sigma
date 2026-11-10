@@ -57,14 +57,14 @@ detection:
     filter_main_setup:
         CallerProcessName|re: '^C:\\\$WINDOWS\.~BT\\Sources\\[^\\]+\.exe$'
     filter_optional_backup_agents:
-        # Anchored: full prefix ending with a backslash and an executable name; C:\Windows\Temp is writable, so keep this optional and tune to the exact binary of your agent
+        # Anchored full paths in non-world-writable locations only
         CallerProcessName|re:
-            - '^C:\\Windows\\Temp\\rubrik_vmware\\(?:[^\\]+\\)*[^\\]+\.exe$'
             - '^C:\\Windows\\VeeamVssSupport\\(?:[^\\]+\\)*[^\\]+\.exe$'
             - '^C:\\WindowsAzure\\(?:[^\\]+\\)*[^\\]+\.exe$'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Administrators running "net localgroup administrators" (caller net1.exe is excluded) or management agents that inventory local groups; baseline CallerProcessName per environment
+    - Rubrik VMware agents running from C:\Windows\Temp\rubrik_vmware (not excluded because that directory is writable; add an environment-specific exclusion for the exact binary)
     - PowerShell cmdlets such as Get-LocalGroup that also read group member SIDs and so generate the same event, and SYSTEM or service-account tasks run from PowerShell (SYSTEM is deliberately not excluded)
 level: medium
 regression_tests_path: regression_data/rules-threat-hunting/windows/builtin/security/win_security_privileged_local_group_membership_enumerated_uncommon_caller/info.yml
