@@ -1,0 +1,71 @@
+title: Suspicious PowerShell Download Or Encoded Command Spawned By Npm Package Install
+id: eb99d101-0648-4979-bbfa-bf75687f2e33
+related:
+    - id: afa71271-6a97-4e47-810f-83120fb1a4ce
+      type: similar
+status: experimental
+description: |
+    Detects a PowerShell or cmd.exe child of a Node.js process running the npm or npx CLI whose command line contains a download cradle or an encoded command.
+    Malicious npm packages abuse the "preinstall"/"postinstall" lifecycle scripts to run PowerShell during "npm install" or "npx", downloading and executing a second stage on developer workstations and build agents.
+    Npm runs lifecycle scripts through cmd.exe on Windows, so the rule also inspects the cmd.exe child command line.
+references:
+    - https://www.elastic.co/security-labs/axios-supply-chain-compromise-detections
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_suspicious_powershell_from_npm_install.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.execution
+    - attack.initial-access
+    - attack.t1059.001
+    - attack.t1105
+    - attack.t1195.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\node.exe'
+        ParentCommandLine|contains:
+            - '\npm-cli.js'
+            - '\npx-cli.js'
+            - '\npm-cache\_npx\'
+    selection_child:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+    selection_cli_encoded:
+        CommandLine|contains:
+            - ' -enc '
+            - ' -enco'
+            - ' -ec '
+            - ' -ec:'
+            - 'FromBase64String'
+    selection_cli_download:
+        CommandLine|contains:
+            - 'DownloadData'
+            - 'DownloadFile'
+            - 'DownloadString'
+            - 'Invoke-Expression'
+            - 'Invoke-RestMethod'
+            - 'Invoke-WebRequest'
+            - 'Net.WebClient'
+            - 'Start-BitsTransfer'
+            - ' iex '
+            - ' iex('
+            - ' irm '
+            - ' irm('
+            - ' iwr '
+            - ' iwr('
+            - 'curl '
+            - 'wget '
+    condition: selection_parent and selection_child and 1 of selection_cli_*
+falsepositives:
+    - Packages whose install scripts download helper binaries or build tools with PowerShell, curl or wget (for example native module toolchains); review the package name in the parent command line and the destination URL
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_npm_install_susp_powershell_child/info.yml

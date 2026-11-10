@@ -1,0 +1,13 @@
+id: 7421b9c4-b1d5-4627-8eb9-d14ab2cc13a1
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: eb99d101-0648-4979-bbfa-bf75687f2e33
+      title: Suspicious PowerShell Download Or Encoded Command Spawned By Npm Package Install
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_npm_install_susp_powershell_child/eb99d101-0648-4979-bbfa-bf75687f2e33.evtx
