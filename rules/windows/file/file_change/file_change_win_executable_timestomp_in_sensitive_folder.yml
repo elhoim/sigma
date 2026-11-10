@@ -1,0 +1,72 @@
+title: Potential Timestomping Of Executable File In Sensitive Folder
+id: 26789bd8-26b3-4caa-912d-291e81a08587
+related:
+    - id: 558eebe5-f2ba-4104-b339-36f7902bcc1a
+      type: similar
+status: experimental
+description: |
+    Detects a change of the creation time of an executable, library, driver, installer, screensaver or shortcut file located in the Windows system folders, in "ProgramData", in "Users\Public" or in a Startup folder, performed by a process that is not an installer or a Windows servicing component. No account is excluded, so SYSTEM activity is reported too.
+    Attackers modify the creation time of dropped binaries so that they blend in with the files installed with the operating system and escape triage based on recently created files.
+references:
+    - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_timestomp_sysmon.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.t1070.006
+logsource:
+    category: file_change
+    product: windows
+detection:
+    selection_ext:
+        TargetFilename|endswith:
+            - '.dll'
+            - '.exe'
+            - '.lnk'
+            - '.msi'
+            - '.pif'
+            - '.scr'
+            - '.sys'
+    selection_path:
+        TargetFilename|contains:
+            - ':\ProgramData\'
+            - ':\Users\Public\'
+            - ':\Windows\System32\'
+            - ':\Windows\SysWOW64\'
+            - '\Start Menu\Programs\Startup\'
+    filter_main_installers_and_servicing:
+        Image|startswith:
+            - 'C:\$WINDOWS.~BT\Sources\'
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+            - 'C:\ProgramData\Microsoft\Windows Defender\'
+            - 'C:\Windows\Microsoft.NET\'
+            - 'C:\Windows\servicing\'
+            - 'C:\Windows\SystemApps\'
+            - 'C:\Windows\uus\'
+            - 'C:\Windows\WinSxS\'
+    filter_main_windows_components:
+        Image:
+            - 'C:\Windows\explorer.exe'
+            - 'C:\Windows\System32\cleanmgr.exe'
+            - 'C:\Windows\System32\CompatTelRunner.exe'
+            - 'C:\Windows\System32\DFSRs.exe'
+            - 'C:\Windows\System32\Dism.exe'
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\System32\Robocopy.exe'
+            - 'C:\Windows\System32\SearchIndexer.exe'
+            - 'C:\Windows\System32\svchost.exe'
+            - 'C:\Windows\System32\wbengine.exe'
+            - 'C:\Windows\System32\wuauclt.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+            - 'C:\Windows\SysWOW64\Robocopy.exe'
+    filter_main_spooler:
+        Image: 'C:\Windows\System32\spoolsv.exe'
+        TargetFilename|startswith: 'C:\Windows\System32\spool\'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Software and management agents running as SYSTEM that restore original timestamps when copying executables into ProgramData; add optional filters by full image path
+    - Archive extraction tools, synchronisation clients and deployment scripts that restore original timestamps when copying executables into ProgramData or Users\Public
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_change/file_change_win_executable_timestomp_in_sensitive_folder/info.yml
