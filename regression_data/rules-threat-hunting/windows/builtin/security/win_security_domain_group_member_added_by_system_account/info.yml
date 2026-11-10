@@ -1,0 +1,13 @@
+id: 0b0e7f68-a3bb-40ce-94f7-d914e503f11e
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: dcce696f-abf5-4088-99e4-6bcb8ccf2c7c
+      title: Domain Group Member Added By SYSTEM Account
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/builtin/security/win_security_domain_group_member_added_by_system_account/dcce696f-abf5-4088-99e4-6bcb8ccf2c7c.evtx
