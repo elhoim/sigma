@@ -11,6 +11,7 @@ tags:
     - attack.privilege-escalation
     - attack.persistence
     - attack.initial-access
+    - attack.command-and-control
     - attack.stealth
     - attack.t1133
     - attack.t1078
