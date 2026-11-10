@@ -1,0 +1,13 @@
+id: 58ba1371-dc59-49d6-b4ac-e516e25d2b52
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: f311cec5-a7fd-41fb-add4-e69bcbc59a55
+      title: Potential Browser Process Masquerading - Browser Executable Name Running From Uncommon Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_browser_binary_name_from_uncommon_location/f311cec5-a7fd-41fb-add4-e69bcbc59a55.evtx
