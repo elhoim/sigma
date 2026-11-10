@@ -1,0 +1,13 @@
+id: 62ac44c7-a631-4f55-9264-c087321868b8
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 570cc2d4-4c58-4933-a1b9-633e55e8095d
+      title: Potential Payload Execution From Suspicious Folder Via LOLBin Command Line
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_susp_folder_in_cmdline/570cc2d4-4c58-4933-a1b9-633e55e8095d.evtx
