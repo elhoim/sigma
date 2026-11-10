@@ -1,0 +1,13 @@
+id: bf97563e-c2d8-4b83-8d7d-a9c9c09d1647
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: a26bdbd1-bbef-43d2-82e1-9158196e1280
+      title: Suspicious Service Disabled Via Registry By SolarWinds Orion Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-emerging-threats/2020/TA/SolarWinds-Supply-Chain/registry_set_apt_unc2452_solarwinds_process_disables_service/a26bdbd1-bbef-43d2-82e1-9158196e1280.evtx
