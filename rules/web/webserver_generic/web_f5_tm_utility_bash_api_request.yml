@@ -13,9 +13,8 @@ author: Nasreddine Bencherchali (Nextron Systems), Thurein Oo
 date: 2023-11-08
 tags:
     - attack.execution
-    - attack.initial-access
     - attack.t1190
-    - attack.t1059.004
+    - attack.initial-access
 logsource:
     category: webserver
 detection:
