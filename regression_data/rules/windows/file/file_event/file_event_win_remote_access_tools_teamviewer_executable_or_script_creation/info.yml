@@ -1,0 +1,13 @@
+id: 0a057c52-bc97-4bfe-afa2-88109886ceea
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: eb9b0534-bfb8-4331-8063-cfb26845522b
+      title: Remote Access Tool - Potential File Transfer Of Executable Or Script Via TeamViewer
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_remote_access_tools_teamviewer_executable_or_script_creation/eb9b0534-bfb8-4331-8063-cfb26845522b.evtx
