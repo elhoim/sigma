@@ -1,0 +1,42 @@
+title: Suspicious Microsoft Antimalware Service Executable Execution
+id: bbcfe80c-88bb-43d3-ad83-df5eed57a461
+related:
+    - id: 5de632bc-7fbd-4c8a-944a-fce55c59eae5
+      type: similar
+status: experimental
+description: |
+    Detects the execution of the Microsoft Antimalware Service executable (MsMpEng.exe) from a location other than the Microsoft Defender or Microsoft Security Client installation folders, or under a different file name.
+    Outdated, Microsoft-signed copies of MsMpEng.exe are dropped by attackers next to a malicious "mpsvc.dll" to side-load their payload under a trusted process name, as done by REvil in the Kaseya supply chain attack.
+references:
+    - https://www.sophos.com/en-us/blog/independence-day-revil-uses-supply-chain-exploit-to-attack-hundreds-of-businesses/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_windefend_unusual_path.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1036.005
+    - attack.t1574.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_renamed:
+        OriginalFileName: 'MsMpEng.exe'
+    filter_main_renamed_original_name:
+        Image|endswith: '\MsMpEng.exe'
+    selection_path:
+        Image|endswith: '\MsMpEng.exe'
+    filter_main_path_defender:
+        Image|contains:
+            - ':\Program Files (x86)\Microsoft Security Client\'
+            - ':\Program Files (x86)\Windows Defender\'
+            - ':\Program Files\Microsoft Security Client\'
+            - ':\Program Files\Windows Defender\'
+            - ':\ProgramData\Microsoft\Windows Defender\'
+    condition: (selection_renamed and not filter_main_renamed_original_name) or (selection_path and not filter_main_path_defender)
+falsepositives:
+    - Microsoft Defender platform installed in a non-default location
+    - Security researchers running an offline copy of the Microsoft Antimalware Service
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_msmpeng_susp_execution/info.yml
