@@ -1,0 +1,28 @@
+title: Microsoft 365 Unified Audit Log Ingestion Disabled
+id: 3b0d10fb-60ab-48e4-9618-04ded3c47a8e
+status: experimental
+description: |
+    Detects the use of "Set-AdminAuditLogConfig" to disable the ingestion of events into the Microsoft 365 unified audit log.
+    Adversaries may disable audit logging to hide subsequent activity in the tenant.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-adminauditlogconfig?view=exchange-ps
+    - https://learn.microsoft.com/en-us/purview/audit-log-enable-disable
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'Parameters' field is a list of dict. A correct mapping to the 'Value' field inside is recommended to avoid greedy search"
+detection:
+    selection:
+        Operation: 'Set-AdminAuditLogConfig'
+        Parameters|contains|all:
+            - 'UnifiedAuditLogIngestionEnabled'
+            - 'False'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

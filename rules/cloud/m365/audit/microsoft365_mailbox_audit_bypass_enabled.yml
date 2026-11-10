@@ -1,0 +1,27 @@
+title: Exchange Online Mailbox Audit Bypass Enabled
+id: 8e57cee4-e7fc-4d3a-87a3-9d00efef670c
+status: experimental
+description: |
+    Detects the use of "Set-MailboxAuditBypassAssociation" to enable mailbox audit bypass for an account.
+    Mailbox actions performed by an account with audit bypass enabled are not logged, which adversaries may abuse to access mailboxes without leaving traces.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-mailboxauditbypassassociation?view=exchange-ps
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685.002
+logsource:
+    service: audit
+    product: m365
+    definition: "Requirements: The 'Parameters' field is a list of dict. A correct mapping to the 'Value' field inside is recommended to avoid greedy search"
+detection:
+    selection:
+        Operation: 'Set-MailboxAuditBypassAssociation'
+        Parameters|contains|all:
+            - 'AuditBypassEnabled'
+            - 'True'
+    condition: selection
+falsepositives:
+    - Accounts of legitimate third-party archiving or backup services
+level: high
