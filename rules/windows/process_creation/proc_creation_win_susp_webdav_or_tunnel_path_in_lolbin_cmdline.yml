@@ -7,6 +7,7 @@ status: experimental
 description: |
     Detects command and script interpreters or download-capable system utilities whose command line references a WebDAV share ("\DavWWWRoot\", "\webdav\", "@SSL\", UNC path with an "@port" suffix) or a free Cloudflare tunnel host ("trycloudflare.com").
     Phishing campaigns deliver shortcuts and scripts that make cmd.exe, PowerShell, mshta.exe or msiexec.exe fetch and run the next stage directly from an attacker WebDAV server, often exposed through a Cloudflare quick tunnel, so that nothing is written to disk before execution.
+    The SharePoint filter accepts any tenant by default; restrict it to your own tenant names, because an attacker can own a SharePoint tenant too.
     The related threat-hunting rule only looks at processes whose own image path is on a WebDAV share; this rule inspects the arguments of the launching utility.
 references:
     - https://www.proofpoint.com/us/blog/threat-insight/threat-actor-abuses-cloudflare-tunnels-deliver-rats
@@ -59,15 +60,17 @@ detection:
             - '@443\'
             - '@8080\'
             - '@8443\'
-    filter_main_sharepoint:
+    # Replace the tenant wildcard with your own tenants, e.g. \\(?:contoso|contoso-my)\.sharepoint\.com@SSL
+    filter_optional_sharepoint:
         Image|endswith:
             - '\cmd.exe'
             - '\net.exe'
             - '\net1.exe'
         CommandLine|re: '^(?:"[A-Za-z]:\\[^"&|<>^()%!]*\\(?:net1?|cmd)\.exe"|(?:net1?|cmd)(?:\.exe)?)\s+(?:/c\s+(?:net1?\s+)?)?use\s+(?:/persistent:(?:yes|no)\s+)?(?:[A-Za-z]:\s+)?\\\\[A-Za-z0-9-]+\.sharepoint\.com@SSL\\DavWWWRoot\\[^\s@&|<>^()%!"]*\s*$'
-    condition: all of selection_* and not 1 of filter_main_*
+    condition: all of selection_* and not 1 of filter_optional_*
 falsepositives:
     - Scripts that map or browse internal WebDAV shares (document management systems, Nextcloud/ownCloud, IIS WebDAV) by UNC path
+    - Mapped SharePoint or OneDrive libraries of any tenant are filtered by default; replace the tenant wildcard in filter_optional_sharepoint with your own tenants
     - Developers exposing local services through Cloudflare quick tunnels and testing them with curl
 level: high
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_webdav_or_tunnel_path_in_lolbin_cmdline/info.yml
