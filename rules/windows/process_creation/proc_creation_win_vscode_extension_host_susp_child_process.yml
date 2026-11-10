@@ -1,0 +1,69 @@
+title: Potential Malicious VS Code Extension - Shell Or LOLBin Child Of Extension Host
+id: 6ea9500b-99c0-493a-84e1-86991e9d7a3e
+status: experimental
+description: |
+    Detects a shell, scripting host, download utility or other living-off-the-land binary started by the Visual Studio Code extension host, identified by a "Code.exe" or "node.exe" parent whose command line references the extensions folder or the extension host entry point.
+    Malicious extensions published to the marketplace or the Open VSX registry execute on editor start-up and have been observed dropping remote access tools (for example the fake "Clawdbot" extension installing ScreenConnect) or running PowerShell download cradles; most legitimate extensions do not spawn these processes.
+references:
+    - https://www.aikido.dev/blog/fake-clawdbot-vscode-extension-malware
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_suspicious_execution_from_vscode_extension.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.execution
+    - attack.initial-access
+    - attack.stealth
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1059.007
+    - attack.t1105
+    - attack.t1195.002
+    - attack.t1218.005
+    - attack.t1218.007
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent_img:
+        ParentImage|endswith:
+            - '\Code.exe'
+            - '\node.exe'
+    selection_parent_cli:
+        - ParentCommandLine|contains: 'extensionHost'
+        - ParentCommandLine|contains|all:
+              - 'vscode'
+              - 'extensions'
+    selection_img:
+        - Image|endswith:
+              - '\bitsadmin.exe'
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\curl.exe'
+              - '\mshta.exe'
+              - '\msiexec.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'bitsadmin.exe'
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'curl.exe'
+              - 'MSHTA.EXE'
+              - 'msiexec.exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'RUNDLL32.EXE'
+              - 'wscript.exe'
+    filter_main_vscode_housekeeping:
+        # Built-in and common extensions probe the environment with exactly these commands
+        Image: 'C:\Windows\System32\cmd.exe'
+        CommandLine|re: '(?i)^"?(cmd|C:\\Windows\\System32\\cmd)(\.exe)?"?\s+/c\s+(chcp(\s+\d+)?|npm\.cmd config get prefix|code -v)\s*$'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Extensions that legitimately run shell commands at activation (language servers started through cmd.exe, Git helpers, build tools, the PowerShell extension starting its console host); there is no content-based exclusion by extension name because an attacker could reproduce it, exclude per full image path and extension folder in the environment
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_vscode_extension_host_susp_child_process/info.yml
