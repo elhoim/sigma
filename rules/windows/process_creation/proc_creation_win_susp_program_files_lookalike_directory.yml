@@ -1,0 +1,36 @@
+title: Potential Program Files Directory Masquerading
+id: fee2c9f1-5633-4dc2-a202-43836355a603
+status: experimental
+description: |
+    Detects a process whose image path contains a "Program Files" directory name that is not one of the real Windows program directories at the root of a drive (for example C:\Program Files Common\, C:\Windows\Program Files\ or C:\Program Files (x86) \ with a trailing space).
+    Attackers create such look-alike folders because detection logic and application allow-lists often trust anything under "Program Files"; a low-privileged user can create them anywhere outside the protected roots.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_masquerading_trusted_directory.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|contains: 'Program Files'
+    filter_main_real_roots:
+        Image|re: '^[A-Za-z]:\\Program Files(?: \(x86\))?\\'
+    filter_main_downloaded_program_files:
+        Image|re: '^[A-Za-z]:\\Windows\\Downloaded Program Files\\'
+    filter_main_user_and_programdata:
+        Image|re: '^[A-Za-z]:\\(?:Users|ProgramData)\\'
+    filter_optional_opera_installer:
+        Image|startswith: 'C:\Windows\Temp\.opera\'
+        Image|contains|all:
+            - 'CProgram'
+            - 'Opera'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Portable software or installers extracted into a folder that happens to contain "Program Files" in its name outside the user profile, including installers unpacking to "C:\Windows\Temp\Program Files\"
+    - Secondary drives where a "Program Files" folder is used as a software root but is not at the drive root
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_program_files_lookalike_directory/info.yml
