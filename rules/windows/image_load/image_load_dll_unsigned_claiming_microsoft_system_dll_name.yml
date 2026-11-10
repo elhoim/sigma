@@ -1,0 +1,59 @@
+title: Potential Spoofed Microsoft DLL - Unsigned Image Claiming A System DLL Original File Name
+id: 7d3f7550-30cd-43d9-a63f-4a5ea8459ec9
+status: experimental
+description: |
+    Detects the loading of an unsigned DLL whose version resource claims the OriginalFilename of a well-known Microsoft system DLL that is a frequent DLL side-loading or search-order hijacking target (for example version.dll, dbghelp.dll, dxgi.dll, wtsapi32.dll, cryptbase.dll, userenv.dll, iphlpapi.dll).
+    Genuine copies of these libraries are Authenticode or catalog signed by Microsoft. A DLL that copies their version information but has no valid signature is a planted library whose metadata was forged to look legitimate in process and module listings.
+references:
+    - https://adversarial-detection-engineering.github.io/ofndb/gotchas/
+    - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1036.001
+    - attack.t1574.001
+logsource:
+    product: windows
+    category: image_load
+    definition: 'Requirements: Sysmon image load events with signature verification enabled'
+detection:
+    selection:
+        Signed: 'false'
+        OriginalFileName:
+            - 'version.dll'
+            - 'dbghelp.dll'
+            - 'dbgcore.dll'
+            - 'dxgi.dll'
+            - 'd3d9.dll'
+            - 'd3d11.dll'
+            - 'wtsapi32.dll'
+            - 'cryptbase.dll'
+            - 'cryptsp.dll'
+            - 'userenv.dll'
+            - 'profapi.dll'
+            - 'propsys.dll'
+            - 'iphlpapi.dll'
+            - 'winhttp.dll'
+            - 'wininet.dll'
+            - 'winmm.dll'
+            - 'msimg32.dll'
+            - 'uxtheme.dll'
+            - 'dwmapi.dll'
+            - 'wlanapi.dll'
+            - 'ws2_32.dll'
+            - 'secur32.dll'
+            - 'netapi32.dll'
+            - 'mscoree.dll'
+            - 'kernel32.dll'
+            - 'ntdll.dll'
+            - 'advapi32.dll'
+            - 'user32.dll'
+    condition: selection
+falsepositives:
+    - Unsigned redistributions of Microsoft runtime DLLs bundled with third-party or portable software (rare for the listed libraries)
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_dll_unsigned_claiming_microsoft_system_dll_name/info.yml
