@@ -1,0 +1,23 @@
+title: Okta MFA Bypass Attempt
+id: 4c64a67e-c468-400e-8641-ad43aeb07875
+status: experimental
+description: Detects an attempt to bypass multi-factor authentication in Okta.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1556.006
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType: 'user.mfa.attempt_bypass'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
