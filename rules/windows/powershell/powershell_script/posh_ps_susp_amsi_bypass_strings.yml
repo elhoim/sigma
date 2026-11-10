@@ -1,0 +1,50 @@
+title: Suspicious AMSI Bypass Related Strings In PowerShell Script
+id: d1bfddb8-467d-42c8-9977-23c97ca26899
+related:
+    - id: e0d6c087-2d1c-47fd-8799-3904103c5a98
+      type: similar
+    - id: 30edb182-aa75-42c0-b0a9-e998bb29067c
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script blocks containing identifiers that are characteristic of public Antimalware Scan Interface (AMSI) bypass techniques, such as references to the internal "AmsiUtils" class and its "amsiInitFailed" / "amsiContext" / "amsiSession" fields, to the "AmsiScanBuffer" and "AmsiInitialize" exports, or to well-known bypass function and module names.
+    Script block logging records these identifiers even when the bypass is delivered through an encoded or downloaded script, while the existing process creation rule only sees the command line.
+references:
+    - https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell/blob/0ea6512afe012ec063c86f50974001e445daa6a8/README.md
+    - https://www.mdsec.co.uk/2018/06/exploring-powershell-amsi-and-logging-evasion/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_amsi_bypass_powershell.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.defense-impairment
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1685
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection:
+        ScriptBlockText|contains:
+            - 'amsiContext'
+            - 'amsiInitFailed'
+            - 'AmsiInitialize'
+            - 'AmsiOpenSession'
+            - 'AmsiScanBuffer'
+            - 'amsiSession'
+            - 'AmsiX32'
+            - 'AmsiX64'
+            - 'AntimalwareProvider'
+            - 'Bypass.AMSI'
+            - 'FindAmsiFun'
+            - 'Invoke-AmsiBypass'
+            - 'System.Management.Automation.AmsiUtils'
+            - 'unloadobfuscated'
+            - 'unloadsilent'
+    condition: selection
+falsepositives:
+    - Security research and detection engineering scripts that mention AMSI internals
+    - Scripts that enumerate loaded modules or exports and print AMSI export names
+level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_amsi_bypass_strings/info.yml
