@@ -1,0 +1,36 @@
+title: Remcos RAT Registry Persistence And Licence Key
+id: 95672800-dad0-43ff-a668-4c249df12062
+status: experimental
+description: |
+    Detects registry values written by the Remcos remote access trojan: its autorun entry named "Remcos" or "Rmc-<6 characters>" under the CurrentVersion\Run key, and the "licence" value it stores under its "Software\Remcos-<id>" or "Software\Rmc-<id>" configuration key.
+    Remcos is a commodity RAT distributed through phishing campaigns and loaders such as GuLoader; the default builder keeps these registry names, so they identify an infection even when the executable is packed or renamed.
+references:
+    - https://any.run/malware-trends/remcos
+    - https://www.fortinet.com/blog/threat-research/latest-remcos-rat-phishing
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_remcos_rat_iocs.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1219
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_run_key:
+        TargetObject|contains:
+            - '\Windows\CurrentVersion\Run\Remcos'
+            - '\Windows\CurrentVersion\Run\Rmc-'
+    selection_licence:
+        TargetObject|contains:
+            - '\Software\Remcos-'
+            - '\Software\Rmc-'
+        TargetObject|endswith: '\licence'
+    condition: 1 of selection_*
+falsepositives:
+    - Malware analysis or sandbox hosts that detonate Remcos samples
+level: critical
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_mal_remcos_rat_persistence/info.yml
