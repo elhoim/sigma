@@ -1,0 +1,84 @@
+title: Suspicious Named File Stream Created By Command Or Script Interpreter
+id: 72e192ac-2c26-4111-a95b-721d1081733b
+related:
+    - id: b69888d4-380c-45ce-9cf9-d9ce46e67821
+      type: similar
+    - id: 0d7a9363-af70-4e7b-a3b7-1a176b7fbe84
+      type: similar
+status: experimental
+description: |
+    Detects the creation of an NTFS alternate data stream (ADS) whose stream name carries an executable, script or document extension by a command or script interpreter such as cmd, PowerShell, mshta, wscript, cscript, node or python.
+    Adversaries hide payloads in ADS of innocuous host files (e.g. "desktop.ini:payload.exe") to evade file listings and later execute them with LOLBINs.
+    Legitimate software rarely writes such streams through an interpreter. Unlike the imphash-based rule "Hidden Executable In NTFS Alternate Data Stream", this rule does not depend on hash logging and also covers scripts and documents.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_unusual_ads_file_creation.toml
+    - https://oddvar.moe/2018/01/14/putting-data-in-alternate-data-streams-and-how-to-execute-it/
+    - https://github.com/redcanaryco/atomic-red-team/blob/9f6a1eab36d561272cf9f34c61dd80263db3ce8e/atomics/T1564.004/T1564.004.md
+    - https://github.com/trustedsec/SysmonCommunityGuide/blob/bde5de34c30521837013b586d8de17677722fa90/chapters/file-stream-creation-hash.md
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.t1564.004
+logsource:
+    product: windows
+    category: create_stream_hash
+detection:
+    selection_img:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\node.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\python.exe'
+            - '\python3.exe'
+            - '\pythonw.exe'
+            - '\wscript.exe'
+    selection_stream:
+        # Sysmon EID 15 logs "<host file>:<stream name>", so the suffix is the stream name's extension
+        TargetFilename|endswith:
+            - '.bat'
+            - '.cmd'
+            - '.com'
+            - '.dat'
+            - '.dll'
+            - '.doc'
+            - '.docm'
+            - '.docx'
+            - '.exe'
+            - '.hta'
+            - '.img'
+            - '.iso'
+            - '.js'
+            - '.jse'
+            - '.pdf'
+            - '.ppt'
+            - '.pptm'
+            - '.pptx'
+            - '.ps1'
+            - '.psm1'
+            - '.reg'
+            - '.rtf'
+            - '.scr'
+            - '.sct'
+            - '.sys'
+            - '.txt'
+            - '.vbe'
+            - '.vbs'
+            - '.wsf'
+            - '.wsh'
+            - '.xll'
+            - '.xls'
+            - '.xlsm'
+            - '.xlsx'
+    filter_main_default_stream:
+        # Sysmon EID 15 also logs the unnamed data stream of every file created by the interpreter ("C:\dir\file.txt"); a named stream always has a colon after the drive prefix (UNC paths have no drive prefix)
+        TargetFilename|re: '^([A-Za-z]:)?[^:]*$'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Administration or packaging scripts that deliberately store metadata or payload files in alternate data streams (e.g. backup or data classification tooling driven from PowerShell)
+    - Developers testing NTFS stream handling with PowerShell "Set-Content -Stream" or Python
+level: high
+regression_tests_path: regression_data/rules/windows/create_stream_hash/create_stream_hash_susp_interpreter_ads_payload_extension/info.yml
