@@ -1,0 +1,45 @@
+title: Suspicious Execution From INetCache Folder
+id: a9957f8e-f2de-466c-850a-40fa0edfb714
+status: experimental
+description: |
+    Detects a process started by Windows Explorer or a common archive manager (WinRAR, 7-Zip, Bandizip) whose image or command line points into the Internet Explorer cache folder "AppData\Local\Microsoft\Windows\INetCache\IE".
+    Files opened straight from a download prompt, a WebDAV share or an Internet shortcut land in this folder, and a user double-clicking such a file is a common first stage of phishing campaigns (e.g. the Water Hydra CVE-2024-21412 campaign).
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_execution_from_inetcache.toml
+    - https://www.trendmicro.com/en_us/research/24/b/cve202421412-water-hydra-targets-traders-with-windows-defender-s.html
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1204.002
+    - attack.t1566.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith:
+            - '\7zFM.exe'
+            - '\Bandizip.exe'
+            - '\explorer.exe'
+            - '\winrar.exe'
+    selection_cache:
+        - Image|contains: '\AppData\Local\Microsoft\Windows\INetCache\IE\'
+        - CommandLine|contains: '\AppData\Local\Microsoft\Windows\INetCache\IE\'
+    filter_main_program_files:
+        Image|contains:
+            - ':\Program Files\'
+            - ':\Program Files (x86)\'
+    filter_main_builtin_viewers:
+        Image|endswith:
+            - ':\Windows\explorer.exe'
+            - ':\Windows\System32\mspaint.exe'
+            - ':\Windows\System32\notepad.exe'
+            - ':\Windows\System32\OpenWith.exe'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Documents opened from the Internet Explorer cache folder with a viewer that is installed outside of "Program Files"
+    - Software installers legitimately downloaded through a legacy WebBrowser control and run by the user
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_execution_from_inetcache/info.yml
