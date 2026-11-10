@@ -1,0 +1,52 @@
+title: Potential NTLM Credential Leak - SMB Connection To Public IP By System Process
+id: b3b6e736-db44-43a4-9f46-20a8d894245e
+status: experimental
+description: |
+    Detects the Windows kernel SMB redirector (network connection attributed to the "System" process) connecting to a public IP address on TCP port 445 or 139.
+    Windows automatically authenticates to SMB servers referenced by UNC paths; a public SMB destination indicates that a UNC path in a document, shortcut, URL file, Outlook item or web page pointed the host to an attacker server to capture or relay the user's NetNTLM hash, or that data is being copied to an external share. Organisations normally block outbound SMB at the perimeter, so any such connection attempt is worth reviewing.
+references:
+    - https://www.securify.nl/en/blog/living-off-the-land-stealing-netntlm-hashes/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/exfiltration_smb_rare_destination.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.credential-access
+    - attack.exfiltration
+    - attack.t1048
+    - attack.t1187
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Initiated: 'true'
+        Image: 'System'
+        DestinationPort:
+            - 139
+            - 445
+    filter_main_local_ranges:
+        DestinationIp|cidr:
+            - '0.0.0.0/8'
+            - '10.0.0.0/8'
+            - '100.64.0.0/10'
+            - '127.0.0.0/8'
+            - '169.254.0.0/16'
+            - '172.16.0.0/12'
+            - '192.0.0.0/24'
+            - '192.0.2.0/24'
+            - '192.88.99.0/24'
+            - '192.168.0.0/16'
+            - '198.18.0.0/15'
+            - '198.51.100.0/24'
+            - '203.0.113.0/24'
+            - '224.0.0.0/4'
+            - '240.0.0.0/4'
+            - '::1/128'
+            - 'fc00::/7'
+            - 'fe80::/10'
+            - 'ff00::/8'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legitimate SMB access to Internet-exposed file servers or cloud file shares (Azure Files, cloud NAS) reachable over public IP addresses; add their ranges to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/network_connection/net_connection_win_smb_to_public_ip_by_system/info.yml
