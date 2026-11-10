@@ -1,0 +1,41 @@
+title: Suspicious Nslookup TXT Record Output Fed Into Command Shell FOR Loop
+id: 1f4141c2-4c51-4fa9-ae42-4f666138a45c
+related:
+    - id: 1b3b01c7-84e9-4072-86e5-fc285a41ff23
+      type: similar
+status: experimental
+description: |
+    Detects a cmd.exe command line in which the output of an nslookup TXT (or ANY) record query is parsed by a "for /f" loop, optionally filtered with findstr.
+    This idiom retrieves a payload or a command from DNS TXT records and executes it without a browser, PowerShell or mshta on the command line. It is used by ClickFix-style lures that ask the victim to paste a one-liner into the Run dialog, and by loaders that stage their next command over DNS.
+    The related rule covers nslookup TXT queries spawned by PowerShell; this rule covers the pure command shell pipeline.
+references:
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/dns_staging_detection_clickfix_inspired_nslookup_execution.yml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.execution
+    - attack.t1059.003
+    - attack.t1071.004
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    selection_nslookup:
+        CommandLine|contains: 'nslookup'
+    selection_record_type:
+        CommandLine|contains:
+            - '-q=txt'
+            - '-q=any'
+            - 'type=txt'
+            - 'type=any'
+    selection_loop:
+        CommandLine|contains: 'for /f'
+    condition: all of selection_*
+falsepositives:
+    - Administrative batch scripts that read configuration values published in DNS TXT records
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_nslookup_txt_output_for_loop_execution/info.yml
