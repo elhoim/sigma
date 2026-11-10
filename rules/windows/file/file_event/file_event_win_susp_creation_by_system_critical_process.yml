@@ -36,12 +36,13 @@ detection:
             - '.exe'
     filter_main_wpbbin:
         # Windows Platform Binary Table: smss.exe extracts the firmware-provided binary at boot
-        Image|endswith: '\smss.exe'
-        TargetFilename|endswith: '\Windows\System32\wpbbin.exe'
+        Image: 'C:\Windows\System32\smss.exe'
+        TargetFilename: 'C:\Windows\System32\wpbbin.exe'
     filter_main_eac_usermode:
         # Easy Anti-Cheat user mode module written by lsass.exe
-        Image|endswith: '\lsass.exe'
-        TargetFilename|contains: '\Windows\System32\eac_usermode_'
+        Image: 'C:\Windows\System32\lsass.exe'
+        TargetFilename|startswith: 'C:\Windows\System32\eac_usermode_'
+        TargetFilename|endswith: '.dll'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Firmware or anti-cheat components that legitimately drop binaries through these processes, add them as filters after baselining
