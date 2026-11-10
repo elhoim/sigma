@@ -19,11 +19,12 @@ logsource:
     product: windows
 detection:
     selection:
-        # Sysmon gives us HKLM\SYSTEM\CurrentControlSet\.. if ControlSetXX is the selected one
-        - TargetObject: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\AppCertDlls'
+        # Covers the key itself and any value set under it (Sysmon appends the value name to TargetObject)
+        - TargetObject|contains: '\Control\Session Manager\AppCertDlls'
         # key rename
-        - NewName: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\AppCertDlls'
+        - NewName|contains: '\Control\Session Manager\AppCertDlls'
     condition: selection
 falsepositives:
     - Unknown
 level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_event/registry_event_new_dll_added_to_appcertdlls_registry_key/info.yml
