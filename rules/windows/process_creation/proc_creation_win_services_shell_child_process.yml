@@ -1,0 +1,48 @@
+title: Potential System Shell Via Service - Shell Or PowerShell Spawned By Services.EXE
+id: 9c399219-1fa5-4739-b888-3b6c90f9572d
+related:
+    - id: 15619216-e993-4721-b590-4c520615a67d
+      type: similar
+status: experimental
+description: |
+    Detects a command shell or PowerShell host started directly by the Service Control Manager ("services.exe"), which means that a service was created or reconfigured with a shell command as its binary path.
+    Services run as SYSTEM, so attackers and post-exploitation frameworks (Metasploit psexec and getsystem, Cobalt Strike, Impacket smbexec/psexec, manual "sc create" with a cmd or PowerShell command) use a service pointing at cmd.exe or powershell.exe to run commands as SYSTEM or to persist. Legitimate services are compiled service binaries or svchost-hosted DLLs and are not started through a shell.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_system_shells_via_services.toml
+    - https://www.ired.team/offensive-security/privilege-escalation/weak-service-permissions
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1543.003
+    - attack.t1569.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\services.exe'
+    selection_child:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\powershell.exe'
+              - '\powershell_ise.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'PowerShell.EXE'
+              - 'powershell_ise.EXE'
+              - 'pwsh.dll'
+    # Anchored to a command that starts with the NVIDIA binary under Program Files; a bare "NVDisplay.ContainerLocalSystem" string is attacker-controllable
+    filter_optional_nvidia_display_container:
+        Image|endswith: '\cmd.exe'
+        CommandLine|re|i: '^(?:"[A-Za-z]:\\Windows\\System32\\cmd\.exe"|cmd(?:\.exe)?)\s+(?:/\w\s+)*"*[A-Za-z]:\\Program Files\\NVIDIA Corporation\\[^&|<>^]*NVDisplay\.ContainerLocalSystem[^&|<>^]*$'
+    condition: all of selection_* and not 1 of filter_optional_*
+falsepositives:
+    - Third-party services implemented as batch or PowerShell wrappers (some monitoring agents, Java service launchers, legacy applications); add them as filter_optional entries by command line
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_services_shell_child_process/info.yml
