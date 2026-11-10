@@ -1,0 +1,13 @@
+id: ec446e2a-5282-4c05-b519-59c16466874c
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 0c1a4d55-717a-4d83-afa5-82fc99f71a38
+      title: Potential Audio Capture Via PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_audio_capture_capabilities/0c1a4d55-717a-4d83-afa5-82fc99f71a38.evtx

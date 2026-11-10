@@ -1,0 +1,53 @@
+title: Potential Audio Capture Via PowerShell Script
+id: 0c1a4d55-717a-4d83-afa5-82fc99f71a38
+related:
+    - id: 932fb0d8-692b-4b0f-a26e-5643a50fe7d6
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script block content that records audio from the microphone, either through the PowerSploit "Get-MicrophoneAudio" function, the AudioDeviceCmdlets module used to select a recording device, or direct calls to the WinMM audio API ("winmm.dll" with "waveIn*" or "mciSendString").
+    Adversaries record audio to surveil users or capture sensitive conversations; this complements the process creation rule on the AudioDeviceCmdlets command line by inspecting the script content, which also catches scripts loaded from files or memory.
+references:
+    - https://github.com/PowerShellMafia/PowerSploit/blob/d943001a7defb5e0d1657085a77a0e78609be58f/Exfiltration/Get-MicrophoneAudio.ps1
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1123/T1123.md
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/collection_posh_audio_capture.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.collection
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1123
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_function:
+        ScriptBlockText|contains:
+            - 'Get-MicrophoneAudio'
+            - 'WindowsAudioDevice-Powershell-Cmdlet'
+    selection_audiodevice_cmdlets:
+        ScriptBlockText|contains|all:
+            - 'Get-AudioDevice'
+            - 'Recording'
+            - 'Set-AudioDevice'
+    selection_winmm_api:
+        - ScriptBlockText|contains|all:
+              - 'winmm.dll'
+              - 'waveInGetNumDevs'
+        - ScriptBlockText|contains|all:
+              - 'winmm.dll'
+              - 'waveInOpen'
+        - ScriptBlockText|contains|all:
+              - 'winmm.dll'
+              - 'waveInStart'
+        - ScriptBlockText|contains|all:
+              - 'winmm.dll'
+              - 'mciSendString'
+    condition: 1 of selection_*
+falsepositives:
+    - Defensive scripts that scan for PowerSploit function names
+    - Legitimate scripts that switch the default recording device or record audio for accessibility, conferencing or kiosk purposes
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_audio_capture_capabilities/info.yml
