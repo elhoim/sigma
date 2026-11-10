@@ -1,0 +1,44 @@
+title: Potential Installed Program Concealment Via SystemComponent Registry Value
+id: 7cc00add-54f5-4ed1-906c-abb697e26e41
+status: experimental
+description: |
+    Detects the "SystemComponent" value being set to 1 under an "Uninstall" registry subkey by a process other than the Windows Installer.
+    Windows omits uninstall entries flagged as system components from "Programs and Features" and "Apps & features", so an attacker or a tool such as "Hide From Uninstall List" (HideUL) can use this value to hide remote management, remote access or other dropped software from the user and from administrators who review the installed programs.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/msi/arpsystemcomponent
+    - https://www.huntress.com/blog/daisy-chaining-rogue-rmm-tools
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access
+    - https://www.sordum.org/11081/hide-from-uninstall-list-v1-1/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_hide_from_uninstall_list_concealment.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.stealth
+    - attack.t1112
+    - attack.t1564
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Software\Microsoft\Windows\CurrentVersion\Uninstall\'
+            - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
+        TargetObject|endswith: '\SystemComponent'
+        Details: 'DWORD (0x00000001)'
+    filter_main_msiexec:
+        # Windows Installer writes ARPSYSTEMCOMPONENT for MSI packages that declare it (runtimes, redistributables, shared components)
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+        TargetObject|contains: '\Uninstall\{'
+    filter_main_edge_webview:
+        TargetObject|re: '(?i)^HKLM\\SOFTWARE\\(WOW6432Node\\)?Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft EdgeWebView\\SystemComponent$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Non-MSI installers, software deployment agents and kiosk or shared-device hardening scripts that intentionally hide helper components from the installed programs list
+    - Browser and runtime updaters that register their own hidden uninstall entries
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_uninstall_entry_hidden_via_systemcomponent/info.yml
