@@ -33,15 +33,14 @@ detection:
         CallTrace|startswith: 'UNKNOWN'
     filter_main_system_stubs:
         CallTrace|startswith:
-            - 'C:\Windows\System32\ntdll.dll'
-            - 'C:\Windows\System32\win32u.dll'
-            - 'C:\Windows\System32\wow64cpu.dll'
-            - 'C:\Windows\System32\wow64win.dll'
-            - 'C:\Windows\SysWOW64\ntdll.dll'
+            - 'C:\Windows\System32\ntdll.dll+'
+            - 'C:\Windows\System32\win32u.dll+'
+            - 'C:\Windows\System32\wow64cpu.dll+'
+            - 'C:\Windows\System32\wow64win.dll+'
+            - 'C:\Windows\SysWOW64\ntdll.dll+'
     filter_optional_symantec:
-        CallTrace|startswith:
-            - 'C:\Windows\System32\sysfer.dll'
-            - 'C:\ProgramData\Symantec\Symantec Endpoint Protection\'
+        SourceImage|startswith: 'C:\Program Files\Symantec\Symantec Endpoint Protection\'
+        CallTrace|startswith: 'C:\Windows\System32\sysfer.dll+'
     filter_optional_target_products:
         TargetImage|startswith:
             - 'C:\Program Files (x86)\Malwarebytes Anti-Exploit\mbae-svc.exe'
