@@ -1,0 +1,13 @@
+id: d5f26c80-c89e-4435-97c3-266f4e0c4697
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: fa2f9bc9-f952-4ba5-a194-a9b5392be007
+      title: Remote Access Tool - ScreenConnect Client Connecting To Relay By IP Address Or Tunnel Domain
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_remote_access_tools_screenconnect_relay_ip_or_tunnel/fa2f9bc9-f952-4ba5-a194-a9b5392be007.evtx
