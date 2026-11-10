@@ -36,18 +36,20 @@ detection:
     filter_main_same_user:
         SubjectUserSid|fieldref: TargetUserSid
     filter_main_system_processes:
-        ProcessName|endswith:
-            - ':\Windows\System32\inetsrv\w3wp.exe'
-            - ':\Windows\System32\msiexec.exe'
-            - ':\Windows\System32\wininit.exe'
-            - ':\Windows\System32\winlogon.exe'
-            - ':\Windows\SysWOW64\inetsrv\w3wp.exe'
-            - ':\Windows\SysWOW64\msiexec.exe'
-    filter_main_program_files:
-        ProcessName|contains:
-            - ':\Program Files (x86)\'
-            - ':\Program Files\'
-    condition: selection and not 1 of filter_main_*
+        ProcessName:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\System32\wininit.exe'
+            - 'C:\Windows\System32\winlogon.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_optional_iis:
+        ProcessName:
+            - 'C:\Windows\System32\inetsrv\w3wp.exe'
+            - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
+    filter_optional_program_files:
+        ProcessName|startswith:
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Remote management, password manager or helpdesk tools installed outside of "Program Files" that authenticate users with explicit credentials
     - Administrative scripts calling LogonUser from a user-writable location
