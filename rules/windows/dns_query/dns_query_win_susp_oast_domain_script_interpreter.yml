@@ -1,0 +1,58 @@
+title: Suspicious DNS Query To OAST Domain From Script Interpreter
+id: 632e7533-e458-48eb-9876-132f4f714288
+related:
+    - id: aff715fa-4dd5-497a-8db3-910bea555566
+      type: similar
+status: experimental
+description: |
+    Detects a DNS query to a well-known out-of-band application security testing (OAST) callback domain (Interactsh, Burp Collaborator) issued by a script interpreter or package-manager runtime such as Node.js, Bun, Python, Ruby, Perl or PowerShell.
+    Malicious npm, PyPI and RubyGems packages use these free OAST services to exfiltrate host information and to confirm code execution in install scripts, so a lookup by the runtime that executes such packages is a strong indicator of a supply chain compromise.
+    Unlike the generic network DNS rule, this rule relies on the process attribution provided by Sysmon on the endpoint.
+references:
+    - https://socket.dev/blog/weaponizing-oast-how-malicious-packages-exploit-npm-pypi-and-rubygems
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_network_connection_to_oast_domain.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.initial-access
+    - attack.t1195.001
+    - attack.execution
+    - attack.t1059
+    - attack.command-and-control
+    - attack.t1102
+    - attack.exfiltration
+    - attack.t1567
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection_img:
+        Image|endswith:
+            - '\bun.exe'
+            - '\deno.exe'
+            - '\node.exe'
+            - '\perl.exe'
+            - '\php.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\python.exe'
+            - '\python3.exe'
+            - '\pythonw.exe'
+            - '\ruby.exe'
+            - '\rubyw.exe'
+    selection_domain:
+        QueryName|endswith:
+            - '.burpcollaborator.net' # PortSwigger Burp Collaborator
+            - '.interact.sh' # ProjectDiscovery Interactsh
+            - '.oast.fun' # ProjectDiscovery Interactsh
+            - '.oast.live' # ProjectDiscovery Interactsh
+            - '.oast.me' # ProjectDiscovery Interactsh
+            - '.oast.online' # ProjectDiscovery Interactsh
+            - '.oast.pro' # ProjectDiscovery Interactsh
+            - '.oast.site' # ProjectDiscovery Interactsh
+            - '.oastify.com' # PortSwigger Burp Collaborator
+    condition: all of selection_*
+falsepositives:
+    - Authorized vulnerability assessments or bug bounty testing in which proof-of-concept scripts written in Python, Node.js or PowerShell call back to an OAST service
+level: high
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_susp_oast_domain_script_interpreter/info.yml
