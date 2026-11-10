@@ -1,0 +1,36 @@
+title: Potential Claude Cowork VM Boot Image Tampering
+id: 12514ea5-926e-472d-9d96-a8c6f8d3e41d
+status: experimental
+description: |
+    Detects the creation or overwrite of a Claude Desktop Cowork virtual machine boot image (Linux kernel, initrd, root filesystem or tools disk) under the Claude package cache by a process other than the Claude Desktop application itself.
+    The Cowork sandbox boots from these files stored in the user's own AppData directory. A process running as the user can rewrite them so that later Cowork sessions start attacker-controlled code inside the virtual machine, outside the view of host security tooling.
+references:
+    - https://y637f9qq2x.com/posts/cowork-boot-trust
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/defense_evasion_claude_cowork_vm_boot_image_tamper.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1564.006
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Claude\vm_bundles\claudevm.bundle\'
+        TargetFilename|endswith:
+            - '\initrd'
+            - '\initrd.zst'
+            - '\vmlinuz'
+            - '\vmlinuz.zst'
+            - '\rootfs.img'
+            - '\rootfs.vhdx'
+            - '\smol-bin.vhdx'
+    filter_main_claude_app:
+        Image|startswith: 'C:\Program Files\WindowsApps\Claude_'
+        Image|endswith: '\claude.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Claude Desktop installed outside the Microsoft Store packaging path, or a future updater component with another image name
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_claude_cowork_vm_boot_image_tamper/info.yml

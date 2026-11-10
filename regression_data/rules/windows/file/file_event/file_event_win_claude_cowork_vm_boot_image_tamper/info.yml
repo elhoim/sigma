@@ -1,0 +1,13 @@
+id: 106ced63-85c6-4740-bb33-c02285eb7886
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 12514ea5-926e-472d-9d96-a8c6f8d3e41d
+      title: Potential Claude Cowork VM Boot Image Tampering
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_claude_cowork_vm_boot_image_tamper/12514ea5-926e-472d-9d96-a8c6f8d3e41d.evtx
