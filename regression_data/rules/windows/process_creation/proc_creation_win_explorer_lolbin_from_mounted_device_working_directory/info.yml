@@ -1,0 +1,13 @@
+id: 6e37c7c2-ef9a-45a7-8fd1-c2f2121dd182
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 6af845f1-2dc1-4486-ab78-c420b5616812
+      title: Potential Execution From Mounted Image Via Explorer With LOLBin Or Script Host
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_lolbin_from_mounted_device_working_directory/6af845f1-2dc1-4486-ab78-c420b5616812.evtx
