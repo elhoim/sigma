@@ -1,0 +1,51 @@
+title: Potential IDE Extension Sideloading From VSIX In Staging Location Or Via Script Host
+id: a5cb6a1e-ceb3-4ec7-8da1-90e57f907af5
+related:
+    - id: 5a3164f2-b373-4152-93cf-090b13c12d27
+      type: similar
+status: experimental
+description: |
+    Detects the installation of an IDE extension from a local VSIX package ("--install-extension" with a ".vsix" path) when the package sits in a staging directory (Users\Public, AppData\Local\Temp, Downloads, ProgramData, Windows\Temp) or when the installing process was started by a script host or installer rather than by the user from a terminal.
+    VS Code and compatible editors (Cursor, VSCodium, Windsurf) use this command line to sideload extensions outside the marketplace. A sideloaded malicious extension runs arbitrary code every time the editor starts and gives persistence under the developer's account.
+references:
+    - https://code.visualstudio.com/docs/configure/extensions/extension-marketplace#_install-from-a-vsix
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/persistence_suspicious_ide_extension_vsix_install.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.persistence
+    - attack.t1176.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_cli:
+        CommandLine|contains|all:
+            - '--install-extension'
+            - '.vsix'
+    selection_staging_path:
+        CommandLine|contains:
+            - '\Users\Public\'
+            - '\AppData\Local\Temp\'
+            - '\Downloads\'
+            - '\ProgramData\'
+            - '\Windows\Temp\'
+    selection_script_parent:
+        ParentImage|endswith:
+            - '\bun.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\msiexec.exe'
+            - '\node.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\py.exe'
+            - '\python.exe'
+            - '\pythonw.exe'
+            - '\wscript.exe'
+    condition: selection_cli and (selection_staging_path or selection_script_parent)
+falsepositives:
+    - Extension developers installing a locally built VSIX from a PowerShell, Node or Python build script
+    - Software deployment scripts that install approved extensions from a staging directory
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_ide_extension_install_from_vsix/info.yml
