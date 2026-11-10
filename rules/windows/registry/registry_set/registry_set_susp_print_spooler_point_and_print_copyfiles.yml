@@ -1,0 +1,37 @@
+title: Suspicious Print Spooler Point And Print Registry Modification
+id: ec011562-102d-442a-af3e-d26396c5fbfd
+status: experimental
+description: |
+    Detects registry modifications under a printer's "Print\Printers\<name>" key that redirect the spooler to the "spool\drivers\x64\4" directory: either the "SpoolDirectory" value pointing into the driver store, or a "CopyFiles\<name>\Module" value pointing to a DLL inside "spool\drivers\x64\4".
+    The spooler service loads the DLL named in a printer's CopyFiles "Module" value as SYSTEM. Attackers with a local printer first point "SpoolDirectory" to a writable path under the driver store, drop a DLL there through a print job, then register it as a CopyFiles module, as exploited in CVE-2020-1030 and later Point and Print variants.
+    Normal printer installations keep "SpoolDirectory" under "spool\PRINTERS" and reference CopyFiles modules from "spool\drivers\x64\3".
+references:
+    - https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES/blob/2688dec918a8368c8f90eff618adbe3d7ef76e26/Privilege%20Escalation/privesc_sysmon_cve_20201030_spooler.evtx
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_printspooler_registry_copyfiles.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1068
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_spooldirectory:
+        TargetObject|contains: '\Print\Printers\'
+        TargetObject|endswith: '\SpoolDirectory'
+        Details|contains: '\spool\drivers\'
+    selection_copyfiles_module:
+        TargetObject|contains|all:
+            - '\Print\Printers\'
+            - '\CopyFiles\'
+        TargetObject|endswith: '\Module'
+        Details|contains: '\spool\drivers\x64\4\'
+    condition: 1 of selection_*
+falsepositives:
+    - Printer driver or print management software that stages driver files in a custom spool directory under the driver store
+level: high
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_susp_print_spooler_point_and_print_copyfiles/info.yml

@@ -1,0 +1,13 @@
+id: 6661e4c4-9078-443d-b63e-faf6065f3978
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: ec011562-102d-442a-af3e-d26396c5fbfd
+      title: Suspicious Print Spooler Point And Print Registry Modification
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_susp_print_spooler_point_and_print_copyfiles/ec011562-102d-442a-af3e-d26396c5fbfd.evtx
