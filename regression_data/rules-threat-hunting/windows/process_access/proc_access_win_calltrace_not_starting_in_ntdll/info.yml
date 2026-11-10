@@ -1,0 +1,13 @@
+id: 51539754-dff7-4bf3-bc76-36c358bfaabf
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 20013fe0-0f72-4409-92fb-0afdb00c2863
+      title: Potential Direct System Call Process Access - CallTrace Not Starting In Ntdll
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_access/proc_access_win_calltrace_not_starting_in_ntdll/20013fe0-0f72-4409-92fb-0afdb00c2863.evtx
