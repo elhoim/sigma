@@ -1,0 +1,13 @@
+id: 5d171f51-eb79-4b51-9588-c0859a548a20
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: bd0b208d-d48d-42b2-ad0c-dd6aefd88012
+      title: Potential Persistence Via Mandatory User Profile Hive Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_mandatory_user_profile_ntuser_man_creation/bd0b208d-d48d-42b2-ad0c-dd6aefd88012.evtx

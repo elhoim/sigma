@@ -1,0 +1,30 @@
+title: Potential Persistence Via Mandatory User Profile Hive Creation
+id: bd0b208d-d48d-42b2-ad0c-dd6aefd88012
+status: experimental
+description: |
+    Detects the creation or overwrite of an NTUSER.MAN file inside a user profile directory by a process that does not run as SYSTEM.
+    NTUSER.MAN is the registry hive of a mandatory (read-only) user profile. When it exists, Windows loads it instead of NTUSER.DAT at the next logon, so a dropped hive that already contains Run keys or other autostart values activates persistence without any live registry write that registry monitoring could see.
+references:
+    - https://deceptiq.com/blog/ntuser-man-registry-persistence
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_suspicious_user_mandatory_profile_file.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1112
+    - attack.t1547.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Users\'
+        TargetFilename|endswith: '\NTUSER.MAN'
+    condition: selection
+falsepositives:
+    - Profile management or deployment tooling that runs as SYSTEM and stages mandatory profiles
+    - Administrators building a mandatory profile for kiosk or shared workstations by renaming NTUSER.DAT to NTUSER.MAN
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_mandatory_user_profile_ntuser_man_creation/info.yml
