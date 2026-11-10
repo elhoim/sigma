@@ -40,11 +40,11 @@ detection:
             - '.wsh'
     filter_main_teamviewer_update:
         TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\TeamViewer\\update\.exe$'
-    filter_main_teamviewer_custom_configs:
-        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\TeamViewer\\CustomConfigs\\.+\.(dll|exe)$'
-    filter_main_inetcache_js:
-        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\Windows\\INetCache\\.+\.js$'
-    condition: selection and not 1 of filter_main_*
+    filter_optional_teamviewer_custom_configs:
+        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\TeamViewer\\CustomConfigs\\[0-9A-Za-z]+\\TeamViewer_[A-Za-z_]+\.dll$'
+    filter_optional_inetcache_js:
+        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\Windows\\INetCache\\IE\\[A-Z0-9]{8}\\[^\\]+\[\d+\]\.js$'
+    condition: selection and not 1 of filter_*
 falsepositives:
     - Help desk technicians transferring installers or administrative scripts to a user's machine through a legitimate TeamViewer session
 level: medium
