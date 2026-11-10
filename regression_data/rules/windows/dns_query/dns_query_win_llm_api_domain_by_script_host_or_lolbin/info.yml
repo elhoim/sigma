@@ -1,0 +1,13 @@
+id: 74be6a19-fa2e-4f21-a7df-6ed0a788413e
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 7d00519b-f747-4799-8568-d4bfba790038
+      title: Potential LLM API Usage By Script Host, LOLBin Or Process From Suspicious Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/dns_query/dns_query_win_llm_api_domain_by_script_host_or_lolbin/7d00519b-f747-4799-8568-d4bfba790038.evtx
