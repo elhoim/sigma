@@ -1,0 +1,13 @@
+id: d7681f03-f8f2-4c43-a872-eef4746d7ddd
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 3febcd60-253c-4066-a720-7638c3f21cf9
+      title: Potential Suspicious Windows Feature Enabled - WSL Via DISM
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_dism_enable_wsl_feature/3febcd60-253c-4066-a720-7638c3f21cf9.evtx
