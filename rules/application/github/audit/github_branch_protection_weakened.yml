@@ -1,0 +1,30 @@
+title: Github Branch Protection Rule Deleted Or Weakened
+id: cc7f2f4b-9ffb-4578-8fed-f72cef6055c5
+status: experimental
+description: |
+    Detects the deletion of a branch protection rule or changes to its force-push or required pull request review settings.
+    Adversaries may remove or weaken branch protections in order to push malicious code to protected branches without review.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
+    - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+    - attack.initial-access
+    - attack.t1195.002
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action:
+            - 'protected_branch.destroy'
+            - 'protected_branch.update_allow_force_pushes_enforcement_level'
+            - 'protected_branch.update_pull_request_reviews_enforcement_level'
+    condition: selection
+falsepositives:
+    - Legitimate changes to branch protection by repository administrators. The update events are also logged when a protection is strengthened.
+level: medium
