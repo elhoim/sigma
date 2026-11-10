@@ -1,0 +1,48 @@
+title: Suspicious TerminalFix Cloudflare Verification Lure In PowerShell Script
+id: 7b107de8-a510-4aa2-abc2-55561d99f8f8
+related:
+    - id: d487ed4a-fd24-436d-a0b2-f4e95f7b2635
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script blocks that print a fake Cloudflare "verification" or "I am not a robot" message to the console.
+    TerminalFix (a ClickFix variant) pages trick the victim into pasting a multi-line PowerShell script into Windows Terminal or PowerShell. The script displays a Cloudflare-themed verification lure while it downloads, extracts and executes the next stage.
+    Script block logging records the lure text even when the process command line only shows the host binary.
+    The lure strings are specific to the TerminalFix campaign as documented by Microsoft and Elastic. Other campaigns or later variants may use different wording and will not match.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/08/28/terminalfix-campaign-deploys-reverse-tunnel-through-multistage-intrusion/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_windows_terminalfix_cloudflare_lure.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1059.001
+    - attack.t1189
+    - attack.t1204.004
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_output:
+        ScriptBlockText|contains:
+            - 'Clear-Host'
+            - 'cls;'
+            - 'echo '
+            - 'Write-Host'
+            - 'Write-Output'
+            - 'Write-Warning'
+            - 'WriteLine('
+    selection_lure:
+        ScriptBlockText|contains:
+            - 'Cloudflare ID:'
+            - 'Cloudflare Services respond'
+            - 'Cloudflare verification'
+            - 'I am not a robot'
+            - "I'm not a robot"
+    condition: all of selection_*
+falsepositives:
+    - Security awareness or phishing simulation exercises that replay the lure script
+level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_terminalfix_cloudflare_lure/info.yml
