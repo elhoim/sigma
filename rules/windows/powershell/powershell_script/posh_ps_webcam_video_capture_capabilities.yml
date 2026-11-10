@@ -1,0 +1,41 @@
+title: Potential Webcam Video Capture Via PowerShell Script
+id: 317ec8cb-7793-4532-bfd7-e3842cd09698
+status: experimental
+description: |
+    Detects PowerShell script block content that references webcam video capture objects and APIs: the DirectShow/AForge "VideoCaptureDevice" and "NewFrameEventHandler" types, the "DirectX.Capture.Filters" and "VideoCompressors" classes of the DirectX.Capture library, the Empire "Start-WebcamRecorder" function, or the legacy Video for Windows "capCreateCaptureWindow"/"capGetDriverDescription" functions imported from "avicap32.dll".
+    Adversaries record webcam video to surveil victims or collect footage for extortion; PowerShell post-exploitation frameworks ship ready-made modules for it.
+references:
+    - https://github.com/EmpireProject/Empire/blob/08cbd274bef78243d7a8ed6443b8364acd1fc48b/lib/modules/powershell/collection/WebcamRecorder.py
+    - https://github.com/xorrior/RandomPS-Scripts/blob/848c919bfce4e2d67b626cbcf4404341cfe3d3b6/Get-DXWebcamVideo.ps1
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/collection_posh_webcam_video_capture.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.collection
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1125
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_objects:
+        ScriptBlockText|contains:
+            - 'DirectX.Capture.Filters'
+            - 'NewFrameEventHandler'
+            - 'Start-WebcamRecorder'
+            - 'VideoCaptureDevice'
+            - 'VideoCompressors'
+    selection_avicap:
+        - ScriptBlockText|contains|all:
+              - 'avicap32'
+              - 'capCreateCaptureWindow'
+        - ScriptBlockText|contains|all:
+              - 'avicap32'
+              - 'capGetDriverDescription'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate scripts that enumerate or test camera devices for conferencing, kiosk or accessibility purposes
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_webcam_video_capture_capabilities/info.yml

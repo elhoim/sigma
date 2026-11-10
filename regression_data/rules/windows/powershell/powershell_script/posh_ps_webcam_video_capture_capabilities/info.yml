@@ -1,0 +1,13 @@
+id: 7efd3c24-3c5a-49b1-8772-e67afd32e04d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 317ec8cb-7793-4532-bfd7-e3842cd09698
+      title: Potential Webcam Video Capture Via PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_webcam_video_capture_capabilities/317ec8cb-7793-4532-bfd7-e3842cd09698.evtx
