@@ -48,7 +48,7 @@ detection:
     filter_main_dns_client:
         Image: 'C:\Windows\System32\svchost.exe'
     filter_optional_browsers_per_user_install:
-        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(Google\\Chrome|Microsoft\\Edge|BraveSoftware|Vivaldi|Mozilla Firefox|Programs\\Opera[^\\]*)\\.+\\(brave|chrome|firefox|msedge|opera|vivaldi)\.exe$'
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(Google\\Chrome\\Application\\chrome|Microsoft\\Edge\\Application\\msedge|BraveSoftware\\Brave-Browser\\Application\\brave|Vivaldi\\Application\\vivaldi|Programs\\Opera( GX)?\\opera)\.exe$'
     condition: selection and not 1 of filter_*
 falsepositives:
     - Applications with their own DoH client (some Electron apps, VPN clients, privacy tools, Android emulators) and DoH test tooling; add the image to the filter
