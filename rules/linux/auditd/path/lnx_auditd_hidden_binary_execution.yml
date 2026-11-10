@@ -14,7 +14,7 @@ tags:
     - attack.persistence
     - attack.execution
     - attack.stealth
-    - attack.t1574.001
+    - attack.t1564.001
 logsource:
     product: linux
     service: auditd
