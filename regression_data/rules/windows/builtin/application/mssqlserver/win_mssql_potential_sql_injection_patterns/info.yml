@@ -1,0 +1,13 @@
+id: b23bbeeb-65d0-4587-a713-a93a38cb5f50
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: f673a323-8448-4627-b882-6c7f51100757
+      title: Potential SQL Injection Patterns In MSSQL Audit Log
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: MSSQL$MICROSOFT##WID
+      match_count: 2
+      path: regression_data/rules/windows/builtin/application/mssqlserver/win_mssql_potential_sql_injection_patterns/f673a323-8448-4627-b882-6c7f51100757.evtx
