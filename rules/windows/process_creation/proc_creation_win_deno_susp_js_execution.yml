@@ -50,11 +50,15 @@ detection:
             - 'https://'
     filter_main_official_registries:
         CommandLine|contains:
-            - 'https://deno.land/'
-            - 'https://docs.deno.com/'
-            - 'https://examples.deno.land/'
-            - 'https://jsr.io/'
-    condition: selection_img and 1 of selection_cli_* and not filter_main_official_registries
+            - ' https://deno.land/'
+            - '"https://deno.land/'
+            - ' https://docs.deno.com/'
+            - '"https://docs.deno.com/'
+            - ' https://examples.deno.land/'
+            - '"https://examples.deno.land/'
+            - ' https://jsr.io/'
+            - '"https://jsr.io/'
+    condition: selection_img and (selection_cli_data_url or selection_cli_inline_code or (selection_cli_remote_url and not filter_main_official_registries))
 falsepositives:
     - Developer workstations and CI runners running Deno scripts straight from a third-party URL (for example a raw GitHub file) or evaluating one-liners with "deno eval"
     - Build or deployment tooling that installs Deno scripts with "deno install" from a URL that is not on the official Deno registries
