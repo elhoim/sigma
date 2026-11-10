@@ -1,0 +1,32 @@
+title: WSL Distribution Registered Via Lxss Registry Key
+id: 8d7a5662-f3d9-4145-9715-afa9ad17dc64
+related:
+    - id: 83475063-b1c8-4774-9568-69bbda71a539
+      type: similar
+status: experimental
+description: |
+    Detects the "PackageFamilyName" value being written under a distribution subkey of the per-user "Lxss" registry key, which happens when a new Windows Subsystem for Linux distribution is registered on the host.
+    Attackers install a WSL distribution to run Linux tooling and ELF payloads that Windows security products and process-based detections do not inspect. In environments where WSL is not in use, any new distribution is worth reviewing.
+references:
+    - https://learn.microsoft.com/en-us/windows/wsl/wsl-config
+    - https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_wsl_registry_modification.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1059.004
+    - attack.t1202
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\'
+        TargetObject|endswith: '\PackageFamilyName'
+    condition: selection
+falsepositives:
+    - Developers and administrators installing a WSL distribution; where WSL is approved, restrict the rule to servers or to users outside the development population
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_wsl_distribution_registered/info.yml
