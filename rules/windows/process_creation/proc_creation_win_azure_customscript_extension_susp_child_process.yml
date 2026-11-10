@@ -1,0 +1,81 @@
+title: Potential Cloud Administration Command Abuse - Suspicious Child Of Azure CustomScript Extension
+id: b799b3a7-bc39-4afe-9bf8-d9eab557f43d
+related:
+    - id: 8fffecb4-c446-496b-bb12-485b95fc3af1
+      type: similar
+status: experimental
+description: |
+    Detects an execution proxy, download or discovery utility, or a PowerShell instance with suspicious arguments, started by the Azure VM CustomScript extension handler ("CustomScriptHandler.exe") or by the PowerShell wrapper the handler uses to run the downloaded script (command line referencing the "Microsoft.Compute.CustomScriptExtension" plugin folder).
+    The CustomScript extension executes an operator-supplied script as SYSTEM from the Azure control plane; anyone with rights on the virtual machine resource can use it as a cloud-to-host code execution and persistence primitive. The extension legitimately runs PowerShell and cmd, so the rule keys on what the script spawns rather than on the wrapper itself.
+references:
+    - https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
+    - https://blog.pwnedlabs.io/diving-deep-into-azure-vm-attack-vectors
+    - https://www.sysdig.com/blog/the-expendable-extension-name-azure-vmaccess-naming-chaos-password-resets-and-a-detection-gap
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_azure_customscript_extension_suspicious_descendant.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1218
+    - attack.t1651
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        - ParentImage|endswith: '\CustomScriptHandler.exe'
+        - ParentCommandLine|contains: '\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\'
+    selection_child_lolbin:
+        Image|endswith:
+            - '\arp.exe'
+            - '\bitsadmin.exe'
+            - '\cscript.exe'
+            - '\installutil.exe'
+            - '\msbuild.exe'
+            - '\mshta.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\nltest.exe'
+            - '\quser.exe'
+            - '\regasm.exe'
+            - '\regsvcs.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\systeminfo.exe'
+            - '\tasklist.exe'
+            - '\whoami.exe'
+            - '\wmic.exe'
+            - '\wscript.exe'
+    selection_child_certutil:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains:
+            - 'urlcache'
+            - '-decode'
+            - '-encode'
+    selection_child_powershell:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - ' -enc'
+            - 'EncodedCommand'
+            - 'FromBase64String'
+            - 'DownloadString'
+            - 'DownloadFile'
+            - 'Invoke-Expression'
+            - 'IEX '
+            - 'IEX('
+            - '|IEX'
+            - ' -w hidden'
+            - 'WindowStyle Hidden'
+            - 'Net.WebClient'
+            - 'Invoke-WebRequest'
+            - 'Start-BitsTransfer'
+    condition: selection_parent and 1 of selection_child_*
+falsepositives:
+    - Deployment scripts pushed through the CustomScript extension that download installers with Invoke-WebRequest or enumerate the host before configuration; baseline the scripts used by the platform team
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_azure_customscript_extension_susp_child_process/info.yml

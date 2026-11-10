@@ -1,0 +1,13 @@
+id: c7e38476-49e6-4687-b914-5346729b4212
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: b799b3a7-bc39-4afe-9bf8-d9eab557f43d
+      title: Potential Cloud Administration Command Abuse - Suspicious Child Of Azure CustomScript Extension
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_azure_customscript_extension_susp_child_process/b799b3a7-bc39-4afe-9bf8-d9eab557f43d.evtx
