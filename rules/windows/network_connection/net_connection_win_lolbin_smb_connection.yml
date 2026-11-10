@@ -1,0 +1,50 @@
+title: Potential Lateral Movement Via SMB Connection Initiated By LOLBin
+id: d6dad3d3-452f-4e6b-b1e3-e5ba4ba072e7
+status: experimental
+description: |
+    Detects an outbound TCP connection to port 445 (SMB) initiated directly by a scripting host, shell or other living-off-the-land binary.
+    Legitimate SMB traffic (file shares, named pipes, PsExec-style service control) is established by the kernel SMB redirector on behalf of the process, so the network event is attributed to the "System" process. A user-mode utility that opens port 445 itself indicates a port scan, an SMB client implementation embedded in a script (for example a PowerShell SMB relay, enumeration or exploit module) or a tunnelled connection.
+references:
+    - https://www.elastic.co/security-labs/hunting-for-lateral-movement-using-event-query-language
+    - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_direct_outbound_smb_connection.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.lateral-movement
+    - attack.t1021.002
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Initiated: 'true'
+        DestinationPort: 445
+        Image|endswith:
+            - '\bitsadmin.exe'
+            - '\certutil.exe'
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\curl.exe'
+            - '\mshta.exe'
+            - '\msiexec.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\powershell.exe'
+            - '\powershell_ise.exe'
+            - '\pwsh.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\sc.exe'
+            - '\ssh.exe'
+            - '\telnet.exe'
+            - '\wmic.exe'
+            - '\wscript.exe'
+            - '\wsmprovhost.exe'
+    condition: selection
+falsepositives:
+    - Administrators probing file servers with "Test-NetConnection -Port 445" or similar PowerShell connectivity checks
+    - Monitoring scripts that open raw TCP sockets to port 445 to check SMB availability
+    - The same connectivity checks run as SYSTEM or a service account from a scheduled task or management agent (no account is excluded)
+level: medium
+regression_tests_path: regression_data/rules/windows/network_connection/net_connection_win_lolbin_smb_connection/info.yml
