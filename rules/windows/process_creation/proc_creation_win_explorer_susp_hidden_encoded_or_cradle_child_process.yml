@@ -1,0 +1,97 @@
+title: Suspicious Hidden, Encoded Or Download Cradle Command Spawned By Explorer
+id: e2ef2aea-62e5-455a-9aec-65f4b9d9913f
+related:
+    - id: d487ed4a-fd24-436d-a0b2-f4e95f7b2635
+      type: similar
+    - id: 3ae9974a-eb09-4044-8e70-8980a50c12c8
+      type: similar
+    - id: f5fe36cf-f1ec-4c23-903d-09a3110f6bbb
+      type: similar
+    - id: 85b0b087-eddf-4a2b-b033-d771fa2b9775
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell, cmd or mshta started directly by explorer.exe with a command line that carries an encoded command, downloads and executes remote content, or hides its window while fetching a URL.
+    explorer.exe is the parent of commands pasted into the Run dialog (ClickFix) or the File Explorer address bar (FileFix): the victim is told to paste a one-liner that typically runs hidden, is Base64 encoded, or fetches a payload with Invoke-WebRequest/IEX or mshta.
+    The related ClickFix rules require a '#' comment marker with captcha-style keywords or whitespace padding; this rule keys on the parent and on the execution pattern alone and also catches variants without decoy text.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/
+    - https://github.com/magicsword-io/Magic-Atomics/blob/d29fb7c49edb11084a7f088efeb36bf5697f1647/backend/app/main.py#L95-L136
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1204.004
+    - attack.t1218.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\explorer.exe'
+    selection_shell_img:
+        - Image|endswith:
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\cmd.exe'
+        - OriginalFileName:
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'Cmd.Exe'
+    selection_shell_encoded:
+        CommandLine|contains:
+            - ' -e '
+            - ' -ec '
+            - ' -en '
+            - ' -enc'
+            - ' /e '
+            - ' /ec '
+            - ' /enc'
+    selection_shell_hidden:
+        CommandLine|contains:
+            - ' -w hidden'
+            - ' -w h '
+            - ' -win hidden'
+            - ' -windowstyle hidden'
+            - ' -windowstyle h '
+            - ' /w hidden'
+            - ' /windowstyle hidden'
+    selection_shell_exec:
+        CommandLine|contains:
+            - 'iex '
+            - 'iex('
+            - 'invoke-expression'
+            - '.Invoke()'
+    selection_shell_fetch:
+        CommandLine|contains:
+            - 'iwr '
+            - 'iwr('
+            - 'irm '
+            - 'irm('
+            - 'invoke-webrequest'
+            - 'invoke-restmethod'
+            - 'downloadstring'
+            - 'downloaddata'
+            - 'Net.WebClient'
+            - 'curl '
+            - 'wget '
+            - 'http://'
+            - 'https://'
+    selection_mshta_img:
+        - Image|endswith: '\mshta.exe'
+        - OriginalFileName: 'MSHTA.EXE'
+    selection_mshta_cli:
+        CommandLine|contains:
+            - 'http://'
+            - 'https://'
+            - 'javascript:'
+            - 'vbscript:'
+    condition: selection_parent and ((selection_shell_img and (selection_shell_encoded or (selection_shell_exec and selection_shell_fetch) or (selection_shell_hidden and selection_shell_fetch))) or all of selection_mshta_*)
+falsepositives:
+    - Shortcuts on the desktop or in the Start menu that start PowerShell hidden with a remote URL or with an encoded command
+    - Administrators pasting one-liners with Invoke-WebRequest into the Run dialog
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_susp_hidden_encoded_or_cradle_child_process/info.yml
