@@ -1,0 +1,49 @@
+title: Suspicious Boot-Critical File Created Or Overwritten Outside Of Windows Servicing
+id: 4cec81e8-4c14-448e-9790-0110d46473cb
+status: experimental
+description: |
+    Detects the creation or overwrite of the Windows boot manager (bootmgr), OS loader (winload.exe, winload.efi) or kernel (ntoskrnl.exe)
+    inside the Windows directory by a process other than the Windows servicing stack (TiWorker, poqexec, TrustedInstaller) or the block-level backup engine (wbengine).
+    Replacing or corrupting these files renders the system unbootable and is used by destructive malware to prevent recovery.
+    Legitimate changes to these files are staged under WinSxS, SoftwareDistribution and temporary servicing folders before being committed by the servicing stack.
+references:
+    - https://learn.microsoft.com/en-us/troubleshoot/windows-client/performance/windows-boot-issues-troubleshooting
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/impact_mod_critical_os_files.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.impact
+    - attack.t1485
+    - attack.t1490
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: ':\Windows\'
+        TargetFilename|endswith:
+            - '\bootmgr'
+            - '\ntoskrnl.exe'
+            - '\winload.efi'
+            - '\winload.exe'
+    filter_main_servicing_image:
+        Image|endswith:
+            - ':\Windows\servicing\TrustedInstaller.exe'
+            - ':\Windows\System32\poqexec.exe'
+            - ':\Windows\System32\wbengine.exe'
+            - ':\Windows\SysWOW64\poqexec.exe'
+            - '\TiWorker.exe'
+    filter_main_staging_paths:
+        TargetFilename|contains:
+            - ':\$WINDOWS.~BT\'
+            - ':\$WinREAgent\'
+            - ':\Windows\SoftwareDistribution\'
+            - ':\Windows\SystemTemp\'
+            - ':\Windows\Temp\'
+            - ':\Windows\WinSxS\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - OEM recovery, third-party backup or disaster-recovery agents restoring the system volume
+    - Manual boot repair performed by an administrator (bootrec, bcdboot, copying boot files from installation media)
+level: high
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_susp_boot_critical_file_overwrite/info.yml
