@@ -1,0 +1,102 @@
+title: Suspicious Unsigned DLL Loaded By Svchost From Uncommon Location
+id: 25c89f2b-3aaf-4b3e-b1c0-50a7d40de861
+related:
+    - id: 5658ac17-2afb-43d4-87bb-7ada5c1eb22b
+      type: similar
+status: experimental
+description: |
+    Detects the shared service host "svchost.exe" loading an unsigned DLL from a user-writable folder ("ProgramData", a user profile, "PerfLogs", "Windows\Tasks", "Intel", "AMD\Temp", the recycle bin) or from a static Windows subfolder that never hosts service libraries.
+    Service DLLs loaded by svchost.exe are Microsoft-signed and live in System32 or SysWOW64; an unsigned library from such a location indicates a hijacked or newly registered service DLL (ServiceDll registry value), a replaced dependency, or code injected into the service host, all of which run with the service account's privileges and persist across reboots.
+references:
+    - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_service_dll_unsigned.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1543.003
+    - attack.t1574.011
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - ':\Windows\System32\svchost.exe'
+            - ':\Windows\SysWOW64\svchost.exe'
+        Signed: 'false'
+    selection_path:
+        ImageLoaded|contains:
+            - ':\$Recycle.Bin\'
+            - ':\AMD\Temp\'
+            - ':\Intel\'
+            - ':\PerfLogs\'
+            - ':\ProgramData\'
+            - ':\Users\'
+            - ':\Windows\addins\'
+            - ':\Windows\appcompat\'
+            - ':\Windows\apppatch\'
+            - ':\Windows\AppReadiness\'
+            - ':\Windows\bcastdvr\'
+            - ':\Windows\Boot\'
+            - ':\Windows\Branding\'
+            - ':\Windows\CbsTemp\'
+            - ':\Windows\Containers\'
+            - ':\Windows\csc\'
+            - ':\Windows\Cursors\'
+            - ':\Windows\debug\'
+            - ':\Windows\diagnostics\'
+            - ':\Windows\DigitalLocker\'
+            - ':\Windows\dot3svc\'
+            - ':\Windows\en-US\'
+            - ':\Windows\Fonts\'
+            - ':\Windows\Globalization\'
+            - ':\Windows\Help\'
+            - ':\Windows\IdentityCRL\'
+            - ':\Windows\IME\'
+            - ':\Windows\ImmersiveControlPanel\'
+            - ':\Windows\INF\'
+            - ':\Windows\L2Schemas\'
+            - ':\Windows\LiveKernelReports\'
+            - ':\Windows\Logs\'
+            - ':\Windows\media\'
+            - ':\Windows\Migration\'
+            - ':\Windows\ModemLogs\'
+            - ':\Windows\ms\'
+            - ':\Windows\OCR\'
+            - ':\Windows\panther\'
+            - ':\Windows\Performance\'
+            - ':\Windows\PLA\'
+            - ':\Windows\PolicyDefinitions\'
+            - ':\Windows\Prefetch\'
+            - ':\Windows\PrintDialog\'
+            - ':\Windows\Provisioning\'
+            - ':\Windows\RemotePackages\'
+            - ':\Windows\rescache\'
+            - ':\Windows\Resources\'
+            - ':\Windows\SchCache\'
+            - ':\Windows\schemas\'
+            - ':\Windows\security\'
+            - ':\Windows\ServiceState\'
+            - ':\Windows\servicing\'
+            - ':\Windows\Setup\'
+            - ':\Windows\ShellComponents\'
+            - ':\Windows\ShellExperiences\'
+            - ':\Windows\SKB\'
+            - ':\Windows\System32\Speech\'
+            - ':\Windows\TAPI\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\TextInput\'
+            - ':\Windows\tracing\'
+            - ':\Windows\twain_32\'
+            - ':\Windows\Vss\'
+            - ':\Windows\WaaS\'
+            - ':\Windows\wlansvc\'
+    condition: all of selection_*
+falsepositives:
+    - Third-party services hosted in svchost.exe (for example VPN, printer or audio vendor service DLLs) that ship unsigned libraries under ProgramData; add a filter_optional entry per vendor path
+level: high
+regression_tests_path: regression_data/rules/windows/image_load/image_load_svchost_unsigned_dll_from_susp_location/info.yml

@@ -1,0 +1,13 @@
+id: 8c82f4e1-ba32-48e4-a127-0da1784a2697
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 25c89f2b-3aaf-4b3e-b1c0-50a7d40de861
+      title: Suspicious Unsigned DLL Loaded By Svchost From Uncommon Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_svchost_unsigned_dll_from_susp_location/25c89f2b-3aaf-4b3e-b1c0-50a7d40de861.evtx
