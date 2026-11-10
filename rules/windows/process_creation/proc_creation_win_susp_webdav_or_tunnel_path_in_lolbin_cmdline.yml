@@ -60,7 +60,7 @@ detection:
             - '@8080\'
             - '@8443\'
     filter_main_sharepoint:
-        CommandLine|re: '^(?:"[^"]+"|[^\s"@]+)\s+(?:/c\s+)?(?:(?:"[^"]+"|[^\s"@]+)\s+)?use\s+(?:[A-Za-z]:\s+)?\\\\[A-Za-z0-9-]+\.sharepoint\.com@SSL\\DavWWWRoot\\[^\s@]*\s*$'
+        CommandLine|re: '^(?:"[^"]+"|[^\s"@&|<>^()%!]+)\s+(?:/c\s+)?(?:(?:"[^"]+"|[^\s"@&|<>^()%!]+)\s+)?use\s+(?:[A-Za-z]:\s+)?\\\\[A-Za-z0-9-]+\.sharepoint\.com@SSL\\DavWWWRoot\\[^\s@&|<>^()%!"]*\s*$'
     condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Scripts that map or browse internal WebDAV shares (document management systems, Nextcloud/ownCloud, IIS WebDAV) by UNC path
