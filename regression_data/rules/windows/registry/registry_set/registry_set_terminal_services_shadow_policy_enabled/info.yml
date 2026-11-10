@@ -1,0 +1,13 @@
+id: 5c6c5be2-5bf5-4db6-8bd7-3c4b88faf021
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: fc4fb589-9333-4cdf-b80f-90f39e30a646
+      title: Potential RDP Session Shadowing Enabled Via Registry Policy
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_terminal_services_shadow_policy_enabled/fc4fb589-9333-4cdf-b80f-90f39e30a646.evtx
