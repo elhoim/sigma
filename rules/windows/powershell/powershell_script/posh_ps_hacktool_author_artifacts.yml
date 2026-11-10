@@ -1,0 +1,77 @@
+title: Suspicious PowerShell Script Containing Offensive Tool Author Artifacts
+id: d90541d2-724c-4570-8a5b-46ec6d247389
+related:
+    - id: 8d31a8ce-46b5-4dd6-bdc3-680931f1db86
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script block content that contains the handles or names of well-known offensive PowerShell tool authors, as found in the header comments and attribution strings of public tools such as PowerSploit, PowerView, Nishang, Empire, Invoke-Obfuscation, PowerUpSQL, Inveigh or Seatbelt ports.
+    Attackers frequently run these public tools with little or no modification, so the author artifacts survive in the script block log even when function and variable names were changed.
+references:
+    - https://newtonpaul.com/analysing-fileless-malware-cobalt-strike-beacon/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_posh_hacktool_authors.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection:
+        ScriptBlockText|contains:
+            - '424f424f'
+            - '_nullbind'
+            - '_tmenochet'
+            - 'am0nsec'
+            - 'cfalta'
+            - 'ChrisTruncer'
+            - 'citronneur'
+            - 'cobbr_io'
+            - 'curi0usJack'
+            - 'Cx01N'
+            - 'dafthack'
+            - 'danielhbohannon'
+            - 'darkoperator'
+            - 'eladshamir'
+            - 'enigma0x3'
+            - 'fullmetalcache'
+            - 'funoverip'
+            - 'FuzzySec'
+            - 'harmj0y'
+            - 'Hubbl3'
+            - 'itm4n'
+            - 'jaredcatkinson'
+            - 'jaredhaight'
+            - 'JosephBialek'
+            - 'kevin_robertson'
+            - 'leechristensen'
+            - 'mattifestation'
+            - 'Matthew Graeber'
+            - 'mgeeky'
+            - 'monoxgas'
+            - 'nikhil_mitt'
+            - 'nurfed1'
+            - 'obscuresec'
+            - 'oddvarmoe'
+            - 'OneLogicalMyth'
+            - 'PetrMedonos'
+            - 'r4wd3r'
+            - 'RastaMouse'
+            - 'rvrsh3ll'
+            - 'samratashok'
+            - 'Scott Sutherland'
+            - 'secabstraction'
+            - 'SecureThisShit'
+            - 'sixdub'
+            - 'splinter_code'
+            - 'TheRealWover'
+            - 'ukstufus'
+            - 'xorrior'
+    condition: selection
+falsepositives:
+    - Security teams running the public tools for authorised assessments, and legitimate community modules written by the same authors (for example PowerShell DSC resources, Posh-SSH, PSReflect-based diagnostics); exclude them in the environment by module name or script hash; the rule has no content-based exclusion because an attacker could add such a string to a script block
+level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_hacktool_author_artifacts/info.yml
