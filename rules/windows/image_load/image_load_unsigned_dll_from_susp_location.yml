@@ -1,0 +1,117 @@
+title: Potential DLL Sideloading Of Unsigned DLL From Suspicious Location
+id: 5658ac17-2afb-43d4-87bb-7ada5c1eb22b
+related:
+    - id: 799a5f48-0ac1-4e0f-9152-71d137d48c2a
+      type: similar
+    - id: b5de0c9a-6f19-43e0-af4e-55ad01f550af
+      type: similar
+status: experimental
+description: |
+    Detects the loading of an unsigned DLL from a folder that is writable by standard users or that never hosts third-party libraries on a clean system, such as "PerfLogs", "Users\Public", the "Tasks" folders, "Intel", "AMD\Temp", the recycle bin or static Windows subfolders (Fonts, Help, INF, Cursors, Branding...).
+    Attackers drop a renamed signed executable together with a malicious DLL in such a folder so that the trusted executable sideloads the DLL. Unlike the sibling rules, this rule is not limited to a fixed list of abused DLL names or host utilities.
+references:
+    - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_unsigned_dll_loaded_from_suspdir.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection_unsigned:
+        Signed: 'false'
+        ImageLoaded|endswith: '.dll'
+    selection_folder_fixed:
+        ImageLoaded|contains:
+            - ':\$Recycle.Bin\'
+            - ':\AMD\Temp\'
+            - ':\Intel\'
+            - ':\PerfLogs\'
+            - ':\Users\Public\'
+            - ':\Windows\addins\'
+            - ':\Windows\appcompat\'
+            - ':\Windows\apppatch\'
+            - ':\Windows\AppReadiness\'
+            - ':\Windows\bcastdvr\'
+            - ':\Windows\Boot\'
+            - ':\Windows\Branding\'
+            - ':\Windows\CbsTemp\'
+            - ':\Windows\Containers\'
+            - ':\Windows\csc\'
+            - ':\Windows\Cursors\'
+            - ':\Windows\debug\'
+            - ':\Windows\diagnostics\'
+            - ':\Windows\DigitalLocker\'
+            - ':\Windows\dot3svc\'
+            - ':\Windows\en-US\'
+            - ':\Windows\Fonts\'
+            - ':\Windows\Globalization\'
+            - ':\Windows\Help\'
+            - ':\Windows\IdentityCRL\'
+            - ':\Windows\IME\'
+            - ':\Windows\ImmersiveControlPanel\'
+            - ':\Windows\INF\'
+            - ':\Windows\L2Schemas\'
+            - ':\Windows\LiveKernelReports\'
+            - ':\Windows\Logs\'
+            - ':\Windows\media\'
+            - ':\Windows\Migration\'
+            - ':\Windows\ModemLogs\'
+            - ':\Windows\ms\'
+            - ':\Windows\OCR\'
+            - ':\Windows\panther\'
+            - ':\Windows\Performance\'
+            - ':\Windows\PLA\'
+            - ':\Windows\PolicyDefinitions\'
+            - ':\Windows\Prefetch\'
+            - ':\Windows\PrintDialog\'
+            - ':\Windows\Provisioning\'
+            - ':\Windows\RemotePackages\'
+            - ':\Windows\rescache\'
+            - ':\Windows\Resources\'
+            - ':\Windows\SchCache\'
+            - ':\Windows\schemas\'
+            - ':\Windows\security\'
+            - ':\Windows\ServiceProfiles\'
+            - ':\Windows\ServiceState\'
+            - ':\Windows\servicing\'
+            - ':\Windows\Setup\'
+            - ':\Windows\ShellComponents\'
+            - ':\Windows\ShellExperiences\'
+            - ':\Windows\SKB\'
+            - ':\Windows\System\'
+            - ':\Windows\System32\Tasks\'
+            - ':\Windows\TAPI\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\TextInput\'
+            - ':\Windows\tracing\'
+            - ':\Windows\twain_32\'
+            - ':\Windows\Vss\'
+            - ':\Windows\WaaS\'
+            - ':\Windows\Web\'
+            - ':\Windows\wlansvc\'
+    selection_folder_user_profile:
+        - ImageLoaded|contains|all:
+              - ':\Users\'
+              - '\Contacts\'
+        - ImageLoaded|contains|all:
+              - ':\Users\'
+              - '\Favorites\'
+        - ImageLoaded|contains|all:
+              - ':\Users\'
+              - '\Music\'
+        - ImageLoaded|contains|all:
+              - ':\Users\'
+              - '\Pictures\'
+        - ImageLoaded|contains|all:
+              - ':\Users\'
+              - '\Videos\'
+    condition: selection_unsigned and 1 of selection_folder_*
+falsepositives:
+    - Portable or self-compiled software run from a public or media folder, and third-party input method editors or printer drivers that install unsigned libraries in the matched Windows subfolders
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_unsigned_dll_from_susp_location/info.yml
