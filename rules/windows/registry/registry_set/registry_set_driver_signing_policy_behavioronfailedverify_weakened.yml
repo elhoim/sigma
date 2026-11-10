@@ -1,0 +1,33 @@
+title: Potential Driver Signing Policy Downgrade Via BehaviorOnFailedVerify Registry Value
+id: af782c6f-00fd-4667-bc40-45cfb7dca8f0
+status: experimental
+description: |
+    Detects the "BehaviorOnFailedVerify" value of the Driver Signing policy key (Software\Policies\Microsoft\Windows NT\Driver Signing) being set to 0 (ignore) or 1 (warn) by a process other than the Group Policy client or the Configuration Manager agent.
+    This value implements the "Code signing for driver packages" policy; 2 (block) refuses unsigned driver packages while 0 and 1 let device installation proceed with unsigned or tampered packages. Lowering it is a preparation step for loading unsigned drivers on systems that still honour the legacy policy.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_code_signing_policy_modification_registry.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.t1112
+    - attack.t1553.006
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Driver Signing\BehaviorOnFailedVerify'
+        Details:
+            - 'DWORD (0x00000000)'
+            - 'DWORD (0x00000001)'
+    filter_main_gpo_client:
+        Image: 'C:\Windows\System32\svchost.exe'
+    filter_main_ccmexec:
+        Image: 'C:\Windows\CCM\CcmExec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Administrators lowering the policy on test systems to install unsigned development drivers
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_driver_signing_policy_behavioronfailedverify_weakened/info.yml

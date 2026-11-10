@@ -1,0 +1,13 @@
+id: 912eb7a6-e02b-4b78-9cf6-fe71c27aae54
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: af782c6f-00fd-4667-bc40-45cfb7dca8f0
+      title: Potential Driver Signing Policy Downgrade Via BehaviorOnFailedVerify Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_driver_signing_policy_behavioronfailedverify_weakened/af782c6f-00fd-4667-bc40-45cfb7dca8f0.evtx
