@@ -1,0 +1,13 @@
+id: 90d8d135-3481-42f7-be85-389edb677d3f
+description: N/A
+date: 2026-11-09
+author: elhoim
+rule_metadata:
+    - id: d0c9fc61-b254-4727-88ef-7f5f4a9348b2
+      title: SUNBURST Backdoor DNS Query To Avsvmcloud.com Subdomain
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-emerging-threats/2020/TA/SolarWinds-Supply-Chain/dns_query_win_apt_unc2452_sunburst_c2_domain/d0c9fc61-b254-4727-88ef-7f5f4a9348b2.evtx

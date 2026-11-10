@@ -1,0 +1,33 @@
+title: SUNBURST Backdoor DNS Query To Avsvmcloud.com Subdomain
+id: d0c9fc61-b254-4727-88ef-7f5f4a9348b2
+related:
+    - id: 9be34ad0-b6a7-4fbd-91cf-fc7ec1047f5f # UNC2452 Process Creation Patterns
+      type: similar
+status: experimental
+description: |
+    Detects a DNS query for a subdomain of "avsvmcloud.com", the first-stage command and control domain of the SUNBURST backdoor
+    delivered through the trojanized SolarWinds Orion update. SUNBURST generates the subdomain with a DGA from the victim user ID
+    and the encoded local domain name, under one of the "appsync-api.<region>.avsvmcloud.com" prefixes, and the CNAME answer
+    points the backdoor to its second-stage C2 server.
+references:
+    - https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor
+    - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/integrations/dga/command_and_control_ml_dga_activity_using_sunburst_domain.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1071.004
+    - attack.t1568.002
+    - detection.emerging-threats
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.avsvmcloud.com'
+    condition: selection
+falsepositives:
+    - The domain has been sinkholed since December 2020, so queries from security tooling, threat intelligence enrichment or analysts replaying indicators can match
+level: critical
+regression_tests_path: regression_data/rules-emerging-threats/2020/TA/SolarWinds-Supply-Chain/dns_query_win_apt_unc2452_sunburst_c2_domain/info.yml
