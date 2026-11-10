@@ -1,0 +1,13 @@
+id: e78a350f-f36f-4532-93f1-e2c94f93b66d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 50a92e9c-419e-4764-b310-12aa671dac47
+      title: Potential Masquerading - Executable Content Written To File With Media Or Document Extension
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_executable_detected/file_executable_detected_win_media_or_document_extension/50a92e9c-419e-4764-b310-12aa671dac47.evtx
