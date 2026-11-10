@@ -1,0 +1,33 @@
+title: Potential DLL Search Order Hijacking Via DotLocal Redirection Folder
+id: 47d8abb5-d76c-449b-bf2a-998a1dec37d9
+related:
+    - id: 07a99744-56ac-40d2-97b7-2095967b0e03
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a DLL inside a "<application>.exe.local" folder next to an executable.
+    When such a folder exists, the Windows loader resolves the application's DLL imports from it first (DLL redirection, also called DotLocal), regardless of the system search order. Dropping a DLL there makes the application load attacker code on its next start without touching the binary, its registry keys or the DLL in System32; the technique is used for persistence, privilege escalation through auto-elevated binaries, and for side-loading into trusted processes.
+    The related rule covers five auto-elevating System32 binaries and comctl32.dll; this rule covers any executable and any DLL name.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_shared_modules_local_sxs_dll.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '.exe.local\'
+        TargetFilename|endswith: '.dll'
+    condition: selection
+falsepositives:
+    - Legacy applications shipped with a .local redirection folder to pin their own version of a shared DLL; installers of such applications create the folder once
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_dll_creation_in_dotlocal_redirection_folder/info.yml
