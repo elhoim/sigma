@@ -1,0 +1,36 @@
+title: Process Spawned By Azure VM Run Command Script Wrapper
+id: 8fffecb4-c446-496b-bb12-485b95fc3af1
+status: experimental
+description: |
+    Detects a process whose parent is the PowerShell wrapper that the Azure Run Command guest extension uses to execute an operator-supplied script ("powershell -ExecutionPolicy Unrestricted -File script<N>.ps1").
+    Run Command lets anyone with the Microsoft.Compute/virtualMachines/runCommand/action permission execute arbitrary scripts as SYSTEM inside the guest from the Azure control plane, without RDP or credentials for the VM. The Azure activity log only records that a Run Command was issued; the child processes of the wrapper show what the script actually did on the host.
+    Review the child command line and correlate with the Azure activity log operation MICROSOFT.COMPUTE/VIRTUALMACHINES/RUNCOMMAND/ACTION.
+references:
+    - https://learn.microsoft.com/en-us/azure/virtual-machines/windows/run-command
+    - https://hackingthe.cloud/azure/run-command-abuse/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/execution_azure_run_command_script_child_process.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1651
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        ParentImage|endswith: '\powershell.exe'
+    selection_wrapper_args:
+        ParentCommandLine|contains|all:
+            - ' -ExecutionPolicy Unrestricted -File script'
+            - '.ps1'
+    selection_wrapper_path:
+        # Script paths of the action and managed Run Command extensions
+        ParentCommandLine|contains: '\Packages\Plugins\Microsoft.CPlat.Core.RunCommand'
+    condition: selection_img and 1 of selection_wrapper_*
+falsepositives:
+    - Legitimate administration, configuration management or automation that uses Azure Run Command; baseline the scripts and the processes they spawn
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_azure_run_command_script_child_process/info.yml
