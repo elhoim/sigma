@@ -1,0 +1,37 @@
+title: Potential Phishing Payload - Shortcut Or Internet Shortcut File Downloaded From The Internet
+id: 87edcbfb-71a2-4ada-95aa-18f396f52ff2
+related:
+    - id: 573df571-a223-43bc-846e-3f98da481eca
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a "Zone.Identifier" alternate data stream with an Internet or Restricted Sites zone on a Windows shortcut (".lnk") or Internet shortcut (".url") file, meaning the shortcut was downloaded from the Internet by a browser, mail client or messaging application.
+    Shortcut files are not a normal download type for end users; since the default blocking of Office macros, phishing campaigns deliver .lnk and .url files (directly or inside archives and ISO images) that run a hidden command or fetch a remote payload when opened.
+references:
+    - https://www.proofpoint.com/us/blog/threat-insight/how-threat-actors-are-adapting-post-macro-world
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_downloaded_shortcut_files.toml
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_downloaded_url_file.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1204.002
+    - attack.t1566.001
+    - attack.t1566.002
+logsource:
+    category: create_stream_hash
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '.lnk:Zone.Identifier'
+            - '.url:Zone.Identifier'
+        Contents|contains:
+            - 'ZoneId=3'
+            - 'ZoneId=4'
+    condition: selection
+falsepositives:
+    - Users downloading shortcut files shared through web portals, cloud storage synchronisation clients or software distribution pages
+level: medium
+regression_tests_path: regression_data/rules/windows/create_stream_hash/create_stream_hash_downloaded_shortcut_file/info.yml
