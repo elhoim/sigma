@@ -27,12 +27,14 @@ detection:
             - '\winload.efi'
             - '\winload.exe'
     filter_main_servicing_image:
-        Image|endswith:
-            - ':\Windows\servicing\TrustedInstaller.exe'
-            - ':\Windows\System32\poqexec.exe'
-            - ':\Windows\System32\wbengine.exe'
-            - ':\Windows\SysWOW64\poqexec.exe'
-            - '\TiWorker.exe'
+        Image:
+            - 'C:\Windows\servicing\TrustedInstaller.exe'
+            - 'C:\Windows\System32\poqexec.exe'
+            - 'C:\Windows\System32\wbengine.exe'
+            - 'C:\Windows\SysWOW64\poqexec.exe'
+    filter_main_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
     filter_main_staging_paths:
         TargetFilename|contains:
             - ':\$WINDOWS.~BT\'
