@@ -1,0 +1,42 @@
+title: Potential Persistence Via Windows Installer - Scheduled Task Or Startup File Created By Msiexec
+id: a8614b1e-b127-48e7-a66b-e0dc91e8aa0b
+related:
+    - id: a762e74f-4dce-477c-b023-4ed81df600f9
+      type: similar
+status: experimental
+description: |
+    Detects the Windows Installer process "msiexec.exe" creating a file in the scheduled task store (Windows\System32\Tasks) or in a per-user or common Startup folder.
+    Malicious MSI packages use custom actions to register a scheduled task or drop a Startup item so that the payload survives a reboot, while the installation itself appears legitimate. Software installers occasionally register an update task the same way, so the most common vendor tasks are filtered.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_msi_installer_task_startup.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1053.005
+    - attack.t1218.007
+    - attack.t1547.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        TargetFilename|contains:
+            - ':\Windows\System32\Tasks\'
+            - ':\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\'
+            - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\'
+    filter_optional_known_vendor_tasks:
+        - TargetFilename: 'C:\Windows\System32\Tasks\Adobe Acrobat Update Task'
+        - TargetFilename|startswith:
+              - 'C:\Windows\System32\Tasks\HP\Sure Click\'
+              - 'C:\Windows\System32\Tasks\IntelSURQC-Upgrade-'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Legitimate installers that register an update or telemetry task or a Startup shortcut during installation; add them to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_msiexec_scheduled_task_or_startup_file_creation/info.yml
