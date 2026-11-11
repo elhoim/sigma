@@ -5,7 +5,7 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a value being written under the "ExtensionInstallForcelist" policy key of Google Chrome, Microsoft Edge, Brave or Chromium by a process other than the Group Policy client, Intune or Configuration Manager agents.
+    Detects a value being written under the "ExtensionInstallForcelist" policy key of Google Chrome, Microsoft Edge, Brave or Chromium by a process other than the Intune, Configuration Manager or OMA-DM agents. Writes made by the Group Policy client (svchost.exe) are not excluded, because the event carries no service name.
     The force-list policy makes the browser silently install and pin an extension (by extension ID and update URL) that the user cannot remove. Malware and adware set it to install a credential or cookie stealing extension without the Web Store or developer mode; legitimate deployments go through Group Policy or MDM, not through reg.exe, PowerShell or an installer.
 references:
     - https://chromeenterprise.google/policies/#ExtensionInstallForcelist
@@ -27,15 +27,14 @@ detection:
             - '\Policies\Microsoft\Edge\ExtensionInstallForcelist\'
             - '\Policies\BraveSoftware\Brave\ExtensionInstallForcelist\'
             - '\Policies\Chromium\ExtensionInstallForcelist\'
-    filter_main_group_policy:
-        Image: 'C:\Windows\System32\svchost.exe'
     filter_optional_mdm_agents:
         Image:
             - 'C:\Program Files (x86)\Microsoft Intune Management Extension\Microsoft.Management.Services.IntuneWindowsAgent.exe'
             - 'C:\Windows\CCM\CcmExec.exe'
             - 'C:\Windows\System32\omadmclient.exe'
-    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+    condition: selection and not 1 of filter_optional_*
 falsepositives:
+    - Group Policy processing (svchost.exe hosting the Group Policy client) applying a legitimate extension force-list policy; the registry event carries no service name, so these writes are not filtered. Review the extension IDs against the approved list
     - Browser management through third-party RMM or endpoint management agents that write the policy key directly; add the agent image to the filter
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_browser_extension_install_forcelist_modified/info.yml
