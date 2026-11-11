@@ -1,0 +1,13 @@
+id: 94c717c7-a856-40f0-b005-b157ae04a49f
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 99e021d5-de19-4d95-9e1c-1c90d6ffc4eb
+      title: Potential Loader Staging - DLL Created In Random-Named AppData Roaming Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_dll_creation_in_random_named_roaming_folder/99e021d5-de19-4d95-9e1c-1c90d6ffc4eb.evtx
