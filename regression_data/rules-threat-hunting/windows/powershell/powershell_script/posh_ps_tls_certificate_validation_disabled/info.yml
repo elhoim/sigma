@@ -1,0 +1,13 @@
+id: ad765287-9751-4ea8-b800-061ea3aa328f
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 008b15f0-fba8-451e-9f70-04de43f1990e
+      title: TLS Certificate Validation Disabled In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/powershell/powershell_script/posh_ps_tls_certificate_validation_disabled/008b15f0-fba8-451e-9f70-04de43f1990e.evtx
