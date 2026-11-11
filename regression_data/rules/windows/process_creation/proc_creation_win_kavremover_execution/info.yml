@@ -1,0 +1,13 @@
+id: 7279e5c3-796e-4bf5-b123-dc581f815099
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: db008581-1cc9-4347-b612-a30aa31f5952
+      title: Potential Security Software Removal Via Kaspersky Removal Tool
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_kavremover_execution/db008581-1cc9-4347-b612-a30aa31f5952.evtx
