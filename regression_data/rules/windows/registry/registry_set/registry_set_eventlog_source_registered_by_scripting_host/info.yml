@@ -1,0 +1,13 @@
+id: da013bb7-0cb8-4c13-b71d-fb2ec7ea9486
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: e0b4e9ca-ccde-42f5-b51e-76a9db26c68e
+      title: Event Log Source Registered By Scripting Host
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_eventlog_source_registered_by_scripting_host/e0b4e9ca-ccde-42f5-b51e-76a9db26c68e.evtx
