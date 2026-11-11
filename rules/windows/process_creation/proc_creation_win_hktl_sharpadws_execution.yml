@@ -1,0 +1,61 @@
+title: HackTool - SharpADWS Execution
+id: d005e7d1-39a3-42d9-8654-526a5dcaee22
+related:
+    - id: e92a4287-e072-4a40-9739-370c106bb750
+      type: similar
+    - id: b3ad3c0f-c949-47a1-a30e-b0491ccae876
+      type: similar
+status: experimental
+description: |
+    Detects the execution of SharpADWS, an Active Directory reconnaissance and abuse tool that queries the domain through Active Directory Web Services (ADWS, TCP 9389) instead of LDAP, by its image name, original file name or its distinctive method names and options on the command line.
+    Because the LDAP queries are wrapped in SOAP messages to the ADWS service, the usual LDAP-based monitoring on domain controllers does not see them. The tool was used by The Gentlemen ransomware affiliates for domain enumeration.
+references:
+    - https://github.com/wh0amitz/SharpADWS/blob/d6763348f5709ba7e404e980c14df8752bb85994/README.md
+    - https://securelist.com/the-gentlemen-raas/120447/
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.discovery
+    - attack.t1087.002
+    - attack.t1069.002
+    - attack.t1018
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_name:
+        - Image|endswith: '\SharpADWS.exe'
+        - OriginalFileName: 'SharpADWS.exe'
+        - CommandLine|contains: 'SharpADWS'
+    selection_cli_method:
+        CommandLine|contains:
+            - ' acl -'
+            - ' AddComputer -'
+            - ' Certify -action '
+            - ' DCSync -action '
+            - ' DontReqPreAuth -action '
+            - ' Kerberoastable -action '
+            - ' RBCD -action '
+            - ' Whisker -action '
+    selection_cli_options:
+        CommandLine|contains:
+            - ' -dn '
+            - ' -trustee '
+            - ' -right '
+            - ' -rid '
+            - ' -domaincontroller'
+            - ' -target '
+            - ' -delegate-to '
+            - ' -delegate-from '
+            - ' -computer-name '
+            - ' -computer-pass '
+            - ' -enrolleeSuppliesSubject'
+            - ' -clientAuth'
+            - ' -cert-pass '
+            - ' -device-id '
+    condition: selection_name or all of selection_cli_*
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_sharpadws_execution/info.yml
