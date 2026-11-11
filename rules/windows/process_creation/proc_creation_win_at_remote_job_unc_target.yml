@@ -1,0 +1,35 @@
+title: Potential Lateral Movement Via Remote AT Job
+id: 3a8a4ee7-a1f3-4ef3-9499-527b67be571e
+related:
+    - id: 60fc936d-2eb0-4543-8a13-911c750a1dfc
+      type: similar
+status: experimental
+description: |
+    Detects the legacy "at.exe" scheduler being run with a UNC computer name ("\\host") as argument, which schedules or lists a job on a remote host over the AT-Scheduler RPC interface.
+    at.exe has been deprecated since Windows 8 and is almost never used by administrators, yet it still ships on servers; attackers use it to run a command as SYSTEM on another machine where they hold administrative credentials, as an alternative to schtasks, PsExec or WMI.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/at
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/lateral_movement_at.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.lateral-movement
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1021
+    - attack.t1053.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        - Image|endswith: '\at.exe'
+        - OriginalFileName: 'at.exe'
+    selection_unc:
+        CommandLine|contains: ' \\'
+    condition: all of selection*
+falsepositives:
+    - Legacy administration scripts that still schedule jobs on remote servers with at.exe
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_at_remote_job_unc_target/info.yml
