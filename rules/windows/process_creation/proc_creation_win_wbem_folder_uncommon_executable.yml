@@ -1,0 +1,47 @@
+title: Potential Masquerading - Uncommon Executable Running From WBEM Folder
+id: 505da9fc-3833-4c86-be5a-eafc7885b41b
+status: experimental
+description: |
+    Detects a process starting from the Windows Management Instrumentation folder ("System32\wbem" or "SysWOW64\wbem") whose file name is not one of the WMI components that live there (mofcomp, scrcons, unsecapp, wbemtest, winmgmt, wmiadap, wmiapsrv, wmic, WmiPrvSE, WMIADAP).
+    The wbem folder is writable only by administrators and is trusted by many allow-list policies and analysts; attackers drop or copy their binaries into it so that the path looks like a WMI component, and some DLL/EXE search order hijacks of WMI tooling execute from there.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-architecture
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_unusual_process_path_wbem.toml
+author: elhoim
+date: 2026-11-11
+tags:
+    - attack.stealth
+    - attack.t1036.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|contains:
+            - ':\Windows\System32\wbem\'
+            - ':\Windows\SysWOW64\wbem\'
+    filter_main_wmi_components:
+        Image:
+            - 'C:\Windows\System32\wbem\mofcomp.exe'
+            - 'C:\Windows\System32\wbem\scrcons.exe'
+            - 'C:\Windows\System32\wbem\unsecapp.exe'
+            - 'C:\Windows\System32\wbem\wbemtest.exe'
+            - 'C:\Windows\System32\wbem\winmgmt.exe'
+            - 'C:\Windows\System32\wbem\wmiadap.exe'
+            - 'C:\Windows\System32\wbem\wmiapsrv.exe'
+            - 'C:\Windows\System32\wbem\wmic.exe'
+            - 'C:\Windows\System32\wbem\WmiPrvSE.exe'
+            - 'C:\Windows\SysWOW64\wbem\mofcomp.exe'
+            - 'C:\Windows\SysWOW64\wbem\scrcons.exe'
+            - 'C:\Windows\SysWOW64\wbem\unsecapp.exe'
+            - 'C:\Windows\SysWOW64\wbem\wbemtest.exe'
+            - 'C:\Windows\SysWOW64\wbem\winmgmt.exe'
+            - 'C:\Windows\SysWOW64\wbem\wmiadap.exe'
+            - 'C:\Windows\SysWOW64\wbem\wmiapsrv.exe'
+            - 'C:\Windows\SysWOW64\wbem\wmic.exe'
+            - 'C:\Windows\SysWOW64\wbem\WmiPrvSE.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_wbem_folder_uncommon_executable/info.yml

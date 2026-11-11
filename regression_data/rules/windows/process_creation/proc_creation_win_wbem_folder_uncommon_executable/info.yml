@@ -1,0 +1,13 @@
+id: 53a26b8a-9378-4beb-b1f1-42c726c4864f
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 505da9fc-3833-4c86-be5a-eafc7885b41b
+      title: Potential Masquerading - Uncommon Executable Running From WBEM Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wbem_folder_uncommon_executable/505da9fc-3833-4c86-be5a-eafc7885b41b.evtx
