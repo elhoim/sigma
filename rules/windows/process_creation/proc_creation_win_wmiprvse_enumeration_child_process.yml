@@ -1,0 +1,60 @@
+title: Potential Remote Discovery Via WMI - Enumeration Utility Spawned By WmiPrvSE
+id: 451dfeee-1f44-4d9c-8f76-27fa712b21c7
+related:
+    - id: 8a582fe2-0882-4b89-a82a-da6b2dc32937
+      type: similar
+status: experimental
+description: |
+    Detects a native host or network enumeration utility (arp, dsquery, dsget, gpresult, hostname, ipconfig, nbtstat, net, net1, netsh, netstat, nltest, ping, qprocess, quser, qwinsta, reg, sc, systeminfo, tasklist, tracert, whoami) started as a child of the WMI Provider Host "WmiPrvSE.exe".
+    Processes created through the Win32_Process WMI class (wmic /node, Invoke-WmiMethod, impacket-style WMI execution) run under WmiPrvSE.exe; an enumeration command in that position indicates discovery performed remotely over WMI or by a WMI-based implant rather than by an interactive user.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-architecture
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_enumeration_via_wmiprvse.toml
+author: elhoim
+date: 2026-11-11
+tags:
+    - attack.execution
+    - attack.discovery
+    - attack.t1047
+    - attack.t1016
+    - attack.t1033
+    - attack.t1057
+    - attack.t1082
+    - attack.t1087
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ParentImage|endswith: '\wbem\WmiPrvSE.exe'
+        Image|endswith:
+            - '\arp.exe'
+            - '\dsquery.exe'
+            - '\dsget.exe'
+            - '\gpresult.exe'
+            - '\hostname.exe'
+            - '\ipconfig.exe'
+            - '\nbtstat.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\netsh.exe'
+            - '\netstat.exe'
+            - '\nltest.exe'
+            - '\ping.exe'
+            - '\qprocess.exe'
+            - '\quser.exe'
+            - '\qwinsta.exe'
+            - '\reg.exe'
+            - '\sc.exe'
+            - '\systeminfo.exe'
+            - '\tasklist.exe'
+            - '\tracert.exe'
+            - '\whoami.exe'
+    filter_main_remote_registry_service:
+        Image: 'C:\Windows\System32\sc.exe'
+        CommandLine|re: '(?i)^"?(sc|C:\\Windows\\System32\\sc)(\.exe)?"?\s+(config|qc)\s+RemoteRegistry\s+(start=\s*\w*)?\s*$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Monitoring, inventory and vulnerability scanning agents that run enumeration commands through WMI (SCCM/Intune inventory, Nessus, Qualys); exclude them in the environment by full image path and exact command line; there is no content-based exclusion (for example the Tenable scan marker) because an attacker could add the same string
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_wmiprvse_enumeration_child_process/info.yml
