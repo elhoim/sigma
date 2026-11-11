@@ -1,0 +1,35 @@
+title: InstallUtil.EXE Execution
+id: be32f2e0-c9de-4a73-bee7-245ac83837d4
+related:
+    - id: d042284c-a296-4988-9be5-f424fadcc28c
+      type: similar
+    - id: 75edd216-1939-4c73-8d61-7f3a0d85b5cc
+      type: similar
+status: experimental
+description: |
+    Detects the .NET Installer Tool "InstallUtil.exe" being started, as a broad low-severity baseline for hunting.
+    InstallUtil runs the installer components of a .NET assembly and is abused to proxy the execution of attacker-supplied assemblies through a signed Microsoft binary. Legitimate use comes from software installers, deployment agents and developers testing .NET services. No account is excluded, so SYSTEM executions are reported too.
+references:
+    - https://learn.microsoft.com/en-us/dotnet/framework/tools/installutil-exe-installer-tool
+    - https://lolbas-project.github.io/lolbas/Binaries/Installutil/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_installutil_command_activity.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.execution
+    - attack.t1218.004
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        - Image|endswith: '\InstallUtil.exe'
+        - OriginalFileName: 'InstallUtil.exe'
+    condition: selection
+falsepositives:
+    - Developers testing .NET Windows services and installer classes
+    - Software setups and deployment agents running InstallUtil, including as SYSTEM through msiexec; filter by exact parent image and command line once baselined
+    - Software setups that run InstallUtil in the installing user's context; add the parent installer to the filter
+level: low
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_installutil_execution/info.yml
