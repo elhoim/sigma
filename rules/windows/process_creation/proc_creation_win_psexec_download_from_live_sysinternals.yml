@@ -1,0 +1,43 @@
+title: Potential PsExec Staging - Download From Live Sysinternals Via Command Line
+id: 35916b02-e20f-43df-add5-364c585be785
+status: experimental
+description: |
+    Detects a command line that fetches PsExec from Microsoft's public "live.sysinternals.com" share with a download utility or cmdlet (Invoke-WebRequest, iwr, curl, wget, certutil, bitsadmin, Start-BitsTransfer) or that references the tool through the share's WebDAV path.
+    Ransomware such as The Gentlemen's locker pulls PsExec from this trusted Microsoft host when it is absent on the compromised machine, immediately before using it to spread to other hosts; administrators normally deploy PsExec through software distribution rather than ad-hoc downloads on servers.
+references:
+    - https://securelist.com/the-gentlemen-raas/120447/
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_url:
+        CommandLine|contains:
+            - 'live.sysinternals.com/PsExec'
+            - 'live.sysinternals.com/tools/PsExec'
+            - 'live.sysinternals.com\tools\PsExec'
+            - 'live.sysinternals.com\PsExec'
+    selection_downloader:
+        CommandLine|contains:
+            - 'Invoke-WebRequest'
+            - 'iwr '
+            - 'curl '
+            - 'wget '
+            - 'certutil'
+            - 'bitsadmin'
+            - 'Start-BitsTransfer'
+            - 'DownloadFile'
+            - 'DownloadString'
+            - 'copy '
+            - 'Copy-Item'
+            - 'robocopy'
+    condition: all of selection_*
+falsepositives:
+    - Administrators fetching PsExec interactively from the Sysinternals live share; correlate with the account and the follow-up PsExec usage
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_psexec_download_from_live_sysinternals/info.yml
