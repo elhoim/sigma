@@ -50,11 +50,8 @@ detection:
             - '\tasklist.exe'
             - '\tracert.exe'
             - '\whoami.exe'
-    filter_main_remote_registry_service:
-        Image: 'C:\Windows\System32\sc.exe'
-        CommandLine|re: '(?i)^"?(sc|C:\\Windows\\System32\\sc)(\.exe)?"?\s+(config|qc)\s+RemoteRegistry\s+(start=\s*\w*)?\s*$'
-    condition: selection and not 1 of filter_main_*
+    condition: selection
 falsepositives:
-    - Monitoring, inventory and vulnerability scanning agents that run enumeration commands through WMI (SCCM/Intune inventory, Nessus, Qualys); exclude them in the environment by full image path and exact command line; there is no content-based exclusion (for example the Tenable scan marker) because an attacker could add the same string
+    - Monitoring, inventory and vulnerability scanning agents that run enumeration commands through WMI (SCCM/Intune inventory, Nessus, Qualys), including scanners that enable or query the Remote Registry service with sc.exe, which is not excluded because the same command can be run by an attacker; exclude them in the environment by full image path and exact command line; there is no content-based exclusion (for example the Tenable scan marker) because an attacker could add the same string
 level: medium
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_wmiprvse_enumeration_child_process/info.yml
