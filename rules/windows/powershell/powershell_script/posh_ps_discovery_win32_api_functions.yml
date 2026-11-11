@@ -1,0 +1,60 @@
+title: Potential Discovery Via Win32 Network And Session APIs In PowerShell Script
+id: 5083256a-f2e3-4c98-bd0c-177c88548947
+related:
+    - id: dcd74b95-3f36-4ed9-9598-0490951643aa
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script block content that references the native Windows API functions used to enumerate shares, logged-on users, sessions, local and domain groups, domain trusts, sites and service security descriptors (NetShareEnum, NetSessionEnum, NetWkstaUserEnum, NetLocalGroupEnum, NetLocalGroupGetMembers, NetUserEnum, NetGroupEnum, DsEnumerateDomainTrusts, DsGetSiteName, WTSEnumerateSessionsEx, LsaGetLogonSessionData, LsaEnumerateTrustedDomains, QueryServiceObjectSecurity, NetScheduleJobEnum, NetUserModalsGet).
+    PowerView and derived reconnaissance scripts call these APIs through P/Invoke or reflection to map users, sessions and trusts before lateral movement; ordinary administration scripts use the Active Directory and NetTCPIP cmdlets instead of the raw APIs, so these identifiers are rare in legitimate script blocks.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/api/lmshare/nf-lmshare-netsessionenum
+    - https://github.com/BC-SECURITY/Empire/blob/9259e5106986847d2bb770c4289c0c0f1adf2344/data/module_source/situational_awareness/network/powerview.ps1
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/discovery_posh_suspicious_api_functions.toml
+author: elhoim
+date: 2026-11-11
+tags:
+    - attack.discovery
+    - attack.execution
+    - attack.t1033
+    - attack.t1049
+    - attack.t1069.001
+    - attack.t1069.002
+    - attack.t1087.001
+    - attack.t1087.002
+    - attack.t1135
+    - attack.t1482
+    - attack.t1059.001
+    - attack.t1106
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection:
+        ScriptBlockText|contains:
+            - 'NetShareEnum'
+            - 'NetSessionEnum'
+            - 'NetWkstaUserEnum'
+            - 'NetLocalGroupEnum'
+            - 'NetLocalGroupGetMembers'
+            - 'NetUserEnum'
+            - 'NetGroupEnum'
+            - 'NetGroupGetUsers'
+            - 'NetWkstaTransportEnum'
+            - 'NetScheduleJobEnum'
+            - 'NetUserModalsGet'
+            - 'DsEnumerateDomainTrusts'
+            - 'DsGetSiteName'
+            - 'WTSEnumerateSessionsEx'
+            - 'WTSQuerySessionInformation'
+            - 'LsaGetLogonSessionData'
+            - 'LsaEnumerateTrustedDomains'
+            - 'QueryServiceObjectSecurity'
+    filter_optional_automox:
+        Path|startswith: 'C:\Program Files (x86)\Automox\WDK\Win32\WinSession'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Monitoring and configuration management agents (SCOM discovery, Ansible, Automox) and administrators' own P/Invoke scripts that call these APIs; only the Automox script path is filtered (anchored), the SCOM and Ansible content markers are not excluded because an attacker could add the same strings to a script block, exclude them by script path or hash in the environment
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_discovery_win32_api_functions/info.yml
