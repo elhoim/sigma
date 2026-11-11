@@ -1,0 +1,13 @@
+id: 5311c9a0-f5cc-4f51-847a-e3f9e9dda676
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 921821d6-aedf-488e-af00-f0039878738c
+      title: Suspicious PDF Reader Child Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_pdf_reader_susp_child_process/921821d6-aedf-488e-af00-f0039878738c.evtx
