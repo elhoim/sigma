@@ -1,0 +1,44 @@
+title: Potential Lateral Movement Via Remote Service Configuration With Sc.EXE
+id: 255effb0-d4ea-40d1-b64e-c45271c1d6a9
+related:
+    - id: 85ff530b-261d-48c6-a441-facaa2e81e48
+      type: similar
+status: experimental
+description: |
+    Detects "sc.exe" being used against a remote computer ("\\host" argument) to create, reconfigure, set the failure action of or start a service while specifying its "binPath=".
+    Creating or re-pointing a service on another machine and starting it is the classic way to run a command as SYSTEM over the network with administrative credentials (the technique behind PsExec-style tools); administrators normally manage remote services through management consoles or configuration tooling rather than ad-hoc sc.exe calls with a binary path.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/sc-create
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_cmd_service.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.lateral-movement
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1021.002
+    - attack.t1543.003
+    - attack.t1569.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_img:
+        - Image|endswith: '\sc.exe'
+        - OriginalFileName: 'sc.exe'
+    selection_remote:
+        CommandLine|contains: ' \\'
+    selection_binpath:
+        CommandLine|contains: 'binpath='
+    selection_verb:
+        CommandLine|contains:
+            - ' create '
+            - ' config '
+            - ' failure '
+            - ' start '
+    condition: all of selection_*
+falsepositives:
+    - Administrators deploying or repairing services on remote hosts with sc.exe; deployment scripts from management servers
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_sc_remote_service_binpath/info.yml
