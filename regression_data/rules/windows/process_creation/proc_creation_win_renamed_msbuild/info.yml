@@ -4,7 +4,7 @@ date: 2026-11-11
 author: elhoim
 rule_metadata:
     - id: 0df03709-f088-49fd-b668-3934e8b8b8e3
-      title: Renamed MSBuild Execution
+      title: Suspicious Renamed MSBuild Execution
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
