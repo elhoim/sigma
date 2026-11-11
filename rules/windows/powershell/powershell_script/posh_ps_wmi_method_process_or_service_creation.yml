@@ -1,0 +1,51 @@
+title: Potential Process Or Service Creation Via WMI Method Call In PowerShell Script
+id: 7bc17583-880a-4b80-b2eb-6827af982f23
+status: experimental
+description: |
+    Detects PowerShell script block content that calls the "Create" method of the "Win32_Process", "Win32_Service" or "Win32_ScheduledJob" WMI classes through "Invoke-WmiMethod" or "Invoke-CimMethod", or that pipes "Win32_DCOMApplication" instances into one of these cmdlets.
+    These calls start a process, install a service or register a job through the WMI provider host (locally or on a remote computer with -ComputerName or a CimSession), so the resulting child process appears under wmiprvse.exe instead of the script host. This is the source-side view of WMI-based execution, lateral movement and persistence.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/create-method-in-class-win32-process
+    - https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/create-method-in-class-win32-service
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/8f5d80bc-4689-40f7-ade6-3b647a9ccd14.yaml
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/2e96e620-a34d-4a09-89b4-d32cd6d6e310.yaml
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/218c9734-e963-4de6-8c5d-50d8ebe49d0d.yaml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.lateral-movement
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1021.003
+    - attack.t1047
+    - attack.t1543.003
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_cmdlet:
+        ScriptBlockText|contains:
+            - 'Invoke-WmiMethod'
+            - 'Invoke-CimMethod'
+    selection_create_class:
+        ScriptBlockText|contains:
+            - 'Win32_Process'
+            - 'Win32_Service'
+            - 'Win32_ScheduledJob'
+    selection_create_method:
+        ScriptBlockText|contains:
+            - '-Name Create'
+            - '-Name "Create"'
+            - "-Name 'Create'"
+            - '-MethodName Create'
+            - '-MethodName "Create"'
+            - "-MethodName 'Create'"
+    selection_dcom_class:
+        ScriptBlockText|contains: 'Win32_DCOMApplication'
+    condition: selection_cmdlet and (all of selection_create_* or selection_dcom_class)
+falsepositives:
+    - Administration scripts that start processes or install services on remote hosts through WMI/CIM; filter on the script path or the running account
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_wmi_method_process_or_service_creation/info.yml

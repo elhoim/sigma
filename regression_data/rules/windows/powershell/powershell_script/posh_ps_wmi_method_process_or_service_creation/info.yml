@@ -1,0 +1,13 @@
+id: 4a5b7637-f795-43b2-93cb-51db90f4b348
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 7bc17583-880a-4b80-b2eb-6827af982f23
+      title: Potential Process Or Service Creation Via WMI Method Call In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_wmi_method_process_or_service_creation/7bc17583-880a-4b80-b2eb-6827af982f23.evtx
