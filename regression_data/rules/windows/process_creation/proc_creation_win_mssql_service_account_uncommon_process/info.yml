@@ -1,0 +1,13 @@
+id: cd67f8c0-2401-4e9a-a024-27f2253e39dc
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 724cdea4-f348-4adf-a40b-18a4209d9c5f
+      title: Potential SQL Server Abuse - Uncommon Process Running Under MSSQL Service Account
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_mssql_service_account_uncommon_process/724cdea4-f348-4adf-a40b-18a4209d9c5f.evtx
