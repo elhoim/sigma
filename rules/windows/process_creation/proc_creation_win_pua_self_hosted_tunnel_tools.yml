@@ -1,0 +1,88 @@
+title: PUA - Self-Hosted Tunnel Tool Execution - GOST, Wstunnel, Bore, Shootback, FRP
+id: 6ea612b9-af21-4d7f-b07d-56e55b7c4c22
+related:
+    - id: 32410e29-5f94-4568-b6a3-d91a8adad863
+      type: similar
+status: experimental
+description: |
+    Detects the execution of self-hosted TCP, SOCKS and WebSocket tunnelling tools by their image name combined with their forwarding arguments, or by the arguments alone when they are distinctive enough: GOST ("-L"/"-F" with rtcp://, rudp://, socks5:// or relay+tls:// URIs), wstunnel ("client"/"server" with a ws:// or wss:// endpoint), bore ("local ... --to"), Shootback ("slaver.py -m ... -t" and "master.py -m ... -c") and FRP started with a TOML, YAML or frps INI configuration, which the existing FRP rule does not match when the binary is renamed.
+    These tools forward internal services to a server controlled by the operator and are used by numerous intrusion sets (Cadet Blizzard, MirrorFace, Octo Tempest, MuddyWater, Volt Typhoon) to reach RDP, SMB or SSH inside the victim network.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gost.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/wstunnel.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/shootback.md
+    - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.command-and-control
+    - attack.t1572
+    - attack.t1090
+    - attack.t1095
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_gost_img:
+        Image|endswith: '\gost.exe'
+        CommandLine|contains:
+            - ' -L'
+            - ' -F'
+    selection_gost_cli:
+        CommandLine|contains:
+            - ' -L=rtcp://'
+            - ' -L rtcp://'
+            - ' -L=rudp://'
+            - ' -L rudp://'
+            - ' -F=relay+'
+            - ' -F relay+'
+            - ' -F=socks5+'
+            - ' -F socks5+'
+    selection_wstunnel_img:
+        Image|endswith: '\wstunnel.exe'
+        CommandLine|contains:
+            - ' client '
+            - ' server '
+    selection_wstunnel_cli_mode:
+        CommandLine|contains:
+            - ' client '
+            - ' server '
+    selection_wstunnel_cli_endpoint:
+        CommandLine|contains:
+            - ' ws://'
+            - ' wss://'
+    selection_wstunnel_cli_forward:
+        CommandLine|contains:
+            - ' -L '
+            - ' -R '
+            - '--local-to-remote'
+            - '--remote-to-local'
+            - ' server ws'
+    selection_bore:
+        Image|endswith: '\bore.exe'
+        CommandLine|contains|all:
+            - ' local '
+            - ' --to '
+    selection_shootback_slaver:
+        CommandLine|contains|all:
+            - 'slaver.py'
+            - ' -m '
+            - ' -t '
+    selection_shootback_master:
+        CommandLine|contains|all:
+            - 'master.py'
+            - ' -m '
+            - ' -c '
+    selection_frp_config:
+        CommandLine|contains:
+            - 'frpc.toml'
+            - 'frps.toml'
+            - 'frpc.yaml'
+            - 'frps.yaml'
+            - 'frps.ini'
+    condition: 1 of selection_gost_* or selection_wstunnel_img or all of selection_wstunnel_cli_* or selection_bore or 1 of selection_shootback_* or selection_frp_config
+falsepositives:
+    - Administrators or developers using these tools for legitimate port forwarding or lab access
+    - Unrelated Python projects that ship a "master.py" taking "-m" and "-c" options
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_pua_self_hosted_tunnel_tools/info.yml
