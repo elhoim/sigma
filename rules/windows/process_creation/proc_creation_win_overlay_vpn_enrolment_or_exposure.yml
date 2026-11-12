@@ -1,0 +1,64 @@
+title: Potential Overlay VPN Enrolment Or Service Exposure Via Command Line
+id: d4ad8c6f-06ad-4945-b3f2-dffb48cdb744
+related:
+    - id: 4d07b1f4-cb00-4470-b9f8-b0191d48ff52
+      type: similar
+status: experimental
+description: |
+    Detects the command line clients of overlay VPN / mesh networking products being used to enrol the host into a network or to expose it: Tailscale with a pre-authentication key, a custom login server, the SSH server option or the "serve"/"funnel" subcommands, NetBird "up" with a setup key or a custom management URL, and ZeroTier "join".
+    Intruders (Scattered Spider/Octo Tempest, Handala, ransomware affiliates) install these legitimate clients and join the host to a network they control, which gives them a persistent, NAT-traversing route into the environment that looks like ordinary VPN traffic. An unattended enrolment with a key on the command line, outside the organisation's own deployment tooling, is the notable event.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/tailscale.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/netbird.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/zerotier.md
+    - https://tailscale.com/kb/1080/cli
+    - https://research.checkpoint.com/2026/handala-hack-unveiling-groups-modus-operandi/
+    - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.persistence
+    - attack.initial-access
+    - attack.t1572
+    - attack.t1219
+    - attack.t1133
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_tailscale_img:
+        Image|endswith: '\tailscale.exe'
+    selection_tailscale_cli:
+        CommandLine|contains:
+            - '--auth-key'
+            - '--authkey'
+            - '--login-server'
+            - '--ssh'
+            - ' funnel '
+            - ' serve '
+    selection_netbird_img:
+        Image|endswith: '\netbird.exe'
+    selection_netbird_cli_up:
+        CommandLine|contains: ' up'
+    selection_netbird_cli_key:
+        CommandLine|contains:
+            - '--setup-key'
+            - ' -k '
+            - '--management-url'
+            - ' -m '
+    selection_zerotier_img:
+        - Image|endswith:
+              - '\zerotier-cli.exe'
+              - '\zerotier-one_x64.exe'
+              - '\zerotier-one_x86.exe'
+              - '\zerotier-one.exe'
+        - CommandLine|contains: 'zerotier-cli'
+    selection_zerotier_cli:
+        CommandLine|contains: ' join '
+    condition: all of selection_tailscale_* or all of selection_netbird_* or all of selection_zerotier_*
+falsepositives:
+    - Software deployment or device management scripts enrolling hosts in an overlay VPN the organisation uses
+    - Administrators or developers publishing a service with Tailscale Serve or Funnel
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_overlay_vpn_enrolment_or_exposure/info.yml
