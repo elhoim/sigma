@@ -19,7 +19,7 @@ detection:
         Image|endswith:
             - '\chrome.exe'
             - '\GoogleUpdate.exe'
-            - '\GoogleUpdateSetup.exe'
+            # GoogleUpdateSetup.exe is not listed: the Google online installer bootstrap runs from Downloads and Temp by design
             - '\GoogleCrashHandler.exe'
             - '\GoogleCrashHandler64.exe'
             - '\msedge.exe'
