@@ -1,0 +1,53 @@
+title: Potential HTTP Tunnel Webshell File Creation - ReGeorg, Neo-reGeorg, Suo5
+id: 3dfdf05f-3159-46d1-aae4-cfb9ff53bde9
+status: experimental
+description: |
+    Detects the creation, inside a web server content directory, of a file carrying one of the default names of the server-side components of the reGeorg, Neo-reGeorg and suo5 HTTP tunnelling tools ("tunnel.aspx", "tunnel.ashx", "tunnel.jsp", "tunnel.jspx", "tunnel.php", "tunnel.nosocket.php", "suo5.jsp", "suo5.jspx", "suo5.aspx", "suo5.php").
+    These web shells turn a compromised web server into a SOCKS proxy: the operator's client wraps TCP traffic in HTTP requests to the page, which relays it into the internal network. They are dropped after the exploitation of an Internet-facing application and are a common pivoting step of state-sponsored and criminal intrusions. The existing web server rule only looks at access log patterns.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/neo-regeorg.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/regeorg.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/suo5.md
+    - https://www.cert.ssi.gouv.fr/cti/CERTFR-2025-CTI-009/
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.persistence
+    - attack.command-and-control
+    - attack.t1505.003
+    - attack.t1572
+    - attack.t1090
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_name:
+        TargetFilename|endswith:
+            - '\tunnel.aspx'
+            - '\tunnel.ashx'
+            - '\tunnel.jsp'
+            - '\tunnel.jspx'
+            - '\tunnel.php'
+            - '\tunnel.nosocket.php'
+            - '\suo5.jsp'
+            - '\suo5.jspx'
+            - '\suo5.aspx'
+            - '\suo5.php'
+    selection_webroot:
+        TargetFilename|contains:
+            - '\inetpub\'
+            - '\wwwroot\'
+            - '\webapps\'
+            - '\htdocs\'
+            - '\www\'
+            - '\ClientAccess\'
+            - '\FrontEnd\HttpProxy\'
+            - '\Web Server Extensions\'
+            - '\Tomcat'
+            - '\xampp\'
+            - '\nginx\'
+    condition: all of selection_*
+falsepositives:
+    - Web applications that legitimately ship a page named "tunnel" (some VPN or proxy management portals)
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_webshell_http_tunnel_regeorg_suo5/info.yml
