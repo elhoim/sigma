@@ -39,5 +39,6 @@ detection:
     condition: all of selection* and not 1 of filter_main_*
 falsepositives:
     - Remote management or virtualization clients installed under ProgramData or run from a network share; add them to the filter
+    - On Windows 7, a service host (svchost.exe) loading the system copy of the control for Remote Desktop and RemoteApp connections; the event carries no field that tells it apart from an injected service host, so it is not filtered
 level: medium
 regression_tests_path: regression_data/rules/windows/image_load/image_load_dll_mstscax_uncommon_process_load/info.yml
