@@ -26,7 +26,7 @@ detection:
         TargetObject|endswith: '\RunAs'
         Details: 'Interactive User'
     filter_main_defender:
-        Image|re: '^C:\\(ProgramData\\Microsoft\\Windows Defender\\Platform\\[0-9.-]+|Program Files\\Windows Defender)\\MsMpEng\.exe$'
+        Image|re|i: '^C:\\(ProgramData\\Microsoft\\Windows Defender\\Platform\\[0-9.-]+|Program Files\\Windows Defender)\\MsMpEng\.exe$'
         TargetObject|contains: '{1111A26D-EF95-4A45-9F55-21E52ADF9887}'
     filter_main_security_health:
         Image: 'C:\Windows\System32\SecurityHealthService.exe'
@@ -34,8 +34,17 @@ detection:
             - '{1D278EEF-5C38-4F2A-8C7D-D5C13B662567}'
             - '{7E55A26D-EF95-4A45-9F55-21E52ADF9878}'
     filter_main_office_c2r:
-        Image|startswith: 'C:\Program Files\Common Files\Microsoft Shared\ClickToRun\'
-        TargetObject|contains: '\Microsoft\Office\ClickToRun\VREGISTRY_'
+        Image: 'C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe'
+        TargetObject|contains:
+            - '\Microsoft\Office\ClickToRun\VREGISTRY_'
+            - '{58FC39EB-9DBD-4EA7-B7B4-9404CC6ACFAB}'
+            - '{75F8B0F3-5E33-40FF-B553-E9BF16B3B108}'
+            - '{C6EB466D-5A20-4F82-8862-A0AE4E61553D}'
+            - '{C806725C-6E3A-450C-B261-74E8B49FFC9A}'
+    filter_main_poqexec:
+        # Windows servicing (component installation) writing the AppID key of an inbox DCOM server
+        Image: 'C:\Windows\System32\poqexec.exe'
+        TargetObject|contains: '{F8FD03A6-DDD9-4C1B-84EE-58159476A0D7}'
     filter_main_msiexec:
         Image:
             - 'C:\Windows\System32\msiexec.exe'
