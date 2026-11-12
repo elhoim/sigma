@@ -1,0 +1,13 @@
+id: 14625475-7937-4d32-b4e9-1d2bf28f502f
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 34299d21-ed6f-4207-8c42-6a210223f921
+      title: Potential Persistence Via Text Services Framework Input Processor Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_ctf_tip_registration_uncommon_process/34299d21-ed6f-4207-8c42-6a210223f921.evtx
