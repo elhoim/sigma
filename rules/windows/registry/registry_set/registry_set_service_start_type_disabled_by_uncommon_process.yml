@@ -53,9 +53,30 @@ detection:
         User|contains:
             - 'AUTHORI'
             - 'AUTORI'
+    filter_optional_avast_avg:
+        # Avast and AVG setup (instup.exe) runs from a random C:\Windows\Temp\asw.<16 hex> folder and writes its driver services directly
+        # Only for the vendor's own asw*/avg* driver services set to demand start; setting them to Disabled is still detected
+        Image|re|i: '^C:\\Windows\\Temp\\asw\.[0-9a-f]{16}\\instup\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\(?:asw|avg)[a-z0-9]+\\Start$'
+        Details: 'DWORD (0x00000003)'
+    filter_optional_avira_vpn:
+        # Avira VPN installer, only for its own service set to demand start
+        Image|re|i: '^C:\\Windows\\Temp\\\.CR\.[0-9]+\\[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\VpnInstaller\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\AviraPhantomVPN\\Start$'
+        Details: 'DWORD (0x00000003)'
+    filter_optional_sysinternals_procexp:
+        # Process Explorer registers its kernel driver itself as a demand-start service; setting it to Disabled is still detected
+        Image|endswith:
+            - '\procexp.exe'
+            - '\procexp64.exe'
+            - '\procexp64a.exe'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\PROCEXP152\\Start$'
+        Details: 'DWORD (0x00000003)'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Group Policy preference service changes written by svchost.exe under an account other than SYSTEM, and writes by WmiPrvSE.exe or wsmprovhost.exe (remote WMI or WinRM management), which are not excluded because an attacker can use the same channels
     - Hardening or debloating scripts that disable services through the registry; configuration management tools writing service start types directly
+    - Avast or AVG setup (instup.exe) and the Avira VPN installer, which run from C:\Windows\Temp and set their own services to demand start; excluded by optional filters bound to the vendor's service keys
+    - Sysinternals Process Explorer registering its PROCEXP152 driver as a demand-start service; excluded by an optional filter, which can also hide a renamed tool that reuses this driver
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_service_start_type_disabled_by_uncommon_process/info.yml
