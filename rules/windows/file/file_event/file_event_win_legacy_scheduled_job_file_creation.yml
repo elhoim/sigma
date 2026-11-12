@@ -36,8 +36,15 @@ detection:
         Image: 'C:\Program Files (x86)\epson\Epson Scan 2\Update\e_dtsksd.exe'
     filter_optional_killer:
         Image: 'C:\Windows\System32\drivers\RivetNetworks\Killer\CustomizeInstallFirstRun.exe'
+    filter_optional_dropbox_update:
+        # Dropbox Update (Omaha based) runs from a GUMxxxx.tmp folder and registers its two machine-wide update jobs
+        Image|re: '(?i)^C:\\(?:Users\\[^\\]+\\AppData\\Local\\Temp|Program Files \(x86\)\\Dropbox\\Temp)\\GUM[0-9A-F]{1,4}\.tmp\\DropboxUpdate\.exe$'
+        TargetFilename:
+            - 'C:\Windows\Tasks\DropboxUpdateTaskMachineCore.job'
+            - 'C:\Windows\Tasks\DropboxUpdateTaskMachineUA.job'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Legacy software that still registers scheduled jobs through the Task Scheduler 1.0 API during installation
+    - Dropbox Update installers registering the DropboxUpdateTaskMachineCore and DropboxUpdateTaskMachineUA jobs (excluded only for these two exact job names, as the updater runs from a user-writable temporary folder)
 level: medium
 regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_legacy_scheduled_job_file_creation/info.yml
