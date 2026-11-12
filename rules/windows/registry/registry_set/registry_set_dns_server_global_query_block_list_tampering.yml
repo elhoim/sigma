@@ -2,7 +2,8 @@ title: Potential DNS Server Global Query Block List Tampering
 id: 73d2eddb-8c9c-4352-b0db-d56c7b02a556
 status: experimental
 description: |
-    Detects a change to the Windows DNS Server Global Query Block List (GQBL): the EnableGlobalQueryBlockList value set to 0, or the GlobalQueryBlockList name list rewritten (the DNS server stores the list as binary data, so the new content cannot be inspected and any rewrite is reported).
+    Detects a change to the Windows DNS Server Global Query Block List (GQBL): the EnableGlobalQueryBlockList value set to 0, or the GlobalQueryBlockList name list rewritten directly in the registry by a process other than the DNS Server service (the DNS server stores the list as binary data, so the new content cannot be inspected and any such rewrite is reported).
+    The DNS Server service (dns.exe) writes the list itself at startup and whenever it is edited through dnscmd or Set-DnsServerGlobalQueryBlockList, so those writes are excluded; disabling the list is reported whatever the writing process.
     The GQBL stops the DNS server from answering queries for "wpad" and "isatap" even when such records exist in Active Directory-integrated DNS. An attacker with DNSAdmins or DNS record write rights disables or edits it, registers a WPAD record pointing to a host under their control and then collects or relays the authentication of every client that still uses the default proxy auto-discovery.
 references:
     - https://www.netspi.com/blog/technical-blog/network-penetration-testing/adidns-revisited/
@@ -27,7 +28,11 @@ detection:
         Details: 'DWORD (0x00000000)'
     selection_list_changed:
         TargetObject|endswith: '\Services\DNS\Parameters\GlobalQueryBlockList'
-    condition: 1 of selection_*
+    filter_main_dns_server_list:
+        # The DNS Server service writes the list itself when it starts and when it is edited through its management API
+        Image: 'C:\Windows\System32\dns.exe'
+        TargetObject|endswith: '\Services\DNS\Parameters\GlobalQueryBlockList'
+    condition: 1 of selection_* and not 1 of filter_main_*
 falsepositives:
     - DNS administrators that deliberately disable the block list or edit its entries (for example to publish a WPAD or ISATAP host); the change should match a documented ticket
 level: medium
