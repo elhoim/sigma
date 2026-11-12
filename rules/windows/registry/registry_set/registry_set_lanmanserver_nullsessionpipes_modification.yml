@@ -22,10 +22,11 @@ logsource:
 detection:
     selection:
         TargetObject|endswith: '\Services\LanmanServer\Parameters\NullSessionPipes'
-    condition: selection
+    filter_main_lsass:
+        # The security configuration engine hosted in lsass.exe writes the value when it applies the security policy (Group Policy security options, domain controller promotion)
+        Image: 'C:\Windows\System32\lsass.exe'
+    condition: selection and not 1 of filter_main_*
 falsepositives:
     - Administrators or scripts that clear or re-write the value with an empty list
-    - Group Policy setting "Network access - Named Pipes that can be accessed anonymously" applied by the Group Policy client (svchost.exe) with the organisation's approved pipe list
-    - Domain controller promotion, which adds netlogon, samr and lsarpc
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_lanmanserver_nullsessionpipes_modification/info.yml
