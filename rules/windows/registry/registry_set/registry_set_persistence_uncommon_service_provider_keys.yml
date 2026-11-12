@@ -1,0 +1,40 @@
+title: Potential Persistence Via Uncommon Service Provider Registry Keys
+id: 6e8b84ab-b4f9-4f5f-b7d4-3f7405fb6610
+status: experimental
+description: |
+    Detects the modification of rarely changed registry keys that hold a list of provider modules for a Windows service: the LanmanServer share providers, the Windows Biometric Service providers, the WinTrust trust providers, the WLAN AutoConfig COM interface and vendor specific IE providers, the Routing and Remote Access accounting and authentication providers and the SSI security providers.
+    Each key is enumerated by its service in order to load the provider modules, so that a new entry could be used to get a DLL loaded by a system service.
+    The W32Time time providers and the cryptography providers are covered by other rules.
+references:
+    - https://www.hexacorn.com/blog/2018/10/14/how-to-find-new-persistence-tricks/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Control\SecurityProviders\SSI\Providers\'
+            - '\Services\LanmanServer\ShareProviders\'
+            - '\Services\RemoteAccess\Accounting\Providers\'
+            - '\Services\RemoteAccess\Authentication\Providers\'
+            - '\Services\WbioSrvc\Service Providers\'
+            - '\Services\WinTrust\TrustProviders\'
+            - '\Services\WlanSvc\Parameters\ComInterfaceProviders\'
+            - '\Services\WlanSvc\Parameters\VendorSpecificIEProviders\'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Configuration of the Routing and Remote Access role, which sets the active accounting and authentication provider
+    - Installation of biometric device or wireless vendor software that registers a provider
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_uncommon_service_provider_keys/info.yml
