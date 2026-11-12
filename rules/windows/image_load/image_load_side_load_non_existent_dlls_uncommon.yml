@@ -1,0 +1,50 @@
+title: Potential Phantom DLL Load Of Uncommon Non-Existent System DLL
+id: 47bcea9f-4804-4abb-abba-1e4cffbf9e35
+status: experimental
+description: |
+    Detects the load of a DLL that system utilities and services try to load from a system directory although it is not part of a default Windows installation, when the loaded file is not signed by Microsoft.
+    Examples are "msfte.dll" and "msTracer.dll" looked up by SearchIndexer.exe and SearchProtocolHost.exe, or "DismCore.dll" and "Dism\wimgapi.dll" looked up by Dism.exe in the System32 directory.
+    An attacker can plant a DLL with such a name in order to get it loaded by the legitimate process for persistence or privilege escalation.
+    This rule complements "Potential DLL Sideloading Of Non-Existent DLLs From System Folders", which covers other DLL names.
+references:
+    - https://www.hexacorn.com/blog/2015/02/23/beyond-good-ol-run-key-part-28/
+    - https://www.hexacorn.com/blog/2013/12/08/beyond-good-ol-run-key-part-5/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - ':\Windows\System32\btlog.dll'
+            - ':\Windows\System32\Dism\wimgapi.dll'
+            - ':\Windows\System32\DismCore.dll'
+            - ':\Windows\System32\edgegdi.dll'
+            - ':\Windows\System32\LangDownloader.dll'
+            - ':\Windows\System32\msfte.dll'
+            - ':\Windows\System32\msTracer.dll'
+            - ':\Windows\System32\phoneinfo.dll'
+            - ':\Windows\System32\rover.dll'
+            - ':\Windows\System32\UsoSelfhost.dll'
+            - ':\Windows\System32\wbem\phoneinfo.dll'
+            - ':\Windows\System32\WinAppXRT.dll'
+            - ':\Windows\System32\windowscoredeviceinfo.dll'
+            - ':\Windows\System32\XboxNetApiSvcExtHost.dll'
+            - ':\Windows\SysWOW64\phoneinfo.dll'
+            - ':\Windows\SysWOW64\wbem\phoneinfo.dll'
+    filter_main_ms_signed:
+        Signed: 'true'
+        SignatureStatus: 'Valid'
+        Signature: 'Microsoft Windows'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Windows editions or optional features that ship one of these DLLs with another Microsoft signature
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_side_load_non_existent_dlls_uncommon/info.yml
