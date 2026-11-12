@@ -46,9 +46,30 @@ detection:
             - 'C:\Windows\System32\poqexec.exe'
             - 'C:\Windows\System32\msiexec.exe'
             - 'C:\Windows\SysWOW64\msiexec.exe'
-    condition: selection and not 1 of filter_main_*
+    filter_optional_avast_avg:
+        # Avast and AVG setup (instup.exe) runs from a random C:\Windows\Temp\asw.<16 hex> folder and writes its driver services directly
+        # Only for the vendor's own asw*/avg* driver services pointing to a driver in System32\drivers
+        Image|re|i: '^C:\\Windows\\Temp\\asw\.[0-9a-f]{16}\\instup\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\(?:asw|avg)[a-z0-9]+\\ImagePath$'
+        Details|re|i: '^system32\\drivers\\(?:asw|avg)[a-z0-9]+\.sys$'
+    filter_optional_avira_vpn:
+        # Avira VPN installer, only for its own service pointing to its Program Files binary
+        Image|re|i: '^C:\\Windows\\Temp\\\.CR\.[0-9]+\\[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\VpnInstaller\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\AviraPhantomVPN\\ImagePath$'
+        Details|re|i: '^"C:\\Program Files \(x86\)\\Avira\\VPN\\Avira\.VpnService\.exe"$'
+    filter_optional_sysinternals_procexp:
+        # Process Explorer registers its kernel driver itself, from wherever the tool was started
+        Image|endswith:
+            - '\procexp.exe'
+            - '\procexp64.exe'
+            - '\procexp64a.exe'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\PROCEXP152\\ImagePath$'
+        Details|re|i: '^\\\?\?\\C:\\Windows\\system32\\Drivers\\PROCEXP152\.SYS$'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Writes by svchost.exe (Remote Registry service) or WmiPrvSE.exe (WMI registry methods), for example administrators changing a service path remotely
     - Installers and management agents running from Temp or ProgramData that write service paths directly; add the installer image to the filters
+    - Avast or AVG setup (instup.exe) and the Avira VPN installer, which run from C:\Windows\Temp and register their own services; excluded by optional filters bound to the vendor's service keys and binaries
+    - Sysinternals Process Explorer registering its PROCEXP152 driver; excluded by an optional filter, which can also hide a renamed tool that reuses this driver for EDR tampering (driver load rules cover that)
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_service_imagepath_modified_by_uncommon_process/info.yml
