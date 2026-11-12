@@ -36,9 +36,16 @@ detection:
         TargetObject|contains: '\Uninstall\{'
     filter_main_edge_webview:
         TargetObject|re: '(?i)^HKLM\\SOFTWARE\\(WOW6432Node\\)?Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft EdgeWebView\\SystemComponent$'
-    condition: selection and not 1 of filter_main_*
+    filter_optional_avira:
+        # Avira installers (Inno Setup stubs and the Spotlight bootstrapper) hide their own helper entries; both the installer path and the exact uninstall key must match
+        Image|re:
+            - '(?i)^C:\\Windows\\Temp\\is-[0-9A-Z]{5}\.tmp\\(?:avira_spotlight_setup_laun|avira_system_speedup|endpoint-protection-installer-x64)\.tmp$'
+            - '(?i)^C:\\Windows\\Temp\\\.CR\.[0-9]{1,5}\\(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\(?:\.CR\.[0-9]{1,5}\\)?)?(?:Avira\.Spotlight\.Bootstrapper|VpnInstaller)\.exe$'
+        TargetObject|re: '(?i)^HKLM\\SOFTWARE\\(?:WOW6432Node\\)?Microsoft\\Windows\\CurrentVersion\\Uninstall\\(?:Avira (?:Antivirus|Fallback Updater|Phantom VPN|Security_is1|System Speedup_is1)|\{68E1CCB4-4965-4713-BDEB-77F6D6C9BF9D\}_is1)\\SystemComponent$'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Non-MSI installers, software deployment agents and kiosk or shared-device hardening scripts that intentionally hide helper components from the installed programs list
     - Browser and runtime updaters that register their own hidden uninstall entries
+    - Avira security product installers that hide their helper components (the known installer and uninstall key pairs are excluded by an optional filter)
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_uninstall_entry_hidden_via_systemcomponent/info.yml
