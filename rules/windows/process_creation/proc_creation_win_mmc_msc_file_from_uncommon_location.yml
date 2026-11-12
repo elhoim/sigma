@@ -35,6 +35,11 @@ detection:
     filter_main_relative_console_name:
         # Consoles started by name only resolve from System32 (e.g. "mmc.exe eventvwr.msc /s", "mmc.exe CompMgmt.msc")
         CommandLine|re|i: '^(?:"[^"]*mmc\.exe"|\S*mmc\.exe)\s+(?:/\S+\s+)*"?[a-z0-9_.\-]+\.msc"?(?:\s+/\S+)*\s*$'
+    filter_main_wow64_relaunch:
+        # The 32-bit mmc.exe re-executes the 64-bit one with the console path as argv[0] (e.g. '"C:\Windows\System32\services.msc" "C:\Windows\System32\services.msc"'); both tokens must be a console directly under System32 or SysWOW64
+        Image: 'C:\Windows\System32\mmc.exe'
+        ParentImage: 'C:\Windows\SysWOW64\mmc.exe'
+        CommandLine|re|i: '^"C:\\Windows\\(?:System32|SysWOW64)\\[^"\\:/.][^"\\:/]*\.msc"\s+"C:\\Windows\\(?:System32|SysWOW64)\\[^"\\:/.][^"\\:/]*\.msc"(?:\s+/\S+)*\s*$'
     condition: selection and selection_msc and not 1 of filter_main_*
 falsepositives:
     - Administrators who keep custom consoles in their profile or on a network share
