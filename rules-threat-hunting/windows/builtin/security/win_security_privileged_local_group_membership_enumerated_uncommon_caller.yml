@@ -33,6 +33,7 @@ detection:
             - 'C:\Windows\System32\diskshadow.exe'
             - 'C:\Windows\System32\dllhost.exe'
             - 'C:\Windows\System32\esentutl.exe'
+            - 'C:\Windows\System32\inetsrv\inetinfo.exe'
             - 'C:\Windows\System32\inetsrv\w3wp.exe'
             - 'C:\Windows\System32\mmc.exe'
             - 'C:\Windows\System32\msiexec.exe'
@@ -61,9 +62,18 @@ detection:
         CallerProcessName|re:
             - '^C:\\Windows\\VeeamVssSupport\\(?:[^\\]+\\)*[^\\]+\.exe$'
             - '^C:\\WindowsAzure\\(?:[^\\]+\\)*[^\\]+\.exe$'
+    filter_optional_sql_writer:
+        # SQL Server VSS Writer service
+        CallerProcessName|re: '(?i)^C:\\Program Files\\Microsoft SQL Server\\[0-9]{2,3}\\Shared\\sqlwriter\.exe$'
+    filter_optional_antivirus:
+        CallerProcessName:
+            - 'C:\Program Files (x86)\Avira\VPN\Avira.VpnService.exe'
+            - 'C:\Program Files\Avast Software\Avast\AvastSvc.exe'
+            - 'C:\Program Files\AVG\Antivirus\AVGSvc.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Administrators running "net localgroup administrators" (caller net1.exe is excluded) or management agents that inventory local groups; baseline CallerProcessName per environment
+    - Security, VPN and backup services that check local group membership when they start (the SQL Server VSS writer and the Avast, AVG and Avira VPN services are excluded by their full installation paths)
     - Rubrik VMware agents running from C:\Windows\Temp\rubrik_vmware (not excluded because that directory is writable; add an environment-specific exclusion for the exact binary)
     - PowerShell cmdlets such as Get-LocalGroup that also read group member SIDs and so generate the same event, and SYSTEM or service-account tasks run from PowerShell (SYSTEM is deliberately not excluded)
 level: medium
