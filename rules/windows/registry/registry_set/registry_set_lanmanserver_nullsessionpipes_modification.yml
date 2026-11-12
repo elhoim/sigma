@@ -22,11 +22,14 @@ logsource:
 detection:
     selection:
         TargetObject|endswith: '\Services\LanmanServer\Parameters\NullSessionPipes'
-    filter_main_lsass:
+    filter_optional_lsass:
         # The security configuration engine hosted in lsass.exe writes the value when it applies the security policy (Group Policy security options, domain controller promotion)
+        # Sysmon logs the value as "Binary Data", so the written pipe list cannot be checked; remove this filter where policy-driven changes must be reviewed too
         Image: 'C:\Windows\System32\lsass.exe'
-    condition: selection and not 1 of filter_main_*
+    condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Administrators or scripts that clear or re-write the value with an empty list
+    - Group Policy setting "Network access - Named Pipes that can be accessed anonymously" applied with the organisation's approved pipe list (written by lsass.exe, excluded by an optional filter)
+    - Domain controller promotion, which adds netlogon, samr and lsarpc (written by lsass.exe, excluded by an optional filter)
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_lanmanserver_nullsessionpipes_modification/info.yml
