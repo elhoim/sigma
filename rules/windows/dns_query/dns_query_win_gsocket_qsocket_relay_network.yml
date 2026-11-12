@@ -1,0 +1,43 @@
+title: Suspicious DNS Query To Global Socket Or QSocket Relay Network
+id: a8f89874-7047-4b40-9308-2a2a6bec84fc
+status: experimental
+description: |
+    Detects a DNS query for a host under "gsocket.io" or "qsocket.io" issued by a process that is not a web browser. These domains host the Global Socket Relay Network (GSRN) and the QSocket Relay Network (QSRN), through which the gs-netcat and qs-netcat tools connect two hosts that are both behind NAT or a firewall using only a shared secret.
+    The toolkits provide interactive reverse shells, port forwarding and file transfer without any listening port, are widely deployed by intrusion sets and by Linux malware, and have Windows builds (qs-netcat, qs-lite, qs-proxy and the gs-netcat client). The binaries carry no version information and are usually renamed, so the relay lookup is the most dependable artefact on Windows.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gsocket.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/qsocket.md
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1572
+    - attack.t1095
+    - attack.t1071
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.gsocket.io'
+            - '.qsocket.io'
+    filter_optional_chrome:
+        Image:
+            - 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+            - 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+    filter_main_edge:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft\Edge\Application\'
+            - 'C:\Program Files\Microsoft\Edge\Application\'
+        Image|endswith: '\msedge.exe'
+    filter_optional_firefox:
+        Image:
+            - 'C:\Program Files\Mozilla Firefox\firefox.exe'
+            - 'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+    condition: selection and not 1 of filter_*
+falsepositives:
+    - Security researchers or administrators reading the project websites with a browser that is not in the filters
+    - Authorised use of the Global Socket toolkit by administrators
+level: high
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_gsocket_qsocket_relay_network/info.yml
