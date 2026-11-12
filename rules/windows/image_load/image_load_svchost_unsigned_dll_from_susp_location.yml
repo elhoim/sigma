@@ -98,5 +98,6 @@ detection:
     condition: all of selection_*
 falsepositives:
     - Third-party services hosted in svchost.exe (for example VPN, printer or audio vendor service DLLs) that ship unsigned libraries under ProgramData; add a filter_optional entry per vendor path
+    - On Windows 7, a service host mapping unsigned executables a user downloaded or installed per user (Downloads, AppData\Local\Programs) to read their metadata; these folders are user-writable and the event has no field that tells the mapping apart from a service DLL, so it is not filtered
 level: high
 regression_tests_path: regression_data/rules/windows/image_load/image_load_svchost_unsigned_dll_from_susp_location/info.yml
