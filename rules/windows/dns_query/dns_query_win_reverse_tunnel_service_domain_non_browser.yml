@@ -1,0 +1,108 @@
+title: Potential Reverse Tunnel Usage - DNS Query To Tunnelling Service Domain By Non-Browser Process
+id: 9bb657ac-6660-4c07-bfd7-5a0734c0ac4e
+related:
+    - id: 4d07b1f4-cb00-4470-b9f8-b0191d48ff52
+      type: similar
+    - id: 3ab65069-d82a-4d44-a759-466661a082d1
+      type: similar
+status: experimental
+description: |
+    Detects a DNS query, issued by a process that is not a web browser, for the domain of a public reverse-tunnel service that needs no account or only an anonymous one, such as localtunnel, Pinggy, localhost.run, Serveo, PageKite, Telebit, LocalXpose, Loophole, tunnelto, JPRQ, bore, Expose, Openport, Packetriot, Burrow or Staqlab.
+    These services publish a local port of the host on the Internet through an outbound connection, which lets an intruder reach RDP, SSH or an internal web application from outside, stage payloads on a trusted looking URL, or relay command and control traffic without opening any inbound firewall port. The client is typically ssh.exe, a small Go or Node.js binary, or a script interpreter.
+    Ngrok, Cloudflare Tunnel, Dev Tunnels, BTunnels, Portmap and LocaltoNet are covered by dedicated rules.
+references:
+    - https://lottunnels.github.io/domains/
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/pinggy.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnels.md
+    - https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/how-cybercriminals-abuse-cloud-tunneling-services
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1572
+    - attack.t1090
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        - QueryName|endswith:
+              - '.loca.lt'
+              - '.localtunnel.me'
+              - '.pinggy.io'
+              - '.pinggy.link'
+              - '.lhr.life'
+              - '.localhost.run'
+              - '.serveo.net'
+              - '.pagekite.me'
+              - '.pagekite.net'
+              - '.telebit.io'
+              - '.telebit.cloud'
+              - '.telebit.fun'
+              - '.localxpose.io'
+              - '.loophole.site'
+              - '.tuns.sh'
+              - '.ssi.sh'
+              - '.tunnelto.dev'
+              - '.jprq.io'
+              - '.bore.digital'
+              - '.sharedwithexpose.com'
+              - '.packetriot.net'
+              - '.pktriot.net'
+              - '.burrow.io'
+              - '.burrow.link'
+              - '.staqlab.com'
+              - '.staqlab-tunnel.com'
+              - '.opentunnel.xyz'
+              - '.expos.es'
+        - QueryName:
+              - 'loca.lt'
+              - 'localtunnel.me'
+              - 'localhost.run'
+              - 'serveo.net'
+              - 'tuns.sh'
+              - 'ssi.sh'
+              - 'tunnelto.dev'
+              - 'jprq.io'
+              - 'bore.pub'
+              - 'openport.io'
+              - 'tunnel.pyjam.as'
+              - 'expos.es'
+              - 'ssh-j.com'
+    filter_main_chrome:
+        Image:
+            - 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+            - 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+    filter_main_edge:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft\Edge\Application\'
+            - 'C:\Program Files\Microsoft\Edge\Application\'
+            - 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application\'
+        Image|endswith:
+            - '\msedge.exe'
+            - '\msedgewebview2.exe'
+    filter_main_firefox:
+        Image:
+            - 'C:\Program Files\Mozilla Firefox\firefox.exe'
+            - 'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+    filter_optional_chrome_user_install:
+        Image|startswith: 'C:\Users\'
+        Image|endswith: '\AppData\Local\Google\Chrome\Application\chrome.exe'
+    filter_optional_brave:
+        Image|startswith:
+            - 'C:\Program Files\BraveSoftware\Brave-Browser\Application\'
+            - 'C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\'
+        Image|endswith: '\brave.exe'
+    filter_optional_opera:
+        Image|startswith: 'C:\Users\'
+        Image|contains: '\AppData\Local\Programs\Opera'
+        Image|endswith: '\opera.exe'
+    filter_optional_vivaldi:
+        Image|startswith: 'C:\Users\'
+        Image|endswith: '\AppData\Local\Vivaldi\Application\vivaldi.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Developers exposing a local test server through one of these services
+    - Applications that load content from a site published through such a tunnel, and browsers not listed in the filters
+level: medium
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_reverse_tunnel_service_domain_non_browser/info.yml
