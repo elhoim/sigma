@@ -140,6 +140,11 @@ detection:
             - 'C:\Windows\System32\'
             - '%systemroot%\System32\'
             - '%windir%\System32\'
+            # Sysmon escapes the percent sign of environment variables in the Details field
+            - '"%%systemroot%%\System32\'
+            - '"%%windir%%\System32\'
+            - '%%systemroot%%\System32\'
+            - '%%windir%%\System32\'
     condition: selection_service and (selection_lolbin_value or not filter_main_system32_binary)
 falsepositives:
     - Virtualisation and management agents that relocate a listed service binary outside System32 during installation (for example VMware or Hyper-V integration components under Program Files)
