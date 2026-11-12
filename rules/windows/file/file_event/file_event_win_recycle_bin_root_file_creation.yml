@@ -26,11 +26,12 @@ detection:
     filter_main_desktop_ini:
         TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\desktop\.ini$'
     filter_main_user_sid_folder:
-        # Explorer creates the per-user S-1-5-21-... folder under the Recycle Bin on first delete
-        TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$'
+        # Windows creates the per-account SID folder under the Recycle Bin on first use:
+        # local system accounts (S-1-5-18/19/20, e.g. by LogonUI.exe), domain or local users (S-1-5-21-...) and Entra ID users (S-1-12-1-...)
+        TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\S-1-(?:5-(?:18|19|20)|5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+|12-1-[0-9]+-[0-9]+-[0-9]+-[0-9]+)$'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Backup or disk tools that write metadata into the Recycle Bin root
-    - A file named like a per-user SID folder or desktop.ini in the Recycle Bin root is excluded (the file event does not distinguish files from directories)
+    - A file named like a SID folder (system account, local or domain user, Entra ID user) or desktop.ini in the Recycle Bin root is excluded (the file event does not distinguish files from directories)
 level: medium
 regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_recycle_bin_root_file_creation/info.yml
