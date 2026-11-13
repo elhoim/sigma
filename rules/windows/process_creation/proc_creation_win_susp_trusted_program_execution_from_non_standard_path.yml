@@ -1,0 +1,64 @@
+title: Suspicious Execution Of Explorer, Word, IIS Worker Or DISM From Non-Standard Path
+id: 748f1342-85e0-47db-b0e9-45caa277499f
+related:
+    - id: e4a6b256-3e47-40fc-89d2-7a477edd6915
+      type: similar
+status: experimental
+description: |
+    Detects "explorer.exe", "WINWORD.EXE", "w3wp.exe" or "DISM.EXE" (by image name or by original file name, so renamed copies are included) running from a location other than their installation folders under Windows, the Office installation paths or the IIS folder.
+    These Microsoft programs are well known DLL search order hijacking targets; attackers copy one of them next to a malicious DLL in a writable folder so that the trusted, signed executable loads the DLL into its memory and lends it its reputation.
+    The sibling rule covers core system binaries but not Word, the IIS worker process or Explorer.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_suspicious_explorer_winword.toml
+    - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1036
+    - attack.t1574.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - Image|endswith:
+              - '\DISM.EXE'
+              - '\explorer.exe'
+              - '\w3wp.exe'
+              - '\WINWORD.EXE'
+        - OriginalFileName:
+              - 'DISM.EXE'
+              - 'EXPLORER.EXE'
+              - 'w3wp.exe'
+              - 'WinWord.exe'
+    filter_main_explorer:
+        Image:
+            - 'C:\Windows\explorer.exe'
+            - 'C:\Windows\SysWOW64\explorer.exe'
+    filter_main_dism:
+        Image:
+            - 'C:\Windows\System32\Dism.exe'
+            - 'C:\Windows\SysWOW64\Dism.exe'
+    filter_main_dism_adk:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Windows Kits\'
+            - 'C:\Program Files\Windows Kits\'
+        Image|endswith:
+            - '\Deployment Tools\amd64\DISM\dism.exe'
+            - '\Deployment Tools\arm64\DISM\dism.exe'
+            - '\Deployment Tools\x86\DISM\dism.exe'
+    filter_main_w3wp:
+        Image:
+            - 'C:\Windows\System32\inetsrv\w3wp.exe'
+            - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
+    filter_main_winword:
+        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\Microsoft Office(?: \d\d)?\\|Program Files\\WindowsApps\\Microsoft\.Office\.Desktop\.|PROGRA~[12]\\MICROS~)(?:[^\\]+\\)*WINWORD\.EXE$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Office installed on a non-default drive or in a custom folder, and portable or offline DISM copies used by deployment teams; add their paths to the filters
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_trusted_program_execution_from_non_standard_path/info.yml
