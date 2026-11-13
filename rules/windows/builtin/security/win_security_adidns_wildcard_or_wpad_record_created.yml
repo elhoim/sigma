@@ -7,8 +7,10 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the creation of a wildcard ("*") or "wpad" DNS node in an Active Directory-integrated DNS zone (Security event 5137 with an object distinguished name starting with "DC=*," or "DC=wpad,").
-    Any authenticated user can create records in ADIDNS zones by default. A wildcard record answers every name that has no explicit record, and a wpad record answers the automatic proxy discovery lookups once the Global Query Block List is disabled; both let the attacker position an adversary-in-the-middle host to capture or relay NTLM authentication from every machine in the domain.
+    Detects the creation of a wildcard ("*") or "wpad" DNS node in an Active Directory-integrated DNS zone.
+    Any authenticated user can create records in ADIDNS zones by default.
+    A wildcard record answers every name that has no explicit record, and a wpad record answers the automatic proxy discovery lookups once the Global Query Block List is disabled.
+    Both let the attacker position an adversary-in-the-middle host to capture or relay NTLM authentication from every machine in the domain.
 references:
     - https://www.netspi.com/blog/technical-blog/network-penetration-testing/exploiting-adidns/
     - https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/adidns-spoofing
