@@ -2,7 +2,7 @@ title: Potential COM Hijacking Of Script Debugger Components
 id: 5c6e5e27-ce95-425d-b937-07cb30241b5f
 status: experimental
 description: |
-    Detects the registration of the Windows Script Debugger class ({834128A2-51F4-11D0-8F20-00805F2CD064}) or of the Process Debug Manager class ({78A51822-51F4-11D0-8F20-00805F2CD064}) with a server located outside of the Windows and Program Files directories.
+    Detects the registration of the Windows Script Debugger class ({834128A2-51F4-11D0-8F20-00805F2CD064}) or of the Process Debug Manager class ({78A51822-51F4-11D0-8F20-00805F2CD064}) with a server located outside of the Program Files directories, other than the system "pdm.dll".
     The Process Debug Manager is instantiated by the script engines when script debugging is enabled, and the script debugger is started when a script error is debugged.
     An attacker can point these classes to its own binary in order to get it loaded by the processes that host a script engine.
 references:
@@ -22,20 +22,24 @@ detection:
             - '\CLSID\{78A51822-51F4-11D0-8F20-00805F2CD064}\InprocServer32\'
             - '\CLSID\{834128A2-51F4-11D0-8F20-00805F2CD064}\LocalServer32\'
         TargetObject|endswith: '\(Default)'
-    filter_main_protected_locations:
+    filter_main_program_files:
         Details|startswith:
             - '"C:\Program Files (x86)\'
             - '"C:\Program Files\'
-            - '"C:\Windows\System32\'
-            - '"C:\Windows\SysWOW64\'
             - '%CommonProgramFiles%\'
+            - '%CommonProgramFiles(x86)%\'
             - '%ProgramFiles%\'
-            - '%SystemRoot%\System32\'
-            - '%SystemRoot%\SysWOW64\'
+            - '%ProgramFiles(x86)%\'
             - 'C:\Program Files (x86)\'
             - 'C:\Program Files\'
-            - 'C:\Windows\System32\'
-            - 'C:\Windows\SysWOW64\'
+    filter_main_pdm:
+        Details:
+            - '"C:\Windows\System32\pdm.dll"'
+            - '"C:\Windows\SysWOW64\pdm.dll"'
+            - '%SystemRoot%\System32\pdm.dll'
+            - '%SystemRoot%\SysWOW64\pdm.dll'
+            - 'C:\Windows\System32\pdm.dll'
+            - 'C:\Windows\SysWOW64\pdm.dll'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Development tools installed outside of the Program Files directories that register their own Process Debug Manager
