@@ -2,9 +2,10 @@ title: Potential LLM API Usage By Script Host, LOLBin Or Process From Suspicious
 id: 7d00519b-f747-4799-8568-d4bfba790038
 status: experimental
 description: |
-    Detects a DNS query for a Large Language Model API endpoint (OpenAI, Anthropic, Google Gemini, Mistral, DeepSeek, Groq, Hugging Face inference, OpenRouter and similar) issued by a Windows script host or LOLBin, or by a binary running from a temporary or user-writable directory.
+    Detects a DNS query for a Large Language Model API endpoint (OpenAI, Anthropic, Google Gemini, Mistral, DeepSeek, Groq, Hugging Face inference, OpenRouter and similar) issued by a Windows script host or LOLBin, by a binary running from a temporary or user-writable directory, or by a .pif executable as used in the LAMEHUG lures.
     Malware such as LAMEHUG (APT28) calls a hosted LLM at runtime to generate the reconnaissance and exfiltration commands it executes, so the first observable artefact on the host is a scripting process or an unusual binary resolving the model provider's API domain. Browsers, IDEs and installed applications in Program Files are not matched.
 references:
+    - https://cert.gov.ua/article/6284730
     - https://malpedia.caad.fkie.fraunhofer.de/details/py.lamehug
     - https://www.catonetworks.com/blog/cato-ctrl-analyzing-lamehug/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_common_llm_endpoint.toml
@@ -55,6 +56,9 @@ detection:
             - '.openai.azure.com'
             - '.hf.space'
             - '.runpod.io'
+    selection_domain_bedrock:
+        QueryName|startswith: 'bedrock-runtime.'
+        QueryName|endswith: '.amazonaws.com'
     selection_img_name:
         Image|endswith:
             - '\bitsadmin.exe'
@@ -71,6 +75,7 @@ detection:
             - '\rundll32.exe'
             - '\vbc.exe'
             - '\wscript.exe'
+            - '.pif'
     selection_img_path:
         Image|contains:
             - ':\ProgramData\'
