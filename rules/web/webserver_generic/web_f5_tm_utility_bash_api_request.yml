@@ -14,8 +14,8 @@ date: 2023-11-08
 tags:
     - attack.execution
     - attack.initial-access
-    - attack.t1190
     - attack.t1059.004
+    - attack.t1190
 logsource:
     category: webserver
 detection:
