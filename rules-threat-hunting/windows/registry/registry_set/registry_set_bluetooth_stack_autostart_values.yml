@@ -4,7 +4,7 @@ status: experimental
 description: |
     Detects the modification of registry values of Bluetooth stacks that reference a program or a DLL: the "SupportDLL" value of the Microsoft stack and the "IasStartAplPath" and "APPFILEPATH2" values of the Toshiba stack.
     The "SupportDLL" value registers a vendor DLL that Windows 8 loads in order to switch the Bluetooth radio on or off, and the Toshiba values hold a program that the stack starts when a Bluetooth connection is established.
-    These values are normally only written by the driver package or by the vendor utility, so that a change could be used to get a program or a DLL executed.
+    These values are normally only written by the driver package or by the vendor utility, so a change made by another process can be used to get a program or a DLL executed.
 references:
     - https://www.hexacorn.com/blog/2017/01/28/beyond-good-ol-run-key-part-58/
     - https://www.hexacorn.com/blog/2017/01/29/beyond-good-ol-run-key-part-59/
