@@ -10,11 +10,11 @@ references:
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.defense-impairment
     - attack.persistence
     - attack.privilege-escalation
-    - attack.defense-impairment
-    - attack.t1546
     - attack.t1112
+    - attack.t1546
 logsource:
     category: registry_set
     product: windows
