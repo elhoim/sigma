@@ -6,7 +6,8 @@ related:
 status: experimental
 description: |
     Detects the creation of an NTFS alternate data stream attached to the root directory of a volume (a path of the form "C:\:streamname").
-    Streams on the volume root are not shown by Explorer, "dir" or most file system utilities and are not listed as files, which makes them a convenient place to stage tools and payloads. The technique was observed in ALPHA SPIDER ransomware intrusions.
+    Streams on the volume root are not shown by Explorer, "dir" or most file system utilities and are not listed as files, which makes them a convenient place to stage tools and payloads.
+    The technique was observed in ALPHA SPIDER ransomware intrusions.
 references:
     - https://www.crowdstrike.com/en-us/blog/anatomy-of-alpha-spider-ransomware/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_root_dir_ads_creation.toml
