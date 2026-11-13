@@ -1,0 +1,18 @@
+id: 18025a5e-ad30-4d23-b902-01a631aac21a
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 73ba98d8-0f2a-4a98-931e-b72ea935b817
+      title: Potential Cloud Instance Metadata Credential Or Token Request Via CommandLine - Windows
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_cloud_imds_credential_request/73ba98d8-0f2a-4a98-931e-b72ea935b817.evtx
+    - name: Atomic Red Team replay 01 (T1552.005-1, event 1) - host; host CommandLine 169.254.169.254; host CommandLine fd00 ec2 254; ...
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_cloud_imds_credential_request-art01/73ba98d8-0f2a-4a98-931e-b72ea935b817.evtx
