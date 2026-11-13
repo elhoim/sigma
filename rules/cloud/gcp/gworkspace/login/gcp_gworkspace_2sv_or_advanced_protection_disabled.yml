@@ -1,4 +1,4 @@
-title: Google Workspace User Disabled 2-Step Verification or Advanced Protection
+title: Potential Google Workspace MFA Tampering - 2-Step Verification Or Advanced Protection Disabled
 id: d48dcd83-f847-4007-ac79-ba3fe193fc63
 status: experimental
 description: |
@@ -9,9 +9,9 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
+    - attack.credential-access
     - attack.defense-impairment
     - attack.persistence
-    - attack.credential-access
     - attack.t1556.006
 logsource:
     product: gcp
