@@ -7,6 +7,7 @@ description: |
     While it executes a script, an unknown function name is resolved against MEX files ("*.mexw64", "*.mex32") of the current folder, which are native DLLs that MATLAB loads and calls through their "mexFunction" export.
     A signed MATLAB binary can thus be used to load an attacker's library, or a script of a user can be modified to do so later.
     Batch execution is common in engineering automation, this hunting rule only looks at uncommon script locations.
+    Hunting hypothesis: a match is confirmed as abuse when a "*.mexw64" or "*.mex32" file is created in, or loaded by MATLAB from, the folder of the referenced script, or when the script was written shortly before by another process.
 references:
     - https://www.hexacorn.com/blog/2023/05/12/matlab-persistent-lolbin-2-years-too-late-but-always/
     - https://www.mathworks.com/help/matlab/ref/matlabwindows.html
