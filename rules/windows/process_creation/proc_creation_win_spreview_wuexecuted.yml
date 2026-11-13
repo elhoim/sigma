@@ -7,7 +7,6 @@ description: |
     Outside of a service pack installation this is a way to create a RunOnce entry through a signed Microsoft binary.
 references:
     - https://www.hexacorn.com/blog/2019/10/24/beyond-good-ol-run-key-part-121/
-    - https://www.hexacorn.com/blog/2019/10/23/beyond-good-ol-run-key-part-120/
 author: elhoim
 date: 2026-11-12
 tags:
