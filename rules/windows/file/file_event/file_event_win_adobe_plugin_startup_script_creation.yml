@@ -3,12 +3,13 @@ id: ea369390-7476-4a8c-bb0b-b6083e2ae74c
 status: experimental
 description: |
     Detects the creation of files in two kinds of Adobe application folders whose content is loaded automatically when the application starts or quits.
-    Adobe Acrobat and Acrobat Reader enumerate the "plug_ins\Test_Tools" folder of their installation at startup and load every ".api" file found there as a DLL. The folder is not created by the installer.
-    Adobe After Effects and other Creative Cloud applications run every ExtendScript file (".jsx", ".jsxbin") placed in their "Scripts\Startup" and "Scripts\Shutdown" folders, in alphabetical order, at start and at exit.
+    Adobe Acrobat and Acrobat Reader enumerate the "plug_ins\Test_Tools" folder of their installation at startup and load every ".api" file found there as a DLL.
+    Adobe After Effects runs every ExtendScript file (".jsx", ".jsxbin") placed in its "Scripts\Startup" and "Scripts\Shutdown" folders, in alphabetical order, at start and at exit.
     A file dropped in these folders by a process other than the Adobe installation and update components gives code execution inside a signed Adobe process at each launch.
 references:
     - https://www.hexacorn.com/blog/2024/11/15/beyond-good-ol-run-key-part-144/
     - https://www.hexacorn.com/blog/2022/09/02/adobe-jsx-and-jsxbin-files/
+    - https://ae-scripting.docsforadobe.dev/introduction/overview/
 author: elhoim
 date: 2026-11-12
 tags:
