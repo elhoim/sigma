@@ -5,6 +5,8 @@ description: |
     Detects the creation of a localization satellite DLL of the Visual Basic 6 runtime ("vb6<language>.dll" or "vbame.dll") in a system directory, or of a generic MFC localization DLL ("MFC<version>LOC.dll").
     The Visual Basic 6 runtime "msvbvm60.dll" and the MFC libraries up to version 10 load these resource libraries as code when an application starts, depending on the language of the system.
     An attacker can plant a DLL with such a name in order to get it loaded by every Visual Basic 6 or legacy MFC application.
+    Hunting hypothesis: such a file written by a process that is not an installer (msiexec.exe or a setup program), or with a language code that does not match the system language, is a planted DLL rather than a localized runtime.
+    A later image load of the same file by a Visual Basic 6 or MFC application confirms the hijack.
 references:
     - https://www.hexacorn.com/blog/2015/01/01/beyond-good-ol-run-key-part-20/
     - https://www.hexacorn.com/blog/2015/01/03/beyond-good-ol-run-key-part-21/
