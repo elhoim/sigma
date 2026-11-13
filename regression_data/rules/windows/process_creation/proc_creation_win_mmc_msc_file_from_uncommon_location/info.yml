@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 1ebb7651-21d3-4d3c-b3b8-601307557ae6
-      title: Potential MSC File Lure - MMC Console Opened From Uncommon Location
+      title: Potential MSC Lure File Opened By MMC From Uncommon Location
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
