@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 22f8f03e-b588-4b91-a723-0da21f59daa3
-      title: Potential Domain Reconnaissance Preparation - RSAT Active Directory Tools Installed Via Command Line
+      title: Potential Domain Reconnaissance Preparation Via RSAT Active Directory Tools Installation
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx

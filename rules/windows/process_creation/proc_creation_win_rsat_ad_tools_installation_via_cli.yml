@@ -1,4 +1,4 @@
-title: Potential Domain Reconnaissance Preparation - RSAT Active Directory Tools Installed Via Command Line
+title: Potential Domain Reconnaissance Preparation Via RSAT Active Directory Tools Installation
 id: 22f8f03e-b588-4b91-a723-0da21f59daa3
 related:
     - id: b36d01a3-ddaf-4804-be18-18a6247adfcd
@@ -7,10 +7,11 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the Remote Server Administration Tools for Active Directory being installed from the command line, through "Add-WindowsCapability" or DISM with the "Rsat.ActiveDirectory.DS-LDS.Tools" capability, or through "Install-WindowsFeature"/"Add-WindowsFeature" with the "RSAT-AD-PowerShell" or "RSAT-AD-Tools" features.
-    Installing the AD PowerShell module gives any host the Get-AD* cmdlets; The Gentlemen ransomware operators install it on compromised servers right before enumerating the domain, whereas administrators normally have RSAT pre-installed on their management workstations.
+    Detects the Active Directory Remote Server Administration Tools (RSAT) being installed from the command line, with the "Add-WindowsCapability", "Install-WindowsFeature", "Add-WindowsFeature" or "Enable-WindowsOptionalFeature" cmdlets or with DISM.
+    Installing the Active Directory PowerShell module gives any host the "Get-AD*" cmdlets.
+    The Gentlemen ransomware operators install it on compromised servers right before enumerating the domain, whereas administrators normally have RSAT pre-installed on their management workstations.
 references:
-    - https://learn.microsoft.com/en-us/troubleshoot/windows-server/system-management-components/remote-server-administration-tools
+    - https://learn.microsoft.com/en-us/windows-server/administration/install-remote-server-administration-tools
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
 author: elhoim
