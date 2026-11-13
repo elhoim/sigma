@@ -1,4 +1,4 @@
-title: Cloud Instance Metadata Endpoint In URI - Potential SSRF
+title: Suspicious Cloud Instance Metadata Endpoint Reference In URI
 id: 35b87fa4-b69a-41b8-ab5d-b1d74ed907c5
 status: experimental
 description: |
@@ -12,8 +12,8 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
-    - attack.initial-access
     - attack.credential-access
+    - attack.initial-access
     - attack.t1190
     - attack.t1552.005
 logsource:
@@ -27,6 +27,9 @@ detection:
             - 'fd00:ec2::254'
             - 'fd00%3Aec2%3A%3A254'
             - 'metadata.google.internal'
+            - '100.100.100.200' # Alibaba Cloud
+            - '169.254.170.2' # AWS ECS task metadata
+            - '192.0.0.192' # Oracle Cloud
             - '/latest/meta-data'
             - '%2Flatest%2Fmeta-data'
             - '/computeMetadata/v1'

@@ -1,4 +1,4 @@
-title: Sensitive OS File Reference In URI - Potential LFI
+title: Potential LFI Via Sensitive OS File Reference In URI
 id: 25f4d01e-4eb1-4745-8467-e4ce86422833
 related:
     - id: 7745c2ea-24a5-4290-b680-04359cb84b35
@@ -9,7 +9,7 @@ description: |
     These files are the classic targets of local file inclusion (LFI) and arbitrary file read exploitation attempts, including payloads using absolute paths or wrappers that do not require "../" directory traversal sequences.
 references:
     - https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion
-    - https://book.hacktricks.xyz/pentesting-web/file-inclusion
+    - https://hacktricks.wiki/pentesting-web/file-inclusion/
 author: elhoim
 date: 2026-10-15
 tags:

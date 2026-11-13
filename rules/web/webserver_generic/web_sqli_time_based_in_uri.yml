@@ -1,4 +1,4 @@
-title: Time-Based Blind SQL Injection Strings In URI
+title: Suspicious Time-Based Blind SQL Injection Strings In URI
 id: d8736c8d-d24a-49df-978c-39496beedb70
 related:
     - id: 5513deaf-f49a-46c2-a6c8-3f111b5cb453
@@ -30,13 +30,19 @@ detection:
             - 'dbms_lock.sleep'
             - 'dbms_pipe.receive_message'
             - 'and sleep('
+            - 'and%20sleep('
             - 'and%20sleep%28'
+            - 'and+sleep('
             - 'and+sleep%28'
             - 'or sleep('
+            - 'or%20sleep('
             - 'or%20sleep%28'
+            - 'or+sleep('
             - 'or+sleep%28'
             - 'select sleep('
+            - 'select%20sleep('
             - 'select%20sleep%28'
+            - 'select+sleep('
             - 'select+sleep%28'
             - '(sleep('
             - '%28sleep%28'
