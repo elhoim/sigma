@@ -13,8 +13,8 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.lateral-movement
     - attack.execution
+    - attack.lateral-movement
     - attack.persistence
     - attack.privilege-escalation
     - attack.t1021.002
