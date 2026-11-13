@@ -1,4 +1,4 @@
-title: Scheduled Task Created By Remote RPC Client
+title: Potential Remote Scheduled Task Creation Via RPC
 id: 1bbbc34b-c9a2-46af-9c80-07d582b36054
 related:
     - id: c4e92a97-a9ff-4392-9d2d-7a4c642768ca
@@ -11,7 +11,7 @@ description: |
     The Task Scheduler records these fields when a task is created over the network through the ITaskSchedulerService RPC interface, as done by "schtasks /s", "at \\host" and lateral movement tooling that schedules tasks on remote hosts, whereas locally created tasks carry the PID of the creating process.
 references:
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4698
-    - https://www.elastic.co/security-labs/hunting-for-lateral-movement-using-event-query-language
+    - https://www.elastic.co/security-labs/blog/hunting-for-lateral-movement-using-event-query-language
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_remote_task_creation_winlog.toml
 author: elhoim
 date: 2026-11-10

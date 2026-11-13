@@ -4,10 +4,10 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 1bbbc34b-c9a2-46af-9c80-07d582b36054
-      title: Scheduled Task Created By Remote RPC Client
+      title: Potential Remote Scheduled Task Creation Via RPC
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
-      provider: manual raw time slice of the real Security log (sigmacatch cannot map the 4698 fields)
+      provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules/windows/builtin/security/win_security_scheduled_task_created_by_remote_rpc_client/1bbbc34b-c9a2-46af-9c80-07d582b36054.evtx
