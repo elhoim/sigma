@@ -4,7 +4,7 @@ status: experimental
 description: |
     Detects the creation of the "SPReviewEnabler" value under "CurrentVersion\Setup\Pending" or of the "SPReview" value under a "RunOnce" key by a process other than the Windows servicing stack.
     "spreview.exe", the service pack review tool, started with "/WuExecuted" or "/WusaExecuted" copies the content of "SPReviewEnabler" to the "RunOnce\SPReview" value of the current user and deletes the original, so that the stored command runs at the next logon.
-    An attacker can store a command in "SPReviewEnabler" and trigger the signed tool to obtain a RunOnce entry that he did not write himself. The value is only set during a service pack installation.
+    An attacker can store a command in "SPReviewEnabler" and trigger the signed tool to obtain a RunOnce entry without writing it directly. The value is only set during a service pack installation.
 references:
     - https://www.hexacorn.com/blog/2019/10/24/beyond-good-ol-run-key-part-121/
 author: elhoim
@@ -22,7 +22,9 @@ detection:
             - '\Microsoft\Windows\CurrentVersion\RunOnce\SPReview'
             - '\Microsoft\Windows\CurrentVersion\Setup\Pending\SPReviewEnabler'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     filter_main_servicing_trustedinstaller:
         Image: 'C:\Windows\servicing\TrustedInstaller.exe'
     filter_main_servicing_tiworker:
