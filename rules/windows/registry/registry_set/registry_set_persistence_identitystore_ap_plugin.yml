@@ -1,0 +1,34 @@
+title: Potential Persistence Via IdentityStore Authentication Package Plug-in
+id: a3b3ea18-d480-428d-8738-d794ae4a6d75
+status: experimental
+description: |
+    Detects the registration or modification of a cloud authentication package plug-in under the "IdentityStore\Providers" registry key.
+    At start-up, lsass.exe enumerates the provider subkeys of that key and loads the DLL named in the "ApPluginDLLPath" value of each provider that is enabled through its "LoadParameters\Enabled" value.
+    The key is owned by TrustedInstaller and the default providers are only written by the operating system, so a write by another process could be an attempt to get a DLL loaded by lsass.exe.
+references:
+    - https://www.hexacorn.com/blog/2016/09/29/beyond-good-ol-run-key-part-47/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\IdentityStore\Providers\'
+        TargetObject|endswith:
+            - '\ApPluginDLLPath'
+            - '\DLLPath'
+            - '\LoadParameters\Enabled'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: medium
