@@ -2,8 +2,7 @@ title: Suspicious Boot-Critical File Created Or Overwritten Outside Of Windows S
 id: 4cec81e8-4c14-448e-9790-0110d46473cb
 status: experimental
 description: |
-    Detects the creation or overwrite of the Windows boot manager (bootmgr), OS loader (winload.exe, winload.efi) or kernel (ntoskrnl.exe)
-    inside the Windows directory by a process other than the Windows servicing stack (TiWorker, poqexec, TrustedInstaller) or the block-level backup engine (wbengine).
+    Detects the creation or overwrite of the Windows boot manager (bootmgr), OS loader (winload.exe, winload.efi) or kernel (ntoskrnl.exe) inside the Windows directory by a process other than the Windows servicing stack (TiWorker, poqexec, TrustedInstaller) or the block-level backup engine (wbengine).
     Replacing or corrupting these files renders the system unbootable and is used by destructive malware to prevent recovery.
     Legitimate changes to these files are staged under WinSxS, SoftwareDistribution and temporary servicing folders before being committed by the servicing stack.
 references:
@@ -37,8 +36,6 @@ detection:
         Image|endswith: '\TiWorker.exe'
     filter_main_staging_paths:
         TargetFilename|contains:
-            - ':\$WINDOWS.~BT\'
-            - ':\$WinREAgent\'
             - ':\Windows\SoftwareDistribution\'
             - ':\Windows\SystemTemp\'
             - ':\Windows\Temp\'
