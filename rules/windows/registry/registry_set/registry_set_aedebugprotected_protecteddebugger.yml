@@ -1,0 +1,33 @@
+title: Potential Persistence Via AeDebugProtected ProtectedDebugger Registry Value
+id: 4c448acf-6b4e-4db6-b41d-fc976017a115
+related:
+    - id: 092af964-4233-4373-b4ba-d86ea2890288 # Add Debugger Entry To AeDebug For Persistence
+      type: similar
+    - id: 833ef470-fa01-4631-a79b-6f291c9ac498 # Add Debugger Entry To Hangs Key For Persistence
+      type: similar
+status: experimental
+description: |
+    Detects the creation of the "ProtectedDebugger" value under the "AeDebugProtected" registry key.
+    "AeDebugProtected" is the counterpart of the well known "AeDebug" key for protected processes. When a protected process crashes, Windows Error Reporting reads the just in time debugger from this value instead of "AeDebug\Debugger" and starts it.
+    The value does not exist by default. An attacker can register a program there to have it started whenever a protected process crashes. The existing rules cover the "AeDebug\Debugger" and "Windows Error Reporting\Hangs\Debugger" values only.
+references:
+    - https://www.hexacorn.com/blog/2019/10/11/beyond-good-ol-run-key-part-119/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows NT\CurrentVersion\AeDebugProtected\ProtectedDebugger'
+    filter_main_empty:
+        Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_aedebugprotected_protecteddebugger/info.yml
