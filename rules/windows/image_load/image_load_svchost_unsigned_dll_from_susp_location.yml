@@ -8,7 +8,7 @@ description: |
     Detects the shared service host "svchost.exe" loading an unsigned DLL from a user-writable folder ("ProgramData", a user profile, "PerfLogs", "Windows\Tasks", "Intel", "AMD\Temp", the recycle bin) or from a static Windows subfolder that never hosts service libraries.
     Service DLLs loaded by svchost.exe are Microsoft-signed and live in System32 or SysWOW64; an unsigned library from such a location indicates a hijacked or newly registered service DLL (ServiceDll registry value), a replaced dependency, or code injected into the service host, all of which run with the service account's privileges and persist across reboots.
 references:
-    - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+    - https://www.elastic.co/security-labs/blog/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_service_dll_unsigned.toml
 author: elhoim
 date: 2026-11-10
@@ -57,6 +57,7 @@ detection:
             - ':\Windows\Help\'
             - ':\Windows\IdentityCRL\'
             - ':\Windows\IME\'
+            - ':\Windows\Intel\'
             - ':\Windows\ImmersiveControlPanel\'
             - ':\Windows\INF\'
             - ':\Windows\L2Schemas\'
