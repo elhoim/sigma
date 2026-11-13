@@ -7,7 +7,7 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a scripting host, shell or other living-off-the-land binary whose command line references a file in a folder that is writable by standard users but never hosts scripts or libraries on a clean system, such as "PerfLogs", "Users\Public", "Windows\Tasks", "Intel", "AMD\Temp" or static Windows subfolders (Fonts, Help, INF, Cursors, Branding...).
+    Detects a scripting host, shell or other living-off-the-land binary whose command line references a file in a folder that is writable by standard users ("PerfLogs", "Users\Public", "Windows\Tasks", "Intel", "AMD\Temp") or in a static Windows subfolder (Fonts, Help, INF, Cursors, Branding...) that rarely hosts scripts or libraries run from the command line.
     Attackers stage scripts, DLLs and installers in these trusted-looking paths and run them through the LOLBin. Unlike the sibling rules, this rule inspects the command line (the payload location) rather than the location of the executed image, and is not limited to rundll32.
 references:
     - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
@@ -129,5 +129,7 @@ falsepositives:
     - Built-in troubleshooters and the Windows servicing stack that reference their own scripts and logs under "C:\Windows\diagnostics\system" or "C:\Windows\Logs\CBS"
     - Administrative scripts and logging commands that read or write under the matched Windows subfolders (for example log collection scripts redirecting output to "C:\Windows\Logs")
     - Vendor installers staging helper scripts in "C:\Intel" or "C:\Users\Public"
+    - Opening the Speech Recognition control panel (rundll32.exe loading "C:\Windows\System32\Speech\SpeechUX\sapi.cpl")
+    - OEM image deployment steps run by "windeploy.exe" or OEM scripts (for example "C:\Windows\Setup\Scripts\SetupComplete.cmd", "powercfg" logging to "C:\Windows\INF\PowerPlan.log" or "regsvr32" of "C:\Windows\Help\OEM\scripts\checkmui.dll")
 level: medium
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_susp_folder_in_cmdline/info.yml
