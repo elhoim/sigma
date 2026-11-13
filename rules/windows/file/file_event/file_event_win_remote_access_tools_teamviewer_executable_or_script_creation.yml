@@ -1,0 +1,52 @@
+title: Remote Access Tool - Potential File Transfer Of Executable Or Script Via TeamViewer
+id: eb9b0534-bfb8-4331-8063-cfb26845522b
+related:
+    - id: 162ab1e4-6874-4564-853c-53ec3ab8be01
+      type: similar
+status: experimental
+description: |
+    Detects "TeamViewer.exe" creating an executable, library, screensaver or script file outside its own update and custom configuration folders.
+    TeamViewer writes such files when a remote party transfers them to the host through the file transfer feature of a remote control session.
+    Attackers who gain access to a TeamViewer session, or who install TeamViewer as their remote access tool, use the transfer to stage additional tooling and payloads.
+references:
+    - http://web.archive.org/web/20230329160957/https://blog.menasec.net/2019/11/hunting-for-suspicious-use-of.html
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_teamviewer_remote_file_copy.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1105
+    - attack.t1219.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\TeamViewer.exe'
+        TargetFilename|endswith:
+            - '.bat'
+            - '.cmd'
+            - '.com'
+            - '.dll'
+            - '.exe'
+            - '.hta'
+            - '.js'
+            - '.jse'
+            - '.ps1'
+            - '.sct'
+            - '.scr'
+            - '.vbe'
+            - '.vbs'
+            - '.wsf'
+            - '.wsh'
+    filter_main_teamviewer_update:
+        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\(?:[0-9]+\\)?TeamViewer\\update\.exe$'
+    filter_optional_teamviewer_custom_configs:
+        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\TeamViewer\\CustomConfigs\\[0-9A-Za-z]+\\TeamViewer_[A-Za-z_]+\.dll$'
+    filter_optional_inetcache_js:
+        TargetFilename|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\Windows\\INetCache\\IE\\[A-Z0-9]{8}\\[^\\]+\[\d+\]\.js$'
+    condition: selection and not 1 of filter_*
+falsepositives:
+    - Help desk technicians transferring installers or administrative scripts to a user's machine through a legitimate TeamViewer session
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_remote_access_tools_teamviewer_executable_or_script_creation/info.yml
