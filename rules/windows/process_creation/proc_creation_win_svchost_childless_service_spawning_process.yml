@@ -66,15 +66,18 @@ detection:
         Image:
             - 'C:\Windows\System32\rundll32.exe'
             - 'C:\Windows\SysWOW64\rundll32.exe'
-        CommandLine|re: '^(?:"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\rundll32\.exe"?|rundll32(?:\.exe)?) +"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\winethc\.dll"?,ForceProxyDetectionOnNextRun *$'
-    filter_main_imgsvc_scanner_software:
+        CommandLine|re|i: '^(?:"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\rundll32\.exe"?|rundll32(?:\.exe)?) +"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\winethc\.dll"?,ForceProxyDetectionOnNextRun *$'
+    filter_optional_imgsvc_scanner_software:
         # The Windows Image Acquisition service starts vendor scanner components
         ParentCommandLine|contains: ' -s imgsvc'
         Image|startswith:
             - 'C:\Program Files (x86)\'
             - 'C:\Program Files\'
-            - 'C:\Windows\System32\Kodak\'
-    condition: selection and not 1 of filter_main_*
+    filter_optional_imgsvc_kodak:
+        ParentCommandLine|contains: ' -s imgsvc'
+        Image|startswith: 'C:\Windows\System32\Kodak\kds_'
+        Image|endswith: '\lib\lexexe.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Third-party software that registers itself in one of these service groups, and rare Windows diagnostic children not yet in the filters; tune per environment
 level: medium
