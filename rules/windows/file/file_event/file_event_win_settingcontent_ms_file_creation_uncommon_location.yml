@@ -1,0 +1,34 @@
+title: Potential Phishing Lure - SettingContent-ms File Created Outside Settings App Locations
+id: fbd6559a-7223-4637-8543-7de47abaf608
+related:
+    - id: 24de4f3b-804c-4165-b442-5a06a2302c7e
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a ".settingcontent-ms" file anywhere other than the Settings app's indexed settings folder (Packages\windows.immersivecontrolpanel_*\LocalState\Indexed\Settings) and the WinSxS component store.
+    SettingContent-ms files are XML shortcuts to Settings pages whose "DeepLink" element can hold an arbitrary command line that Explorer runs on double-click without a warning; they are only legitimately written by Windows itself, so one appearing in Downloads, Temp, Outlook attachments or a user folder is a phishing lure or dropper artefact.
+references:
+    - https://specterops.io/blog/2018/06/11/the-tale-of-settingcontent-ms-files/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/execution_settingcontent_ms_file_creation.toml
+author: elhoim
+date: 2026-11-11
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1204.002
+    - attack.t1566.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|endswith: '.settingcontent-ms'
+    filter_main_settings_app:
+        TargetFilename|re: '(?i)^[A-Z]:\\(Users\\[^\\]+|Windows\\System32\\config\\systemprofile)\\AppData\\Local\\Packages\\windows\.immersivecontrolpanel_[^\\]+\\LocalState\\Indexed\\Settings\\'
+    filter_main_winsxs:
+        TargetFilename|startswith: 'C:\Windows\WinSxS\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_settingcontent_ms_file_creation_uncommon_location/info.yml

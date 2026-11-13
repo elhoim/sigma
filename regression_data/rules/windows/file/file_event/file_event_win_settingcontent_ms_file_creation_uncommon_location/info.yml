@@ -1,0 +1,13 @@
+id: ef4ec03e-0ff7-40fb-a323-3ef10d655167
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: fbd6559a-7223-4637-8543-7de47abaf608
+      title: Potential Phishing Lure - SettingContent-ms File Created Outside Settings App Locations
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_settingcontent_ms_file_creation_uncommon_location/fbd6559a-7223-4637-8543-7de47abaf608.evtx
