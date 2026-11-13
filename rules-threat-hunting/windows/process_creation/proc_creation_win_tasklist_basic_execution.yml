@@ -23,3 +23,4 @@ detection:
 falsepositives:
     - Likely from users, administrator and different internal and third party applications.
 level: informational
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_tasklist_basic_execution/info.yml
