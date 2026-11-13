@@ -22,14 +22,14 @@ detection:
         Details:
             - 'DWORD (0x00000000)'
             - 'DWORD (0x00000001)'
-    filter_main_ccmexec:
+    filter_optional_ccmexec:
         Image: 'C:\Windows\CCM\CcmExec.exe'
     filter_optional_gpo_client:
         Image: 'C:\Windows\System32\svchost.exe'
         User|contains:
             - 'AUTHORI'
             - 'AUTORI'
-    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+    condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Group Policy refreshes (gpsvc in svchost.exe) that apply the policy under an account other than SYSTEM, or on systems where the optional Group Policy filter is removed
     - Administrators lowering the policy on test systems to install unsigned development drivers
