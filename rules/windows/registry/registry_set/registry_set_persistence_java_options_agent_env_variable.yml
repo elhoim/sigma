@@ -1,0 +1,38 @@
+title: Potential Persistence Via Java Agent In Java Options Environment Variable
+id: 82cbfac5-fc67-4981-8209-651f63702b1c
+status: experimental
+description: |
+    Detects the creation of a persistent Java options environment variable ("JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "JDK_JAVA_OPTIONS" or "IBM_JAVA_OPTIONS") that loads a native or Java agent or changes the boot class path.
+    The Java virtual machine reads these variables at start-up, so that the agent named with "-agentpath", "-agentlib" or "-javaagent" is loaded into every Java process of the user or of the system.
+    An attacker can use this in order to get a DLL or a JAR file executed each time a Java application starts.
+references:
+    - https://www.hexacorn.com/blog/2017/09/27/beyond-good-ol-run-key-part-65/
+    - https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/envvars002.html
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_variable:
+        TargetObject|endswith:
+            - '\Environment\_JAVA_OPTIONS'
+            - '\Environment\IBM_JAVA_OPTIONS'
+            - '\Environment\JAVA_TOOL_OPTIONS'
+            - '\Environment\JDK_JAVA_OPTIONS'
+    selection_agent:
+        Details|contains:
+            - '-agentlib:'
+            - '-agentpath:'
+            - '-javaagent:'
+            - '-Xbootclasspath'
+    condition: all of selection_*
+falsepositives:
+    - Application performance monitoring, observability and security agents for Java that are attached through a system wide Java options variable
+    - Developers that enable a debugging or profiling agent for all their Java processes
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_java_options_agent_env_variable/info.yml
