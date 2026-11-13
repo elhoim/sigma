@@ -1,0 +1,34 @@
+title: Direct3D Debug Runtime Loading Enabled
+id: fc85a15a-2c8b-4ab8-b4c8-3e8388361839
+status: experimental
+description: |
+    Detects the activation of the Direct3D debug runtime through the "LoadDebugRuntime" or "D3D10LoadDebugRuntime" registry values.
+    When the debug runtime is enabled, applications that use Direct3D load the debug version of the library, such as "d3d9d.dll", by name through the DLL search path.
+    The setting is used by graphics developers, but an attacker can enable it and plant a DLL with the name of a debug library in order to get it loaded by every Direct3D application.
+references:
+    - https://www.hexacorn.com/blog/2014/08/04/beyond-good-ol-run-key-part-15/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_d3d9:
+        TargetObject|endswith: '\Microsoft\Direct3D\LoadDebugRuntime'
+    selection_d3d10:
+        TargetObject|contains: '\Microsoft\Direct3D\'
+        TargetObject|endswith: '\D3D10LoadDebugRuntime'
+    filter_main_disabled:
+        Details: 'DWORD (0x00000000)'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Graphics developers that enable the debug layer with the DirectX Control Panel or the DirectX SDK
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_direct3d_debug_runtime_enabled/info.yml

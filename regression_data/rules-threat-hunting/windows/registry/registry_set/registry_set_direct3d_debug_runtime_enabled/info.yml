@@ -1,0 +1,13 @@
+id: 437f0e76-c740-4e5b-bbef-e7bad23eefbe
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: fc85a15a-2c8b-4ab8-b4c8-3e8388361839
+      title: Direct3D Debug Runtime Loading Enabled
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_direct3d_debug_runtime_enabled/fc85a15a-2c8b-4ab8-b4c8-3e8388361839.evtx
