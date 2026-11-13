@@ -1,0 +1,40 @@
+title: Shortcut Created On Desktop Or Start Menu By Script Host Or Office Application
+id: d503e985-6343-4083-bceb-efe0da7f2f5a
+status: experimental
+description: |
+    Detects the creation of a shortcut file (.lnk) on a desktop or in a Start Menu folder by a Windows script host, mshta.exe or a Microsoft Office application.
+    Scripts and macros can create or patch shortcuts through the "WScript.Shell" COM object in order to assign a hot key to a program, to add arguments such as a browser extension to an existing shortcut, or to place a shortcut in the Startup folder.
+    The behaviour is also common in logon and installation scripts, which makes this rule a starting point for threat hunting.
+references:
+    - https://www.hexacorn.com/blog/2015/03/13/beyond-good-ol-run-key-part-29/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.009
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\cscript.exe'
+            - '\EXCEL.EXE'
+            - '\MSACCESS.EXE'
+            - '\mshta.exe'
+            - '\MSPUB.EXE'
+            - '\POWERPNT.EXE'
+            - '\WINWORD.EXE'
+            - '\wscript.exe'
+        TargetFilename|contains:
+            - '\Desktop\'
+            - '\Start Menu\'
+        TargetFilename|endswith: '.lnk'
+    condition: selection
+falsepositives:
+    - Logon scripts and software deployment scripts that create desktop or Start Menu shortcuts
+    - Installers written as Windows Script Host scripts or HTML applications
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_shortcut_created_by_script_host_or_office/info.yml
