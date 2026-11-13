@@ -2,7 +2,7 @@ title: Potential Masquerading - Uncommon Executable Running From WBEM Folder
 id: 505da9fc-3833-4c86-be5a-eafc7885b41b
 status: experimental
 description: |
-    Detects a process starting from the Windows Management Instrumentation folder ("System32\wbem" or "SysWOW64\wbem") whose file name is not one of the WMI components that live there (mofcomp, scrcons, unsecapp, wbemtest, winmgmt, wmiadap, wmiapsrv, wmic, WmiPrvSE, WMIADAP).
+    Detects a process starting from the Windows Management Instrumentation folder ("System32\wbem" or "SysWOW64\wbem") that is not one of the WMI components that live there (mofcomp, scrcons, unsecapp, wbemtest, winmgmt, wmiadap, wmiapsrv, wmic, WmiPrvSE).
     The wbem folder is writable only by administrators and is trusted by many allow-list policies and analysts; attackers drop or copy their binaries into it so that the path looks like a WMI component, and some DLL/EXE search order hijacks of WMI tooling execute from there.
 references:
     - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-architecture
