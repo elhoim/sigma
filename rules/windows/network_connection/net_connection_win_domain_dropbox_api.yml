@@ -7,7 +7,7 @@ references:
     - https://www.zscaler.com/blogs/security-research/new-espionage-attack-molerats-apt-targeting-users-middle-east
 author: Florian Roth (Nextron Systems)
 date: 2022-04-20
-modified: 2026-11-05
+modified: 2026-11-13
 tags:
     - attack.command-and-control
     - attack.exfiltration
@@ -28,9 +28,8 @@ detection:
             - ':\Program Files (x86)\Dropbox\'
             - ':\Program Files\Dropbox\'
     filter_optional_dropbox_user_install:
-        Image|contains:
-            - '\AppData\Local\Dropbox\Client\'
-            - '\AppData\Roaming\Dropbox\bin\'
+        # Per-user installations, anchored to the profile folder
+        Image|re|i: '^[a-z]:\\Users\\[^\\]+\\AppData\\(?:Local\\Dropbox\\Client|Roaming\\Dropbox\\bin)\\'
         Image|endswith: '\Dropbox.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
