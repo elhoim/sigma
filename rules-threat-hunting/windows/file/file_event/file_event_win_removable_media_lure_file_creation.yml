@@ -1,0 +1,33 @@
+title: Autorun.inf On Non-System Drive Or Lure Executable Name Creation
+id: c6a6a2b5-dedf-4c6b-bd2f-25dbc2ba1211
+status: experimental
+description: |
+    Detects the creation of an "autorun.inf" file at the root of a drive other than C:, or of an executable with a misleading name made of dots or of a doubled executable extension.
+    Malware that spreads through removable media copies itself to the drive with such names and adds an "autorun.inf" file in order to be started by the user that opens the drive.
+    The drive type is not available in the file events, so the root of any drive other than C: is used.
+references:
+    - https://www.hexacorn.com/blog/2015/10/16/enter-sandbox-part-10-removable-devices-clickbait-file-names/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.initial-access
+    - attack.lateral-movement
+    - attack.t1091
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_autorun:
+        TargetFilename|re|i: '^[D-Z]:\\autorun\.inf$'
+    selection_names:
+        TargetFilename|endswith:
+            - '\...exe'
+            - '\..exe'
+            - '.exe.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Bootable media creation tools and installation media copies that write an autorun.inf file
+    - Optical disc authoring and vendor USB drive utilities
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_removable_media_lure_file_creation/info.yml
