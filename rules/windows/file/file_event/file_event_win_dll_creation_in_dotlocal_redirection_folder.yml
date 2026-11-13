@@ -5,8 +5,8 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the creation of a DLL inside a "<application>.exe.local" folder next to an executable.
-    When such a folder exists, the Windows loader resolves the application's DLL imports from it first (DLL redirection, also called DotLocal), regardless of the system search order. Dropping a DLL there makes the application load attacker code on its next start without touching the binary, its registry keys or the DLL in System32; the technique is used for persistence, privilege escalation through auto-elevated binaries, and for side-loading into trusted processes.
+    Detects the creation of a DLL inside a "<application>.exe.local" folder next to an executable, or inside the "microsoft.system.package.metadata\application.local" folder of a packaged app.
+    When such a folder exists, the Windows loader resolves the application's DLL loads from it first (DLL redirection, also called DotLocal), whatever path the application passes to LoadLibrary. For an application with a manifest, plain DotLocal redirection is only honoured when the DevOverrideEnable Image File Execution Options value is set, but side-by-side assembly folders inside the ".local" folder (as abused against auto-elevated binaries) still apply. Dropping a DLL there makes the application load attacker code on its next start without touching the binary, its registry keys or the DLL in System32; the technique is used for persistence, privilege escalation through auto-elevated binaries, and for side-loading into trusted processes.
     The related rule covers five auto-elevating System32 binaries and comctl32.dll; this rule covers any executable and any DLL name.
 references:
     - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection
@@ -18,13 +18,16 @@ tags:
     - attack.persistence
     - attack.privilege-escalation
     - attack.stealth
+    - attack.t1129
     - attack.t1574.001
 logsource:
     category: file_event
     product: windows
 detection:
     selection:
-        TargetFilename|contains: '.exe.local\'
+        TargetFilename|contains:
+            - '.exe.local\'
+            - '\microsoft.system.package.metadata\application.local\'
         TargetFilename|endswith: '.dll'
     condition: selection
 falsepositives:
