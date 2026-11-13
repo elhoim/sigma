@@ -5,8 +5,9 @@ description: |
     Detects the generation of a crypt(3) password hash with "openssl passwd".
     Adversaries pre-compute password hashes to create a backdoor account or to set a known password on an existing or system account (e.g. via "useradd -p", "usermod -p" or by writing directly to "/etc/shadow").
     This is also used legitimately by administrators and provisioning scripts, hence this rule is intended for threat hunting.
+    Hunt for a hash generation followed, in the same session or parent process tree, by "useradd -p", "usermod -p", "chpasswd -e" or a write to "/etc/shadow", especially from an interactive shell, a web server or an unusual parent, and outside of known provisioning tooling.
 references:
-    - https://www.openssl.org/docs/manmaster/man1/openssl-passwd.html
+    - https://docs.openssl.org/master/man1/openssl-passwd/
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1078.003/T1078.003.md
 author: elhoim
 date: 2026-10-01
