@@ -9,11 +9,11 @@ author: Harjot Shah Singh, '@cyb3rjy0t'
 date: 2024-03-26
 tags:
     - attack.credential-access
+    - attack.defense-impairment
     - attack.persistence
     - attack.privilege-escalation
-    - attack.defense-impairment
-    - attack.t1556
     - attack.t1484.002
+    - attack.t1556
 logsource:
     product: azure
     service: auditlogs
