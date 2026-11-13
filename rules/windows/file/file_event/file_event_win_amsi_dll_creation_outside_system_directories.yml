@@ -29,7 +29,7 @@ detection:
         TargetFilename|endswith: '\amsi.dll'
     filter_main_system_locations:
         TargetFilename|startswith:
-            - 'C:\$SysReset\CloudImage\'
+            - 'C:\$SysReset\CloudImage\Package_for_RollupFix'
             - 'C:\$WINDOWS.~BT\'
             - 'C:\Windows\CbsTemp\'
             - 'C:\Windows\servicing\'
