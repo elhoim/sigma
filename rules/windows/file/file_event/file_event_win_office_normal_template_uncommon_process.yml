@@ -1,0 +1,38 @@
+title: Potential Persistence Via Word Normal Template Written By Uncommon Process
+id: a9f63518-3e49-4032-8578-9a32c56ae320
+status: experimental
+description: |
+    Detects the creation of the global template of Word "Normal.dotm" or of Outlook "NormalEmail.dotm" in the user templates directory by a process other than Word or Outlook.
+    The macros stored in the global template are loaded each time Word starts and run without the usual macro warning.
+    An attacker can replace the template with a prepared file in order to obtain persistence.
+    The personal macro workbook of Excel in the XLSTART folder is covered by the rule "Uncommon File Created In Office Startup Folder".
+references:
+    - https://www.hexacorn.com/blog/2017/04/19/beyond-good-ol-run-key-part-62/
+    - https://github.com/redcanaryco/atomic-red-team/blob/3c62c9701d1009b991ad0224606c762fa02ba513/atomics/T1137.001/T1137.001.md
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\AppData\Roaming\Microsoft\Templates\Normal.dotm'
+            - '\AppData\Roaming\Microsoft\Templates\NormalEmail.dotm'
+    filter_main_office:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft Office\'
+            - 'C:\Program Files\Microsoft Office\'
+            - 'C:\Program Files\WindowsApps\Microsoft.Office'
+        Image|endswith:
+            - '\OUTLOOK.EXE'
+            - '\WINWORD.EXE'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Restoration of a user profile from a backup, profile migration or synchronization tools
+    - Deployment of a corporate template by a script or a software distribution tool
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_office_normal_template_uncommon_process/info.yml
