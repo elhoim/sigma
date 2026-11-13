@@ -7,7 +7,7 @@ description: |
     A name made of a single null character is logged by Sysmon as the "(Default)" value and is not covered by this rule.
 references:
     - https://github.com/outflanknl/SharpHide/blob/9a4bca0a6709bd684185efd339ac540a85d36185/README.md
-    - https://web.archive.org/web/20250627024605/https://github.com/ewhitehats/InvisiblePersistence/blob/master/InvisibleRegValues_Whitepaper.pdf
+    - https://web.archive.org/web/20230323185554/https://raw.githubusercontent.com/ewhitehats/InvisiblePersistence/master/InvisibleRegValues_Whitepaper.pdf
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_via_hidden_run_key_valuename.toml
 author: elhoim
 date: 2026-11-09
