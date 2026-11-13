@@ -1,0 +1,32 @@
+title: AutoProxyTypes Registry Key Modification
+id: 3164a880-5d1f-4f2a-8472-999c2eacaf8c
+status: experimental
+description: |
+    Detects the creation or modification of a value under the "AutoProxyTypes" registry key of the classes hive.
+    Each subkey of that key is a MIME type of a proxy auto-configuration format and names the DLL that handles it, which the Windows internet libraries load while looking for the proxy configuration.
+    The two default handlers are only written at installation, so that a write could be an attempt to get a DLL loaded during the proxy discovery.
+references:
+    - https://www.hexacorn.com/blog/2017/10/05/beyond-good-ol-run-key-part-66/
+    - https://learn.microsoft.com/en-us/archive/blogs/askie/automatic-proxy-configuration-script-failing-on-vista
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\AutoProxyTypes\'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Repair of the proxy auto-configuration handler registration by an administrator
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_autoproxytypes_modification/info.yml
