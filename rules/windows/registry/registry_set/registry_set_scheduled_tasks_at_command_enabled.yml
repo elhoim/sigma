@@ -1,0 +1,29 @@
+title: Potential Legacy AT Scheduled Jobs Re-Enabled Via Registry
+id: 9f28c683-09ed-407f-8bfb-1e3279fdba60
+status: experimental
+description: |
+    Detects the "EnableAt" value being set to 1 under the Task Scheduler configuration key, which re-enables the deprecated AT job interface (at.exe, the Win32_ScheduledJob WMI class and the legacy "AtSvc" RPC interface) on Windows 8 / Server 2012 and later.
+    The interface is disabled by default; an attacker enables it to schedule jobs locally or on remote hosts with tooling built for the legacy protocol, which bypasses detections that only watch schtasks.exe and the modern Task Scheduler API.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-scheduledjob
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/at
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_scheduledjobs_at_protocol_enabled.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1053.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows NT\CurrentVersion\Schedule\Configuration\EnableAt'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+falsepositives:
+    - Administrators re-enabling the AT command on legacy automation hosts that still rely on at.exe jobs
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_scheduled_tasks_at_command_enabled/info.yml
