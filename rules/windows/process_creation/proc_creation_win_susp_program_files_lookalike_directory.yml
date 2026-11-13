@@ -18,16 +18,14 @@ detection:
     selection:
         Image|contains: 'Program Files'
     filter_main_real_roots:
-        Image|re: '^[A-Za-z]:\\Program Files(?: \(x86\))?\\'
+        Image|re|i: '^[A-Z]:\\Program Files(?: \(x86\))?\\'
     filter_main_downloaded_program_files:
-        Image|re: '^[A-Za-z]:\\Windows\\Downloaded Program Files\\'
+        Image|re|i: '^[A-Z]:\\Windows\\Downloaded Program Files\\'
     filter_main_user_and_programdata:
-        Image|re: '^[A-Za-z]:\\(?:Users|ProgramData)\\'
+        Image|re|i: '^[A-Z]:\\(?:Users|ProgramData)\\'
     filter_optional_opera_installer:
-        Image|startswith: 'C:\Windows\Temp\.opera\'
-        Image|contains|all:
-            - 'CProgram'
-            - 'Opera'
+        # C:\Windows\Temp\.opera\<12 chars>\CProgram FilesOpera...\ or CProgram Files (x86)Opera...\
+        Image|re|i: '^[A-Z]:\\Windows\\Temp\\\.opera\\[^\\]{12}\\CProgram.Files(?:.\(x86\))?Opera[^\\]*\\'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Portable software or installers extracted into a folder that happens to contain "Program Files" in its name outside the user profile, including installers unpacking to "C:\Windows\Temp\Program Files\"
