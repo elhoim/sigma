@@ -1,5 +1,8 @@
 title: HackTool - LDAPDomainDump Execution - Linux
 id: 49565197-3f24-4a57-a158-cb095f555ece
+related:
+    - id: a015e032-146d-4717-8944-7a1884122111 # Linux HackTool Execution (image name only)
+      type: similar
 status: experimental
 description: |
     Detects the execution of "ldapdomaindump", an Active Directory information dumper via LDAP that collects users, groups, computers, trusts and policies into HTML, JSON and grepable files.
@@ -12,9 +15,9 @@ author: elhoim
 date: 2026-10-01
 tags:
     - attack.discovery
-    - attack.t1087.002
-    - attack.t1069.002
     - attack.t1018
+    - attack.t1069.002
+    - attack.t1087.002
 logsource:
     product: linux
     category: process_creation
