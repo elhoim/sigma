@@ -7,6 +7,7 @@ status: experimental
 description: |
     Detects a Sysmon "FileExecutableDetected" event (a file whose content starts with the PE "MZ" header) for a file whose extension claims an image, audio, video, text or document format (.jpg, .png, .gif, .mp3, .mp4, .txt, .pdf, .doc, .xls, .html, .inf...).
     Malware stages its payloads under harmless-looking extensions to pass email, proxy and allow-list controls and to hide among user data, then renames or maps them at run time; a legitimate media or document file never begins with a PE header.
+    Writes by the System process (for example a file dropped over SMB) are deliberately not excluded, since a masqueraded executable delivered over a network share is a true detection.
 references:
     - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
     - https://learn.microsoft.com/en-us/windows/win32/debug/pe-format
@@ -55,9 +56,10 @@ detection:
             - '.xlsx'
             - '.hwp'
             - '.html'
-    condition: selection
+    filter_optional_trendmicro:
+        Image: 'C:\Program Files (x86)\Trend Micro\Client Server Security Agent\Ntrtscan.exe'
+    condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Software that stores packed executables or installers under a non-executable extension in its own data folders (some game launchers and updaters); add the path to a filter
-    - Files written by the System process, for example over SMB, are not excluded; a masqueraded executable delivered over a network share is a true detection
 level: medium
 regression_tests_path: regression_data/rules/windows/file/file_executable_detected/file_executable_detected_win_media_or_document_extension/info.yml
