@@ -1,0 +1,13 @@
+id: a5f9bdf7-a72c-4c9d-ad52-ecb5f286c77c
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 7cbf71e1-1d9f-4378-a88f-c19f4435d60a
+      title: Simple MAPI Provider DLL Registered From Uncommon Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_simple_mapi_provider_dll_uncommon_location/7cbf71e1-1d9f-4378-a88f-c19f4435d60a.evtx
