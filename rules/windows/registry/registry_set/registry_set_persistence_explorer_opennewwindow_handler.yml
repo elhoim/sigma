@@ -26,6 +26,6 @@ detection:
         Image|endswith: '\TiWorker.exe'
     condition: selection and not 1 of filter_main_*
 falsepositives:
-    - Unlikely
+    - Third-party file managers that set themselves as the default file manager for the Win+E shortcut through this per-user key, such as Files or Sigma File Manager
 level: high
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_opennewwindow_handler/info.yml
