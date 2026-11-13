@@ -5,10 +5,11 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a DNS query for one of the public DNS-over-HTTPS resolver hostnames (cloudflare-dns.com, mozilla.cloudflare-dns.com, dns.google, dns.quad9.net) issued by a process that is not a web browser installed under Program Files (or per user) or the Windows DNS client service.
-    Browsers resolve these names when their built-in secure DNS is enabled; any other process doing so is about to tunnel its own name resolution inside HTTPS, which hides the domains it contacts from DNS logging and filtering. Malware uses DoH to resolve command and control domains and to exfiltrate data without touching the local resolver.
+    Detects a DNS query for a public DNS-over-HTTPS resolver hostname of Cloudflare, Google or Quad9, issued by a process that is not a web browser installed under Program Files (or per user) or the Windows DNS client service.
+    Browsers resolve these names when their built-in secure DNS is enabled; any other process doing so is about to tunnel its own name resolution inside HTTPS, which hides the domains it contacts from DNS logging and filtering.
+    Malware uses DoH to resolve command and control domains and to exfiltrate data without touching the local resolver.
 references:
-    - https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/
+    - https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/DoH_traffic.yml
 author: elhoim
 date: 2026-11-10
