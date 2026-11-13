@@ -1,0 +1,13 @@
+id: a012d987-7768-4cdd-80ab-b7986eeb7e82
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: a9f63518-3e49-4032-8578-9a32c56ae320
+      title: Potential Persistence Via Word Normal Template Written By Uncommon Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_office_normal_template_uncommon_process/a9f63518-3e49-4032-8578-9a32c56ae320.evtx
