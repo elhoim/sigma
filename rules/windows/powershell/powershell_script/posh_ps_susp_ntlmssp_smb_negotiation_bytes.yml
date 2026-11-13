@@ -3,6 +3,7 @@ id: cd1ab510-1719-4715-89f6-7a3519472c91
 status: experimental
 description: |
     Detects PowerShell script blocks that build NTLMSSP or SMB negotiation packets by hand, either through the "NTLMSSPNegotiate" plus "NegotiateSMB" (also covers "NegotiateSMB2") stage names or through the raw "NTLMSSP" signature bytes written as a hex string or byte array.
+    The byte form also covers the service control manager (svcctl) RPC interface UUID that SMB execution tooling binds to in order to create a remote service.
     Such packet construction only appears in scripts that speak SMB/NTLM themselves, which is what pass-the-hash, NTLM relay and SMB execution tooling implemented in PowerShell does. Regular PowerShell remoting and file access rely on the Windows SMB client and never contain these bytes.
     Byte arrays are only matched in the compact form without spaces (for example "0x4e,0x54,0x4c"); a spaced spelling such as "0x4e, 0x54, 0x4c" is not detected.
 references:
@@ -31,11 +32,11 @@ detection:
             - '0x4e,0x54,0x4c,0x4d,0x53,0x53,0x50'
             - '0x4e,0x54,0x20,0x4c,0x4d'
             - '0x53,0x4d,0x42,0x20,0x32'
+            - '0x81,0xbb,0x7a,0x36,0x44,0x98,0xf1,0x35,0xad,0x32,0x98,0xf0,0x38' # svcctl RPC interface UUID used by Invoke-SMBExec
     filter_optional_mde_live_response:
         Path|startswith: 'C:\ProgramData\Microsoft\Windows Defender Advanced Threat Protection\Downloads\'
     condition: (all of selection_names_* or selection_bytes) and not 1 of filter_optional_*
 falsepositives:
     - Network protocol research or SMB client implementations written in PowerShell
-    - Security assessment tooling run through an EDR live response console (covered by the optional filter)
 level: high
 regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_ntlmssp_smb_negotiation_bytes/info.yml
