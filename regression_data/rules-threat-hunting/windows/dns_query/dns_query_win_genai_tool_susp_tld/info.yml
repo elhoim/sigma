@@ -1,0 +1,13 @@
+id: 8d2505fa-d8f5-4885-8299-73dc9d07007e
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 876e684b-19ab-4de9-9ffe-cf7e0f54ae18
+      title: Potential DNS Query To Abused Top Level Domain By GenAI Tool Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/dns_query/dns_query_win_genai_tool_susp_tld/876e684b-19ab-4de9-9ffe-cf7e0f54ae18.evtx
