@@ -4,9 +4,10 @@ status: experimental
 description: |
     Detects a non-empty value written under a "Run" autostart key whose value name is empty or starts with a null character, which makes the registry target object end with a trailing backslash.
     Tools such as SharpHide create Run values with a null-prefixed name through NtSetValueKey so that regedit and most registry APIs cannot display or delete the persistence entry, while Windows still executes it at logon.
+    A name made of a single null character is logged by Sysmon as the "(Default)" value and is not covered by this rule.
 references:
     - https://github.com/outflanknl/SharpHide/blob/9a4bca0a6709bd684185efd339ac540a85d36185/README.md
-    - https://github.com/ewhitehats/InvisiblePersistence/blob/3fce7719733f888a7f41c1a02a6271728ef6631a/InvisibleRegValues_Whitepaper.pdf
+    - https://web.archive.org/web/20250627024605/https://github.com/ewhitehats/InvisiblePersistence/blob/master/InvisibleRegValues_Whitepaper.pdf
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_via_hidden_run_key_valuename.toml
 author: elhoim
 date: 2026-11-09
@@ -24,9 +25,13 @@ detection:
         TargetObject|endswith:
             - '\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\'
             - '\Software\Microsoft\Windows\CurrentVersion\Run\'
+            - '\Software\Microsoft\Windows\CurrentVersion\RunOnce\'
             - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Run\'
+            - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\RunOnce\'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Unlikely
