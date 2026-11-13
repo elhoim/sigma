@@ -1,4 +1,4 @@
-title: Kubernetes Anonymous Request Authorized
+title: Suspicious Kubernetes API Request Authorized For Anonymous User
 id: 6b10efee-4bc2-4702-9f31-9bd9db0ff2e5
 status: experimental
 description: |
@@ -21,6 +21,7 @@ detection:
         responseStatus.code:
             - 200
             - 201
+            - 202
     filter_main_health:
         requestURI|startswith:
             - '/healthz'
