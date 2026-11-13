@@ -1,0 +1,18 @@
+id: dad1ccfe-81fd-4b6d-9119-deea4e3b7a05
+description: Atomic Red Team replay of real events captured on the lab VMs (T1112-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 0ba863e6-def5-4e50-9cea-4dd8c7dc46a4
+      title: Control Panel Items
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_control_panel_item/0ba863e6-def5-4e50-9cea-4dd8c7dc46a4.evtx
+    - name: Atomic Red Team replay 02 (T1218-5, event 1) - cpl
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_control_panel_item-art02/0ba863e6-def5-4e50-9cea-4dd8c7dc46a4.evtx

@@ -1,0 +1,13 @@
+id: be72beea-ec5d-4ed6-b554-9ab2b90f5142
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218.003-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 7d4cdc5a-0076-40ca-aac8-f7e714570e47
+      title: CMSTP Execution Process Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmstp_execution_by_creation/7d4cdc5a-0076-40ca-aac8-f7e714570e47.evtx
