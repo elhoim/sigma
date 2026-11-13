@@ -5,14 +5,16 @@ description: |
     Detects the creation of the "NitsInjector" value under the "CurrentVersion\WSMAN" registry key.
     The value is a fault injection test hook of the Windows management stack. "DscCore.dll", used by the Desired State Configuration providers, reads it and loads the library it names.
     It does not exist on a default installation, so its creation can indicate an attempt to have a DLL loaded into the processes that host Desired State Configuration, typically the WMI provider host running as SYSTEM.
+    The hook was found by static analysis and the load has not been publicly demonstrated, so the value itself is the signal, whether or not Desired State Configuration runs afterwards.
 references:
     - https://www.hexacorn.com/blog/2018/10/09/beyond-good-ol-run-key-part-90/
+    - https://learn.microsoft.com/en-us/powershell/dsc/troubleshooting/troubleshooting?view=dsc-1.1
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.execution
     - attack.stealth
     - attack.t1574
 logsource:
@@ -22,7 +24,9 @@ detection:
     selection:
         TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\WSMAN\NitsInjector'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Unlikely
