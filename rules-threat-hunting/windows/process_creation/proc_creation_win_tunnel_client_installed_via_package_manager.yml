@@ -1,0 +1,54 @@
+title: Tunnelling Client Installed Via Package Manager
+id: 0eb8d360-5fb5-4f0a-b395-7a4b4cc643a0
+status: experimental
+description: |
+    Detects a language package manager being used to install or directly run a tunnelling client: npm, npx, pnpm or yarn with the "localtunnel" or "loclx" (LocalXpose) packages, cargo installing "localtunnel" or "sendme" (iroh), composer requiring "beyondcode/expose", and go installing "tailscale/tailcat".
+    On a host that already has a development toolchain this is the quickest way to obtain a reverse tunnel without downloading a standalone binary, so it bypasses download and file reputation controls. The activity is normal for web developers; the rule is meant for hunting on servers and non-developer workstations and for correlation with the tunnel domains.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnels.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localxpose.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/sharewithexpose.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnelsrlt.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/iroh.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/tailcat.md
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1105
+    - attack.t1572
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_node_manager:
+        CommandLine|contains:
+            - 'npm'
+            - 'npx'
+            - 'yarn'
+    selection_node_package:
+        CommandLine|contains:
+            - ' localtunnel'
+            - ' loclx'
+    selection_cargo:
+        CommandLine|contains|all:
+            - 'cargo'
+            - ' install '
+    selection_cargo_package:
+        CommandLine|contains:
+            - ' localtunnel'
+            - ' sendme'
+    selection_composer:
+        CommandLine|contains|all:
+            - 'composer'
+            - 'beyondcode/expose'
+    selection_go:
+        CommandLine|contains|all:
+            - ' install '
+            - 'tailscale/tailcat'
+    condition: all of selection_node_* or all of selection_cargo* or selection_composer or selection_go
+falsepositives:
+    - Web and application developers who use these tunnelling clients to share a local development server
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_tunnel_client_installed_via_package_manager/info.yml
