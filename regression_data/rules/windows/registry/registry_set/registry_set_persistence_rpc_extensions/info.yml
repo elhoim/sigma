@@ -1,0 +1,13 @@
+id: 0913d173-4d69-4dc6-b47f-904d006a6e3d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 8b471539-4995-41e2-af36-a71ba35c2022
+      title: Potential Persistence Via RPC Extensions Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_rpc_extensions/8b471539-4995-41e2-af36-a71ba35c2022.evtx
