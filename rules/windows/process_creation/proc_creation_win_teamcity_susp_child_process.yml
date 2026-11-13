@@ -93,7 +93,7 @@ detection:
             - '\xwizard.exe'
     filter_optional_build_agent_powershell_step:
         Image: 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
-        CommandLine|re: '(?i)^"?(powershell|C:\\Windows\\System32\\WindowsPowerShell\\v1\.0\\powershell)(\.exe)?"?\s+(-NoProfile\s+)?(-NonInteractive\s+)?-ExecutionPolicy\s+\w+\s+-File\s+"?[A-Za-z]:\\[^"&|;<>]*\\buildAgent\\work\\[^"&|;<>]*\.ps1"?\s*$'
+        CommandLine|re: '(?i)^"?(powershell|C:\\Windows\\System32\\WindowsPowerShell\\v1\.0\\powershell)(\.exe)?"?\s+(-NoProfile\s+)?(-NonInteractive\s+)?-ExecutionPolicy\s+\w+\s+-File\s+"?[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\)?TeamCity\\buildAgent\\work\\[^"&|;<>]*\.ps1"?\s*$'
     filter_optional_build_agent_dir:
         Image: 'C:\Windows\System32\cmd.exe'
         CommandLine|re: '(?i)^"?(cmd|C:\\Windows\\System32\\cmd)(\.exe)?"?\s+/c\s+dir\s+/-c\s+"?[A-Za-z]:\\?"?\s*$'
