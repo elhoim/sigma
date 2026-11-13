@@ -39,10 +39,10 @@ detection:
             - 'C:\Windows\SystemTemp\'
             - 'C:\Windows\SystemApps\'
     filter_main_user_vendor_paths:
-        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(?:Google\\|Microsoft\\Edge|BraveSoftware\\|Mozilla Firefox\\|Mozilla\\Firefox\\|Temp\\GUM|Temp\\MicrosoftEdgeUpdate)'
-    filter_main_headless_bundles:
-        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\(?:AppData\\Local\\(?:ms-playwright|Temp\\burpbrowser)\\|\.cache\\(?:puppeteer|selenium)\\|\.wdm\\drivers\\)'
-    condition: selection and not 1 of filter_main_*
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(?:Google\\(?:Chrome(?: SxS| Beta| Dev)?\\Application|Update)\\|Microsoft\\(?:Edge(?: SxS| Beta| Dev)?\\Application|EdgeUpdate|EdgeWebView\\Application)\\|BraveSoftware\\(?:Brave-Browser(?:-Beta|-Nightly)?\\Application|Update)\\|Mozilla Firefox\\|Temp\\GUM[^\\]+\.tmp\\|Temp\\MicrosoftEdgeUpdate)'
+    filter_optional_headless_bundles:
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\(?:AppData\\Local\\(?:ms-playwright|Temp\\burpbrowser|[^\\]*BurpSuitePro\\burpbrowser)\\|AppData\\Roaming\\[^\\]*BurpSuite\\burpbrowser\\|\.cache\\(?:puppeteer|selenium)\\|\.wdm\\drivers\\)'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Portable or custom-packaged browser builds (CentBrowser, Dynatrace or HP Sure Click embedded Chromium, security scanners bundling Chromium) running from non-vendor paths, including portable browsers (PortableApps) and installations on a drive other than C:; add their folders to the filters
 level: medium
