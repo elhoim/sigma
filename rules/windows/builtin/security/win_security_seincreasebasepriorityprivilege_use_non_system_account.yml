@@ -6,6 +6,7 @@ description: |
     This privilege lets a process change the scheduling priority and CPU affinity of threads in another process. Outside of the operating system itself it is rarely exercised; tooling that pins the threads of a privileged target process to a chosen core (to race or starve security products) or that manipulates scheduling as part of an exploitation chain surfaces here.
     Requires "Audit Non Sensitive Privilege Use" (the subcategory of this privilege) to be enabled for success events.
 references:
+    - https://github.com/Octoberfest7/ThreadCPUAssignment_POC/tree/941d67f20542600c4c08e819785913655a2e7fb1
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4674
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_thread_cpu_priority_hijack.toml
 author: elhoim
