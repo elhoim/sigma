@@ -1,0 +1,35 @@
+title: Potential Proxy Execution Via Rundll32 Advpack UserInstStubWrapper
+id: f3c20d48-d6f9-4d0b-9747-5418c6c16d55
+status: experimental
+description: |
+    Detects the execution of "rundll32.exe" with the "UserInstStubWrapper" or "UserUnInstStubWrapper" export of "advpack.dll" or "ieadvpack.dll".
+    The export takes the name of an Active Setup component, reads the "RealStubPath" value of "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\<name>" (or of "<name>.Restore" for the uninstall variant) and starts the program stored there.
+    The command line therefore does not show what is executed. An attacker can store a command in "RealStubPath" and place this rundll32 call in any autostart location to launch it through signed Microsoft binaries.
+references:
+    - https://www.hexacorn.com/blog/2024/10/19/beyond-good-ol-run-key-part-143/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1218.011
+    - attack.t1547.014
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    selection_dll:
+        CommandLine|contains: 'advpack'
+    selection_export:
+        CommandLine|contains:
+            - 'UserInstStubWrapper'
+            - 'UserUnInstStubWrapper'
+    condition: all of selection_*
+falsepositives:
+    - Legacy Active Setup components of Internet Explorer or old Microsoft software whose "StubPath" uses this wrapper at the first logon of a user
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_advpack_userinststubwrapper/info.yml
