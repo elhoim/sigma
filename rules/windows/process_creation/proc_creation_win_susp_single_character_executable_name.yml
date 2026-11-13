@@ -1,0 +1,40 @@
+title: Potential Renamed Utility Executed With Single Character Name
+id: 01c3d97a-b3b0-417b-8823-1c7c058c42a6
+related:
+    - id: 0ba1da6d-b6ce-4366-828c-18826c9de23e
+      type: similar
+    - id: 36480ae1-a1cb-4eaa-a0d6-29801d7e9142
+      type: similar
+status: experimental
+description: |
+    Detects the execution of a process whose image name is a single letter or digit followed by ".exe" (for example "c.exe" or "1.exe") while its PE version information carries a different, longer original file name.
+    Attackers rename staged utilities and signed system tools to such throw-away names to save keystrokes during hands-on-keyboard activity and to evade name-based detections. Binaries without an original file name, or whose original file name is itself a single character (such as a compiler default "a.exe" output), are not matched.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_short_program_name.toml
+    - https://mgreen27.github.io/posts/2019/05/12/BinaryRename.html
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1036.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|re|i: '\\[a-z0-9]\.exe$'
+    filter_main_no_original_file_name:
+        OriginalFileName:
+            - '-'
+            - '?'
+            - ''
+    filter_main_original_file_name_null:
+        OriginalFileName: null
+    filter_main_original_single_character:
+        # The binary was built with a single character name, it was not renamed
+        OriginalFileName|re|i: '^[a-z0-9]\.exe$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Administrators and developers who rename tools to single letters for convenience
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_single_character_executable_name/info.yml
