@@ -1,0 +1,13 @@
+id: f5e97706-8ba0-4cda-be2f-5fbf63425530
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: e0e4527b-a5cb-4986-93c9-de8c42e2e6ca
+      title: Potential Persistence Via BidInterface Loader Path Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_bidinterface_loader_path/e0e4527b-a5cb-4986-93c9-de8c42e2e6ca.evtx
