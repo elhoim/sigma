@@ -1,12 +1,13 @@
-title: Data Sent To Chat Service Webhook Via Curl Or Wget - Linux
+title: Potential Data Sent To Chat Service Webhook Via Curl Or Wget - Linux
 id: 4a85061d-6e64-4488-906e-13914e8c24aa
 status: experimental
 description: |
     Detects "curl" or "wget" sending data or uploading a file to a chat or collaboration service webhook or bot API, such as Discord or Slack webhooks, the Telegram Bot API or Microsoft Teams incoming webhooks.
     Infostealers, malicious packages and post-exploitation scripts abuse these webhooks as an easy exfiltration and notification channel that blends in with legitimate traffic.
 references:
-    - https://discord.com/developers/docs/resources/webhook
-    - https://api.slack.com/messaging/webhooks
+    - https://docs.discord.com/developers/resources/webhook
+    - https://docs.discord.com/developers/reference
+    - https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks
     - https://core.telegram.org/bots/api#senddocument
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1567.004/T1567.004.md
 author: elhoim
@@ -23,12 +24,13 @@ detection:
             - '/curl'
             - '/wget'
     selection_webhook:
-        CommandLine|contains:
-            - 'api.telegram.org/bot'
-            - 'discord.com/api/webhooks/'
-            - 'discordapp.com/api/webhooks/'
-            - 'hooks.slack.com/'
-            - '.webhook.office.com/'
+        - CommandLine|contains:
+              - 'api.telegram.org/bot'
+              - 'discord.com/api/webhooks/'
+              - 'discordapp.com/api/webhooks/'
+              - 'hooks.slack.com/'
+              - '.webhook.office.com/'
+        - CommandLine|re: 'discord(app)?\.com/api/v\d+/webhooks/' # Versioned API path, e.g. /api/v10/webhooks/
     selection_data_flags:
         - CommandLine|contains:
               - ' --data'
