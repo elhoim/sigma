@@ -9,7 +9,7 @@ references:
     - https://www.ncsc.gov.uk/files/NCSC-MAR-Goofy-Guineapig.pdf
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2023-05-15
-modified: 2026-11-05
+modified: 2026-11-13
 tags:
     - attack.stealth
 logsource:
@@ -23,9 +23,7 @@ detection:
         - Image|contains: # Example: GoogleUpdate.exe, GoogleCrashHandler.exe, GoogleUpdateComRegisterShell64.exe, Install\{GUID}\setup.exe, chrome_installer.exe
               - ':\Program Files (x86)\Google\'
               - ':\Program Files\Google\'
-        - Image|contains|all: # Per-user installation
-              - '\AppData\Local\Google\'
-              - '\Update\'
+        - Image|re|i: '^[a-z]:\\Users\\[^\\]+\\AppData\\Local\\Google\\Update\\' # Per-user installation
     filter_main_installer_temp:
         # Example: C:\Users\<user>\AppData\Local\Temp\GUM7654.tmp\GoogleUpdate.exe -> ...\GUM7654.tmp\GoogleUpdateSetup.exe
         ParentImage|contains: '\Temp\GUM'
