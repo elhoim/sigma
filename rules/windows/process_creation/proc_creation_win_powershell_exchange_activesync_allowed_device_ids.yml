@@ -1,0 +1,43 @@
+title: Potential Mailbox Access Persistence Via Exchange ActiveSyncAllowedDeviceIDs
+id: efbe4a33-b40f-4078-a45c-a731796a95ef
+status: experimental
+description: |
+    Detects a PowerShell command line that calls the Exchange cmdlet "Set-CASMailbox" with the "ActiveSyncAllowedDeviceIDs" parameter, which registers a device as allowed to synchronise a user's mailbox over ActiveSync.
+    Volexity observed the Dark Halo (UNC2452) actor adding its own device identifiers to targeted mailboxes to collect email without further authentication prompts.
+    The cmdlet is otherwise run only by Exchange administrators onboarding mobile devices.
+references:
+    - https://www.volexity.com/blog/2020/12/14/dark-halo-leverages-solarwinds-compromise-to-breach-organizations/
+    - https://learn.microsoft.com/en-us/powershell/module/exchange/set-casmailbox?view=exchange-ps
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_powershell_exch_mailbox_activesync_add_device.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.collection
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1059.001
+    - attack.t1098.002
+    - attack.t1114.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\powershell.exe'
+              - '\powershell_ise.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'PowerShell.EXE'
+              - 'powershell_ise.EXE'
+              - 'pwsh.dll'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'Set-CASMailbox'
+            - 'ActiveSyncAllowedDeviceIDs'
+    condition: all of selection_*
+falsepositives:
+    - Exchange administrators allowing a user's mobile device through a PowerShell script instead of the Exchange admin center
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_exchange_activesync_allowed_device_ids/info.yml
