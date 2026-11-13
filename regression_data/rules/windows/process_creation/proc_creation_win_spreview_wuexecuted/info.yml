@@ -1,0 +1,13 @@
+id: 94c9736e-bd28-477a-bf00-ce1ed31a8188
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 3d82a36e-32af-4288-862e-f2c7c108145c
+      title: Potential RunOnce Persistence Via SPReview.EXE Execution
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_spreview_wuexecuted/3d82a36e-32af-4288-862e-f2c7c108145c.evtx

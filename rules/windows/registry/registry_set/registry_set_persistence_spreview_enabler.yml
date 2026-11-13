@@ -1,0 +1,35 @@
+title: Potential Persistence Via SPReviewEnabler Registry Value
+id: b8827a96-40dc-429d-92da-e410cf489239
+status: experimental
+description: |
+    Detects the creation of the "SPReviewEnabler" value under "CurrentVersion\Setup\Pending" or of the "SPReview" value under a "RunOnce" key by a process other than the Windows servicing stack.
+    "spreview.exe", the service pack review tool, started with "/WuExecuted" or "/WusaExecuted" copies the content of "SPReviewEnabler" to the "RunOnce\SPReview" value of the current user and deletes the original, so that the stored command runs at the next logon.
+    An attacker can store a command in "SPReviewEnabler" and trigger the signed tool to obtain a RunOnce entry that he did not write himself. The value is only set during a service pack installation.
+references:
+    - https://www.hexacorn.com/blog/2019/10/24/beyond-good-ol-run-key-part-121/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Microsoft\Windows\CurrentVersion\RunOnce\SPReview'
+            - '\Microsoft\Windows\CurrentVersion\Setup\Pending\SPReviewEnabler'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Installation of a service pack on Windows 7 or Windows Server 2008 R2 by a standalone installer
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_spreview_enabler/info.yml

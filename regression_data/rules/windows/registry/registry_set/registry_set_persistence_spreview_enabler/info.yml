@@ -1,0 +1,13 @@
+id: 3a24bd4a-5119-4fec-a28d-da392531d8ce
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: b8827a96-40dc-429d-92da-e410cf489239
+      title: Potential Persistence Via SPReviewEnabler Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_spreview_enabler/b8827a96-40dc-429d-92da-e410cf489239.evtx
