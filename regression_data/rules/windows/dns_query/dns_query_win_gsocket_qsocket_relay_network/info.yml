@@ -1,0 +1,13 @@
+id: 353ea27e-858c-490a-a2e5-a939d2a37fcc
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: a8f89874-7047-4b40-9308-2a2a6bec84fc
+      title: Suspicious DNS Query To Global Socket Or QSocket Relay Network
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/dns_query/dns_query_win_gsocket_qsocket_relay_network/a8f89874-7047-4b40-9308-2a2a6bec84fc.evtx
