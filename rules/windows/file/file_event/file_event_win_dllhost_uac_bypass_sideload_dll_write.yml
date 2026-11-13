@@ -13,6 +13,7 @@ description: |
 references:
     - https://www.elastic.co/security-labs/exploring-windows-uac-bypasses-techniques-and-detection-strategies
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_uac_bypass_dll_sideloading.toml
+    - https://github.com/hfiref0x/UACME/blob/3f1885cab0e3a277db0cadc83d0a782bafa9e4cd/README.md
 author: elhoim
 date: 2026-11-10
 tags:
@@ -37,6 +38,6 @@ detection:
             - 'C:\Windows\WinSxS\'
     condition: selection and not 1 of filter_main_*
 falsepositives:
-    - Unlikely
+    - Elevated Explorer copy (performed by dllhost.exe) of an application folder that ships one of these DLL names into a protected directory
 level: high
 regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_dllhost_uac_bypass_sideload_dll_write/info.yml
