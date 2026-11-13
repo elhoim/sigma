@@ -1,11 +1,10 @@
-title: Shell Interpreting File With Image Or Document Extension - Linux
+title: Potential Shell Script Masquerading As Image Or Document File - Linux
 id: 7846d33a-8664-4825-b5e3-f8bd0b09fb54
 status: experimental
 description: |
     Detects a Unix shell executing a script file that has an image, document or media extension, such as "sh /tmp/image.png".
     Adversaries disguise shell scripts as harmless file types to evade casual inspection and file type based controls.
 references:
-    - https://www.uptycs.com/blog/threat-research-report-team/evasive-techniques-used-by-malicious-linux-shell-scripts
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1036.008/T1036.008.md
 author: elhoim
 date: 2026-10-01
@@ -20,7 +19,9 @@ detection:
         Image|endswith:
             - '/ash'
             - '/bash'
+            - '/csh'
             - '/dash'
+            - '/fish'
             - '/ksh'
             - '/sh'
             - '/zsh'
