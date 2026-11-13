@@ -12,15 +12,15 @@ references:
 author: elhoim
 date: 2026-11-11
 tags:
+    - attack.discovery
     - attack.execution
     - attack.initial-access
-    - attack.discovery
     - attack.stealth
+    - attack.t1082
     - attack.t1203
     - attack.t1204.002
-    - attack.t1566.001
     - attack.t1218
-    - attack.t1082
+    - attack.t1566.001
 logsource:
     product: windows
     category: process_creation
