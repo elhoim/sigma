@@ -1,0 +1,28 @@
+title: Potential Persistence Via Terminal Server Add-in Path Registration
+id: badafd93-1995-40ed-8e06-8718e3a8e970
+status: experimental
+description: |
+    Detects the creation of a "Path" value in a subkey of the "Terminal Server\AddIns" registry key, such as the "TestDVCPlugin" subkey.
+    When a Remote Desktop session is established, the Remote Desktop Services service reads the "Path" value of the "TestDVCPlugin" add-in and loads the DLL it points to into a svchost.exe process.
+    The documented server add-in values are "Name", "Type" and "RemoteControlPersistent", none of them a "Path", so that a "Path" value could be an attempt to get a DLL loaded at each incoming Remote Desktop connection.
+references:
+    - https://www.hexacorn.com/blog/2016/07/28/beyond-good-ol-run-key-part-43/
+    - https://learn.microsoft.com/en-us/windows/win32/termserv/monitoring-session-connections-and-disconnections
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Control\Terminal Server\AddIns\'
+        TargetObject|endswith: '\Path'
+    condition: selection
+falsepositives:
+    - Third-party Remote Desktop virtual channel software that stores a path in its server add-in key
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_terminal_server_addin_path/info.yml
