@@ -5,7 +5,7 @@ description: |
     Detects a PowerShell script block that turns off TLS server certificate validation, either by replacing "ServicePointManager.ServerCertificateValidationCallback" with an always-true delegate, by installing a custom "ICertificatePolicy" (the widespread "TrustAllCertsPolicy" snippet), by setting "DangerousAcceptAnyServerCertificateValidator" on an HttpClientHandler, or by passing "-SkipCertificateCheck" to Invoke-WebRequest/Invoke-RestMethod.
     Download cradles and PowerShell implants disable validation so that they can talk to command and control servers presenting self-signed or mismatched certificates. Administrators also use these snippets against internal appliances, so the rule is meant for hunting and enrichment of other web-request detections.
 references:
-    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/27b9fb61-b08d-46d1-8d27-a10f09a9dc52.yaml
+    - https://github.com/samratashok/nishang/blob/b870f7a25a12020a8120537b9ae3ee73b339624b/Shells/Invoke-PoshRatHttps.ps1
     - https://learn.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.servercertificatevalidationcallback
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest
 author: elhoim
