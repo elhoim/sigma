@@ -69,19 +69,19 @@ detection:
             - '\pwsh.exe'
     filter_main_vsto_uninstall:
         Image|endswith: '\VSTOInstaller.exe'
-        CommandLine|re: '^(?:"[^"]+"|[^\s"&|<>^]+)\s+/Uninstall\s+[^&|<>^]*$'
+        CommandLine|re: '(?i)^(?:"[^"]+"|[^\s"&|<>^]+)\s+/Uninstall\s+[^&|<>^]*$'
     filter_main_msi_custom_action:
         ParentImage:
             - 'C:\Windows\System32\rundll32.exe'
             - 'C:\Windows\SysWOW64\rundll32.exe'
-        ParentCommandLine|re: '^(?:"[^"]+"|[^\s"&|<>^]+)\s+"?[A-Za-z]:\\Windows\\Installer\\MSI[0-9A-Fa-f]+\.tmp"?,zzzzInvokeManagedCustomActionOutOfProc(?:\s|$)'
+        ParentCommandLine|re: '(?i)^(?:"[^"]+"|[^\s"&|<>^]+)\s+"?[A-Za-z]:\\Windows\\Installer\\MSI[0-9A-Fa-f]+\.tmp"?,zzzzInvokeManagedCustomActionOutOfProc(?:\s|$)'
     filter_optional_logitech:
         ParentImage|re:
-            - '^[A-Za-z]:\\Program Files(?: \(x86\))?\\Logitech\\LogiOptions\\'
-            - '^[A-Za-z]:\\Program Files(?: \(x86\))?\\LogiOptionsPlus\\'
+            - '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\Logitech\\LogiOptions\\'
+            - '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\LogiOptionsPlus\\'
         CommandLine|contains: '.vsto'
     filter_optional_vsto_runtime:
-        ParentImage|re: '^[A-Za-z]:\\Program Files(?: \(x86\))?\\Common Files\\microsoft shared\\VSTO\\'
+        ParentImage|re: '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\Common Files\\microsoft shared\\VSTO\\'
         CommandLine|contains: '.vsto'
     condition: selection_img and selection_addin_ext and 1 of selection_ctx_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
