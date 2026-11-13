@@ -4,7 +4,7 @@ status: experimental
 description: |
     Detects the creation of a "Path" value in a subkey of the "Terminal Server\AddIns" registry key, such as the "TestDVCPlugin" subkey.
     When a Remote Desktop session is established, the Remote Desktop Services service reads the "Path" value of the "TestDVCPlugin" add-in and loads the DLL it points to into a svchost.exe process.
-    The documented server add-ins only use the "Name" and "Type" values, so that a "Path" value could be an attempt to get a DLL loaded at each incoming Remote Desktop connection.
+    The documented server add-in values are "Name", "Type" and "RemoteControlPersistent", none of them a "Path", so that a "Path" value could be an attempt to get a DLL loaded at each incoming Remote Desktop connection.
 references:
     - https://www.hexacorn.com/blog/2016/07/28/beyond-good-ol-run-key-part-43/
     - https://learn.microsoft.com/en-us/windows/win32/termserv/monitoring-session-connections-and-disconnections
