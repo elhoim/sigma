@@ -1,0 +1,39 @@
+title: Potential Persistence Via Handwriting Recognizer DLL Registration
+id: 0eea0806-57ca-4359-9d6c-3dd8088397e4
+status: experimental
+description: |
+    Detects the registration of a handwriting recognizer whose DLL is located outside of the Windows and Program Files directories.
+    The recognizers listed under the "TPG\System Recognizers" and "TPG\Recognizers" registry keys are loaded by the touch keyboard and handwriting panel (TabTip.exe) and by the applications that use ink recognition.
+    An attacker can register or replace a recognizer in order to get a DLL loaded each time the handwriting panel starts.
+references:
+    - https://www.hexacorn.com/blog/2017/10/21/beyond-good-ol-run-key-part-67/
+    - https://learn.microsoft.com/en-us/windows/win32/tablet/registering-your-recognizer-dll
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Microsoft\TPG\Recognizers\'
+            - '\Microsoft\TPG\System Recognizers\'
+        TargetObject|endswith: '\Recognizer dll'
+    filter_main_protected_locations:
+        Details|startswith:
+            - '%CommonProgramFiles%\'
+            - '%ProgramFiles%\'
+            - '%SystemRoot%\System32\'
+            - '%windir%\System32\'
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+            - 'C:\Windows\System32\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Third-party handwriting recognition software that is installed outside of the Program Files directories
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_handwriting_recognizer_dll/info.yml
