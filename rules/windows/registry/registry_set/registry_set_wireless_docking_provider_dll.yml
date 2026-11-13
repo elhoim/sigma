@@ -1,0 +1,35 @@
+title: Potential Persistence Via Wireless Docking Provider DLL Registration
+id: 6e8c193b-25e3-4725-8f13-54a178e874f2
+status: experimental
+description: |
+    Detects a value written under the "WirelessDocking\DockingProviderDLLs" registry key by a process other than the Windows servicing stack.
+    The Device Association Framework docking provider ("dafDockingProvider.dll") enumerates the values of this key and loads each named library from the system directory, calling its "InitializeDockingProvider" export.
+    An attacker with administrative rights can drop a DLL in "System32" and register it here to have it loaded by the device association service. The key exists by default, but values are only expected from wireless docking driver packages.
+references:
+    - https://www.hexacorn.com/blog/2018/12/30/beyond-good-ol-run-key-part-99/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows NT\CurrentVersion\WirelessDocking\DockingProviderDLLs\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Driver packages of wireless docking hardware (WiGig docks) that register their provider
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_wireless_docking_provider_dll/info.yml
