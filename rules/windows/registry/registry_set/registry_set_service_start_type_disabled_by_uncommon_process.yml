@@ -8,6 +8,7 @@ description: |
     Detects a service's "Start" registry value being set to 3 (Manual) or 4 (Disabled) by a process other than the Service Control Manager ("services.exe"), servicing components, or an application installed under Program Files.
     sc.exe, Set-Service and installers change the start type through the SCM, so the writer is services.exe; a direct write by reg.exe, PowerShell or a dropped binary is how malware and ransomware disable security, backup and recovery services (or make them manual) without producing the SCM configuration change event.
 references:
+    - https://learn.microsoft.com/en-us/windows-hardware/drivers/install/hklm-system-currentcontrolset-services-registry-tree
     - https://learn.microsoft.com/en-us/windows/win32/services/service-configuration
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_service_disabled_registry.toml
 author: elhoim
@@ -20,8 +21,8 @@ tags:
     - attack.t1489
     - attack.t1685
 logsource:
-    product: windows
     category: registry_set
+    product: windows
 detection:
     selection:
         TargetObject|contains: '\Services\'
@@ -66,6 +67,7 @@ detection:
         Details: 'DWORD (0x00000003)'
     filter_optional_sysinternals_procexp:
         # Process Explorer registers its kernel driver itself as a demand-start service; setting it to Disabled is still detected
+        # This filter keys on the image name only, so it also hides a renamed tool that reuses the PROCEXP152 driver
         Image|endswith:
             - '\procexp.exe'
             - '\procexp64.exe'
@@ -76,7 +78,5 @@ detection:
 falsepositives:
     - Group Policy preference service changes written by svchost.exe under an account other than SYSTEM, and writes by WmiPrvSE.exe or wsmprovhost.exe (remote WMI or WinRM management), which are not excluded because an attacker can use the same channels
     - Hardening or debloating scripts that disable services through the registry; configuration management tools writing service start types directly
-    - Avast or AVG setup (instup.exe) and the Avira VPN installer, which run from C:\Windows\Temp and set their own services to demand start; excluded by optional filters bound to the vendor's service keys
-    - Sysinternals Process Explorer registering its PROCEXP152 driver as a demand-start service; excluded by an optional filter, which can also hide a renamed tool that reuses this driver
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_service_start_type_disabled_by_uncommon_process/info.yml
