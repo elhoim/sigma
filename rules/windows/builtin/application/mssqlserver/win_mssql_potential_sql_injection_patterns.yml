@@ -16,7 +16,7 @@ tags:
 logsource:
     product: windows
     service: application
-    definition: 'Requirements: a SQL Server Audit writing to the Windows Application log with an audit specification that covers the statements of interest (e.g. SCHEMA_OBJECT_ACCESS_GROUP, BATCH_COMPLETED_GROUP or SUCCESSFUL_LOGIN_GROUP) must be enabled.'
+    definition: 'Requirements: a SQL Server Audit writing to the Windows Application log with an audit specification that covers the statements of interest (e.g. SCHEMA_OBJECT_ACCESS_GROUP or BATCH_COMPLETED_GROUP) must be enabled.'
     # warning: The 'data' field used in the detection section is the container for the event data as a whole. You may have to adapt the rule for your backend accordingly
 detection:
     selection_provider:
