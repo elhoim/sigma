@@ -1,0 +1,29 @@
+title: Potential DLL Sideloading Preparation Via PreferExternalManifest
+id: de921673-d547-41bd-84f3-a8ff875af841
+status: experimental
+description: |
+    Detects the activation of the "PreferExternalManifest" side-by-side setting in the registry.
+    When the value is set to 1, Windows uses a ".manifest" file located next to an executable in preference to the manifest embedded in the executable.
+    An attacker can enable it and drop an external manifest next to a legitimate executable in order to redirect its dependencies to a malicious DLL.
+references:
+    - https://www.hexacorn.com/blog/2017/12/29/beyond-good-ol-run-key-part-69/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\SideBySide\PreferExternalManifest'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+falsepositives:
+    - Administrators and users that enable external manifests to fix the display scaling of legacy applications on high DPI screens
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_sidebyside_preferexternalmanifest_enabled/info.yml
