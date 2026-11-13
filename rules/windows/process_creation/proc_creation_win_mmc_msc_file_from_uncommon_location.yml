@@ -1,0 +1,51 @@
+title: Potential MSC Lure File Opened By MMC From Uncommon Location
+id: 1ebb7651-21d3-4d3c-b3b8-601307557ae6
+related:
+    - id: 05a2ab7e-ce11-4b63-86db-ab32e763e11d
+      type: similar
+    - id: 9cfe4b27-1e56-48b4-b7a8-d46851c91a44
+      type: similar
+    - id: a9c73e8b-3b2d-4c45-8ef2-5f9a9c9998ad
+      type: similar
+status: experimental
+description: |
+    Detects the Microsoft Management Console ("mmc.exe") opening a saved console file (".msc") that is located outside the Windows system folders and the Program Files folders, for example in a user profile, a download folder, a temporary folder or on a network share.
+    Phishing campaigns deliver .msc files (GrimResource technique) because the console file can embed a reference to a local DLL or to a web page whose script runs with the trust of the console.
+    Legitimate consoles are installed under System32 or by applications under Program Files.
+    The sibling rule covers child processes of such a console, this one the opening itself.
+references:
+    - https://www.elastic.co/security-labs/grimresource
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_via_mmc_console_file_unusual_path.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1204.002
+    - attack.t1218.014
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\mmc.exe'
+        - OriginalFileName: 'mmc.exe'
+    selection_cli:
+        CommandLine|contains: '.msc'
+    filter_main_system_consoles:
+        # Anchored on the .msc argument: the mmc.exe image path itself is under System32 and must not satisfy the filter
+        # Also anchored at the start (the console must be the first argument after mmc.exe and its switches) and at the end (only switches may follow), so a decoy system path in a later argument or a ".." folder cannot satisfy it
+        CommandLine|re|i: '^(?:"[^"]*mmc\.exe"|\S*mmc\.exe)\s+(?:/\S+\s+)*"?[a-z]:\\(?:Program Files(?: \(x86\))?|Windows\\(?:ADFS|System32|SysWOW64))\\(?:[^"\\:/.][^"\\:/]*\\)*[^"\\:/.][^"\\:/]*\.msc"?(?:\s+/\S+)*\s*$'
+    filter_main_relative_console_name:
+        # Consoles started by name only resolve from System32 (e.g. "mmc.exe eventvwr.msc /s", "mmc.exe CompMgmt.msc")
+        CommandLine|re|i: '^(?:"[^"]*mmc\.exe"|\S*mmc\.exe)\s+(?:/\S+\s+)*"?[a-z0-9_.\-]+\.msc"?(?:\s+/\S+)*\s*$'
+    filter_main_wow64_relaunch:
+        # The 32-bit mmc.exe re-executes the 64-bit one with the console path as argv[0] (e.g. '"C:\Windows\System32\services.msc" "C:\Windows\System32\services.msc"'); both tokens must be a console directly under System32 or SysWOW64
+        Image: 'C:\Windows\System32\mmc.exe'
+        ParentImage: 'C:\Windows\SysWOW64\mmc.exe'
+        CommandLine|re|i: '^"C:\\Windows\\(?:System32|SysWOW64)\\[^"\\:/.][^"\\:/]*\.msc"\s+"C:\\Windows\\(?:System32|SysWOW64)\\[^"\\:/.][^"\\:/]*\.msc"(?:\s+/\S+)*\s*$'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Administrators who keep custom consoles in their profile or on a network share
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_mmc_msc_file_from_uncommon_location/info.yml

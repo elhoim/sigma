@@ -1,0 +1,13 @@
+id: 3abec0db-2f24-45eb-95e6-7639f02722d4
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 1ebb7651-21d3-4d3c-b3b8-601307557ae6
+      title: Potential MSC Lure File Opened By MMC From Uncommon Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_mmc_msc_file_from_uncommon_location/1ebb7651-21d3-4d3c-b3b8-601307557ae6.evtx
