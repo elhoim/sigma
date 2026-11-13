@@ -1,0 +1,13 @@
+id: d92d65f9-4842-4f4f-8986-254cdda82f24
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: f33bbd3c-a622-4420-a435-e5454ace6b61
+      title: HackTool - Ligolo-ng Agent Or Proxy Execution
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_ligolo_ng/f33bbd3c-a622-4420-a435-e5454ace6b61.evtx
