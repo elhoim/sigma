@@ -1,6 +1,10 @@
 title: Suspicious WebDAV Or Tunnel Path In Script Interpreter Or LOLBin Command Line
 id: 847eb2fa-a6a8-4eeb-aa7f-fb61ae83598c
 related:
+    - id: 1412aa78-a24c-4abd-83df-767dfb2c5bbe
+      type: similar
+    - id: f0507c0f-a3a2-40f5-acc6-7f543c334993
+      type: similar
     - id: f8de9dd5-7a63-4cfd-9d0c-ae124878b5a9
       type: similar
 status: experimental
@@ -28,6 +32,7 @@ detection:
               - '\bitsadmin.exe'
               - '\cmd.exe'
               - '\conhost.exe'
+              - '\cscript.exe'
               - '\curl.exe'
               - '\mshta.exe'
               - '\msiexec.exe'
@@ -36,11 +41,11 @@ detection:
               - '\powershell.exe'
               - '\pwsh.exe'
               - '\wscript.exe'
-              - '\cscript.exe'
         - OriginalFileName:
               - 'bitsadmin.exe'
               - 'Cmd.Exe'
               - 'CONHOST.EXE'
+              - 'cscript.exe'
               - 'curl.exe'
               - 'MSHTA.EXE'
               - 'msiexec.exe'
@@ -49,7 +54,6 @@ detection:
               - 'PowerShell.EXE'
               - 'pwsh.dll'
               - 'wscript.exe'
-              - 'cscript.exe'
     selection_cli:
         CommandLine|contains:
             - 'trycloudflare.com'
@@ -70,7 +74,6 @@ detection:
     condition: all of selection_* and not 1 of filter_optional_*
 falsepositives:
     - Scripts that map or browse internal WebDAV shares (document management systems, Nextcloud/ownCloud, IIS WebDAV) by UNC path
-    - Mapped SharePoint or OneDrive libraries of any tenant are filtered by default; replace the tenant wildcard in filter_optional_sharepoint with your own tenants
     - Developers exposing local services through Cloudflare quick tunnels and testing them with curl
 level: high
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_webdav_or_tunnel_path_in_lolbin_cmdline/info.yml
