@@ -1,0 +1,13 @@
+id: 06061763-02cc-4e9e-9f68-6d21966e0c2a
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 1cd7dbd4-875f-44c5-89d7-10db1a390cb3
+      title: Suspicious AMSI DLL Created Outside Of System Directories
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_amsi_dll_creation_outside_system_directories/1cd7dbd4-875f-44c5-89d7-10db1a390cb3.evtx
