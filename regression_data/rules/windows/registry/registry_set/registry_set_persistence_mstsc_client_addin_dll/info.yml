@@ -1,0 +1,13 @@
+id: 5c5991ef-33f0-467c-91e6-ae43a8e302bd
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: ee54f6e1-dcc0-428e-b1f1-0045f8243308
+      title: Potential Persistence Via Remote Desktop Client Add-in DLL Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_mstsc_client_addin_dll/ee54f6e1-dcc0-428e-b1f1-0045f8243308.evtx
