@@ -1,0 +1,45 @@
+title: Suspicious ADIDNS Wildcard Or WPAD Record Creation
+id: 6c8f3c74-884b-4540-b1ec-a60e7564bdbb
+related:
+    - id: 7dafdbfb-ff13-43fa-89d2-33bef458f8bd
+      type: similar
+    - id: b07e58cf-cacc-4135-8473-ccb2eba63dd2
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a wildcard ("*") or "wpad" DNS node in an Active Directory-integrated DNS zone.
+    Any authenticated user can create records in ADIDNS zones by default.
+    A wildcard record answers every name that has no explicit record, and a wpad record answers the automatic proxy discovery lookups once the Global Query Block List is disabled.
+    Both let the attacker position an adversary-in-the-middle host to capture or relay NTLM authentication from every machine in the domain.
+references:
+    - https://www.netspi.com/blog/technical-blog/network-penetration-testing/exploiting-adidns/
+    - https://www.netspi.com/blog/technical-blog/network-pentesting/adidns-revisited/
+    - https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/adidns-spoofing
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-5137
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_adidns_wildcard.toml
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_adidns_wpad_record.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.collection
+    - attack.credential-access
+    - attack.t1557
+logsource:
+    product: windows
+    service: security
+    definition: |
+      By default these events are not logged for MicrosoftDNS objects in Active Directory.
+      To enable detection, configure an audit rule on the DNS zone containers ("CN=MicrosoftDNS") for create operations by the "Everyone" principal and enable "Audit Directory Service Changes".
+      This can be accomplished using tools such as Set-AuditRule (see https://github.com/OTRF/Set-AuditRule).
+detection:
+    selection:
+        EventID: 5137
+        ObjectClass: 'dnsNode'
+        ObjectDN|startswith:
+            - 'DC=\*,'
+            - 'DC=wpad,'
+    condition: selection
+falsepositives:
+    - DNS administrators intentionally creating a wildcard record or a WPAD record for a legitimate proxy auto-configuration host
+level: high
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_adidns_wildcard_or_wpad_record_created/info.yml
