@@ -1,4 +1,4 @@
-title: PAM Configuration Tampering Via CLI
+title: Potential PAM Configuration Tampering Via CLI
 id: ea689632-0342-49cb-9b7a-1c9c984efbc2
 status: experimental
 description: |
@@ -35,12 +35,15 @@ detection:
         Image|endswith: '/tee'
     selection_bypass_rule:
         CommandLine|contains: 'pam_succeed_if.so uid >= 0'
-    filter_optional_pam_tools:
-        ParentImage|endswith:
-            - '/authconfig'
-            - '/authselect'
-            - '/pam-auth-update'
-    condition: ((selection_pam_path and (all of selection_sed_* or selection_tee)) or selection_bypass_rule) and not 1 of filter_optional_*
+    filter_main_pam_tools:
+        ParentImage:
+            - '/usr/bin/authconfig'
+            - '/usr/bin/authselect'
+            - '/usr/bin/pam-auth-update'
+            - '/usr/sbin/authconfig'
+            - '/usr/sbin/authselect'
+            - '/usr/sbin/pam-auth-update'
+    condition: ((selection_pam_path and (all of selection_sed_* or selection_tee)) or selection_bypass_rule) and not 1 of filter_main_*
 falsepositives:
     - Administrators or configuration management tools editing PAM configuration
     - Package installation scripts adjusting PAM configuration
