@@ -6,11 +6,12 @@ related:
 status: experimental
 description: |
     Detects the execution of "BrowserCore.exe", the Windows native messaging host that returns Entra ID (Azure AD) Primary Refresh Token (PRT) SSO cookies to the "Windows Accounts" browser extension, without the "chrome-extension://" origin argument.
-    Chromium-based browsers always pass the origin of the calling extension on the command line (through "cmd.exe" or directly). Tools such as ROADtoken, PRTRemote or the ANIMO PrtExtractor start "BrowserCore.exe" themselves, without any argument, and feed a crafted "GetCookies" request on its standard input to obtain a PRT cookie that allows the hijacking of the user's cloud session.
+    Chromium-based browsers always pass the origin of the calling extension on the command line (through "cmd.exe" or directly).
+    Tools such as ROADtoken, PRTRemote or the ANIMO PrtExtractor start "BrowserCore.exe" themselves, without any argument, and feed a crafted "GetCookies" request on its standard input to obtain a PRT cookie that allows the hijacking of the user's cloud session.
     The sibling rule "Renamed BrowserCore.EXE Execution" only covers renamed copies of the binary.
 references:
     - https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/
-    - https://posts.specterops.io/requesting-azure-ad-request-tokens-on-azure-ad-joined-machines-for-browser-sso-2b0409caad30
+    - https://specterops.io/blog/2020/07/14/requesting-azure-ad-request-tokens-on-azure-ad-joined-machines-for-browser-sso/
     - https://github.com/dirkjanm/ROADtoken/blob/48f75b691a4f7fa9ab7606ec592531c5952f52ed/Program.cs
     - https://github.com/dmcxblue/ANIMO/blob/4fba360889b03690d7f5fa200213c9f3bec18b07/helpers/scripts/GrabTokenAzureAD/PrtExtractor.cs
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_entraid_prt_via_browsercore.toml
