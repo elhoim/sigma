@@ -1,4 +1,4 @@
-title: FortiGate - Fake or Offending Wireless Access Point Detected
+title: FortiGate - Potential Evil Twin Via Fake Or Offending Wireless Access Point
 id: 9562bfbd-a054-45bd-ad72-0209009068b6
 status: experimental
 description: |
@@ -12,8 +12,8 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
-    - attack.credential-access
     - attack.collection
+    - attack.credential-access
     - attack.t1557
 logsource:
     product: fortigate
