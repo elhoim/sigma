@@ -18,6 +18,7 @@ tags:
     - attack.persistence
     - attack.t1112
     - attack.t1195.002
+    - attack.t1685
     - detection.emerging-threats
 logsource:
     category: registry_set
