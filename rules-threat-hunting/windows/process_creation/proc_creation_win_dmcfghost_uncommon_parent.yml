@@ -1,0 +1,31 @@
+title: Dmcfghost.EXE Execution By Uncommon Parent Process
+id: 17d9d16c-0ed0-4fc9-a11e-0edb1c3c0ad6
+status: experimental
+description: |
+    Detects the execution of "dmcfghost.exe", the host process of the push router client for OMA client provisioning, by a parent process other than a Windows service host.
+    When it starts, the program loads the library named by the "TestDllPath2" value of "HKLM\SOFTWARE\Microsoft\PushRouter\Test". Started from a Run key, a scheduled task or a shell it can therefore serve as a signed loader for an attacker's DLL.
+    The binary is rarely used on desktop and server systems. This hunting rule reports its start outside of the service context so that the parent and the registry value can be reviewed.
+references:
+    - https://www.hexacorn.com/blog/2018/10/10/beyond-good-ol-run-key-part-91/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.stealth
+    - attack.t1218
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - Image|endswith: '\dmcfghost.exe'
+        - OriginalFileName: 'dmcfghost.exe'
+    filter_main_service_host:
+        ParentImage:
+            - 'C:\Windows\System32\services.exe'
+            - 'C:\Windows\System32\svchost.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Mobile operator or device management provisioning that starts the push router client from another system component
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_dmcfghost_uncommon_parent/info.yml
