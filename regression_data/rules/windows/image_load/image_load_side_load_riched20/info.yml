@@ -1,0 +1,13 @@
+id: 6fd466f5-27de-4538-a7f5-f9c6e0c128fc
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 2192a1ed-56dc-423d-b958-4592459df7e9
+      title: Potential Rich Edit DLL Sideloading
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_side_load_riched20/2192a1ed-56dc-423d-b958-4592459df7e9.evtx

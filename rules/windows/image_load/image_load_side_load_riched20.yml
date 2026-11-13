@@ -1,0 +1,39 @@
+title: Potential Rich Edit DLL Sideloading
+id: 2192a1ed-56dc-423d-b958-4592459df7e9
+status: experimental
+description: |
+    Detects the load of the Rich Edit control libraries "riched20.dll" or "riched32.dll" from a location other than the Windows system directories and the Program Files directories.
+    Many signed portable tools load a Rich Edit library by name at start-up or when a dialog is displayed, so that a DLL planted next to the tool is loaded instead of the system copy.
+    The third Rich Edit library "msftedit.dll" is covered by the rule "Potential System DLL Sideloading From Non System Locations".
+references:
+    - https://www.hexacorn.com/blog/2016/03/01/beyond-good-ol-run-key-part-35/
+    - https://learn.microsoft.com/en-us/windows/win32/controls/about-rich-edit-controls
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - '\riched20.dll'
+            - '\riched32.dll'
+    filter_main_generic:
+        ImageLoaded|startswith:
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+            - 'C:\Windows\WinSxS\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Portable or per-user installed applications that ship their own copy of the Rich Edit library
+    - Software installed on a non-system drive
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_side_load_riched20/info.yml
