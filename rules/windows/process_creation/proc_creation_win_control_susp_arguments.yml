@@ -11,6 +11,7 @@ description: |
     control.exe passes its argument to shell32's Control_RunDLL export, which loads the referenced file as a DLL regardless of its extension. Loaders therefore drop a CPL payload with a harmless-looking extension and call control.exe on it to execute it under a Microsoft-signed parent.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_control_panel_suspicious_args.toml
+    - https://lolbas-project.github.io/lolbas/Binaries/Control/
 author: elhoim
 date: 2026-11-10
 tags:
