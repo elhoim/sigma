@@ -6,7 +6,8 @@ related:
 status: experimental
 description: |
     Detects a system binary from the C: drive (shell, script host, installer or other signed proxy-execution binary) started by explorer.exe with its working directory on the D:, E:, F: or G: drive.
-    When a user double-clicks a shortcut or a file inside a mounted ISO, IMG or VHD, the launched command inherits the mounted volume as working directory while the executable comes from C:\Windows. Phishing campaigns (for example NOBELIUM's EnvyScout) deliver ISO containers for this reason.
+    When a user double-clicks a shortcut or a file inside a mounted ISO, IMG or VHD, the launched command inherits the mounted volume as working directory while the executable comes from C:\Windows.
+    Phishing campaigns (for example NOBELIUM's EnvyScout) deliver ISO containers for this reason.
     The related rule covers LOLBins running from a non-C working directory with any parent; this rule adds shells, PowerShell, msiexec, wmic, schtasks and MSBuild and requires the Explorer parent.
 references:
     - https://www.microsoft.com/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/
