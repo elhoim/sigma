@@ -4,7 +4,9 @@ related:
     - id: 52d8b0c6-53d6-439a-9e41-52ad442ad9ad
       type: derived
 status: test
-description: This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes
+description: |
+    Detects remote access over SMB to a named pipe that is not in a list of named pipes commonly accessible remotely.
+    Newly observed pipes may indicate lateral movement or remote execution using named pipes.
 references:
     - https://twitter.com/menasec1/status/1104489274387451904
 author: Samir Bousseaden, @neu5ron, Tim Shelton
@@ -20,23 +22,41 @@ detection:
     selection:
         path|endswith: '\IPC$'
     filter_main_known_pipes:
-        name|contains: # Zeek may prefix the pipe name with a backslash
-            - 'samr'
-            - 'lsarpc'
-            - 'winreg'
-            - 'netlogon'
-            - 'srvsvc'
-            - 'protected_storage'
-            - 'wkssvc'
-            - 'browser'
-            - 'netdfs'
-            - 'svcctl'
-            - 'spoolss'
-            - 'ntsvcs'
-            - 'LSM_API_service'
-            - 'HydraLsPipe'
-            - 'TermSrv_API_service'
-            - 'MsFteWds'
+        # Exact pipe name, or the name after a backslash (Zeek may log it as \name or \PIPE\name)
+        - name:
+              - 'samr'
+              - 'lsarpc'
+              - 'winreg'
+              - 'netlogon'
+              - 'srvsvc'
+              - 'protected_storage'
+              - 'wkssvc'
+              - 'browser'
+              - 'netdfs'
+              - 'svcctl'
+              - 'spoolss'
+              - 'ntsvcs'
+              - 'LSM_API_service'
+              - 'HydraLsPipe'
+              - 'TermSrv_API_service'
+              - 'MsFteWds'
+        - name|endswith:
+              - '\samr'
+              - '\lsarpc'
+              - '\winreg'
+              - '\netlogon'
+              - '\srvsvc'
+              - '\protected_storage'
+              - '\wkssvc'
+              - '\browser'
+              - '\netdfs'
+              - '\svcctl'
+              - '\spoolss'
+              - '\ntsvcs'
+              - '\LSM_API_service'
+              - '\HydraLsPipe'
+              - '\TermSrv_API_service'
+              - '\MsFteWds'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Update the excluded named pipe to filter out any newly observed legit named pipe
