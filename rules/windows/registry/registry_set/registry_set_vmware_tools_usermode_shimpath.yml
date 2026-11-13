@@ -3,7 +3,7 @@ id: 67bfbde5-12b8-4a5a-91ac-9631f4b7a51b
 status: experimental
 description: |
     Detects the creation of the "AdapterShimPath" or "ShimPath" value under the "VMware, Inc.\VMware Tools\Usermode" registry key.
-    The user mode part of the VMware SVGA 3D display driver ("vm3dum.dll" and its variants), which is loaded into every process that uses Direct3D inside a VMware guest, reads these values and loads the library they point to.
+    The user mode part of the VMware SVGA 3D display driver ("vm3dum.dll" and its variants), which is loaded into every process that uses Direct3D inside a VMware guest, reads the "AdapterShimPath" value and loads the library it points to. The driver also reads "ShimPath", under conditions that are not documented.
     The values are not present on a default VMware Tools installation. Setting one of them injects an attacker's DLL into graphical processes such as browsers each time they start.
 references:
     - https://www.hexacorn.com/blog/2018/03/26/beyond-good-ol-run-key-part-74/
@@ -24,7 +24,9 @@ detection:
             - '\VMware, Inc.\VMware Tools\Usermode\AdapterShimPath'
             - '\VMware, Inc.\VMware Tools\Usermode\ShimPath'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - VMware support or graphics driver developers who load a diagnostic shim
