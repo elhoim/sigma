@@ -1,0 +1,36 @@
+title: GNOME Terminal Profile Custom Command Set Via Dconf Or Gsettings
+id: b1c0f580-f14a-4713-8624-653071ba69b2
+status: experimental
+description: |
+    Detects the use of the "dconf" or "gsettings" command line tools to set the "custom-command" or "use-custom-command" keys of a GNOME Terminal profile.
+    When "use-custom-command" is enabled, GNOME Terminal runs the program stored in "custom-command" instead of the user's shell each time a terminal window or tab is opened with that profile.
+    The setting is stored in the binary dconf database and not in a shell start-up file, so a review of ".bashrc" and similar files does not show it.
+    An attacker can use it to run a program that performs its task and then starts the shell, a persistence triggered by the user opening a terminal.
+references:
+    - https://gitlab.gnome.org/GNOME/gnome-terminal/-/blob/5d1d01d8bad69d33b0048f7791ebb6b0c7fb9f21/src/org.gnome.Terminal.gschema.xml
+    - https://www.hexacorn.com/blog/2023/09/29/beyond-the-good-ol-bashrc-entry-part-1/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_img:
+        Image|endswith:
+            - '/dconf'
+            - '/gsettings'
+    selection_action:
+        CommandLine|contains:
+            - ' set '
+            - ' write '
+    selection_key:
+        CommandLine|contains: 'custom-command'
+    condition: all of selection_*
+falsepositives:
+    - Users or desktop provisioning scripts that configure a terminal profile to start a specific program such as tmux or a remote session
+level: low
+regression_tests_path: regression_data/rules/linux/process_creation/proc_creation_lnx_gnome_terminal_custom_command/info.yml
