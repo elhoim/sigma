@@ -1,4 +1,4 @@
-title: Mailbox Items Accessed By Application Without Signed-In User
+title: Potential Mailbox Items Access By Application Without Signed-In User
 id: a05d8cd7-0330-429b-9834-cfa69811b243
 status: experimental
 description: |
@@ -16,8 +16,8 @@ tags:
     - attack.collection
     - attack.t1114.002
 logsource:
-    service: audit
     product: m365
+    service: audit
 detection:
     selection_operation:
         Workload: 'Exchange'
