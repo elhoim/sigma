@@ -1,0 +1,13 @@
+id: bf8d6bb4-935f-4d98-a6e2-94dc8ed1cc6f
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: f2b81b2a-b55d-420e-af2b-0353c85df447
+      title: Potential Persistence Via Suspicious Service Failure Command
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_service_failure_command_susp/f2b81b2a-b55d-420e-af2b-0353c85df447.evtx
