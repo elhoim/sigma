@@ -1,4 +1,4 @@
-title: Data Uploaded To Paste Or File Sharing Site Via Curl Or Wget - Linux
+title: Potential Data Uploaded To Paste Or File Sharing Site Via Curl Or Wget - Linux
 id: 6fc05f2b-0d85-47c3-ac09-7c1bc5b9a784
 related:
     - id: e328cc73-f92a-42fb-b3fa-7c2cffda981a # Windows
@@ -31,6 +31,7 @@ detection:
         CommandLine|contains:
             - '0x0.st'
             - 'bashupload.com'
+            - 'chunk.io'
             - 'dpaste.com'
             - 'dpaste.org'
             - 'file.io'
@@ -45,6 +46,9 @@ detection:
             - 'temp.sh'
             - 'termbin.com'
             - 'transfer.sh'
+            - 'ufile.io'
+            - 'uploadfiles.io'
+            - 'wetransfer.com'
             - 'x0.at'
     selection_data_flags:
         - CommandLine|contains:
@@ -58,7 +62,9 @@ detection:
               - ' -X POST'
               - ' --request POST'
               - ' -X PUT'
-        - CommandLine|re: '\s-[FTd]\s'
+        - CommandLine|re:
+              - '\s-[FTd]\s' # Case sensitive on purpose
+              - '\s-sT\s'
     condition: all of selection_*
 falsepositives:
     - Developers or administrators sharing logs or snippets via paste services
