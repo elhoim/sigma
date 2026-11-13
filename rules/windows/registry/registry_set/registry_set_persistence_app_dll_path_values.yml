@@ -1,0 +1,74 @@
+title: Potential Persistence Via Application DLL Path Registry Value
+id: 0490d4f3-f936-4a13-8f3b-5c8004ed9d25
+status: experimental
+description: |
+    Detects the modification of registry values that name a library which an application loads without further checks, as documented in the Hexacorn "Beyond good ol' Run key" series.
+    Covered values: "WwlibtDll" and "PPCoreTDLL" of Microsoft Office (a non zero value makes Word load "wwlibt.dll" and PowerPoint load "ppcoret.dll" instead of the regular core library), "DllName" under "Microsoft\AirDrop" (read by "mso.dll") and under "Microsoft\SEMgr\Wallet" (loaded by the NFC and SE manager service), "ReleaseDll", "DebugDll" and "Enabled" of the Xerox CentreWare "XDebug" key, the "Dll\String" value of Cougar gaming device software when it is not "setting.dll", "GS_DLL" of Ghostscript when it points outside of "Program Files" and "GOGGAMEDLL" of GOG games when it points to a temporary, roaming or remote location.
+    The Microsoft values do not exist on a default installation. Setting any of them lets an attacker run a proxy library each time the application starts.
+references:
+    - https://www.hexacorn.com/blog/2018/12/21/beyond-good-ol-run-key-part-96/
+    - https://www.hexacorn.com/blog/2019/09/13/beyond-good-ol-run-key-part-115/
+    - https://www.hexacorn.com/blog/2019/10/04/beyond-good-ol-run-key-part-118/
+    - https://www.hexacorn.com/blog/2022/01/18/beyond-good-ol-run-key-part-136/
+    - https://www.hexacorn.com/blog/2025/09/08/beyond-good-ol-run-key-part-151/
+    - https://www.hexacorn.com/blog/2026/01/02/beyond-good-ol-run-key-part-154/
+    - https://www.hexacorn.com/blog/2026/01/03/beyond-good-ol-run-key-part-155/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_office_key:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Office\'
+        TargetObject|endswith:
+            - '\PowerPoint\PPCoreTDLL'
+            - '\Word\WwlibtDll'
+    filter_main_office_disabled:
+        Details:
+            - 'DWORD (0x00000000)'
+            - '(Empty)'
+    selection_any_writer:
+        TargetObject|endswith:
+            - '\SOFTWARE\Microsoft\AirDrop\DllName'
+            - '\SOFTWARE\Microsoft\SEMgr\Wallet\DllName'
+            - '\Xerox\CentreWare\Infrastructure\XDebug\DebugDll'
+            - '\Xerox\CentreWare\Infrastructure\XDebug\Enabled'
+            - '\Xerox\CentreWare\Infrastructure\XDebug\ReleaseDll'
+    selection_cougar_key:
+        TargetObject|contains: '\SOFTWARE\Cougar\GamingDevice\'
+        TargetObject|endswith: '\Dll\String'
+    filter_main_cougar_default:
+        Details: 'setting.dll'
+    selection_ghostscript_key:
+        TargetObject|contains: ' Ghostscript\'
+        TargetObject|endswith: '\GS_DLL'
+    filter_main_ghostscript_program_files:
+        Details|startswith:
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+    selection_gog_key:
+        TargetObject|contains:
+            - '\SOFTWARE\GOG.com\'
+            - '\SOFTWARE\WOW6432Node\GOG.com\'
+        TargetObject|endswith: '\GOGGAMEDLL'
+    selection_gog_value:
+        - Details|contains:
+              - ':\ProgramData\'
+              - ':\Temp\'
+              - ':\Users\Public\'
+              - ':\Windows\Temp\'
+              - '\AppData\'
+        - Details|startswith: '\\\\'
+    condition: (selection_office_key and not filter_main_office_disabled) or selection_any_writer or (selection_cougar_key and not filter_main_cougar_default) or (selection_ghostscript_key and not filter_main_ghostscript_program_files) or all of selection_gog_*
+falsepositives:
+    - Ghostscript installed on another drive or outside of "Program Files", for example by a portable PDF tool
+    - Xerox CentreWare support staff who enable the XDebug library for troubleshooting
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_app_dll_path_values/info.yml
