@@ -1,4 +1,4 @@
-title: Potential Supply Chain Compromise - Rust Build Toolchain Spawning Interpreter Or Downloader
+title: Potential Supply Chain Compromise Via Rust Build Toolchain Spawning Interpreter Or Downloader
 id: e98a65c0-9b7c-49a5-a8dc-c2528457d8d6
 status: experimental
 description: |
@@ -7,6 +7,7 @@ description: |
 references:
     - https://slapopotamus.github.io/HuntPack/hunts/Arrayref-RustCrate-SupplyChain-Hunt.html
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/Rust_Build_Toolchain_Spawning_Interpreter_or_Downloader.yml
+    - https://github.com/rust-lang/cargo/blob/5c18b2672ae2f81c7ca02542e90fca492b7036a8/src/compiler/layout.rs
 author: elhoim
 date: 2026-11-10
 tags:
