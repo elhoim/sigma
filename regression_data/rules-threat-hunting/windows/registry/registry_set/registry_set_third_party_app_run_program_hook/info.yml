@@ -1,0 +1,13 @@
+id: 078a2926-35ed-4c2d-9b2a-3e653931165d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: e574f6fd-a063-43f7-8753-746152c9d194
+      title: Third Party Application Run Program Hook Registry Value Modified
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_third_party_app_run_program_hook/e574f6fd-a063-43f7-8753-746152c9d194.evtx
