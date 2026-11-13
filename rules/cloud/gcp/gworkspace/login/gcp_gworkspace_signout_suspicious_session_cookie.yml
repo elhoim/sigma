@@ -10,9 +10,9 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.credential-access
-    - attack.t1539
-    - attack.stealth
     - attack.lateral-movement
+    - attack.stealth
+    - attack.t1539
     - attack.t1550.004
 logsource:
     product: gcp
