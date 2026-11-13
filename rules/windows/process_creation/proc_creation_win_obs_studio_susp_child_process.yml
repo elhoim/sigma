@@ -3,8 +3,10 @@ id: 147af16f-bc63-48b2-9d6a-615f1b34e119
 status: experimental
 description: |
     Detects OBS Studio ("obs64.exe" or "obs32.exe") starting a command shell, a script host or a proxy execution binary.
-    OBS Studio loads the Lua and Python scripts registered in the scene collection of the user profile each time it starts. A script can run arbitrary programs, public scripts exist that start a list of applications together with OBS.
-    An attacker can register such a script to execute commands whenever the user opens OBS Studio. OBS itself only starts its own helper executables.
+    OBS Studio loads the Lua and Python scripts registered in the scene collection of the user profile each time it starts.
+    A script can run arbitrary programs, public scripts exist that start a list of applications together with OBS.
+    An attacker can register such a script to execute commands whenever the user opens OBS Studio.
+    OBS itself only starts its own helper executables.
 references:
     - https://www.hexacorn.com/blog/2023/04/14/beyond-good-ol-run-key-part-142/
     - https://docs.obsproject.com/scripting
