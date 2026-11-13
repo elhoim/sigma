@@ -1,4 +1,4 @@
-title: Okta OAuth Refresh Token Reuse Detected
+title: Suspicious Okta OAuth Refresh Token Reuse
 id: 670f6c9d-fe9f-4100-82d8-cd8246b8d274
 status: experimental
 description: |
@@ -11,9 +11,9 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.credential-access
-    - attack.t1528
-    - attack.stealth
     - attack.lateral-movement
+    - attack.stealth
+    - attack.t1528
     - attack.t1550.001
 logsource:
     product: okta

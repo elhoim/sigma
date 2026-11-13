@@ -1,4 +1,4 @@
-title: Okta MFA Bypass Attempt
+title: Suspicious Okta MFA Bypass Attempt
 id: 4c64a67e-c468-400e-8641-ad43aeb07875
 status: experimental
 description: Detects an attempt to bypass multi-factor authentication in Okta.
@@ -8,8 +8,8 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.credential-access
-    - attack.persistence
     - attack.defense-impairment
+    - attack.persistence
     - attack.t1556.006
 logsource:
     product: okta
