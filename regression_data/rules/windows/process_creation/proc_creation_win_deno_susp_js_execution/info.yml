@@ -1,0 +1,13 @@
+id: a0905d98-4138-474b-ae92-36154015c40e
+description: N/A
+date: 2026-11-09
+author: elhoim
+rule_metadata:
+    - id: 4acba9a4-d4a9-4392-85dc-728040aa7ff4
+      title: Suspicious Inline Or Remote JavaScript Execution Via Deno
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_deno_susp_js_execution/4acba9a4-d4a9-4392-85dc-728040aa7ff4.evtx
