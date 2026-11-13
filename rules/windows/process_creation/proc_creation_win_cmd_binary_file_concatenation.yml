@@ -1,0 +1,39 @@
+title: Binary File Concatenation Via Cmd.EXE
+id: 495c6dcf-712e-4182-907d-10410a8abf72
+status: experimental
+description: |
+    Detects the Windows command shell being used to reassemble a file from several pieces, either with "copy /b <part1>+<part2> <target>" (binary concatenation) or with "type <part> >> <target>" (append redirection).
+    Loaders split a payload into chunks, or hide it behind a benign file (image, document), and glue the pieces back together on the host so that no single file on disk or in transit resembles the final executable. Administrators rarely concatenate files from cmd.exe.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/copy
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_cmd_copy_binary_contents.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1027.009
+    - attack.t1140
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_img:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    selection_cli_copy:
+        CommandLine|contains|all:
+            - 'copy '
+            - '/b'
+            - '+'
+    selection_cli_type:
+        CommandLine|contains|all:
+            - 'type '
+            - '>>'
+    condition: selection_img and 1 of selection_cli_*
+falsepositives:
+    - Build, packaging and backup scripts that merge split files or append logs with cmd.exe redirection
+    - Software deployment tools that rebuild installers from chunked downloads
+    - Scripts that update a file's timestamp with the "copy /b <file> +,," idiom
+level: low
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_binary_file_concatenation/info.yml
