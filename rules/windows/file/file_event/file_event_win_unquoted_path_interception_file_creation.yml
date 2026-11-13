@@ -29,7 +29,7 @@ detection:
             - ':\Program.com'
             - ':\Program.dll'
     selection_program_files:
-        TargetFilename|re: '^[A-Za-z]:\\Program Files( \(x86\))?\\[^\\ ]+\.([Ee][Xx][Ee]|[Dd][Ll][Ll])$'
+        TargetFilename|re|i: '^[a-z]:\\Program Files( \(x86\))?\\[^\\ ]+\.(exe|dll)$'
     condition: 1 of selection_*
 falsepositives:
     - Badly packaged software that drops an executable or a DLL directly in the root of the Program Files directory
