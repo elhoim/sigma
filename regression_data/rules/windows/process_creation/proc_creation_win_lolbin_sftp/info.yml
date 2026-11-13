@@ -1,0 +1,18 @@
+id: 180ade7c-c1dc-4a7a-8604-f29584737482
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-3 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: a85ffc3a-e8fd-4040-93bf-78aff284d801
+      title: Use Of The SFTP.EXE Binary As A LOLBIN
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_sftp/a85ffc3a-e8fd-4040-93bf-78aff284d801.evtx
+    - name: Atomic Red Team replay 02 (T1218-3, event 1) - selection CommandLine -D ..
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_sftp-art02/a85ffc3a-e8fd-4040-93bf-78aff284d801.evtx

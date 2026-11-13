@@ -1,0 +1,13 @@
+id: e747666c-1287-4348-b07e-a89cc84bae65
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-3 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 64760eef-87f7-4ed3-93fd-655668ea9420
+      title: Use of Scriptrunner.exe
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_scriptrunner/64760eef-87f7-4ed3-93fd-655668ea9420.evtx

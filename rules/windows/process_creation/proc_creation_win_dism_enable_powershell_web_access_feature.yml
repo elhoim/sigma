@@ -9,9 +9,9 @@ references:
 author: Michael Haag
 date: 2024-09-03
 tags:
-    - attack.privilege-escalation
     - attack.persistence
-    - attack.t1548.002
+    - attack.initial-access
+    - attack.t1133
 logsource:
     category: process_creation
     product: windows
@@ -28,3 +28,4 @@ detection:
 falsepositives:
     - Legitimate PowerShell Web Access installations by administrators
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_dism_enable_powershell_web_access_feature/info.yml

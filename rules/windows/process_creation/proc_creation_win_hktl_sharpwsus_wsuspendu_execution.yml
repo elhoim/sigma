@@ -14,7 +14,7 @@ modified: 2024-08-23
 tags:
     - attack.execution
     - attack.lateral-movement
-    - attack.t1210
+    - attack.t1072
 logsource:
     product: windows
     category: process_creation
