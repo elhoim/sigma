@@ -1,0 +1,13 @@
+id: ce7c8d82-5571-4254-963d-fbf8b8ffb44f
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 0e20c89d-2264-44ae-8238-aeeaba609ece
+      title: Potential Persistence Via Microsoft Office Startup Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_office_startup_persistence/0e20c89d-2264-44ae-8238-aeeaba609ece.evtx

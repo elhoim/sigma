@@ -7,6 +7,7 @@ references:
     - https://www.zscaler.com/blogs/security-research/new-espionage-attack-molerats-apt-targeting-users-middle-east
 author: Florian Roth (Nextron Systems)
 date: 2022-04-20
+modified: 2026-11-13
 tags:
     - attack.command-and-control
     - attack.exfiltration
@@ -23,8 +24,14 @@ detection:
             - 'content.dropboxapi.com'
     filter_main_legit_dropbox:
         # Note: It's better to add a specific path to the exact location(s) where dropbox is installed
-        Image|contains: '\Dropbox'
-    condition: selection and not 1 of filter_main_*
+        Image|contains:
+            - ':\Program Files (x86)\Dropbox\'
+            - ':\Program Files\Dropbox\'
+    filter_optional_dropbox_user_install:
+        # Per-user installations, anchored to the profile folder
+        Image|re|i: '^[a-z]:\\Users\\[^\\]+\\AppData\\(?:Local\\Dropbox\\Client|Roaming\\Dropbox\\bin)\\'
+        Image|endswith: '\Dropbox.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Legitimate use of the API with a tool that the author wasn't aware of
 level: high

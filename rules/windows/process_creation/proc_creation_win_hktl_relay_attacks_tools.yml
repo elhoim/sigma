@@ -9,14 +9,22 @@ references:
     - https://hunter2.gitbook.io/darthsidious/other/war-stories/domain-admin-in-30-minutes
     - https://hunter2.gitbook.io/darthsidious/execution/responder-with-ntlm-relay-and-empire
     - https://www.localpotato.com/
+    - https://github.com/BeichenDream/GodPotato
+    - https://github.com/tylerdotrar/SigmaPotato
+    - https://github.com/BeichenDream/PrintNotifyPotato
+    - https://github.com/antonioCoco/RemotePotato0
+    - https://github.com/bugch3ck/SharpEfsPotato
 author: Florian Roth (Nextron Systems)
 date: 2021-07-24
-modified: 2023-02-14
+modified: 2026-11-06
 tags:
     - attack.collection
-    - attack.execution
     - attack.credential-access
+    - attack.privilege-escalation
+    - attack.stealth
     - attack.t1557.001
+    - attack.t1134.001
+    - attack.t1187
 logsource:
     category: process_creation
     product: windows
@@ -36,6 +44,11 @@ detection:
             - '\smbrelayx'
             - '\ntlmrelayx'
             - '\LocalPotato'
+            - '\GodPotato'
+            - '\SigmaPotato'
+            - '\PrintNotifyPotato'
+            - '\RemotePotato0'
+            - '\SharpEfsPotato'
     selection_script:
         CommandLine|contains:
             - 'Invoke-Tater'
@@ -45,6 +58,7 @@ detection:
             - ' /ntlm:NTLMhash '
             - 'Invoke-PetitPotam'
             - '.exe -t * -p '  # JuicyPotatoNG pattern https://github.com/antonioCoco/JuicyPotatoNG
+            - '.exe" -t * -p '  # Same pattern when the binary path is quoted
     selection_juicypotato_enum:  # appears when JuicyPotatoNG is used with -b
         CommandLine|contains: '.exe -c "{'
         CommandLine|endswith: '}" -z'
@@ -57,3 +71,4 @@ detection:
 falsepositives:
     - Legitimate files with these rare hacktool names
 level: critical
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_relay_attacks_tools/info.yml
