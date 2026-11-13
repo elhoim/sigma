@@ -1,4 +1,4 @@
-title: Login Shell Or Password Set For System Account - Linux
+title: Suspicious Login Shell Or Password Set For System Account - Linux
 id: 1bf28413-c131-4ce7-b0ff-9d8e8cbbe8c1
 status: experimental
 description: |
@@ -28,17 +28,23 @@ detection:
         CommandLine|contains:
             - ' -p '
             - ' --password '
+            - ' --password='
             - ' -s /bin/'
             - ' -s /usr/bin/'
             - ' --shell /bin/'
             - ' --shell /usr/bin/'
+            - ' --shell=/bin/'
+            - ' --shell=/usr/bin/'
     selection_account:
         CommandLine|endswith:
+            - ' adm'
             - ' backup'
             - ' bin'
             - ' daemon'
+            - ' ftp'
             - ' games'
             - ' gnats'
+            - ' halt'
             - ' irc'
             - ' list'
             - ' lp'
@@ -46,15 +52,27 @@ detection:
             - ' man'
             - ' news'
             - ' nobody'
+            - ' operator'
             - ' proxy'
+            - ' shutdown'
             - ' sync'
             - ' sys'
             - ' uucp'
             - ' www-data'
     filter_main_nologin:
         CommandLine|contains:
-            - '/false'
-            - '/nologin'
+            - ' -s /bin/false'
+            - ' -s /bin/nologin'
+            - ' -s /usr/bin/false'
+            - ' -s /usr/bin/nologin'
+            - ' --shell /bin/false'
+            - ' --shell /bin/nologin'
+            - ' --shell /usr/bin/false'
+            - ' --shell /usr/bin/nologin'
+            - ' --shell=/bin/false'
+            - ' --shell=/bin/nologin'
+            - ' --shell=/usr/bin/false'
+            - ' --shell=/usr/bin/nologin'
     condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Unlikely
