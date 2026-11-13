@@ -46,7 +46,7 @@ detection:
     condition: selection_cli and (selection_staging_path or selection_script_parent)
 falsepositives:
     - Extension developers installing a locally built VSIX from a PowerShell, Node or Python build script
-    - Developers running "code --install-extension <file>.vsix" in an interactive PowerShell terminal, since code.cmd then runs under cmd.exe with powershell.exe as its parent
+    - Developers installing a local VSIX with "code --install-extension" from an interactive PowerShell terminal
     - Software deployment scripts that install approved extensions from a staging directory
 level: medium
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_ide_extension_install_from_vsix/info.yml
