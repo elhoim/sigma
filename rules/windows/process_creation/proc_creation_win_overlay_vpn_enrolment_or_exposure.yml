@@ -5,24 +5,25 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the command line clients of overlay VPN / mesh networking products being used to enrol the host into a network or to expose it: Tailscale with a pre-authentication key, a custom login server, the SSH server option or the "serve"/"funnel" subcommands, NetBird "up" with a setup key or a custom management URL, and ZeroTier "join".
+    Detects the command line clients of overlay VPN / mesh networking products being used to enrol the host into a network or to expose it: Tailscale with a pre-authentication key, a custom login server, the SSH server option or the "serve"/"funnel" subcommands, NetBird "up" or "login" with a setup key or a custom management URL, and ZeroTier "join".
     Intruders (Scattered Spider/Octo Tempest, Handala, ransomware affiliates) install these legitimate clients and join the host to a network they control, which gives them a persistent, NAT-traversing route into the environment that looks like ordinary VPN traffic. An unattended enrolment with a key on the command line, outside the organisation's own deployment tooling, is the notable event.
 references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/tailscale.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/netbird.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/zerotier.md
     - https://tailscale.com/kb/1080/cli
+    - https://docs.netbird.io/how-to/cli
     - https://research.checkpoint.com/2026/handala-hack-unveiling-groups-modus-operandi/
     - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/
 author: elhoim
 date: 2026-11-09
 tags:
     - attack.command-and-control
-    - attack.persistence
     - attack.initial-access
-    - attack.t1572
-    - attack.t1219
+    - attack.persistence
     - attack.t1133
+    - attack.t1219
+    - attack.t1572
 logsource:
     product: windows
     category: process_creation
@@ -39,8 +40,10 @@ detection:
             - ' serve '
     selection_netbird_img:
         Image|endswith: '\netbird.exe'
-    selection_netbird_cli_up:
-        CommandLine|contains: ' up'
+    selection_netbird_cli_cmd:
+        CommandLine|contains:
+            - ' up'
+            - ' login'
     selection_netbird_cli_key:
         CommandLine|contains:
             - '--setup-key'
