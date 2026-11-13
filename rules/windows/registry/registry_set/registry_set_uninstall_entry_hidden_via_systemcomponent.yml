@@ -2,7 +2,7 @@ title: Potential Installed Program Concealment Via SystemComponent Registry Valu
 id: 7cc00add-54f5-4ed1-906c-abb697e26e41
 status: experimental
 description: |
-    Detects the "SystemComponent" value being set to 1 under an "Uninstall" registry subkey by a process other than the Windows Installer.
+    Detects the "SystemComponent" value being set to 1 under an "Uninstall" registry subkey, other than by the Windows Installer for an MSI product code subkey.
     Windows omits uninstall entries flagged as system components from "Programs and Features" and "Apps & features", so an attacker or a tool such as "Hide From Uninstall List" (HideUL) can use this value to hide remote management, remote access or other dropped software from the user and from administrators who review the installed programs.
 references:
     - https://learn.microsoft.com/en-us/windows/win32/msi/arpsystemcomponent
