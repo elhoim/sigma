@@ -7,6 +7,7 @@ description: |
     Legitimate PowerShell scripts have no reason to resolve the RPC runtime marshalling functions.
 references:
     - https://github.com/andreisss/Ghosting-AMSI/blob/3891a34b8e4c7f0591535c42f45c72a9db7b2551/README.md
+    - https://github.com/andreisss/Ghosting-AMSI/blob/3891a34b8e4c7f0591535c42f45c72a9db7b2551/ghosting.ps1
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_amsi_bypass_rpc_ndrclientcall.toml
 author: elhoim
 date: 2026-11-09
