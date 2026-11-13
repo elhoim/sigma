@@ -8,7 +8,7 @@ description: |
     Detects a command line that fetches a file through a Google Drive direct download URL ("export=download" on drive.google.com or drive.usercontent.google.com) either from a command-line download utility or scripting host, or from a browser with the "confirm=no_antivirus" parameter that skips the virus-scan warning for large files.
     Adversaries host loaders and archives on Google Drive to abuse a trusted domain, and use the direct download form so that the file is written without the Drive preview page.
 references:
-    - https://intelligence.abnormalsecurity.com/blog/google-drive-matanbuchus-malware
+    - https://abnormal.ai/threat-intelligence/blog/google-drive-matanbuchus-malware
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_google_drive_malicious_file_download.toml
 author: elhoim
 date: 2026-11-10
@@ -52,7 +52,9 @@ detection:
     selection_browser_img:
         Image|endswith:
             - '\brave.exe'
+            - '\browser.exe'
             - '\chrome.exe'
+            - '\dragon.exe'
             - '\firefox.exe'
             - '\msedge.exe'
             - '\opera.exe'
