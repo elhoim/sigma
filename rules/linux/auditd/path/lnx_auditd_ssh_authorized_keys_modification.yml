@@ -1,4 +1,4 @@
-title: SSH Authorized Keys File Modification - Auditd
+title: Potential Persistence Via SSH Authorized Keys Modification - Auditd
 id: 3a22c29b-3bca-4486-b687-1a27933d3458
 status: experimental
 description: |
