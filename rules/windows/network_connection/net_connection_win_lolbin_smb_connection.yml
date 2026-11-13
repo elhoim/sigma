@@ -3,7 +3,8 @@ id: d6dad3d3-452f-4e6b-b1e3-e5ba4ba072e7
 status: experimental
 description: |
     Detects an outbound TCP connection to port 445 (SMB) initiated directly by a scripting host, shell or other living-off-the-land binary.
-    Legitimate SMB traffic (file shares, named pipes, PsExec-style service control) is established by the kernel SMB redirector on behalf of the process, so the network event is attributed to the "System" process. A user-mode utility that opens port 445 itself indicates a port scan, an SMB client implementation embedded in a script (for example a PowerShell SMB relay, enumeration or exploit module) or a tunnelled connection.
+    Legitimate SMB traffic (file shares, named pipes, PsExec-style service control) is established by the kernel SMB redirector on behalf of the process, so the network event is attributed to the "System" process.
+    A user-mode utility that opens port 445 itself indicates a port scan, an SMB client implementation embedded in a script (for example a PowerShell SMB relay, enumeration or exploit module) or a tunnelled connection.
 references:
     - https://www.elastic.co/security-labs/hunting-for-lateral-movement-using-event-query-language
     - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
