@@ -3,6 +3,8 @@ id: 451dfeee-1f44-4d9c-8f76-27fa712b21c7
 related:
     - id: 8a582fe2-0882-4b89-a82a-da6b2dc32937
       type: similar
+    - id: d21374ff-f574-44a7-9998-4a8c8bf33d7d
+      type: similar
 status: experimental
 description: |
     Detects a native host or network enumeration utility (arp, dsquery, dsget, gpresult, hostname, ipconfig, nbtstat, net, net1, netsh, netstat, nltest, ping, qprocess, quser, qwinsta, reg, sc, systeminfo, tasklist, tracert, whoami) started as a child of the WMI Provider Host "WmiPrvSE.exe".
@@ -13,17 +15,17 @@ references:
 author: elhoim
 date: 2026-11-11
 tags:
-    - attack.execution
     - attack.discovery
-    - attack.t1047
+    - attack.execution
     - attack.t1016
     - attack.t1033
+    - attack.t1047
     - attack.t1057
     - attack.t1082
     - attack.t1087
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
     selection:
         ParentImage|endswith: '\wbem\WmiPrvSE.exe'
