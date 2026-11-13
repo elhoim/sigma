@@ -1,0 +1,13 @@
+id: 95a9526e-4e55-4b2a-b146-f0d2251a65b9
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: e2ef2aea-62e5-455a-9aec-65f4b9d9913f
+      title: Suspicious Hidden, Encoded Or Download Cradle Command Spawned By Explorer
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_susp_hidden_encoded_or_cradle_child_process/e2ef2aea-62e5-455a-9aec-65f4b9d9913f.evtx
