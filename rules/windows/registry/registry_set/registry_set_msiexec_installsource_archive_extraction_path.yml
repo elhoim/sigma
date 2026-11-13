@@ -1,0 +1,35 @@
+title: Windows Installer Package Installed From Archive Extraction Directory
+id: 8a393224-a3d5-4aba-b759-a90c0ffd7cde
+status: experimental
+description: |
+    Detects the Windows Installer service recording an "InstallSource" registry value that points inside an archive extraction directory under a user profile, i.e. a path containing ".zip\", ".7z\" or ".rar\" (Explorer and archive managers unpack files opened straight from the archive into such temporary folders).
+    An MSI package installed directly out of an archive was most likely delivered by e-mail or download and run by a user without extracting it first, which is how commodity loaders and fake installers are commonly delivered. Legitimate software is distributed as a standalone MSI or EXE installer.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_msiexec_installsource_archive_file.toml
+    - https://learn.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1204.002
+    - attack.t1218.007
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_installsource:
+        Image|endswith: '\msiexec.exe'
+        TargetObject|endswith: '\InstallSource'
+        Details|contains: ':\Users\'
+    selection_archive:
+        Details|contains:
+            - '.zip\'
+            - '.7z\'
+            - '.rar\'
+    condition: all of selection_*
+falsepositives:
+    - Users installing legitimate software shipped as an MSI inside an archive without extracting it first
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_msiexec_installsource_archive_extraction_path/info.yml
