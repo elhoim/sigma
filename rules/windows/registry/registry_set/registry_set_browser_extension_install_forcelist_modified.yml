@@ -9,6 +9,8 @@ description: |
     The force-list policy makes the browser silently install and pin an extension (by extension ID and update URL) that the user cannot remove. Malware and adware set it to install a credential or cookie stealing extension without the Web Store or developer mode; legitimate deployments go through Group Policy or MDM, not through reg.exe, PowerShell or an installer.
 references:
     - https://chromeenterprise.google/policies/#ExtensionInstallForcelist
+    - https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/extensioninstallforcelist
+    - https://www.malwarebytes.com/blog/news/2022/06/forced-chrome-extensions-keep-reappearing
     - https://redcanary.com/threat-detection-report/trends/browser-threats/
 author: elhoim
 date: 2026-11-09
