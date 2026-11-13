@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: b799b3a7-bc39-4afe-9bf8-d9eab557f43d
-      title: Potential Cloud Administration Command Abuse - Suspicious Child Of Azure CustomScript Extension
+      title: Potential Azure VM CustomScript Extension Abuse Via Child Process
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx

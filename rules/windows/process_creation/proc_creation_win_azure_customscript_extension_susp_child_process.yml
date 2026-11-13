@@ -1,4 +1,4 @@
-title: Potential Cloud Administration Command Abuse - Suspicious Child Of Azure CustomScript Extension
+title: Potential Azure VM CustomScript Extension Abuse Via Child Process
 id: b799b3a7-bc39-4afe-9bf8-d9eab557f43d
 related:
     - id: 8fffecb4-c446-496b-bb12-485b95fc3af1
@@ -9,7 +9,7 @@ description: |
     The CustomScript extension executes an operator-supplied script as SYSTEM from the Azure control plane; anyone with rights on the virtual machine resource can use it as a cloud-to-host code execution and persistence primitive. The extension legitimately runs PowerShell and cmd, so the rule keys on what the script spawns rather than on the wrapper itself.
 references:
     - https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
-    - https://blog.pwnedlabs.io/diving-deep-into-azure-vm-attack-vectors
+    - https://pwnedlabs.io/blog/diving-deep-into-azure-vm-attack-vectors
     - https://www.sysdig.com/blog/the-expendable-extension-name-azure-vmaccess-naming-chaos-password-resets-and-a-detection-gap
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_azure_customscript_extension_suspicious_descendant.toml
 author: elhoim
@@ -51,7 +51,7 @@ detection:
             - '\wscript.exe'
     selection_child_certutil:
         Image|endswith: '\certutil.exe'
-        CommandLine|contains:
+        CommandLine|contains|windash:
             - 'urlcache'
             - '-decode'
             - '-encode'
@@ -59,7 +59,7 @@ detection:
         Image|endswith:
             - '\powershell.exe'
             - '\pwsh.exe'
-        CommandLine|contains:
+        CommandLine|contains|windash:
             - ' -enc'
             - 'EncodedCommand'
             - 'FromBase64String'
