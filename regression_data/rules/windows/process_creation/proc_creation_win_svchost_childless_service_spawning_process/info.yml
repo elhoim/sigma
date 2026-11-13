@@ -1,0 +1,13 @@
+id: ec49c51b-cafd-4318-be53-d14113ad21cb
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: be1694b2-b578-4db8-9225-3737601f0140
+      title: Potential Process Injection - Child Process Of Childless Service Host
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_svchost_childless_service_spawning_process/be1694b2-b578-4db8-9225-3737601f0140.evtx
