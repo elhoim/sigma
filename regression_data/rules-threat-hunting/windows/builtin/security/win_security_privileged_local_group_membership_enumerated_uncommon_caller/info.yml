@@ -1,0 +1,13 @@
+id: 493e1c92-fb28-4e09-85d7-f031452dea54
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 0202aae5-5cb5-4aa9-988a-d3eb5a7aec73
+      title: Privileged Local Group Membership Enumerated By Uncommon Caller Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/builtin/security/win_security_privileged_local_group_membership_enumerated_uncommon_caller/0202aae5-5cb5-4aa9-988a-d3eb5a7aec73.evtx
