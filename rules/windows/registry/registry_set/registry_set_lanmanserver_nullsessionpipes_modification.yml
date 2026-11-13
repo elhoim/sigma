@@ -2,8 +2,10 @@ title: Potential Anonymous Named Pipe Access Enabled Via NullSessionPipes Regist
 id: af1190ef-8cf9-44ee-a9e9-d211349b5aff
 status: experimental
 description: |
-    Detects the NullSessionPipes value of the LanmanServer service being written (Sysmon renders the multi-string value as binary data, so clearing the list cannot be told apart from setting pipes).
-    Pipes listed there can be opened over SMB by anonymous (null session) clients. Adversaries add their own pipe, or a pipe used by a backdoor, so that it stays reachable from the network without credentials; Turla's PowerShell loaders used this to expose their named-pipe transport.
+    Detects the NullSessionPipes value of the LanmanServer service being written.
+    Pipes listed there can be opened over SMB by anonymous (null session) clients.
+    Adversaries add their own pipe, or a pipe used by a backdoor, so that it stays reachable from the network without credentials; Turla's PowerShell loaders used this to expose their named-pipe transport.
+    Sysmon renders the multi-string value as binary data, so clearing the list cannot be told apart from setting pipes.
 references:
     - https://www.welivesecurity.com/2019/05/29/turla-powershell-usage/
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/network-access-named-pipes-that-can-be-accessed-anonymously
