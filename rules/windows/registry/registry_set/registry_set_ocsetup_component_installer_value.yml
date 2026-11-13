@@ -1,0 +1,47 @@
+title: OCSetup Component Registry Value Set To Installer File
+id: 2e11037b-46b8-4ebe-abe3-eb2facae3c81
+status: experimental
+description: |
+    Detects the registration of an executable or Windows Installer file in the registry values read by the optional component setup tool "ocsetup.exe" ("CustomSetup" under "Setup\OptionalComponents" and "Component", "PatchFiles" or "CustomSetup" under "Setup\OCSetup\Components"), by a process other than Windows Installer or the Windows servicing stack.
+    When "ocsetup.exe" is run for a component name, it reads these values and starts the ".exe" file or installs the ".msi" or ".msp" package they name.
+    An attacker can register his own file as a component and trigger it later through the signed tool. The values are only written by the setup of a few legacy Microsoft products.
+references:
+    - https://www.hexacorn.com/blog/2019/11/09/beyond-good-ol-run-key-part-122/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_key_optional_components:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\'
+        TargetObject|endswith: '\CustomSetup'
+    selection_key_ocsetup:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Setup\OCSetup\Components\'
+        TargetObject|endswith:
+            - '\Component'
+            - '\CustomSetup'
+            - '\PatchFiles'
+    selection_value:
+        Details|contains:
+            - '.exe'
+            - '.msi'
+            - '.msp'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: 1 of selection_key_* and selection_value and not 1 of filter_main_*
+falsepositives:
+    - Setup programs of legacy Microsoft server products that register optional components without Windows Installer
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_ocsetup_component_installer_value/info.yml
