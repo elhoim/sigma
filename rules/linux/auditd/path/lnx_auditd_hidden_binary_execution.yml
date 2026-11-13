@@ -10,9 +10,6 @@ references:
 author: David Burkett, @signalblur
 date: 2022-12-30
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
-    - attack.execution
     - attack.stealth
     - attack.t1564.001
 logsource:
