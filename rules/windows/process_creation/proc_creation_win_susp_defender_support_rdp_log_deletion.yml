@@ -5,8 +5,9 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a command line that deletes the Microsoft Defender support log folder (ProgramData\Microsoft\Windows Defender\Support) or the Remote Desktop Services log folders (System32\LogFiles\RDP*) with "del", "erase", "rd", "rmdir", "rm" or "Remove-Item".
-    These folders hold the Defender operational logs (MPLog, MPDetection) and the RDP session logs that document which hosts were connected to. The Gentlemen ransomware wipes them together with Prefetch and the Recycle Bin right before encryption to hinder forensic reconstruction.
+    Detects a command line that deletes the Microsoft Defender support log folder (ProgramData\Microsoft\Windows Defender\Support) or the Remote Desktop log folders (System32\LogFiles\RDP*) with "del", "erase", "rd", "rmdir", "rm", "ri" or "Remove-Item".
+    The Defender support folder holds the Defender operational logs (MPLog, MPDetection), which record detections and scans that an investigator relies on.
+    The Gentlemen ransomware wipes these folders together with Prefetch and the Recycle Bin right before encryption to hinder forensic reconstruction.
 references:
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
@@ -31,7 +32,7 @@ detection:
             - 'rmdir '
             - 'rm '
             - 'Remove-Item'
-            - ' -ri '
+            - ' ri '
     condition: all of selection_*
 falsepositives:
     - Administrators cleaning up Defender support logs or RDP log folders manually; disk clean-up scripts
