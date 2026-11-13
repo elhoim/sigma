@@ -7,6 +7,7 @@ description: |
     An attacker can plant a value there so that a Windows Installer command of his choice, for example the installation of a package, is run by "msiexec.exe" when the pending entry is processed. Only the Windows Installer service is expected to write to this key.
 references:
     - https://www.hexacorn.com/blog/2019/05/29/beyond-good-ol-run-key-part-105/
+    - https://github.com/wine-mirror/wine/blob/6265f77003e2d501a83e8a1780b5e78ad55b230f/programs/msiexec/msiexec.c#L695-L705
 author: elhoim
 date: 2026-11-12
 tags:
