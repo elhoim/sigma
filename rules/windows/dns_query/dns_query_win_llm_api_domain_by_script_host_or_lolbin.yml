@@ -1,0 +1,91 @@
+title: Potential LLM API Usage By Script Host, LOLBin Or Process From Suspicious Location
+id: 7d00519b-f747-4799-8568-d4bfba790038
+status: experimental
+description: |
+    Detects a DNS query for a Large Language Model API endpoint (OpenAI, Anthropic, Google Gemini, Mistral, DeepSeek, Groq, Hugging Face inference, OpenRouter and similar) issued by a Windows script host or LOLBin, by a binary running from a temporary or user-writable directory, or by a .pif executable as used in the LAMEHUG lures.
+    Malware such as LAMEHUG (APT28) calls a hosted LLM at runtime to generate the reconnaissance and exfiltration commands it executes, so the first observable artefact on the host is a scripting process or an unusual binary resolving the model provider's API domain. Browsers, IDEs and installed applications in Program Files are not matched.
+references:
+    - https://cert.gov.ua/article/6284730
+    - https://malpedia.caad.fkie.fraunhofer.de/details/py.lamehug
+    - https://www.catonetworks.com/blog/cato-ctrl-analyzing-lamehug/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_common_llm_endpoint.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1102
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_domain:
+        QueryName:
+            - 'api.openai.com'
+            - 'api.anthropic.com'
+            - 'api.mistral.ai'
+            - 'api.cohere.ai'
+            - 'api.groq.com'
+            - 'api.perplexity.ai'
+            - 'api.x.ai'
+            - 'api.deepseek.com'
+            - 'generativelanguage.googleapis.com'
+            - 'aiplatform.googleapis.com'
+            - 'api-inference.huggingface.co'
+            - 'router.huggingface.co'
+            - 'api.replicate.com'
+            - 'api.together.xyz'
+            - 'api.fireworks.ai'
+            - 'api.deepinfra.com'
+            - 'api.cerebras.ai'
+            - 'api.sambanova.ai'
+            - 'openrouter.ai'
+            - 'api.moonshot.ai'
+            - 'api.moonshot.cn'
+            - 'api.z.ai'
+            - 'api.minimax.io'
+            - 'dashscope.aliyuncs.com'
+            - 'dashscope-intl.aliyuncs.com'
+            - 'integrate.api.nvidia.com'
+            - 'gateway.ai.cloudflare.com'
+            - 'api.githubcopilot.com'
+            - 'ai-gateway.vercel.sh'
+            - 'open.bigmodel.cn'
+            - 'qianfan.baidubce.com'
+    selection_domain_suffix:
+        QueryName|endswith:
+            - '.openai.azure.com'
+            - '.hf.space'
+            - '.runpod.io'
+    selection_domain_bedrock:
+        QueryName|startswith: 'bedrock-runtime.'
+        QueryName|endswith: '.amazonaws.com'
+    selection_img_name:
+        Image|endswith:
+            - '\bitsadmin.exe'
+            - '\cscript.exe'
+            - '\InstallUtil.exe'
+            - '\MSBuild.exe'
+            - '\mshta.exe'
+            - '\msiexec.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\RegAsm.exe'
+            - '\regsvr32.exe'
+            - '\RegSvcs.exe'
+            - '\rundll32.exe'
+            - '\vbc.exe'
+            - '\wscript.exe'
+            - '.pif'
+    selection_img_path:
+        Image|contains:
+            - ':\ProgramData\'
+            - ':\Users\Public\'
+            - ':\Windows\Temp\'
+            - '\AppData\Local\Temp\'
+            - '\Downloads\'
+    condition: 1 of selection_domain* and 1 of selection_img_*
+falsepositives:
+    - Administrators or developers calling an LLM API from a PowerShell script
+    - Portable tools or installers run from the Downloads or Temp folders that embed an LLM client
+level: medium
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_llm_api_domain_by_script_host_or_lolbin/info.yml
