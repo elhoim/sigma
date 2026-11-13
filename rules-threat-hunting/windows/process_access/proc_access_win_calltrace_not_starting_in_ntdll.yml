@@ -1,0 +1,60 @@
+title: Potential Direct System Call Process Access - CallTrace Not Starting In Ntdll
+id: 20013fe0-0f72-4409-92fb-0afdb00c2863
+related:
+    - id: 3f3f3506-1895-401b-9cc3-e86b16e630d0
+      type: similar
+status: experimental
+description: |
+    Detects process access events whose call trace starts in a module other than ntdll.dll (or the WOW64 / win32u transition DLLs).
+    Every documented Windows API path that opens a process handle ends in an ntdll.dll system call stub, so the first frame of a Sysmon CallTrace is normally ntdll.dll. A first frame inside another DLL means that module issued the system call itself, which is how direct and indirect syscall techniques avoid user-mode EDR hooks.
+    Unbacked memory ("UNKNOWN") first frames are covered by the related rule; this rule focuses on syscalls issued from a loaded, file-backed module.
+    Some security products, anti-cheat engines and sandboxed browsers issue their own system calls; tune the filters for the environment.
+references:
+    - https://medium.com/falconforce/falconfriday-direct-system-calls-and-cobalt-strike-bofs-0xff14-741fa8e1bdd6
+    - https://www.ired.team/offensive-security/defense-evasion/using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_process_access_direct_syscall.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1055
+    - attack.t1106
+    - detection.threat-hunting
+logsource:
+    category: process_access
+    product: windows
+detection:
+    selection:
+        CallTrace|contains: ':\'
+    filter_main_unknown:
+        # Covered by 3f3f3506-1895-401b-9cc3-e86b16e630d0
+        CallTrace|startswith: 'UNKNOWN'
+    filter_main_system_stubs:
+        CallTrace|startswith:
+            - 'C:\Windows\System32\ntdll.dll+'
+            - 'C:\Windows\System32\win32u.dll+'
+            - 'C:\Windows\System32\wow64cpu.dll+'
+            - 'C:\Windows\System32\wow64win.dll+'
+            - 'C:\Windows\SysWOW64\ntdll.dll+'
+    filter_main_edgewebview:
+        TargetImage|startswith: 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application\'
+        TargetImage|endswith: '\msedgewebview2.exe'
+    filter_optional_symantec:
+        SourceImage|startswith: 'C:\Program Files\Symantec\Symantec Endpoint Protection\'
+        CallTrace|startswith: 'C:\Windows\System32\sysfer.dll+'
+    filter_optional_malwarebytes:
+        TargetImage: 'C:\Program Files (x86)\Malwarebytes Anti-Exploit\mbae-svc.exe'
+    filter_optional_cisco_amp:
+        TargetImage|startswith: 'C:\Program Files\Cisco\AMP\'
+        TargetImage|endswith: '\sfc.exe'
+    filter_optional_acrobat:
+        TargetImage|startswith: 'C:\Program Files\Adobe\Acrobat DC\Acrobat\'
+        TargetImage|endswith: '\AcroCEF.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Security agents, anti-exploit tools, anti-cheat engines, debuggers and sandboxed browsers that implement their own system call stubs
+    - Systems where Windows is installed on a drive other than C
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_access/proc_access_win_calltrace_not_starting_in_ntdll/info.yml
