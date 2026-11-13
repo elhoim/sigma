@@ -1,4 +1,4 @@
-title: Exchange Online Inbound Connector Created or Modified
+title: Potential Rogue Exchange Online Inbound Connector Created Or Modified
 id: eed12f96-fe1e-4f06-b20f-afbf469d05fb
 status: experimental
 description: |
@@ -12,9 +12,9 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.defense-impairment
-    - attack.t1685
     - attack.stealth
     - attack.t1684.002
+    - attack.t1685
 logsource:
     service: audit
     product: m365

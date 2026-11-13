@@ -1,4 +1,4 @@
-title: SharePoint or OneDrive Item Shared Externally
+title: SharePoint Or OneDrive Item Shared Externally
 id: 9ba9cdde-73cb-4885-a1a1-816a18df38ef
 status: experimental
 description: |
@@ -11,8 +11,8 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.collection
-    - attack.t1213.002
     - attack.exfiltration
+    - attack.t1213.002
     - attack.t1567
 logsource:
     service: audit
