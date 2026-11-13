@@ -4,6 +4,8 @@ status: experimental
 description: |
     Detects DNS queries for domains under top level domains that are heavily abused for phishing and malware distribution (free or very cheap registrations such as .top, .xyz, .tk, .ml, .cf, .ga, .gq, .buzz, .icu, .cfd, .click ...) when the query comes from a script interpreter, a living-off-the-land binary, a scripting runtime or a program running from a user-writable staging folder.
     Browsers and mail clients query such domains all the time; PowerShell, mshta, rundll32, MSBuild, msiexec, node or python reaching out to them is a strong hint of a loader or command and control stage.
+    Hypothesis: a script, LOLBin or staged binary resolves an attacker-controlled domain under a cheap TLD to fetch a payload or reach its command and control server.
+    Confirm with the parent process and command line of the querying process, and with a network connection or file write by the same process right after the query.
 references:
     - https://www.cybercrimeinfocenter.org/top-20-tlds-by-malicious-phishing-domains
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_dns_susp_tld.toml
@@ -20,6 +22,7 @@ detection:
     selection_img:
         - Image|endswith:
               - '\bitsadmin.exe'
+              - '\cscript.exe'
               - '\curl.exe'
               - '\dllhost.exe'
               - '\InstallUtil.exe'
@@ -36,7 +39,6 @@ detection:
               - '\regsvr32.exe'
               - '\rundll32.exe'
               - '\wscript.exe'
-              - '\cscript.exe'
               - '.pif'
               - '.scr'
         - Image|contains:
