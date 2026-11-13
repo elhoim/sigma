@@ -5,7 +5,7 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects PowerShell script block content that references the native Windows API functions used to enumerate shares, logged-on users, sessions, local and domain groups, domain trusts, sites and service security descriptors (NetShareEnum, NetSessionEnum, NetWkstaUserEnum, NetLocalGroupEnum, NetLocalGroupGetMembers, NetUserEnum, NetGroupEnum, DsEnumerateDomainTrusts, DsGetSiteName, WTSEnumerateSessionsEx, LsaGetLogonSessionData, LsaEnumerateTrustedDomains, QueryServiceObjectSecurity, NetScheduleJobEnum, NetUserModalsGet).
+    Detects PowerShell script block content that references the native Windows API functions used to enumerate shares, logged-on users, sessions, local and domain groups, domain trusts, sites and service security descriptors (NetShareEnum, NetSessionEnum, NetWkstaUserEnum, NetLocalGroupEnum, NetLocalGroupGetMembers, NetUserEnum, NetGroupEnum, NetGroupGetUsers, NetWkstaTransportEnum, DsEnumerateDomainTrusts, DsGetSiteName, WTSEnumerateSessionsEx, WTSQuerySessionInformation, LsaGetLogonSessionData, LsaEnumerateTrustedDomains, QueryServiceObjectSecurity, NetScheduleJobEnum, NetUserModalsGet).
     PowerView and derived reconnaissance scripts call these APIs through P/Invoke or reflection to map users, sessions and trusts before lateral movement; ordinary administration scripts use the Active Directory and NetTCPIP cmdlets instead of the raw APIs, so these identifiers are rare in legitimate script blocks.
 references:
     - https://learn.microsoft.com/en-us/windows/win32/api/lmshare/nf-lmshare-netsessionenum
@@ -18,14 +18,14 @@ tags:
     - attack.execution
     - attack.t1033
     - attack.t1049
+    - attack.t1059.001
     - attack.t1069.001
     - attack.t1069.002
     - attack.t1087.001
     - attack.t1087.002
+    - attack.t1106
     - attack.t1135
     - attack.t1482
-    - attack.t1059.001
-    - attack.t1106
 logsource:
     product: windows
     category: ps_script
@@ -52,7 +52,7 @@ detection:
             - 'LsaEnumerateTrustedDomains'
             - 'QueryServiceObjectSecurity'
     filter_optional_automox:
-        Path|startswith: 'C:\Program Files (x86)\Automox\WDK\Win32\WinSession'
+        Path|startswith: 'C:\Program Files (x86)\Automox\WDK\Win32\WinSession\'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Monitoring and configuration management agents (SCOM discovery, Ansible, Automox) and administrators' own P/Invoke scripts that call these APIs; only the Automox script path is filtered (anchored), the SCOM and Ansible content markers are not excluded because an attacker could add the same strings to a script block, exclude them by script path or hash in the environment
