@@ -8,8 +8,8 @@ related:
 status: experimental
 description: |
     Detects the creation of the "ProtectedDebugger" value under the "AeDebugProtected" registry key.
-    "AeDebugProtected" is the counterpart of the well known "AeDebug" key for protected processes. When a protected process crashes, Windows Error Reporting reads the just in time debugger from this value instead of "AeDebug\Debugger" and starts it.
-    The value does not exist by default. An attacker can register a program there to have it started whenever a protected process crashes. The existing rules cover the "AeDebug\Debugger" and "Windows Error Reporting\Hangs\Debugger" values only.
+    "AeDebugProtected" is the counterpart of the well known "AeDebug" key for protected processes. When a protected process crashes, Windows Error Reporting reads the just-in-time debugger from this value instead of "AeDebug\Debugger" and starts it.
+    The value does not exist by default. An attacker can register a program there to have it started whenever a protected process crashes.
 references:
     - https://www.hexacorn.com/blog/2019/10/11/beyond-good-ol-run-key-part-119/
 author: elhoim
