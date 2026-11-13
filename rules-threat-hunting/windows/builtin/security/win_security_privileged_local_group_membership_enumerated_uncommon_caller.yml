@@ -4,6 +4,7 @@ status: experimental
 description: |
     Detects the enumeration of the members of the local Administrators or Remote Desktop Users group (Security event 4799) by a caller process that is not one of the Windows components that routinely perform this lookup.
     Reconnaissance tools and post-exploitation frameworks enumerate these groups to find privileged accounts and lateral movement targets; the event records the enumerating process in CallerProcessName.
+    Hypothesis: an unfamiliar CallerProcessName enumerating these groups on a host is a discovery tool or implant; confirm it with the process creation of that caller (its parent, path and signer) and with other group or account enumeration (4798, 4799 on other groups) from the same caller in a short window.
 references:
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4799
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/discovery_privileged_localgroup_membership.toml
@@ -56,12 +57,12 @@ detection:
             - 'C:\Windows\SysWOW64\msiexec.exe'
             - 'C:\Windows\ImmersiveControlPanel\SystemSettings.exe'
     filter_main_setup:
-        CallerProcessName|re: '^C:\\\$WINDOWS\.~BT\\Sources\\[^\\]+\.exe$'
+        CallerProcessName|re: '(?i)^C:\\\$WINDOWS\.~BT\\Sources\\[^\\]+\.exe$'
     filter_optional_backup_agents:
         # Anchored full paths in non-world-writable locations only
         CallerProcessName|re:
-            - '^C:\\Windows\\VeeamVssSupport\\(?:[^\\]+\\)*[^\\]+\.exe$'
-            - '^C:\\WindowsAzure\\(?:[^\\]+\\)*[^\\]+\.exe$'
+            - '(?i)^C:\\Windows\\VeeamVssSupport\\(?:[^\\]+\\)*[^\\]+\.exe$'
+            - '(?i)^C:\\WindowsAzure\\(?:[^\\]+\\)*[^\\]+\.exe$'
     filter_optional_sql_writer:
         # SQL Server VSS Writer service
         CallerProcessName|re: '(?i)^C:\\Program Files\\Microsoft SQL Server\\[0-9]{2,3}\\Shared\\sqlwriter\.exe$'
