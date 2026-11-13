@@ -1,0 +1,52 @@
+title: MCP Server Started Via Runtime Interpreter Or Package Runner
+id: a67434a7-e6fc-4547-8f7a-839ae570077c
+status: experimental
+description: |
+    Detects a Model Context Protocol (MCP) server being launched through a development runtime or package runner (node, npx, python, uv, uvx, docker, bun, deno) with a command line that references the MCP SDK packages or well-known server names (server-filesystem, server-github, server-postgres, server-sqlite, server-puppeteer, server-brave-search, mcp-server).
+    MCP servers expose local files, databases, source repositories and SaaS accounts to AI assistants over stdio or HTTP; one started outside the approved AI tooling ("shadow MCP") is an unmanaged data access path and, if the package is malicious or typosquatted, a code execution vector on the host.
+    Hunting hypothesis: an MCP server whose parent process is not an approved AI client (Claude Desktop, Cursor, VS Code), or whose package name is unknown or misspelled, is shadow or malicious MCP use; check the parent, the user and the package against the approved inventory.
+references:
+    - https://modelcontextprotocol.io/docs/getting-started/intro
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/shadow_mcp_server_activity_via_common_runtime_interpreters.yml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - attack.t1059.007
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_runtime:
+        Image|endswith:
+            - '\node.exe'
+            - '\npx.exe'
+            - '\python.exe'
+            - '\python3.exe'
+            - '\pythonw.exe'
+            - '\uv.exe'
+            - '\uvx.exe'
+            - '\docker.exe'
+            - '\bun.exe'
+            - '\deno.exe'
+    selection_mcp:
+        CommandLine|contains:
+            - 'modelcontextprotocol'
+            - 'mcp-server'
+            - 'mcp_server'
+            - 'server-filesystem'
+            - 'server-github'
+            - 'server-postgres'
+            - 'server-sqlite'
+            - 'server-puppeteer'
+            - 'server-brave-search'
+            - 'server-memory'
+            - 'server-fetch'
+            - 'server-everything'
+    condition: all of selection_*
+falsepositives:
+    - Developers and approved AI assistant deployments (Claude Desktop, Cursor, VS Code Copilot) that start MCP servers as part of their normal configuration
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_mcp_server_started_via_runtime_interpreter/info.yml
