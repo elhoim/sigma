@@ -1,0 +1,13 @@
+id: bd29cdaa-10e0-4481-a86b-e6fb21701fee
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: fd1be901-2530-442b-8e4a-a27c81c41377
+      title: Suspicious WOW64 Per-Process CPU Emulation DLL Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_wow64_per_process_dll_redirection/fd1be901-2530-442b-8e4a-a27c81c41377.evtx
