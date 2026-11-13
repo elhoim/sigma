@@ -1,0 +1,78 @@
+id: 21e1038a-6be5-4da9-ae7a-71d8c64c739f
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: e159e9de-5f90-40d0-a5e3-4035b13c011d
+      title: AutoHotkey Or AutoIt Interpreter Launched From Shell Or User Writable Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 01 (T1036.005-4, event 1) - img; img group0 Image; context; ...
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art01/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 02 (T1036.005-4, event 1) - img group1 Image; img Image \AutoIt3.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art02/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 03 (T1059.010-1, event 1) - img group2 OriginalFileName; img OriginalFileName AutoIt3.exe; context ParentImage \mshta.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art03/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 04 (T1036.005-4, event 1) - img Image \AutoIt3_x64.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art04/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 05 (T1036.005-4, event 1) - context ParentImage \cscript.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art05/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 06 (T1036.005-4, event 1) - context ParentImage \powershell.exe; context CommandLine \ProgramData\
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art06/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 07 (T1059.010-1, event 1) - context ParentImage \pwsh.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art07/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 08 (T1059.010-1, event 1) - context ParentImage \regsvr32.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art08/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 09 (T1059.010-1, event 1) - context ParentImage \rundll32.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art09/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 10 (T1059.010-1, event 1) - context ParentImage \wscript.exe
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art10/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 11 (T1036.005-4, event 1) - context CommandLine \AppData\Local\Temp\
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art11/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 12 (T1036.005-4, event 1) - context CommandLine \Downloads\
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art12/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
+    - name: Atomic Red Team replay 13 (T1036.005-4, event 1) - context CommandLine \Temp\
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_autohotkey_autoit_susp_launch-art13/e159e9de-5f90-40d0-a5e3-4035b13c011d.evtx
