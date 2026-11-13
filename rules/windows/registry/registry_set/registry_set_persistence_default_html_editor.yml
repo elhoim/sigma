@@ -25,7 +25,9 @@ detection:
             - '\Microsoft\Shared\HTML\Old Default Editor\'
         TargetObject|endswith: '\command\(Default)'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     filter_main_program_files:
         Details|startswith:
             - '"C:\Program Files (x86)\'
