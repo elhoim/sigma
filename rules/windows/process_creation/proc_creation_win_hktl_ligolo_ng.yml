@@ -3,37 +3,50 @@ id: f33bbd3c-a622-4420-a435-e5454ace6b61
 status: experimental
 description: |
     Detects the execution of the Ligolo-ng tunnelling tool by its characteristic command line arguments: the agent dialling back to its proxy with "-connect" together with "-ignore-cert" or "-accept-fingerprint", and the proxy started with "-selfcert" or "-autocert" and a listening address.
-    Ligolo-ng builds a reverse TLS tunnel that gives the operator routed, layer 3 access to the networks reachable from the host running the agent. It is widely used for pivoting during intrusions and has been forked by threat actors for persistence. The binaries are plain Go executables without version information and are usually renamed, so the rule keys on the arguments rather than on the file name.
+    Ligolo-ng builds a reverse TLS tunnel that gives the operator routed, layer 3 access to the networks reachable from the host running the agent. It is widely used for pivoting during intrusions and has been observed with Medusa ransomware and MuddyWater operators.
+    The binaries are plain Go executables without version information and are usually renamed, so the rule keys on the arguments; the proxy image name is only one of the alternative context conditions.
+    The Go flag parser accepts both the single and the double dash forms, and the "-flag=value" syntax, so all of them are covered.
 references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/ligolo-ng.md
+    - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/agent/main.go
+    - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/proxy/main.go
     - https://docs.ligolo.ng/
-    - https://www.bleepingcomputer.com/news/security/hackers-fork-open-source-reverse-tunneling-tool-for-persistence/
 author: elhoim
 date: 2026-11-12
 tags:
     - attack.command-and-control
-    - attack.t1572
     - attack.t1090
+    - attack.t1572
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
     selection_agent_connect:
-        CommandLine|contains: ' -connect '
+        CommandLine|contains:
+            - ' -connect '
+            - ' -connect='
+            - ' --connect '
+            - ' --connect='
     selection_agent_cert:
         CommandLine|contains:
             - ' -ignore-cert'
-            - ' -accept-fingerprint '
+            - ' --ignore-cert'
+            - ' -accept-fingerprint'
+            - ' --accept-fingerprint'
     selection_proxy_cert:
         CommandLine|contains:
             - ' -selfcert'
+            - ' --selfcert'
             - ' -autocert'
+            - ' --autocert'
     selection_proxy_context:
         - Image|endswith: '\proxy.exe'
         - Image|contains: 'ligolo'
         - CommandLine|contains:
-              - ' -laddr '
-              - ' -selfcert-domain '
+              - ' -laddr'
+              - ' --laddr'
+              - ' -selfcert-domain'
+              - ' --selfcert-domain'
     condition: all of selection_agent_* or all of selection_proxy_*
 falsepositives:
     - Administrators using Ligolo-ng to reach an isolated lab or management network
