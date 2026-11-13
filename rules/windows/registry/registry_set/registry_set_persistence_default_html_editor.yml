@@ -1,0 +1,48 @@
+title: Potential Persistence Via Default HTML Editor Registry Keys
+id: bf90127e-739a-43e2-a045-ecdd592939df
+status: experimental
+description: |
+    Detects a command registered as the HTML or MHTML editor of Internet Explorer and Microsoft Office ("Shared\HTML\Default Editor", "Shared\HTML\Old Default Editor", "Internet Explorer\Default HTML Editor" and "Default MHTML Editor") that does not point to a program in "Program Files" or to Notepad.
+    The "shell\edit\command" value of these keys is the program started by the "Edit" and "View source" actions of Internet Explorer based components and by Office when an HTML document is edited.
+    The keys are legacy settings written by Office setup. An attacker can redirect them to his own program, which is then started by the user through a trusted application.
+references:
+    - https://www.hexacorn.com/blog/2021/02/06/beyond-good-ol-run-key-part-131/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Microsoft\Internet Explorer\Default HTML Editor\'
+            - '\Microsoft\Internet Explorer\Default MHTML Editor\'
+            - '\Microsoft\Shared\HTML\Default Editor\'
+            - '\Microsoft\Shared\HTML\Old Default Editor\'
+        TargetObject|endswith: '\command\(Default)'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    filter_main_program_files:
+        Details|startswith:
+            - '"C:\Program Files (x86)\'
+            - '"C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+    filter_main_notepad:
+        Details|startswith:
+            - '"C:\Windows\notepad.exe'
+            - '"C:\Windows\System32\notepad.exe'
+            - '%SystemRoot%\system32\NOTEPAD.EXE'
+            - 'C:\Windows\notepad.exe'
+            - 'C:\Windows\System32\notepad.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - HTML editors installed outside of "Program Files" that register themselves as the default editor
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_default_html_editor/info.yml
