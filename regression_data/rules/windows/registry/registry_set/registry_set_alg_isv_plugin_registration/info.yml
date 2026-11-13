@@ -1,0 +1,13 @@
+id: bd101a3e-81b3-451f-9c41-0f9b7fff27ab
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 7aca897d-0a11-48fc-9657-016ede9be446
+      title: Application Layer Gateway ISV Plug-in Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_alg_isv_plugin_registration/7aca897d-0a11-48fc-9657-016ede9be446.evtx

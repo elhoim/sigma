@@ -1,0 +1,28 @@
+title: Application Layer Gateway ISV Plug-in Registration
+id: 7aca897d-0a11-48fc-9657-016ede9be446
+status: experimental
+description: |
+    Detects the creation or modification of a value under the Application Layer Gateway (ALG) "ISV" registry key, other than the default FTP plug-in.
+    The Application Layer Gateway service (alg.exe) enumerates this key, watches it for changes and instantiates the listed plug-ins as COM objects.
+    A new value is uncommon as the only default plug-in is the "FTP Client/Server Protocol" one, and it could be an attempt to get a COM object loaded by the service.
+references:
+    - https://www.hexacorn.com/blog/2018/01/28/beyond-good-ol-run-key-part-71/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\ALG\ISV\'
+    filter_main_default_ftp_plugin:
+        TargetObject|endswith: '\ALG\ISV\{6E590D61-F6BC-4dad-AC21-7DC40D304059}'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legacy third-party firewall or NAT traversal software that registers an ALG plug-in
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_alg_isv_plugin_registration/info.yml
