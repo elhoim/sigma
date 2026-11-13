@@ -8,7 +8,6 @@ description: |
     Detects the creation of a file directly in the root of a volume's "$RECYCLE.BIN" folder (not inside a per-user SID subfolder), other than the folder's own desktop.ini.
     Windows only writes deleted items into the SID subfolders of the Recycle Bin; a file placed in its root is hidden from Explorer's Recycle Bin view and from casual directory listings, which makes the folder a favourite staging location for collected data and tooling.
 references:
-    - https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_files_staged_in_recycle_bin_root.toml
 author: elhoim
 date: 2026-11-11
@@ -32,6 +31,5 @@ detection:
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Backup or disk tools that write metadata into the Recycle Bin root
-    - A file named like a SID folder (system account, local or domain user, Entra ID user) or desktop.ini in the Recycle Bin root is excluded (the file event does not distinguish files from directories)
 level: medium
 regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_recycle_bin_root_file_creation/info.yml
