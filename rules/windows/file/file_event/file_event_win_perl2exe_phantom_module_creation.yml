@@ -1,0 +1,28 @@
+title: Perl2Exe Phantom Module Storage File Creation
+id: b8a48e45-0e0b-44a6-9f19-6e2b7a347c09
+status: experimental
+description: |
+    Detects the creation of a file in a directory named "PERL2EXE_STORAGE".
+    Executables packed with Perl2Exe probe that directory next to the executable for Perl modules and for a "sitecustomize.pl" script at each start, although the directory does not exist by default.
+    An attacker can create it and plant a script or a module DLL in order to get code executed each time the packed program starts.
+references:
+    - https://www.hexacorn.com/blog/2015/01/06/beyond-good-ol-run-key-part-22/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\PERL2EXE_STORAGE\'
+    condition: selection
+falsepositives:
+    - Software packed with Perl2Exe that is distributed with an external module storage directory
+level: low
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_perl2exe_phantom_module_creation/info.yml
