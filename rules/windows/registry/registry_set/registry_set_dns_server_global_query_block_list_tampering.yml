@@ -1,0 +1,36 @@
+title: Potential DNS Server Global Query Block List Tampering
+id: 73d2eddb-8c9c-4352-b0db-d56c7b02a556
+status: experimental
+description: |
+    Detects a change to the Windows DNS Server Global Query Block List (GQBL): the EnableGlobalQueryBlockList value set to 0, or the GlobalQueryBlockList name list rewritten (the DNS server stores the list as binary data, so the new content cannot be inspected and any rewrite is reported).
+    The GQBL stops the DNS server from answering queries for "wpad" and "isatap" even when such records exist in Active Directory-integrated DNS.
+    An attacker with DNSAdmins or DNS record write rights disables or edits it, registers a WPAD record pointing to a host under their control and then collects or relays the authentication of every client that still uses the default proxy auto-discovery.
+references:
+    - https://www.netspi.com/blog/technical-blog/network-penetration-testing/adidns-revisited/
+    - https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/wpad-spoofing
+    - https://learn.microsoft.com/en-us/powershell/module/dnsserver/set-dnsserverglobalqueryblocklist
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_reg_disable_enableglobalqueryblocklist.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.collection
+    - attack.credential-access
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.t1112
+    - attack.t1557
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_disabled:
+        TargetObject|endswith: '\Services\DNS\Parameters\EnableGlobalQueryBlockList'
+        Details: 'DWORD (0x00000000)'
+    selection_list_changed:
+        TargetObject|endswith: '\Services\DNS\Parameters\GlobalQueryBlockList'
+    condition: 1 of selection_*
+falsepositives:
+    - The DNS Server service (dns.exe) writing its default GlobalQueryBlockList when the DNS Server role is installed or first starts; the binary content cannot be inspected, so check that the event matches a role installation
+    - DNS administrators that deliberately disable the block list or edit its entries (for example to publish a WPAD or ISATAP host); the change should match a documented ticket
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_dns_server_global_query_block_list_tampering/info.yml
