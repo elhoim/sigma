@@ -8,7 +8,9 @@ related:
 status: experimental
 description: |
     Detects the .NET Installer Tool "InstallUtil.exe" being started, as a broad low-severity baseline for hunting.
-    InstallUtil runs the installer components of a .NET assembly and is abused to proxy the execution of attacker-supplied assemblies through a signed Microsoft binary. Legitimate use comes from software installers, deployment agents and developers testing .NET services. No account is excluded, so SYSTEM executions are reported too.
+    InstallUtil runs the installer components of a .NET assembly and is abused to proxy the execution of attacker-supplied assemblies through a signed Microsoft binary.
+    Legitimate use comes from software installers, deployment agents and developers testing .NET services.
+    No account is excluded, so SYSTEM executions are reported too.
 references:
     - https://learn.microsoft.com/en-us/dotnet/framework/tools/installutil-exe-installer-tool
     - https://lolbas-project.github.io/lolbas/Binaries/Installutil/
@@ -16,12 +18,12 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.stealth
     - attack.execution
+    - attack.stealth
     - attack.t1218.004
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
     selection:
         - Image|endswith: '\InstallUtil.exe'
