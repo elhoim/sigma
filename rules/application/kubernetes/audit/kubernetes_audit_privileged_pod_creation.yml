@@ -14,8 +14,8 @@ author: Leo Tsaousis (@laripping)
 date: 2024-03-26
 modified: 2026-11-05
 tags:
-    - attack.t1611
     - attack.privilege-escalation
+    - attack.t1611
 logsource:
     category: application
     product: kubernetes
@@ -29,14 +29,30 @@ detection:
         - requestObject.spec.containers.securityContext.privileged: true
         - requestObject.spec.initContainers.securityContext.privileged: true
         - requestObject.spec.containers.securityContext.capabilities.add|contains:
+              - 'ALL'
+              - 'BPF'
+              - 'DAC_READ_SEARCH'
+              - 'NET_ADMIN'
               - 'SYS_ADMIN'
+              - 'SYS_BOOT'
               - 'SYS_MODULE'
               - 'SYS_PTRACE'
-              - 'NET_ADMIN'
+              - 'SYS_RAWIO'
+              - 'SYSLOG'
+        - requestObject.spec.initContainers.securityContext.capabilities.add|contains:
+              - 'ALL'
+              - 'BPF'
               - 'DAC_READ_SEARCH'
+              - 'NET_ADMIN'
+              - 'SYS_ADMIN'
+              - 'SYS_BOOT'
+              - 'SYS_MODULE'
+              - 'SYS_PTRACE'
+              - 'SYS_RAWIO'
+              - 'SYSLOG'
         - requestObject.spec.hostPID: true
         - requestObject.spec.hostNetwork: true
     condition: all of selection*
 falsepositives:
-    - Unknown
+    - DaemonSets of CNI plugins, kube-proxy, storage drivers and node monitoring or security agents create privileged or host-network pods, mostly in the kube-system namespace.
 level: low
