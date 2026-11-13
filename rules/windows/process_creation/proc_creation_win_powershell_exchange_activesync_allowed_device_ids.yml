@@ -3,7 +3,8 @@ id: efbe4a33-b40f-4078-a45c-a731796a95ef
 status: experimental
 description: |
     Detects a PowerShell command line that calls the Exchange cmdlet "Set-CASMailbox" with the "ActiveSyncAllowedDeviceIDs" parameter, which registers a device as allowed to synchronise a user's mailbox over ActiveSync.
-    Volexity observed the Dark Halo (UNC2452) actor adding its own device identifiers to targeted mailboxes to collect email without further authentication prompts; the cmdlet is otherwise run only by Exchange administrators onboarding mobile devices.
+    Volexity observed the Dark Halo (UNC2452) actor adding its own device identifiers to targeted mailboxes to collect email without further authentication prompts.
+    The cmdlet is otherwise run only by Exchange administrators onboarding mobile devices.
 references:
     - https://www.volexity.com/blog/2020/12/14/dark-halo-leverages-solarwinds-compromise-to-breach-organizations/
     - https://learn.microsoft.com/en-us/powershell/module/exchange/set-casmailbox?view=exchange-ps
