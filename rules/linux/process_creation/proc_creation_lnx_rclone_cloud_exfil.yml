@@ -1,4 +1,4 @@
-title: Data Transfer To Cloud Storage Via Rclone - Linux
+title: Potential Data Transfer To Cloud Storage Via Rclone - Linux
 id: 1c91352f-d1b7-497d-bc3b-755806fde33e
 related:
     - id: e37db05d-d1f9-49c8-b464-cee1a4b11638 # Windows
@@ -9,8 +9,8 @@ description: |
     Ransomware affiliates and other threat actors routinely use rclone to exfiltrate data to cloud storage before encryption.
 references:
     - https://rclone.org/commands/rclone_copy/
-    - https://www.nccgroup.com/us/research-blog/detecting-rclone-an-effective-tool-for-exfiltration/
-    - https://redcanary.com/blog/threat-detection/rclone-mega-extortion/
+    - https://www.nccgroup.com/research/detecting-rclone-an-effective-tool-for-exfiltration/
+    - https://www.zscaler.com/blogs/cybersecurity-best-practices/rclone-mega-extortion
     - https://thedfirreport.com/2021/03/29/sodinokibi-aka-revil-ransomware/
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1567.002/T1567.002.md
 author: elhoim
