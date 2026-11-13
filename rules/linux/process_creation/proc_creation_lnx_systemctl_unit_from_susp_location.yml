@@ -7,7 +7,7 @@ description: |
     Adversaries abuse this to execute payloads as a systemd service and to establish persistence.
 references:
     - https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
-    - https://gtfobins.github.io/gtfobins/systemctl/
+    - https://gtfobins.org/gtfobins/systemctl/
     - https://www.elastic.co/security-labs/primer-on-persistence-mechanisms
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1569.003/T1569.003.md
 author: elhoim
@@ -16,8 +16,8 @@ tags:
     - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.t1569.003
     - attack.t1543.002
+    - attack.t1569.003
 logsource:
     product: linux
     category: process_creation
@@ -31,11 +31,11 @@ detection:
     selection_path:
         CommandLine|contains:
             - '/dev/shm/'
-            - '/tmp/'
-            - '/var/tmp/'
+            - '/tmp/' # Also covers /var/tmp/
     condition: all of selection_*
 falsepositives:
     - Developers testing unit files from temporary directories
+    - Image build or chroot tooling running "systemctl --root=" against a root directory staged under "/tmp" or "/var/tmp"
 level: high
 simulation:
     - type: atomic-red-team
