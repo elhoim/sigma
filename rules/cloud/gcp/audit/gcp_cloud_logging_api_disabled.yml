@@ -19,8 +19,7 @@ detection:
     selection:
         data.protoPayload.serviceName: 'serviceusage.googleapis.com'
         data.protoPayload.methodName|endswith: '.ServiceUsage.DisableService'
-    keywords:
-        - 'logging.googleapis.com'
+    keywords: 'logging.googleapis.com'
     condition: selection and keywords
 falsepositives:
     - Decommissioning of a project by an administrator
