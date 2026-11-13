@@ -9,12 +9,10 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a Chromium based browser (Chrome, Edge, Brave, Opera, Vivaldi) started with the remote debugging or headless flags either by an uncommon parent process
-    (command shell, script host, LOLBIN, Office application, or a binary located in a user-writable location) or with its window pushed off-screen via a negative "--window-position".
-    Infostealers such as Phemedrone, Lumma or Katz use this pattern to open a hidden browser instance, connect to the DevTools protocol over the loopback debugging port and dump
-    cookies and saved credentials while bypassing Chrome's application-bound encryption. Unlike the generic headless and remote debugging rules, this rule requires the suspicious
-    launch context and is therefore suited for alerting. It overlaps partly with the rule that matches headless, remote debugging and a user data directory together (3e8207c5):
-    both can fire on the same event, but that rule ignores the parent process and the off-screen window position, and this one does not require a user data directory.
+    Detects a Chromium based browser (Chrome, Edge, Brave, Opera, Vivaldi) started with the remote debugging or headless flags, either by an uncommon parent process (command shell, script host, LOLBIN, Office application, or a binary located in a user-writable location) or with its window pushed off-screen via a negative "--window-position".
+    Infostealers such as Phemedrone use this pattern to open a hidden browser instance, connect to the DevTools protocol over the loopback debugging port and dump the cookies while bypassing Chrome's application-bound encryption.
+    Unlike the generic headless and remote debugging rules, this rule requires the suspicious launch context and is therefore suited for alerting.
+    It overlaps partly with the rule that matches headless, remote debugging and a user data directory together (3e8207c5): both can fire on the same event, but that rule ignores the parent process and the off-screen window position, and this one does not require a user data directory.
 references:
     - https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game
     - https://embracethered.com/blog/posts/2024/cookie-theft-in-2024-and-what-todo/
