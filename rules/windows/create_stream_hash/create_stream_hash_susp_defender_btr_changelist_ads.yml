@@ -12,10 +12,10 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.stealth
     - attack.defense-impairment
     - attack.persistence
     - attack.privilege-escalation
+    - attack.stealth
     - attack.t1543.003
     - attack.t1564.004
     - attack.t1685
