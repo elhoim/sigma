@@ -1,0 +1,13 @@
+id: 473bf133-f8ad-4898-a14e-e6ddf54571fa
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: d6d0c920-f25f-4127-9fda-6819f9d63741
+      title: Potential DLL Payload Execution - Command Shell Or PowerShell Spawned By Rundll32
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_spawn_shell/d6d0c920-f25f-4127-9fda-6819f9d63741.evtx
