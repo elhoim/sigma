@@ -1,0 +1,105 @@
+title: Potential JetBrains TeamCity Exploitation - Uncommon Child Process
+id: 819bbd54-a006-4540-b1ea-cc7a7da52c59
+related:
+    - id: cea2b7ea-792b-405f-95a1-b903ea06458f
+      type: similar
+status: experimental
+description: |
+    Detects a shell, scripting host, living-off-the-land or discovery utility started by the Java process of a JetBrains TeamCity server or build agent.
+    Remote code execution vulnerabilities in TeamCity (CVE-2023-42793, CVE-2024-27198, CVE-2024-27199) were exploited in the wild to run commands through the server process, leading to ransomware and backdoor deployment. Build agents legitimately run build scripts, so the two most common build-step invocations are filtered with strictly anchored command lines.
+references:
+    - https://www.trendmicro.com/en_us/research/24/c/teamcity-vulnerability-exploits-lead-to-jasmin-ransomware.html
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_exploit_jetbrains_teamcity.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.discovery
+    - attack.execution
+    - attack.initial-access
+    - attack.stealth
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1082
+    - attack.t1190
+    - attack.t1218
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|contains: '\TeamCity\'
+        ParentImage|endswith: '\jre\bin\java.exe'
+    selection_img:
+        Image|endswith:
+            - '\arp.exe'
+            - '\atbroker.exe'
+            - '\bginfo.exe'
+            - '\bitsadmin.exe'
+            - '\cdb.exe'
+            - '\certreq.exe'
+            - '\certutil.exe'
+            - '\cmd.exe'
+            - '\cmstp.exe'
+            - '\control.exe'
+            - '\cscript.exe'
+            - '\csi.exe'
+            - '\curl.exe'
+            - '\dnx.exe'
+            - '\dsget.exe'
+            - '\dsquery.exe'
+            - '\explorer.exe'
+            - '\forfiles.exe'
+            - '\fsi.exe'
+            - '\ftp.exe'
+            - '\gpresult.exe'
+            - '\hostname.exe'
+            - '\ieexec.exe'
+            - '\iexpress.exe'
+            - '\installutil.exe'
+            - '\ipconfig.exe'
+            - '\Microsoft.Workflow.Compiler.exe'
+            - '\msdt.exe'
+            - '\mshta.exe'
+            - '\msiexec.exe'
+            - '\msxsl.exe'
+            - '\nbtstat.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\netsh.exe'
+            - '\netstat.exe'
+            - '\nltest.exe'
+            - '\odbcconf.exe'
+            - '\ping.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\qprocess.exe'
+            - '\quser.exe'
+            - '\qwinsta.exe'
+            - '\rcsi.exe'
+            - '\reg.exe'
+            - '\regasm.exe'
+            - '\regsvcs.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\sc.exe'
+            - '\schtasks.exe'
+            - '\ssh.exe'
+            - '\systeminfo.exe'
+            - '\tasklist.exe'
+            - '\tracert.exe'
+            - '\whoami.exe'
+            - '\wmic.exe'
+            - '\wscript.exe'
+            - '\xwizard.exe'
+    filter_optional_build_agent_powershell_step:
+        Image: 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+        CommandLine|re: '(?i)^"?(powershell|C:\\Windows\\System32\\WindowsPowerShell\\v1\.0\\powershell)(\.exe)?"?\s+(-NoProfile\s+)?(-NonInteractive\s+)?-ExecutionPolicy\s+\w+\s+-File\s+"?[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\)?TeamCity\\buildAgent\\work\\[^"&|;<>]*\.ps1"?\s*$'
+    filter_optional_build_agent_dir:
+        Image: 'C:\Windows\System32\cmd.exe'
+        CommandLine|re: '(?i)^"?(cmd|C:\\Windows\\System32\\cmd)(\.exe)?"?\s+/c\s+dir\s+/-c\s+"?[A-Za-z]:\\?"?\s*$'
+    condition: selection_parent and selection_img and not 1 of filter_optional_*
+falsepositives:
+    - Build configurations with command line or PowerShell steps that do not match the two default filters; tune per build agent
+    - TeamCity server maintenance scripts run by administrators through the agent
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_teamcity_susp_child_process/info.yml
