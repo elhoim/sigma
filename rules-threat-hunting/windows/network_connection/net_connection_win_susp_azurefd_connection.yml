@@ -10,7 +10,7 @@ references:
     - https://web.archive.org/web/20250710044406/https://www.fortalicesolutions.com/posts/hiding-behind-the-front-door-with-azure-domain-fronting
 author: Isaac Dunham
 date: 2024-11-07
-modified: 2026-11-05
+modified: 2026-11-13
 tags:
     - attack.command-and-control
     - attack.t1102.002
@@ -26,12 +26,6 @@ detection:
         Image|contains:
             - ':\Program Files (x86)\'
             - ':\Program Files\'
-            - '\AppData\Local\BraveSoftware\Brave-Browser\Application\'
-            - '\AppData\Local\Chromium\Application\'
-            - '\AppData\Local\Google\Chrome\Application\'
-            - '\AppData\Local\Mozilla Firefox\'
-            - '\AppData\Local\Programs\Opera\'
-            - '\AppData\Local\Vivaldi\Application\'
         Image|endswith:
             - '\brave.exe'
             - '\chrome.exe'
@@ -39,6 +33,16 @@ detection:
             - '\firefox.exe'
             - '\msedge.exe'
             - '\msedgewebview2.exe'
+            - '\opera.exe'
+            - '\vivaldi.exe'
+    filter_optional_web_browsers_user_install:
+        # Per-user browser installations, anchored to the profile folder
+        Image|re|i: '^[a-z]:\\Users\\[^\\]+\\AppData\\Local\\(?:BraveSoftware\\Brave-Browser\\Application|Chromium\\Application|Google\\Chrome\\Application|Mozilla Firefox|Programs\\Opera|Vivaldi\\Application)\\'
+        Image|endswith:
+            - '\brave.exe'
+            - '\chrome.exe'
+            - '\chromium.exe'
+            - '\firefox.exe'
             - '\opera.exe'
             - '\vivaldi.exe'
     filter_main_common_talkers:
@@ -53,7 +57,7 @@ detection:
             - 'powershellinfraartifacts-gkhedzdeaghdezhr.z01.azurefd.net' # Used by VS Code; Cisco Umbrella top 1m
             - 'storage-explorer-publishing-feapcgfgbzc2cjek.b01.azurefd.net' # Used by Azure Storage Explorer; Cisco Umbrella top 1m
             - 'graph.azurefd.net' # MS Graph; Cisco Umbrella top 1m
-    condition: selection and not 1 of filter_main_*
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Results are not inherently suspicious, but should be investigated during threat hunting for potential cloud C2.
     - Organization-specific Azure Front Door endpoints
