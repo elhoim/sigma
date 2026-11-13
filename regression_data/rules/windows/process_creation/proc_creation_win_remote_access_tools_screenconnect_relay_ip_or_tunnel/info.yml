@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: fa2f9bc9-f952-4ba5-a194-a9b5392be007
-      title: Remote Access Tool - ScreenConnect Client Connecting To Relay By IP Address Or Tunnel Domain
+      title: Remote Access Tool - Potential ScreenConnect Rogue Relay By IP Address Or Tunnel Domain
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx

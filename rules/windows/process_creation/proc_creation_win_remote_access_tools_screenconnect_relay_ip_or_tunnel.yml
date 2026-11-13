@@ -1,4 +1,4 @@
-title: Remote Access Tool - ScreenConnect Client Connecting To Relay By IP Address Or Tunnel Domain
+title: Remote Access Tool - Potential ScreenConnect Rogue Relay By IP Address Or Tunnel Domain
 id: fa2f9bc9-f952-4ba5-a194-a9b5392be007
 related:
     - id: 75bfe6e6-cd8e-429e-91d3-03921e1d7962
@@ -11,6 +11,7 @@ description: |
 references:
     - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-025a
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_newly_observed_screenconnect_host_server.toml
+    - https://blackpointcyber.com/blog/screenconnect-abuse-surges-in-rogue-access-campaigns/
 author: elhoim
 date: 2026-11-10
 tags:
