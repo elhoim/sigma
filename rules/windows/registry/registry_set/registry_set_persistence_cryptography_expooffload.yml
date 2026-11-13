@@ -1,0 +1,26 @@
+title: Potential Persistence Via Cryptography ExpoOffload DLL Registration
+id: 02137566-7a10-4958-a13a-53a8f0f65a03
+status: experimental
+description: |
+    Detects the creation or modification of the "ExpoOffload" value under the "Cryptography\Offload" registry key.
+    The Microsoft cryptographic providers "rsaenh.dll" and "dssenh.dll" read this value and load the DLL it points to in order to offload modular exponentiation to a hardware accelerator.
+    As these providers are used by most processes, an attacker can set the value in order to get a DLL loaded in many processes, where it can also access the private keys that are handled.
+references:
+    - https://www.hexacorn.com/blog/2017/01/27/beyond-good-ol-run-key-part-57/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Cryptography\Offload\ExpoOffload'
+    condition: selection
+falsepositives:
+    - Installation of the driver package of a legacy hardware cryptographic accelerator
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_cryptography_expooffload/info.yml
