@@ -10,6 +10,7 @@ description: |
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_system_shells_via_services.toml
     - https://www.ired.team/offensive-security/privilege-escalation/weak-service-permissions
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1543.003/T1543.003.md#atomic-test-1---modify-fax-service-to-run-powershell
 author: elhoim
 date: 2026-11-09
 tags:
