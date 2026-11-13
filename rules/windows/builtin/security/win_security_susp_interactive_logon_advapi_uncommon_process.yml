@@ -8,7 +8,8 @@ related:
 status: experimental
 description: |
     Detects an interactive logon (type 2) created through the "Advapi" logon process, i.e. a LogonUser API call, by a process running under a local or domain user account for a different user account, where the calling process is not one of the Windows logon components, an IIS worker process, the Windows Installer or an application installed under "Program Files".
-    Post-exploitation frameworks use this "make token" pattern to obtain a token for stolen credentials from an implant running under the compromised user. The matching "4648" explicit credential event is covered by the "Potentially Suspicious Explicit Credential Local Logon" rule; this rule covers the resulting "4624" event.
+    Post-exploitation frameworks use this "make token" pattern to obtain a token for stolen credentials from an implant running under the compromised user.
+    The matching "4648" explicit credential event is covered by the "Potentially Suspicious Explicit Credential Local Logon" rule; this rule covers the resulting "4624" event.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_make_token_local.toml
     - https://www.elastic.co/blog/how-attackers-abuse-access-token-manipulation
