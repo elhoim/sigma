@@ -1,0 +1,58 @@
+title: Potential Token Creation Via Interactive Logon From Uncommon Process
+id: 22997009-4e40-4807-a118-01586f37af92
+related:
+    - id: e3c6d245-7b8f-4e2a-c17f-a9d0e5b38f62
+      type: similar
+    - id: 02f7c9c1-1ae8-4c6a-8add-04693807f92f
+      type: similar
+status: experimental
+description: |
+    Detects an interactive logon (type 2) created through the "Advapi" logon process, i.e. a LogonUser API call, by a process running under a local or domain user account for a different user account, where the calling process is not one of the Windows logon components, an IIS worker process, the Windows Installer or an application installed under "Program Files".
+    Post-exploitation frameworks use this "make token" pattern to obtain a token for stolen credentials from an implant running under the compromised user.
+    The matching "4648" explicit credential event is covered by the "Potentially Suspicious Explicit Credential Local Logon" rule; this rule covers the resulting "4624" event.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_make_token_local.toml
+    - https://www.elastic.co/blog/how-attackers-abuse-access-token-manipulation
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1134.002
+    - attack.t1134.003
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4624
+        LogonType: 2
+        LogonProcessName|contains: 'Advapi'
+        SubjectUserSid|startswith:
+            - 'S-1-12-1-'
+            - 'S-1-5-21-'
+        TargetUserSid|startswith:
+            - 'S-1-12-1-'
+            - 'S-1-5-21-'
+    filter_main_same_user:
+        SubjectUserSid|fieldref: TargetUserSid
+    filter_main_system_processes:
+        ProcessName:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\System32\wininit.exe'
+            - 'C:\Windows\System32\winlogon.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_optional_iis:
+        ProcessName:
+            - 'C:\Windows\System32\inetsrv\w3wp.exe'
+            - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
+    filter_optional_program_files:
+        ProcessName|startswith:
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Remote management, password manager or helpdesk tools installed outside of "Program Files" that authenticate users with explicit credentials
+    - Administrative scripts calling LogonUser from a user-writable location
+level: medium
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_susp_interactive_logon_advapi_uncommon_process/info.yml
