@@ -22,7 +22,7 @@ logsource:
     product: windows
 detection:
     selection_autoplay:
-        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\'
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\'
         TargetObject|endswith:
             - '\CLSID'
             - '\InitCmdLine'
@@ -30,7 +30,7 @@ detection:
             - '\InvokeVerb'
     selection_wia:
         TargetObject|contains:
-            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications\'
+            - '\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications\'
             - '\Control\StillImage\Events\STIProxyEvent\'
     filter_main_empty:
         Details: '(Empty)'
