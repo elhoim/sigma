@@ -1,0 +1,13 @@
+id: c1b6af6e-2d62-4406-b6f5-758a05175f6e
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 67bfbde5-12b8-4a5a-91ac-9631f4b7a51b
+      title: Potential Persistence Via VMware Tools Usermode ShimPath Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_vmware_tools_usermode_shimpath/67bfbde5-12b8-4a5a-91ac-9631f4b7a51b.evtx
