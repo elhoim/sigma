@@ -1,0 +1,34 @@
+title: Potential Persistence Via Legacy CPL Map Registry Key
+id: dada99a4-d915-4ed5-ac75-602288854d88
+status: experimental
+description: |
+    Detects the creation or modification of a "ShellExecute" or "AppletCanonicalName" value under the "Legacy CPL Map" registry key of the Control Panel.
+    When a Control Panel applet is opened, the shell looks for a subkey named after the applet and, if one exists, runs the command line stored in "ShellExecute" or opens the applet named in "AppletCanonicalName" instead.
+    An attacker can map a legitimate applet to an arbitrary command in order to get it executed each time the applet or a signed .cpl file is opened.
+references:
+    - https://www.hexacorn.com/blog/2017/01/16/beyond-good-ol-run-key-part-54/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Control Panel\Legacy CPL Map\'
+        TargetObject|endswith:
+            - '\AppletCanonicalName'
+            - '\ShellExecute'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_legacy_cpl_map/info.yml
