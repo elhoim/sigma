@@ -1,0 +1,13 @@
+id: e4393e5f-1cd0-40b8-a534-94106506ec3d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 847eb2fa-a6a8-4eeb-aa7f-fb61ae83598c
+      title: Suspicious WebDAV Or Tunnel Path In Script Interpreter Or LOLBin Command Line
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_webdav_or_tunnel_path_in_lolbin_cmdline/847eb2fa-a6a8-4eeb-aa7f-fb61ae83598c.evtx
