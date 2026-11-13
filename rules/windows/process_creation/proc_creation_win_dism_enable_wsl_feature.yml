@@ -8,7 +8,8 @@ related:
 status: experimental
 description: |
     Detects the Deployment Image Servicing and Management tool "dism.exe" being used to enable the Windows Subsystem for Linux or the Virtual Machine Platform optional features.
-    Attackers enable WSL on a compromised host to run Linux tooling and ELF payloads outside the visibility of Windows-centric security controls; the sibling rules cover the "Enable-WindowsOptionalFeature" PowerShell cmdlet, this one covers the DISM command line documented for manual WSL installation.
+    Attackers enable WSL on a compromised host to run Linux tooling and ELF payloads outside the visibility of Windows-centric security controls.
+    The sibling rules cover the "Enable-WindowsOptionalFeature" PowerShell cmdlet, this one covers the DISM command line documented for manual WSL installation.
 references:
     - https://learn.microsoft.com/en-us/windows/wsl/install-manual
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_wsl_enabled_via_dism.toml
