@@ -3,7 +3,8 @@ id: 6ea9500b-99c0-493a-84e1-86991e9d7a3e
 status: experimental
 description: |
     Detects a shell, scripting host, download utility or other living-off-the-land binary started by the Visual Studio Code extension host, identified by a "Code.exe" or "node.exe" parent whose command line references the extensions folder or the extension host entry point.
-    Malicious extensions published to the marketplace or the Open VSX registry execute on editor start-up and have been observed dropping remote access tools (for example the fake "Clawdbot" extension installing ScreenConnect) or running PowerShell download cradles.
+    Malicious extensions published to the marketplace or the Open VSX registry execute on editor start-up and have been observed dropping remote access tools or running PowerShell download cradles (for example the fake "Clawdbot" extension, whose batch script fallback runs a PowerShell download).
+    A payload that the extension writes to disk and spawns directly is not a listed child image and is not covered by this rule.
     Legitimate extensions also run "cmd.exe /d /s /c" (the Node.js exec() wrapper) for routine probes such as interpreter discovery or process clean-up, and those commands resolve from the working directory or PATH, so they cannot be excluded safely; use this rule to hunt and baseline the extensions in use.
 references:
     - https://www.aikido.dev/blog/fake-clawdbot-vscode-extension-malware
@@ -30,6 +31,7 @@ logsource:
 detection:
     selection_parent_img:
         ParentImage|endswith:
+            - '\Code - Insiders.exe'
             - '\Code.exe'
             - '\node.exe'
     selection_parent_cli:
