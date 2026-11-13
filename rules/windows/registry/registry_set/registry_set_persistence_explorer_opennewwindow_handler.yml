@@ -1,0 +1,31 @@
+title: Suspicious Explorer Open New Window Handler Modification
+id: b9bd606f-92e6-4cdb-aa07-de643e09eea1
+status: experimental
+description: |
+    Detects the modification of the "opennewwindow" shell verb command of the CLSID {52205fd8-5dfb-447d-801a-d0b52f2e83e1}.
+    Explorer invokes this verb each time a new Explorer window is opened, for example with the Win+E shortcut or when explorer.exe is started.
+    An attacker can override the command in the user classes hive, without administrative rights, in order to get a program executed each time an Explorer window is opened.
+references:
+    - https://www.hexacorn.com/blog/2017/12/08/beyond-good-ol-run-key-part-68/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546.015
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}\shell\opennewwindow\command\'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_opennewwindow_handler/info.yml
