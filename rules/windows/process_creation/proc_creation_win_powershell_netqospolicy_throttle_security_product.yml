@@ -23,8 +23,10 @@ detection:
             - 'Set-NetQosPolicy'
     selection_action:
         CommandLine|contains:
-            - 'ThrottleRateActionBitsPerSecond'
-            - '-ThrottleRateAction'
+            # covers ThrottleRateActionBitsPerSecond and its ThrottleRateAction / ThrottleRate aliases
+            - 'ThrottleRate'
+            - '-Throttle '
+            - '-maxbw'
     selection_target:
         CommandLine|contains:
             - 'carbonblack'
@@ -34,11 +36,13 @@ detection:
             - 'cyvera'
             - 'edragent'
             - 'elastic-agent'
+            - 'elastic-endpoint'
             - 'falcon-sensor'
             - 'HarfangLab'
             - 'MsMpEng'
             - 'MsSense'
             - 'pmsu.exe'
+            - 'SenseCncProxy'
             - 'SenseIR'
             - 'SentinelAgent'
             - 'SentinelService'
