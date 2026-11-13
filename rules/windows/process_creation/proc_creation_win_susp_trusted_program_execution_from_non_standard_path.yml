@@ -51,16 +51,6 @@ detection:
             - '\Deployment Tools\amd64\DISM\dism.exe'
             - '\Deployment Tools\arm64\DISM\dism.exe'
             - '\Deployment Tools\x86\DISM\dism.exe'
-    filter_main_dism_servicing:
-        # Windows servicing locations, as excluded for dism.exe by e4a6b256
-        Image|startswith:
-            - 'C:\$WINDOWS.~BT\'
-            - 'C:\$WinREAgent\'
-            - 'C:\Windows\SoftwareDistribution\'
-            - 'C:\Windows\SystemTemp\'
-            - 'C:\Windows\uus\'
-            - 'C:\Windows\WinSxS\'
-        Image|endswith: '\dism.exe'
     filter_main_w3wp:
         Image:
             - 'C:\Windows\System32\inetsrv\w3wp.exe'
