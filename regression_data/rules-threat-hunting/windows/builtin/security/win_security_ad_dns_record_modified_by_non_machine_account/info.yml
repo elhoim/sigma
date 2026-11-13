@@ -11,7 +11,7 @@ regression_tests_info:
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1
       path: regression_data/rules-threat-hunting/windows/builtin/security/win_security_ad_dns_record_modified_by_non_machine_account/7dafdbfb-ff13-43fa-89d2-33bef458f8bd.evtx
-    - name: Atomic Red Team replay 01 (T1098-1, event 5136) - selection; selection EventID 5136
+    - name: Atomic Red Team replay 01 (T1098-1, event 5136) - selection EventID 5136
       type: evtx
       provider: Microsoft-Windows-Security-Auditing
       match_count: 1

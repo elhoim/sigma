@@ -4,7 +4,7 @@ date: 2026-11-08
 author: elhoim
 rule_metadata:
     - id: 7e8d84d4-2353-405a-8e02-826f3062143d
-      title: Privileged Domain Security Group Changed
+      title: Potential Privileged Domain Security Group Manipulation
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
