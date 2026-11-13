@@ -1,0 +1,36 @@
+title: Potential Persistence Via Office Startup Folder Redirection
+id: 6c67c49f-86c8-4a58-a516-6545c3068041
+status: experimental
+description: |
+    Detects the modification of the registry values that relocate the startup folders of Microsoft Word and Excel: "STARTUP-PATH" of Word, "AltStartup" of Excel and the "Startup" and "Xlstart" folder names under "Common\General".
+    Word and Excel load the templates, add-ins and workbooks stored in these folders at each start.
+    An attacker can redirect a startup folder to a location that is not monitored in order to get an add-in or a macro enabled file loaded each time the application starts.
+references:
+    - https://www.hexacorn.com/blog/2016/11/24/beyond-good-ol-run-key-part-51/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Office\'
+        TargetObject|endswith:
+            - '\Common\General\Startup'
+            - '\Common\General\Xlstart'
+            - '\Excel\Options\AltStartup'
+            - '\Word\Options\STARTUP-PATH'
+    filter_main_default_folder_names:
+        # Default values written by Office at first run, they do not redirect anything
+        Details:
+            - 'STARTUP'
+            - 'XLSTART'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Users or administrators that change the startup folder in the Word file locations or in the Excel advanced options
+    - Localized Office versions that write a translated default folder name at first run
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_office_startup_folder_redirection/info.yml
