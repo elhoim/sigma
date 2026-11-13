@@ -1,0 +1,13 @@
+id: e55187a0-828f-4660-8b11-0843a82d63ba
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 0906670c-126d-4ddc-bec6-3a5b8b78f2cc
+      title: Suspicious Kerberos Ticket Retrieval Via LSA Authentication Package API In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_kerberos_ticket_retrieval_lsa_api/0906670c-126d-4ddc-bec6-3a5b8b78f2cc.evtx
