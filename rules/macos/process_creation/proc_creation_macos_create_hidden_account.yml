@@ -1,7 +1,7 @@
 title: Hidden User Creation
 id: b22a5b36-2431-493a-8be1-0bae56c28ef3
 status: test
-description: Detects creation of a hidden user account on macOS (UserID < 500) or with IsHidden option
+description: Detects creation of a hidden user account on macOS (UniqueID < 500) or with IsHidden option
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1564.002/T1564.002.md
 author: Daniil Yugoslavskiy, oscd.community
