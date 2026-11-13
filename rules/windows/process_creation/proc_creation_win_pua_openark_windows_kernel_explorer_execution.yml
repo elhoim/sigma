@@ -2,8 +2,9 @@ title: PUA - OpenArk Or Windows Kernel Explorer Execution
 id: 856471fb-c5e3-475c-926c-5a9617241857
 status: experimental
 description: |
-    Detects the execution of the kernel research and anti-rootkit utilities OpenArk ("OpenArk64.exe"/"OpenArk32.exe") and Windows Kernel Explorer ("WKE64.exe"/"WKE32.exe", also distributed as "KernelExplorer.exe") by image name, original file name or product description.
-    Both tools load a signed kernel driver that lets the operator enumerate and remove kernel callbacks, unload drivers and kill protected processes. Ransomware affiliates such as The Gentlemen use them to blind or remove EDR and antivirus sensors before encryption; outside of malware analysis workstations they are not expected on managed endpoints.
+    Detects the execution of the kernel research and anti-rootkit utilities OpenArk ("OpenArk64.exe"/"OpenArk32.exe") and Windows Kernel Explorer ("WKE64.exe"/"WKE32.exe", also distributed as "KernelExplorer.exe") by image name or PE metadata.
+    Both tools load a kernel driver that lets the operator enumerate and remove kernel callbacks, unload drivers and kill protected processes.
+    Ransomware affiliates such as The Gentlemen use them to blind or remove EDR and antivirus sensors before encryption; outside of malware analysis workstations they are not expected on managed endpoints.
 references:
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/AxtMueller/Windows-Kernel-Explorer/blob/a601217a2834baac7d87a54abd81396be3142958/README.md
@@ -27,14 +28,11 @@ detection:
               - '\KernelExplorer.exe'
               - '\WindowsKernelExplorer.exe'
         - OriginalFileName:
-              - 'OpenArk64.exe'
-              - 'OpenArk32.exe'
-              - 'OpenArk.exe'
+              - 'OpenArk'
               - 'WKE64.exe'
               - 'WKE32.exe'
-        - Description:
-              - 'OpenArk'
-              - 'Windows Kernel Explorer'
+        - Product: 'OpenArk'
+        - Description: 'Windows Kernel Explorer'
     condition: selection
 falsepositives:
     - Malware analysts and kernel developers running these tools on dedicated research workstations
