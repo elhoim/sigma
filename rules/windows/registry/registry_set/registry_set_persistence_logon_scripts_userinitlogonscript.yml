@@ -7,7 +7,6 @@ status: experimental
 description: |
     Detects the creation of the "UserInitLogonScript" or "UserInitLogonServer" values under an "Environment" registry key.
     Winlogon normally passes these two variables to "userinit.exe" in the process environment to name the account logon script and the server that holds it. They are not expected as persistent environment variables. When they are stored in the registry, "userinit.exe" runs "\\<UserInitLogonServer>\NETLOGON\<UserInitLogonScript>" at each logon of the user.
-    The existing rule for logon scripts only covers the "UserInitMprLogonScript" value.
 references:
     - https://www.hexacorn.com/blog/2014/11/14/beyond-good-ol-run-key-part-18/
     - https://www.hexacorn.com/blog/2016/05/27/beyond-good-ol-run-key-part-38/
@@ -26,7 +25,9 @@ detection:
             - '\Environment\UserInitLogonScript'
             - '\Environment\UserInitLogonServer'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Unlikely
