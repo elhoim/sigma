@@ -8,6 +8,7 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2014/03/02/beyond-good-ol-run-key-part-9/
     - https://www.hexacorn.com/blog/2014/02/21/beyond-good-ol-run-key-part-8-2/
+    - https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions
 author: elhoim
 date: 2026-11-12
 tags:
