@@ -1,0 +1,39 @@
+title: Suspicious Run Key Value Set With Hidden Or Empty Value Name
+id: 0e5b5d9e-b6e7-4535-98c3-bca4b2c99ce1
+status: experimental
+description: |
+    Detects a non-empty value written under a "Run" autostart key whose value name is empty or starts with a null character, which makes the registry target object end with a trailing backslash.
+    Tools such as SharpHide create Run values with a null-prefixed name through NtSetValueKey so that regedit and most registry APIs cannot display or delete the persistence entry, while Windows still executes it at logon.
+    A name made of a single null character is logged by Sysmon as the "(Default)" value and is not covered by this rule.
+references:
+    - https://github.com/outflanknl/SharpHide/blob/9a4bca0a6709bd684185efd339ac540a85d36185/README.md
+    - https://web.archive.org/web/20230323185554/https://raw.githubusercontent.com/ewhitehats/InvisiblePersistence/master/InvisibleRegValues_Whitepaper.pdf
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_via_hidden_run_key_valuename.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1547.001
+    - attack.t1564
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\'
+            - '\Software\Microsoft\Windows\CurrentVersion\Run\'
+            - '\Software\Microsoft\Windows\CurrentVersion\RunOnce\'
+            - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Run\'
+            - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\RunOnce\'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_run_key_hidden_value_name/info.yml
