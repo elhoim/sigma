@@ -1,0 +1,13 @@
+id: 10ed27c6-7bc5-45ba-9bca-2a725ac63c0e
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 92f29d19-9914-4b5c-a104-2d5d75375aea
+      title: Potential Autoruns Evasion Via Environment Variable As Run Key Program
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_run_key_bare_environment_variable/92f29d19-9914-4b5c-a104-2d5d75375aea.evtx
