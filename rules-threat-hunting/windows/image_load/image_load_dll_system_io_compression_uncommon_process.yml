@@ -14,8 +14,8 @@ tags:
     - attack.t1560.002
     - detection.threat-hunting
 logsource:
-    product: windows
     category: image_load
+    product: windows
 detection:
     selection:
         ImageLoaded|endswith:
@@ -29,6 +29,7 @@ detection:
         - Image:
               - 'C:\Windows\System32\inetsrv\w3wp.exe'
               - 'C:\Windows\System32\sdiagnhost.exe'
+              - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
         - Image|startswith:
               - 'C:\Windows\Microsoft.NET\Framework\'
               - 'C:\Windows\Microsoft.NET\Framework64\'
