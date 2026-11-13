@@ -13,6 +13,7 @@ description: |
     Both let the attacker position an adversary-in-the-middle host to capture or relay NTLM authentication from every machine in the domain.
 references:
     - https://www.netspi.com/blog/technical-blog/network-penetration-testing/exploiting-adidns/
+    - https://www.netspi.com/blog/technical-blog/network-pentesting/adidns-revisited/
     - https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/adidns-spoofing
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-5137
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_adidns_wildcard.toml
