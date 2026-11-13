@@ -1,0 +1,29 @@
+title: Winlogon RunGrpConv Registry Value Set
+id: c658778a-e0d5-41bf-843d-b5ef5d24971d
+status: experimental
+description: |
+    Detects a non-zero write to the "RunGrpConv" value in the Winlogon registry key.
+    On Windows XP, a non-zero value makes "userinit.exe" start the Program Manager group converter "grpconv.exe" at the next logon, which legacy installers use to finalize the creation of program groups.
+    An attacker can set the value together with a planted "grpconv.exe", or a planted "imm.dll" that "grpconv.exe" tries to load, in order to get code executed at logon.
+references:
+    - https://www.hexacorn.com/blog/2014/06/18/beyond-good-ol-run-key-part-13/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.004
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows NT\CurrentVersion\Winlogon\RunGrpConv'
+    filter_main_disabled:
+        Details: 'DWORD (0x00000000)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legacy installers and INF based setups that request a program group conversion
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_winlogon_rungrpconv/info.yml
