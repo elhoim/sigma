@@ -1,0 +1,35 @@
+title: TLS Certificate Validation Disabled In PowerShell Script
+id: 008b15f0-fba8-451e-9f70-04de43f1990e
+status: experimental
+description: |
+    Detects a PowerShell script block that turns off TLS server certificate validation, either by replacing "ServicePointManager.ServerCertificateValidationCallback" with an always-true delegate, by installing a custom "ICertificatePolicy" (the widespread "TrustAllCertsPolicy" snippet), by setting "DangerousAcceptAnyServerCertificateValidator" on an HttpClientHandler, or by passing "-SkipCertificateCheck" to Invoke-WebRequest/Invoke-RestMethod.
+    Download cradles and PowerShell implants disable validation so that they can talk to command and control servers presenting self-signed or mismatched certificates. Administrators also use these snippets against internal appliances, so the rule is meant for hunting and enrichment of other web-request detections.
+references:
+    - https://github.com/samratashok/nishang/blob/b870f7a25a12020a8120537b9ae3ee73b339624b/Shells/Invoke-PoshRatHttps.ps1
+    - https://learn.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.servercertificatevalidationcallback
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+    - detection.threat-hunting
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection:
+        ScriptBlockText|contains:
+            - 'ServerCertificateValidationCallback'
+            - 'TrustAllCertsPolicy'
+            - 'ICertificatePolicy'
+            - ']::CertificatePolicy'
+            - 'DangerousAcceptAnyServerCertificateValidator'
+            - '-SkipCertificateCheck'
+    condition: selection
+falsepositives:
+    - Administrative scripts querying internal web services, appliances and lab systems that use self-signed certificates
+    - Vendor modules that embed the TrustAllCertsPolicy snippet
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/powershell/powershell_script/posh_ps_tls_certificate_validation_disabled/info.yml
