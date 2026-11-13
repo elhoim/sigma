@@ -16,7 +16,9 @@ logsource:
     category: process_creation
 detection:
     selection:
-        - Image|endswith: '/mimipenguin'
+        - Image|endswith:
+              - '/mimipenguin'
+              - '/mimipenguin_x32'
         - CommandLine|contains: 'mimipenguin'
     condition: selection
 falsepositives:
