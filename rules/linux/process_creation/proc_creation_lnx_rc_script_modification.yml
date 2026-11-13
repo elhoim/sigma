@@ -1,4 +1,4 @@
-title: RC Script Modification Via CLI - Linux
+title: Potential RC Script Modification Via CLI - Linux
 id: f8985252-c66b-4e7d-838b-097fb8ad080d
 status: experimental
 description: |
@@ -38,8 +38,13 @@ detection:
         Image|endswith: '/chmod'
     selection_chmod_cli:
         CommandLine|contains:
-            - '+x'
+            - ' 05'
+            - ' 07'
+            - ' 5'
             - ' 7'
+            - '+rwx'
+            - '+rx'
+            - '+x'
     selection_shell_img:
         Image|endswith:
             - '/bash'
