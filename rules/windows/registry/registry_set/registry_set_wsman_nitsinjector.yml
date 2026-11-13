@@ -1,0 +1,30 @@
+title: Potential Persistence Via WSMAN NitsInjector Registry Value
+id: 91fa5849-10da-4472-bec9-5a0362948f58
+status: experimental
+description: |
+    Detects the creation of the "NitsInjector" value under the "CurrentVersion\WSMAN" registry key.
+    The value is a fault injection test hook of the Windows management stack. "DscCore.dll", used by the Desired State Configuration providers, reads it and loads the library it names.
+    It does not exist on a default installation, so its creation can indicate an attempt to have a DLL loaded into the processes that host Desired State Configuration, typically the WMI provider host running as SYSTEM.
+references:
+    - https://www.hexacorn.com/blog/2018/10/09/beyond-good-ol-run-key-part-90/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\WSMAN\NitsInjector'
+    filter_main_empty:
+        Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_wsman_nitsinjector/info.yml
