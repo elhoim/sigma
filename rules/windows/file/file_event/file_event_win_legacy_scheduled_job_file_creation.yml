@@ -1,0 +1,52 @@
+title: Potential Persistence Via Legacy Scheduled Job File Creation
+id: fad99328-2cb4-419c-b5ad-bcb7393d394b
+related:
+    - id: a762e74f-4dce-477c-b023-4ed81df600f9
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a legacy Task Scheduler 1.0 job file (.job) in the C:\Windows\Tasks directory.
+    Modern Windows stores scheduled tasks as XML under System32\Tasks; a .job file is only written by the deprecated AT command or the Task Scheduler 1.0 COM interfaces (ITaskScheduler), which malware and offensive tooling still use because the resulting job is less visible in the Task Scheduler console and bypasses detections that watch the XML task store.
+    The related hunting rule records every file written to the task directories; this rule is limited to the legacy job format.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-1-0-interfaces
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_local_scheduled_job_creation.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1053.005
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\Tasks\'
+        TargetFilename|endswith: '.job'
+    filter_optional_ccleaner:
+        Image: 'C:\Program Files\CCleaner\CCleaner64.exe'
+        TargetFilename: 'C:\Windows\Tasks\CCleanerCrashReporting.job'
+    filter_optional_manageengine:
+        Image:
+            - 'C:\Program Files (x86)\DesktopCentral_Agent\bin\dcagentregister.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\bin\dcagentregister.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\dcconfig.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\Updates\UemsComponentUpgrader.exe'
+    filter_optional_epson:
+        Image: 'C:\Program Files (x86)\epson\Epson Scan 2\Update\e_dtsksd.exe'
+    filter_optional_killer:
+        Image: 'C:\Windows\System32\drivers\RivetNetworks\Killer\CustomizeInstallFirstRun.exe'
+    filter_optional_dropbox_update:
+        # Dropbox Update (Omaha based) runs from a GUMxxxx.tmp folder and registers its two machine-wide update jobs
+        Image|re: '(?i)^C:\\Program Files \(x86\)\\Dropbox\\Temp\\GUM[0-9A-F]{1,4}\.tmp\\DropboxUpdate\.exe$'
+        TargetFilename:
+            - 'C:\Windows\Tasks\DropboxUpdateTaskMachineCore.job'
+            - 'C:\Windows\Tasks\DropboxUpdateTaskMachineUA.job'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Legacy software that still registers scheduled jobs through the Task Scheduler 1.0 API during installation
+    - Dropbox Update installers registering the DropboxUpdateTaskMachineCore and DropboxUpdateTaskMachineUA jobs (excluded only when run from the Dropbox installation folder; the first install runs it from the user's temporary folder, which is user-writable and therefore not excluded)
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_legacy_scheduled_job_file_creation/info.yml

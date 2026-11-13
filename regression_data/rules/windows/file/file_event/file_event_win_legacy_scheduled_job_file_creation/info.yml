@@ -1,0 +1,13 @@
+id: 490f5e07-08ab-42fe-b5e9-286fac021586
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: fad99328-2cb4-419c-b5ad-bcb7393d394b
+      title: Potential Persistence Via Legacy Scheduled Job File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_legacy_scheduled_job_file_creation/fad99328-2cb4-419c-b5ad-bcb7393d394b.evtx
