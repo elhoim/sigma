@@ -3,8 +3,8 @@ id: 6e8b84ab-b4f9-4f5f-b7d4-3f7405fb6610
 status: experimental
 description: |
     Detects the modification of rarely changed registry keys that hold a list of provider modules for a Windows service: the LanmanServer share providers, the Windows Biometric Service providers, the WinTrust trust providers, the WLAN AutoConfig COM interface and vendor specific IE providers, the Routing and Remote Access accounting and authentication providers and the SSI security providers.
-    Each key is enumerated by its service in order to load the provider modules, so that a new entry could be used to get a DLL loaded by a system service.
-    The W32Time time providers and the cryptography providers are covered by other rules.
+    These keys are candidate load points: their service enumerates them to find provider modules, so a new entry could be used to get a DLL loaded by a system service. Not every key has been demonstrated as a working load point.
+    The W32Time time providers are covered by a separate rule.
 references:
     - https://www.hexacorn.com/blog/2018/10/14/how-to-find-new-persistence-tricks/
 author: elhoim
