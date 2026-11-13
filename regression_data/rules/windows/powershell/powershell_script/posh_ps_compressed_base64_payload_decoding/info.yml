@@ -1,0 +1,13 @@
+id: b5c7281a-fead-45cd-8ee3-2d9db03fe754
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 85b2670c-0037-4212-90b5-6b1d88f0c53c
+      title: Potential Compressed And Base64 Encoded Payload Decoding In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_compressed_base64_payload_decoding/85b2670c-0037-4212-90b5-6b1d88f0c53c.evtx

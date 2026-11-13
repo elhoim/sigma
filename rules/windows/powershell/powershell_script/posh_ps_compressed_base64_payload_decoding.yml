@@ -1,0 +1,45 @@
+title: Potential Compressed And Base64 Encoded Payload Decoding In PowerShell Script
+id: 85b2670c-0037-4212-90b5-6b1d88f0c53c
+related:
+    - id: 20e5497e-331c-4cd5-8d36-935f6e2a9a07
+      type: similar
+    - id: 4e19528a-f081-40dd-be09-90c39352bd64
+      type: similar
+    - id: df69cb1d-b891-4cd9-90c7-d617d90100ce
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script blocks that decode a Base64 string and feed it to a Deflate or GZip decompression stream.
+    This "FromBase64String" + "DeflateStream"/"GzipStream" + "Decompress" pattern is the standard way loaders and offensive frameworks embed a compressed second stage inside a script to shrink it and hide its content from keyword inspection.
+    Unlike the Invoke-Obfuscation COMPRESS rule, this rule does not require the "New-Object"/"StreamReader"/"ReadToEnd" wrapper and therefore also matches loaders that use the .NET stream API directly.
+    Limitation: a script that passes the numeric compression mode (e.g. "GzipStream($ms, 0)") instead of the "Decompress" name is not detected.
+references:
+    - https://www.zscaler.com/blogs/security-research/onenote-growing-threat-malware-distribution
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_compressed.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1027.015
+    - attack.t1059.001
+    - attack.t1140
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_stream:
+        ScriptBlockText|contains:
+            - 'IO.Compression.DeflateStream'
+            - 'IO.Compression.GzipStream'
+    selection_decode:
+        ScriptBlockText|contains|all:
+            - 'FromBase64String'
+            - 'Decompress'
+    condition: all of selection_*
+falsepositives:
+    - Software deployment, vendor updater and administrative scripts that embed compressed resources
+    - Legitimate PowerShell modules that bundle compressed assemblies or data (review the script path and signer)
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_compressed_base64_payload_decoding/info.yml
