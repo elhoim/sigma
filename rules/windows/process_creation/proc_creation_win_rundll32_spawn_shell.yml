@@ -23,18 +23,23 @@ logsource:
     category: process_creation
     definition: 'Requirements: the exclusions need the ParentCommandLine field (Sysmon EID 1); Security 4688 has none'
 detection:
-    selection:
+    selection_parent:
         ParentImage|endswith: '\rundll32.exe'
-        Image|endswith:
-            - '\cmd.exe'
-            - '\powershell.exe'
-            - '\pwsh.exe'
+    selection_child:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
     filter_main_run_as_new_user:
         # Anchored: the first argument of rundll32 must be the shell32 export, so an attacker DLL cannot hide behind the marker text
         ParentCommandLine|re|i: '^(?:"[^"]*rundll32\.exe"|\S*rundll32(?:\.exe)?)\s+"?(?:C:\\Windows\\System32\\)?shell32\.dll"?,RunAsNewUser_RunDLL(?:\s|$)'
     filter_main_msi_custom_action:
         ParentCommandLine|re|i: '^(?:"[^"]*rundll32\.exe"|\S*rundll32(?:\.exe)?)\s+"?C:\\Windows\\Installer\\MSI[0-9A-F]+\.tmp"?,zzzzInvokeManagedCustomActionOutOfProc(?:\s|$)'
-    condition: selection and not 1 of filter_main_*
+    condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Security 4688 events carry no ParentCommandLine, so the exclusions for "Run as different user" and for Windows Installer managed custom actions cannot apply there; expect those two cases to alert on 4688-only deployments
     - Software installers that run a shell from a custom action DLL via rundll32; add the DLL to the filter
