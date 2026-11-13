@@ -11,11 +11,8 @@ author: Austin Songer @austinsonger
 date: 2021-08-07
 modified: 2022-08-23
 tags:
-    - attack.impact
-    - attack.credential-access
-    - attack.t1485
-    - attack.t1496
-    - attack.t1489
+    - attack.defense-impairment
+    - attack.t1686.001
 logsource:
     product: azure
     service: activitylogs
