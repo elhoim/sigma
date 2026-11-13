@@ -1,0 +1,44 @@
+title: Potential Domain Reconnaissance Preparation Via RSAT Active Directory Tools Installation
+id: 22f8f03e-b588-4b91-a723-0da21f59daa3
+related:
+    - id: b36d01a3-ddaf-4804-be18-18a6247adfcd
+      type: similar
+    - id: 155c7fd5-47b4-49b2-bbeb-eb4fab335429
+      type: similar
+status: experimental
+description: |
+    Detects the Active Directory Remote Server Administration Tools (RSAT) being installed from the command line, with the "Add-WindowsCapability", "Install-WindowsFeature", "Add-WindowsFeature" or "Enable-WindowsOptionalFeature" cmdlets or with DISM.
+    Installing the Active Directory PowerShell module gives any host the "Get-AD*" cmdlets.
+    The Gentlemen ransomware operators install it on compromised servers right before enumerating the domain, whereas administrators normally have RSAT pre-installed on their management workstations.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/install-remote-server-administration-tools
+    - https://securelist.com/the-gentlemen-raas/120447/
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.discovery
+    - attack.t1087.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_capability:
+        CommandLine|contains:
+            - 'Rsat.ActiveDirectory.DS-LDS.Tools'
+            - 'RSAT-AD-PowerShell'
+            - 'RSAT-AD-Tools'
+            - 'RSAT-ADDS'
+    selection_install_verb:
+        CommandLine|contains:
+            - 'Add-WindowsCapability'
+            - 'Install-WindowsFeature'
+            - 'Add-WindowsFeature'
+            - 'Enable-WindowsOptionalFeature'
+            - '/Add-Capability'
+            - '/Add-Package'
+    condition: all of selection_*
+falsepositives:
+    - Administrators or deployment scripts installing RSAT on new management workstations and jump servers
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_rsat_ad_tools_installation_via_cli/info.yml

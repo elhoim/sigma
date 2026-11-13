@@ -1,0 +1,13 @@
+id: 1a105c20-75ee-4b7a-819e-a7daa60fd089
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 22f8f03e-b588-4b91-a723-0da21f59daa3
+      title: Potential Domain Reconnaissance Preparation Via RSAT Active Directory Tools Installation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rsat_ad_tools_installation_via_cli/22f8f03e-b588-4b91-a723-0da21f59daa3.evtx
