@@ -34,9 +34,7 @@ detection:
             - '&explorer /root'
             - '/?cMD<'
     selection_cli_html_entities:
-        CommandLine|contains|all:
-            - '&#'
-            - ';&#'
+        CommandLine|contains: ';&#'
     selection_cli_zone_identifier:
         CommandLine|contains|all:
             - 'echo'
@@ -72,7 +70,7 @@ detection:
     selection_cli_copy_ping:
         CommandLine|contains|all:
             - 'copy /b '
-            - '\\'
+            - '\\\\'
             - 'ping '
             - ' -n'
     condition: selection_img and 1 of selection_cli_*
