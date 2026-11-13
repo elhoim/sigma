@@ -1,0 +1,74 @@
+title: Potential Service Hijack - Service ImagePath Modified By Uncommon Process
+id: f9d72f13-c8c1-4e45-9e7e-957f82d3c5ff
+related:
+    - id: a07f0359-4c90-4dc4-a681-8ffea40b4f47
+      type: similar
+    - id: 5adcf019-d057-44c8-97aa-0f8d63627af9
+      type: similar
+status: experimental
+description: |
+    Detects a change of a service's "ImagePath" registry value made by a process other than the Service Control Manager ("services.exe"), the Windows servicing and driver installation components, or an application installed under Program Files.
+    Service binaries are normally configured through the SCM API (sc.exe, Set-Service, installers), which makes services.exe the writer of the value; a direct registry write by reg.exe, PowerShell, a script or a dropped tool points at a service hijack or a stealthy persistence change that bypasses the service installation event log.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/services/service-configuration
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_service_path_registry.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.defense-impairment
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1112
+    - attack.t1543.003
+    - attack.t1574.011
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|contains: '\Services\'
+        TargetObject|endswith: '\ImagePath'
+    filter_main_scm:
+        Image: 'C:\Windows\System32\services.exe'
+    filter_main_program_files:
+        Image|startswith:
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+    filter_main_servicing:
+        Image|startswith:
+            - 'C:\Windows\WinSxS\'
+            - 'C:\Windows\servicing\'
+    filter_main_system_installers:
+        Image:
+            - 'C:\Windows\System32\drvinst.exe'
+            - 'C:\Windows\System32\poqexec.exe'
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_optional_avast_avg:
+        # Avast and AVG setup (instup.exe) runs from a random C:\Windows\Temp\asw.<16 hex> folder and writes its driver services directly
+        # Only for the vendor's own asw*/avg* driver services pointing to a driver in System32\drivers
+        Image|re|i: '^C:\\Windows\\Temp\\asw\.[0-9a-f]{16}\\instup\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\(?:asw|avg)[a-z0-9]+\\ImagePath$'
+        Details|re|i: '^system32\\drivers\\(?:asw|avg)[a-z0-9]+\.sys$'
+    filter_optional_avira_vpn:
+        # Avira VPN installer, only for its own service pointing to its Program Files binary
+        Image|re|i: '^C:\\Windows\\Temp\\\.CR\.[0-9]+\\[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\VpnInstaller\.exe$'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\AviraPhantomVPN\\ImagePath$'
+        Details|re|i: '^"C:\\Program Files \(x86\)\\Avira\\VPN\\Avira\.VpnService\.exe"$'
+    filter_optional_sysinternals_procexp:
+        # Process Explorer registers its kernel driver itself, from wherever the tool was started
+        # This can also hide a renamed tool that reuses the PROCEXP152 driver for EDR tampering; driver load rules cover that
+        Image|endswith:
+            - '\procexp.exe'
+            - '\procexp64.exe'
+            - '\procexp64a.exe'
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\PROCEXP152\\ImagePath$'
+        Details|re|i: '^\\\?\?\\C:\\Windows\\system32\\Drivers\\PROCEXP152\.SYS$'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Writes by svchost.exe (Remote Registry service) or WmiPrvSE.exe (WMI registry methods), for example administrators changing a service path remotely
+    - Installers and management agents running from Temp or ProgramData that write service paths directly; add the installer image to the filters
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_service_imagepath_modified_by_uncommon_process/info.yml
