@@ -1,4 +1,4 @@
-title: Entra ID Sign-In With AADInternals User Agent
+title: Suspicious Entra ID Sign-In With AADInternals User Agent
 id: 5fc89c10-7dfd-4b07-b3a8-f61bad2e0043
 status: experimental
 description: |
@@ -6,7 +6,7 @@ description: |
     AADInternals is a PowerShell toolkit used to attack and administer Entra ID and Microsoft 365, and some of its functions send this string in the user agent.
 references:
     - https://aadinternals.com/aadinternals/
-    - https://github.com/Gerenios/AADInternals
+    - https://github.com/Gerenios/AADInternals/blob/13f207d9ec08761ac85d9fb1311ecb719e25add4/Configuration.ps1#L1820
 author: elhoim
 date: 2026-10-15
 tags:

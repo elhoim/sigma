@@ -1,4 +1,4 @@
-title: Member Added To Entra Restricted Management Administrative Unit
+title: Potential Account Shielding Via Entra Restricted Management Administrative Unit
 id: 4fe99d51-a539-494c-9ae8-ff64c75f3a4c
 status: experimental
 description: |
@@ -18,7 +18,7 @@ logsource:
     service: auditlogs
 detection:
     selection:
-        properties.message: 'Add member to restricted management administrative unit'
+        operationName: 'Add member to restricted management administrative unit'
     condition: selection
 falsepositives:
     - Legitimate protection of sensitive accounts by administrators

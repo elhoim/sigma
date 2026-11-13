@@ -1,4 +1,4 @@
-title: Azure Resource Lock Deleted
+title: Potential Resource Protection Removal Via Azure Resource Lock Deletion
 id: 583a5c8c-c294-4705-a2fa-25fb9c74a14c
 status: experimental
 description: |
@@ -6,6 +6,7 @@ description: |
     Locks prevent accidental or malicious deletion or modification of resources. Adversaries may remove them before destroying resources or tampering with their configuration.
 references:
     - https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources
+    - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/management-and-governance
 author: elhoim
 date: 2026-10-15
 tags:

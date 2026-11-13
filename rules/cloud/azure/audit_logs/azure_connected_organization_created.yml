@@ -1,4 +1,4 @@
-title: Entra Entitlement Management Connected Organization Created
+title: Potential Cross-Tenant Access Via Entra Connected Organization Creation
 id: 8432b0eb-eb35-4011-ad4b-710f4f6513d9
 status: experimental
 description: |
@@ -18,7 +18,7 @@ logsource:
     service: auditlogs
 detection:
     selection:
-        properties.message: 'Create connected organization'
+        operationName: 'Create connected organization'
     condition: selection
 falsepositives:
     - Legitimate onboarding of a partner organization

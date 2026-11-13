@@ -1,4 +1,4 @@
-title: Azure Managed Disk Or Snapshot SAS Export URI Generated
+title: Potential Disk Exfiltration Via Azure Managed Disk Or Snapshot SAS Export URI
 id: 86fa280d-cb34-4c8e-a8b0-ee3cc004c7b4
 status: experimental
 description: |

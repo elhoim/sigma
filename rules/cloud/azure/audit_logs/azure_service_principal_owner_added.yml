@@ -1,4 +1,4 @@
-title: Owner Added To Entra Service Principal
+title: Potential Service Principal Takeover Via Entra Owner Addition
 id: 4de0e225-3387-4286-a005-b9dc813e5794
 status: experimental
 description: |
@@ -18,7 +18,7 @@ logsource:
     service: auditlogs
 detection:
     selection:
-        properties.message: 'Add owner to service principal'
+        operationName: 'Add owner to service principal'
     condition: selection
 falsepositives:
     - Legitimate delegation of application management

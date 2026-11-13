@@ -1,4 +1,4 @@
-title: Azure Container Instance Command Execution
+title: Potential Command Execution Abuse Via Azure Container Instance Exec
 id: d30c116d-c5f1-4bdf-a469-b2c475614347
 status: experimental
 description: |
