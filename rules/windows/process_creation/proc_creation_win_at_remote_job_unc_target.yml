@@ -13,22 +13,22 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.lateral-movement
     - attack.execution
+    - attack.lateral-movement
     - attack.persistence
     - attack.privilege-escalation
     - attack.t1021
     - attack.t1053.002
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
-    selection:
+    selection_img:
         - Image|endswith: '\at.exe'
         - OriginalFileName: 'at.exe'
-    selection_unc:
+    selection_cli:
         CommandLine|contains: ' \\'
-    condition: all of selection*
+    condition: all of selection_*
 falsepositives:
     - Legacy administration scripts that still schedule jobs on remote servers with at.exe
 level: medium
