@@ -8,6 +8,7 @@ description: |
     The "CTF\LangBarAddin" key is covered by the rule "Common Autorun Keys Modification".
 references:
     - https://www.hexacorn.com/blog/2013/01/19/beyond-good-ol-run-key-part-3/
+    - https://www.praetorian.com/blog/leveraging-microsoft-text-services-framework-tsf-for-red-team-operations/
     - https://learn.microsoft.com/en-us/windows/win32/tsf/text-service-registration
 author: elhoim
 date: 2026-11-12
