@@ -1,5 +1,8 @@
 title: Potential Persistence Via Word WWLIBcxm DLL - File Creation
 id: 853edd32-64a6-4d26-9d49-cb0b2fa9c365
+related:
+    - id: 87de5393-c7de-4b3d-b09a-1d6ff3f72e20 # Potential Persistence Via Word CxmDll Registry Value
+      type: similar
 status: experimental
 description: |
     Detects the creation of a file named "WWLIBcxm.dll".
