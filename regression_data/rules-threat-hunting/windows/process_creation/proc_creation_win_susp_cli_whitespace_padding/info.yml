@@ -1,0 +1,13 @@
+id: cb71ce85-27b6-470f-b90f-8acc1f19758e
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 958635c3-e31b-43b8-9021-94931d318a58
+      title: Potential Command Line Obfuscation Via Long Whitespace Padding
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_susp_cli_whitespace_padding/958635c3-e31b-43b8-9021-94931d318a58.evtx
