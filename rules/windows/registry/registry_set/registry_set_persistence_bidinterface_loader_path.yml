@@ -3,17 +3,19 @@ id: e0e4527b-a5cb-4986-93c9-de8c42e2e6ca
 status: experimental
 description: |
     Detects the creation of the ":Path" value under the "Microsoft\BidInterface\Loader" registry key with data other than the Microsoft diagnostic libraries.
-    The value belongs to the Built-in Diagnostics (BID) tracing interface of the Microsoft data access components. Libraries such as "msado15.dll", "oledb32.dll", "sqloledb.dll" and the ADO.NET providers read it at load time and load the named DLL into the process, calling its "DllBidEntryPoint" export.
-    The value does not exist by default and is only set to "AdoNetDiag.dll" or "msdadiag.dll" when data access tracing is enabled. Any other library is loaded into every application that uses a database connection.
+    The value belongs to the Built-in Diagnostics (BID) tracing interface of the Microsoft data access components.
+    Libraries such as "msado15.dll", "oledb32.dll", "sqloledb.dll" and the ADO.NET providers read it at load time and load the named DLL into the process, calling its "DllBidEntryPoint" export.
+    The value does not exist by default and is only set to "AdoNetDiag.dll" or "msdadiag.dll" when data access tracing is enabled.
+    Any other library is loaded into every application that uses a database connection.
 references:
     - https://www.hexacorn.com/blog/2019/07/13/beyond-good-ol-run-key-part-111/
     - https://www.hexacorn.com/blog/2020/10/17/beyond-good-ol-run-key-part-129/
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.execution
     - attack.stealth
     - attack.t1574
 logsource:
@@ -23,7 +25,9 @@ detection:
     selection:
         TargetObject|endswith: '\Microsoft\BidInterface\Loader\:Path'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     filter_main_msdadiag:
         Details: 'MSDADIAG.DLL'
     filter_main_adonetdiag:
