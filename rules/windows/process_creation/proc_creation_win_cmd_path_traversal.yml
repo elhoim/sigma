@@ -7,7 +7,7 @@ references:
     - https://twitter.com/Oddvarmoe/status/1270633613449723905
 author: xknow @xknow_infosec, Tim Shelton
 date: 2020-06-11
-modified: 2023-03-06
+modified: 2026-11-05
 tags:
     - attack.execution
     - attack.t1059.003
@@ -29,7 +29,7 @@ detection:
               - '/k'
               - '/r'
     selection_path_traversal:
-        - ParentCommandLine: '/../../'
+        - ParentCommandLine|contains: '/../../'
         - CommandLine|contains: '/../../'
     filter_java:
         CommandLine|contains: '\Tasktop\keycloak\bin\/../../jre\bin\java'
@@ -37,3 +37,4 @@ detection:
 falsepositives:
     - Java tools are known to produce false-positive when loading libraries
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_path_traversal/info.yml
