@@ -3,7 +3,7 @@ id: fc85a15a-2c8b-4ab8-b4c8-3e8388361839
 status: experimental
 description: |
     Detects the activation of the Direct3D debug runtime through the "LoadDebugRuntime" or "D3D10LoadDebugRuntime" registry values.
-    When the debug runtime is enabled, applications that use Direct3D load the debug version of the library, such as "d3d9d.dll", by name through the DLL search path.
+    On Windows versions that honour the value, applications that use Direct3D load the debug version of the library, such as "d3d9d.dll", by name through the DLL search path.
     The setting is used by graphics developers, but an attacker can enable it and plant a DLL with the name of a debug library in order to get it loaded by every Direct3D application.
 references:
     - https://www.hexacorn.com/blog/2014/08/04/beyond-good-ol-run-key-part-15/
