@@ -1,4 +1,4 @@
-title: Google Cloud Compute Disk Snapshot Created
+title: Potential Disk Data Access Via Google Cloud Compute Snapshot
 id: 066cf9c5-9606-4fb6-bb1d-ca53379147db
 status: experimental
 description: |
@@ -24,6 +24,6 @@ detection:
             - '.compute.snapshots.insert'
     condition: selection
 falsepositives:
-    - Scheduled snapshot schedules (resource policies) or backup tooling. Verify whether the user identity, user agent and/or hostname should be creating snapshots in your environment and exclude known service accounts.
+    - Snapshot schedules (resource policies) or backup tooling. Verify whether the user identity, user agent and/or hostname should be creating snapshots in your environment and exclude known service accounts.
     - Snapshots created by administrators during maintenance or migrations.
 level: medium
