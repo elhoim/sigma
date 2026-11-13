@@ -1,0 +1,28 @@
+id: 44335cae-6552-45c0-9863-baa868af18e4
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 7e8d84d4-2353-405a-8e02-826f3062143d
+      title: Potential Privileged Domain Security Group Manipulation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed/7e8d84d4-2353-405a-8e02-826f3062143d.evtx
+    - name: Atomic Red Team replay 01 (T1098-1, event 4737) - group TargetUserName Domain Admins; group TargetSid -512
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed-art01/7e8d84d4-2353-405a-8e02-826f3062143d.evtx
+    - name: Atomic Red Team replay 02 (T1098-1, event 4755) - eid EventID 4755; group TargetUserName Enterprise Admins; group TargetSid -519
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed-art02/7e8d84d4-2353-405a-8e02-826f3062143d.evtx
+    - name: Atomic Red Team replay 03 (T1098-1, event 4755) - group TargetUserName Schema Admins; group TargetSid -518
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/account_management/win_security_privileged_domain_group_changed-art03/7e8d84d4-2353-405a-8e02-826f3062143d.evtx
