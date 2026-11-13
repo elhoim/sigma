@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 8fffecb4-c446-496b-bb12-485b95fc3af1
-      title: Process Spawned By Azure VM Run Command Script Wrapper
+      title: Potential Azure VM Run Command Abuse Via Script Wrapper Child Process
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx

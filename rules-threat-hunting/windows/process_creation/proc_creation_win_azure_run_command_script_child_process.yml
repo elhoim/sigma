@@ -1,4 +1,4 @@
-title: Process Spawned By Azure VM Run Command Script Wrapper
+title: Potential Azure VM Run Command Abuse Via Script Wrapper Child Process
 id: 8fffecb4-c446-496b-bb12-485b95fc3af1
 status: experimental
 description: |
@@ -7,6 +7,7 @@ description: |
     Review the child command line and correlate with the Azure activity log operation MICROSOFT.COMPUTE/VIRTUALMACHINES/RUNCOMMAND/ACTION.
 references:
     - https://learn.microsoft.com/en-us/azure/virtual-machines/windows/run-command
+    - https://cloud.google.com/blog/topics/threat-intelligence/azure-run-command-dummies/
     - https://hackingthe.cloud/azure/run-command-abuse/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/execution_azure_run_command_script_child_process.toml
 author: elhoim
