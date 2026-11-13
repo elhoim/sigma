@@ -1,0 +1,49 @@
+title: Dev Tunnels Or Single-Purpose Tunnel CLI Execution
+id: bbf6f54c-5e66-4cf9-a740-489bf40c4707
+status: experimental
+description: |
+    Detects the execution of the Microsoft Dev Tunnels command line client "devtunnel.exe" with a subcommand that logs in, creates, hosts or tests a tunnel, and of the single-purpose tunnelling, transfer and out-of-band interaction clients "beeceptor-cli", "interactsh-client", "sendme" (iroh) and "iroh-relay".
+    Dev Tunnels relays traffic through Microsoft-owned domains and is abused to expose RDP or a command and control listener of a compromised host on the Internet; the other clients offer the same capability through their own relays. All of them are legitimate developer or tester tools, so the rule only provides visibility for hunting on hosts where no development takes place.
+    The DNS and network side for devtunnels.ms and the OAST domains is covered by dedicated rules.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/devtunnels.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/beeceptor.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/interactsh.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/iroh.md
+    - https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1572
+    - detection.threat-hunting
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_devtunnel_img:
+        Image|endswith: '\devtunnel.exe'
+    selection_devtunnel_cli:
+        CommandLine|contains:
+            - ' host'
+            - ' create'
+            - ' echo '
+            - ' connect'
+            - ' user login'
+            - ' token '
+    selection_other_tools:
+        Image|endswith:
+            - '\beeceptor-cli.exe'
+            - '\interactsh-client.exe'
+            - '\sendme.exe'
+            - '\iroh-relay.exe'
+    selection_beeceptor_node:
+        CommandLine|contains|all:
+            - 'beeceptor-cli'
+            - ' -p '
+    condition: all of selection_devtunnel_* or selection_other_tools or selection_beeceptor_node
+falsepositives:
+    - Developers using Dev Tunnels from Visual Studio or the command line to test web applications and webhooks
+    - Application security teams using interactsh to verify out-of-band findings
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_devtunnel_and_single_purpose_tunnel_cli_execution/info.yml
