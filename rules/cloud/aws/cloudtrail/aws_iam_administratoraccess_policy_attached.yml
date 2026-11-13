@@ -1,4 +1,4 @@
-title: AWS IAM AdministratorAccess Policy Attached To Principal
+title: Potential Privilege Escalation Via AWS IAM AdministratorAccess Policy Attachment
 id: 9e972cdf-eb39-4ff3-baf4-9d34b6d8e8cf
 status: experimental
 description: |

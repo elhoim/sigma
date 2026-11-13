@@ -1,4 +1,4 @@
-title: AWS IAM Compromised Key Quarantine Policy Attached
+title: Suspicious AWS IAM Compromised Key Quarantine Policy Attachment
 id: b3cb1097-f3bc-4610-9afd-f6814a70fe29
 status: experimental
 description: |
@@ -26,7 +26,7 @@ detection:
             - 'AttachGroupPolicy'
             - 'AttachRolePolicy'
             - 'AttachUserPolicy'
-        requestParameters.policyArn|contains: 'AWSCompromisedKeyQuarantine'
+        requestParameters.policyArn|startswith: 'arn:aws:iam::aws:policy/AWSCompromisedKeyQuarantine'
     condition: selection
 falsepositives:
     - Unlikely, as this policy is applied by AWS when a leaked credential is detected

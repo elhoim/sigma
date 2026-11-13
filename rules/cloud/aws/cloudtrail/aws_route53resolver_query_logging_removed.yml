@@ -1,4 +1,4 @@
-title: AWS Route 53 Resolver Query Logging Removed
+title: Potential Log Tampering Via AWS Route 53 Resolver Query Logging Removal
 id: 65330730-eaca-40d2-833b-de5c72a23ad6
 status: experimental
 description: |

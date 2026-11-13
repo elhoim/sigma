@@ -1,4 +1,4 @@
-title: AWS S3 Account-Level Public Access Block Deleted
+title: Potential Data Exposure Via AWS S3 Account-Level Public Access Block Deletion
 id: ddbc4d65-9b69-4e62-9186-c32ad9ffa2ad
 status: experimental
 description: |
@@ -7,6 +7,7 @@ description: |
 references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_DeletePublicAccessBlock.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
 author: elhoim
 date: 2026-10-15
 tags:
