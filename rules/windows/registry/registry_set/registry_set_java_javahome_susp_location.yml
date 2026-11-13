@@ -1,0 +1,52 @@
+title: Potential Java Runtime Hijack Via JavaHome Registry Value
+id: 5fe5ac28-d14d-414c-bd3f-170df2531645
+status: experimental
+description: |
+    Detects a "JavaHome" value of a registered Java runtime or development kit (Oracle "JavaSoft" or IBM keys) that is set to a user writable or remote directory.
+    Executables wrapped with launch4j, the Java Control Panel applet and other Java launchers read this value to find the runtime and start "<JavaHome>\bin\javaw.exe", "<JavaHome>\jre\bin\javaw.exe" or "<JavaHome>\bin\javacpl.exe" from it. They do not use the "JAVA_HOME" environment variable.
+    An attacker who can write to HKLM can point the value to a directory that holds a malicious "javaw.exe", which is then started by every legitimate Java based application of the host. Java installers register runtimes below "Program Files".
+references:
+    - https://www.hexacorn.com/blog/2021/03/05/beyond-good-ol-run-key-part-133/
+    - https://www.hexacorn.com/blog/2019/08/16/beyond-good-ol-run-key-part-112/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_key:
+        TargetObject|contains:
+            - '\IBM\Java Development Kit\'
+            - '\IBM\Java Runtime Environment\'
+            - '\IBM\Java2 Runtime Environment\'
+            - '\JavaSoft\Java Development Kit\'
+            - '\JavaSoft\Java Runtime Environment\'
+            - '\JavaSoft\JDK\'
+            - '\JavaSoft\JRE\'
+        TargetObject|endswith: '\JavaHome'
+    selection_value:
+        - Details|contains:
+              - ':\PerfLogs\'
+              - ':\ProgramData\'
+              - ':\Temp\'
+              - ':\Users\'
+              - ':\Windows\Tasks\'
+              - ':\Windows\Temp\'
+              - '%APPDATA%'
+              - '%LOCALAPPDATA%'
+              - '%PUBLIC%'
+              - '%TEMP%'
+              - '%TMP%'
+              - '%USERPROFILE%'
+        - Details|startswith: '\\\\'
+    condition: all of selection_*
+falsepositives:
+    - Java distributions unpacked into a user profile or "ProgramData" and registered by hand or by a third party updater running with administrative rights
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_java_javahome_susp_location/info.yml
