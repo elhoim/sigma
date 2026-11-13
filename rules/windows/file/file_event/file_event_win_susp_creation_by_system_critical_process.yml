@@ -1,0 +1,51 @@
+title: Suspicious Executable File Created By System Critical Process
+id: 8f3bc56d-911b-47f6-8e7b-6e0b3f36f01e
+status: experimental
+description: |
+    Detects the creation of an executable or DLL file by a Windows system critical process such as smss.exe, csrss.exe, wininit.exe, services.exe, lsass.exe, winlogon.exe or userinit.exe.
+    These processes do not normally drop executable code, so such a write may indicate remote code execution or exploitation of the process (e.g. an LSASS or Winlogon exploit dropping a payload).
+    Unlike "Files With System Process Name In Unsuspected Locations", this rule looks at the writing process rather than the name of the written file.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_system_critical_proc_abnormal_file_activity.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1068
+    - attack.t1203
+    - attack.t1211
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\autochk.exe'
+            - '\csrss.exe'
+            - '\LogonUI.exe'
+            - '\lsass.exe'
+            - '\services.exe'
+            - '\smss.exe'
+            - '\userinit.exe'
+            - '\wininit.exe'
+            - '\winlogon.exe'
+        TargetFilename|endswith:
+            - '.dll'
+            - '.exe'
+    filter_main_wpbbin:
+        # Windows Platform Binary Table: smss.exe extracts the firmware-provided binary at boot
+        Image: 'C:\Windows\System32\smss.exe'
+        TargetFilename: 'C:\Windows\System32\wpbbin.exe'
+    filter_optional_eac_usermode:
+        # Easy Anti-Cheat user mode module written by lsass.exe
+        Image: 'C:\Windows\System32\lsass.exe'
+        TargetFilename|startswith: 'C:\Windows\System32\eac_usermode_'
+        TargetFilename|endswith: '.dll'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Firmware or anti-cheat components that legitimately drop binaries through these processes, add them as filters after baselining
+    - Delayed file replacements performed by smss.exe at boot (PendingFileRenameOperations) if the file event source logs renames as file creations
+level: high
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_susp_creation_by_system_critical_process/info.yml
