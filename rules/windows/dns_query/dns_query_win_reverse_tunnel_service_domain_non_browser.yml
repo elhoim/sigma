@@ -14,16 +14,16 @@ references:
     - https://lottunnels.github.io/domains/
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/pinggy.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnels.md
-    - https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/how-cybercriminals-abuse-cloud-tunneling-services
+    - https://www.trendaisecurity.com/en-us/resources-insights/deep-research/how-cybercriminals-abuse-cloud-tunneling-services
 author: elhoim
 date: 2026-11-09
 tags:
     - attack.command-and-control
-    - attack.t1572
     - attack.t1090
+    - attack.t1572
 logsource:
-    product: windows
     category: dns_query
+    product: windows
 detection:
     selection:
         - QueryName|endswith:
@@ -64,10 +64,12 @@ detection:
               - 'ssi.sh'
               - 'tunnelto.dev'
               - 'jprq.io'
+              - 'bore.digital'
               - 'bore.pub'
               - 'openport.io'
               - 'tunnel.pyjam.as'
               - 'expos.es'
+              - 'expose.sh'
               - 'ssh-j.com'
     filter_main_chrome:
         Image:
