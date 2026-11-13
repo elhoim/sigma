@@ -5,9 +5,9 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects a service recovery program ("FailureCommand" value of a service key) that uses a command shell, a script host, a proxy execution binary or a program in a user writable directory.
+    Detects a service recovery program ("FailureCommand" value of a service key) that uses a command shell, a script host, a proxy execution binary, a URL or a program in a user writable directory.
     The Service Control Manager runs this command, by default as SYSTEM, when the service fails and its failure actions include "run a program". The action can be delayed, and a service can be made to fail on purpose, which separates the configuration from the execution.
-    The existing process creation rule only sees "sc.exe failure" and "reg.exe add" command lines. This rule also covers changes made through the ChangeServiceConfig2 API, which are written by "services.exe".
+    Unlike command line based detections of "sc.exe failure" or "reg.exe add", this rule also covers changes made through the ChangeServiceConfig2 API, which are written by "services.exe".
 references:
     - https://www.hexacorn.com/blog/2020/10/19/beyond-good-ol-run-key-part-130/
     - https://learn.microsoft.com/en-us/windows/win32/api/winsvc/ns-winsvc-service_failure_actionsw
