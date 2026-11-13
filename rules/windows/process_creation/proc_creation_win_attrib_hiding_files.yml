@@ -26,7 +26,8 @@ detection:
         ParentImage|endswith: '\cmd.exe'
         CommandLine|contains: '+R +H +S +A '
         CommandLine|endswith: '.cui'
-        ParentCommandLine|re|i: '\\system32\\[^\\" ]+\.bat'
+        # Anchored to the drive root so a user-writable "...\system32\" folder does not match
+        ParentCommandLine|re|i: '(?:^|[\s"])[A-Z]:\\Windows\\System32\\[^\\" ]+\.bat'
     condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - IgfxCUIService.exe hiding *.cui files via .bat script (attrib.exe a child of cmd.exe and igfxCUIService.exe is the parent of the cmd.exe)

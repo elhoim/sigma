@@ -31,6 +31,6 @@ detection:
         CommandLine|re|i: '-(Low|Moderate|High|Severe)ThreatDefaultAction[\s:]+["'']?(6|9|Allow|NoAction)\b|-(lt|mt|ht|st)defac[\s:]+["'']?(6|9|Allow|NoAction)\b'
     condition: all of selection_*
 falsepositives:
-    - Highly unlikely
+    - Unlikely
 level: high
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_defender_default_action_modified/info.yml
