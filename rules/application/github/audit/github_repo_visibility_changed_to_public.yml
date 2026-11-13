@@ -1,4 +1,4 @@
-title: GitHub Repository Visibility Changed To Public
+title: Suspicious GitHub Repository Visibility Change To Public
 id: 81ec1ed2-02af-4070-8faf-c06c1d7e2fcd
 status: experimental
 description: |
@@ -11,8 +11,8 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.collection
-    - attack.t1213.003
     - attack.exfiltration
+    - attack.t1213.003
     - attack.t1567.001
 logsource:
     product: github
