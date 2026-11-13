@@ -5,8 +5,9 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the execution of the Kaspersky products removal tool ("kavremvr.exe", also seen written "kavrmvr.exe"), a vendor utility that uninstalls Kaspersky security products even when the regular uninstaller is protected or broken.
-    Ransomware affiliates such as The Gentlemen run it to strip the endpoint protection before deploying their payload; outside of a planned migration away from Kaspersky products, its execution on an endpoint is unexpected.
+    Detects the execution of the Kaspersky products removal tool ("kavremvr.exe", also seen written "kavremover.exe" or "kavrmvr.exe"), a vendor utility that uninstalls Kaspersky security products even when the regular uninstaller is protected or broken.
+    Ransomware affiliates such as The Gentlemen run it to strip the endpoint protection before deploying their payload.
+    Outside of a planned migration away from Kaspersky products, its execution on an endpoint is unexpected.
 references:
     - https://support.kaspersky.com/common/uninstall/1464
     - https://securelist.com/the-gentlemen-raas/120447/
@@ -22,10 +23,11 @@ logsource:
 detection:
     selection:
         - Image|endswith:
+              - '\kavremover.exe'
               - '\kavremvr.exe'
               - '\kavrmvr.exe'
         - OriginalFileName: 'kavremvr.exe'
-        - Description: 'Kaspersky Lab Products Remover'
+        - Product: 'Kaspersky Removal Tool'
     condition: selection
 falsepositives:
     - Planned uninstallation or migration of Kaspersky products by administrators; correlate with change management
