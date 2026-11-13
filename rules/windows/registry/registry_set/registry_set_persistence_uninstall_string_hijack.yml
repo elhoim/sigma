@@ -1,0 +1,51 @@
+title: Potential Persistence Via Uninstall String Hijack
+id: 8da50463-c0e5-416e-9e6f-9ef68c8d69a7
+status: experimental
+description: |
+    Detects an "UninstallString" or "QuietUninstallString" value of an installed program ("CurrentVersion\Uninstall" key) that is set to a command line using a script interpreter, a download capable utility, a web address or a temporary or public directory.
+    These values normally hold the path of the product's own uninstaller or a "MsiExec.exe /X{GUID}" command. The command is started with the rights of the user, often an administrator, who removes the program from "Apps and features", or by software management tools that uninstall silently.
+    Replacing it lets an attacker run an arbitrary program the next time the software is uninstalled or upgraded.
+references:
+    - https://www.hexacorn.com/blog/2019/02/02/beyond-good-ol-run-key-part-101/
+    - https://learn.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_key:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Uninstall\'
+        TargetObject|endswith:
+            - '\QuietUninstallString'
+            - '\UninstallString'
+    selection_value:
+        Details|contains:
+            - ':\PerfLogs\'
+            - ':\Users\Public\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\Temp\'
+            - '\AppData\Local\Temp\'
+            - 'bitsadmin'
+            - 'certutil'
+            - 'cscript'
+            - 'curl '
+            - 'curl.exe'
+            - 'ftp://'
+            - 'http://'
+            - 'https://'
+            - 'mshta'
+            - 'powershell'
+            - 'pwsh'
+            - 'regsvr32'
+            - 'wscript'
+    condition: all of selection_*
+falsepositives:
+    - Products whose uninstaller is a PowerShell or Windows Script Host script
+    - Installers that register an uninstaller extracted to a temporary directory
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_uninstall_string_hijack/info.yml
