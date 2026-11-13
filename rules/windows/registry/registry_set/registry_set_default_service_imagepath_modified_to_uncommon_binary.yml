@@ -148,5 +148,6 @@ detection:
     condition: selection_service and (selection_lolbin_value or not filter_main_system32_binary)
 falsepositives:
     - Virtualisation and management agents that relocate a listed service binary outside System32 during installation (for example VMware or Hyper-V integration components under Program Files)
+    - Promotion of a domain controller, which registers the Active Directory Web Services (ADWS) service with its binary under the Windows\ADWS folder
 level: medium
 regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_default_service_imagepath_modified_to_uncommon_binary/info.yml
