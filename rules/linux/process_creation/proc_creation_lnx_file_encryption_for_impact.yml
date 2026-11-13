@@ -1,4 +1,4 @@
-title: Non-Interactive File Encryption Via CLI Utilities - Linux
+title: Potential Non-Interactive File Encryption Via CLI Utilities - Linux
 id: 55c4c494-664a-490a-946e-35750d38f1d1
 status: experimental
 description: |
@@ -7,7 +7,7 @@ description: |
 references:
     - https://www.gnupg.org/documentation/manuals/gnupg/GPG-Esoteric-Options.html
     - https://ccrypt.sourceforge.net/
-    - https://www.openssl.org/docs/manmaster/man1/openssl-pkeyutl.html
+    - https://docs.openssl.org/master/man1/openssl-pkeyutl/
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1486/T1486.md
 author: elhoim
 date: 2026-10-01
@@ -44,12 +44,12 @@ detection:
             - ' rsautl'
     selection_openssl_encrypt:
         CommandLine|contains: ' -encrypt'
-    filter_optional_ccrypt_decrypt:
+    filter_main_ccrypt_decrypt:
         Image|endswith: '/ccrypt'
         CommandLine|contains:
             - ' -d'
             - ' --decrypt'
-    condition: (all of selection_gpg_* or all of selection_ccrypt_* or all of selection_openssl_*) and not 1 of filter_optional_*
+    condition: (all of selection_gpg_* or all of selection_ccrypt_* or all of selection_openssl_*) and not 1 of filter_main_*
 falsepositives:
     - Backup software or scripts encrypting archives with a passphrase (e.g. duplicity)
     - Administrators encrypting files for transport
