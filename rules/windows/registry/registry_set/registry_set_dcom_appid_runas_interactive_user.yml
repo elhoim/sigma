@@ -16,6 +16,7 @@ tags:
     - attack.persistence
     - attack.privilege-escalation
     - attack.t1112
+    - attack.t1187
     - attack.t1546.015
 logsource:
     category: registry_set
