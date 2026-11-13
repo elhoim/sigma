@@ -12,33 +12,33 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.discovery
-    - attack.t1580
     - attack.t1526
+    - attack.t1580
 logsource:
     product: aws
     service: cloudtrail
 detection:
     selection_key:
         userIdentity.accessKeyId|startswith: 'AKIA'
-    selection_backup:
+    selection_svc_backup:
         eventSource: 'backup.amazonaws.com'
         eventName:
             - 'ListBackupPlans'
             - 'ListBackupVaults'
             - 'ListProtectedResources'
-    selection_resource_explorer:
+    selection_svc_resource_explorer:
         eventSource: 'resource-explorer-2.amazonaws.com'
         eventName:
             - 'CreateIndex'
             - 'ListResources'
             - 'Search'
-    selection_ses:
+    selection_svc_ses:
         eventSource: 'ses.amazonaws.com'
         eventName:
             - 'GetAccount'
             - 'GetAccountSendingEnabled'
             - 'GetSendQuota'
-    condition: selection_key and (selection_backup or selection_resource_explorer or selection_ses)
+    condition: selection_key and 1 of selection_svc_*
 falsepositives:
     - Administrators or scripts using IAM user access keys to manage these services
 level: low

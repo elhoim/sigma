@@ -13,8 +13,8 @@ date: 2026-10-15
 tags:
     - attack.defense-impairment
     - attack.impact
-    - attack.t1686.001
     - attack.t1485
+    - attack.t1686.001
 logsource:
     product: aws
     service: cloudtrail

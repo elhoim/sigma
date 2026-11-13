@@ -1,5 +1,8 @@
-title: AWS S3 Bucket MFA Delete Disabled
+title: Potential AWS S3 Bucket MFA Delete Disablement
 id: 346a2474-00d7-4e9b-80b5-16b4e5baf795
+related:
+    - id: a136ac98-b2bc-4189-a14d-f0d0388e57a7
+      type: similar
 status: experimental
 description: |
     Detects MFA Delete being disabled on an S3 bucket.

@@ -1,4 +1,4 @@
-title: AWS STS GetFederationToken Called By IAM User
+title: Potential AWS STS GetFederationToken Abuse By IAM User
 id: bdc27f1a-e52d-4a47-ad28-5b6977cd9c04
 status: experimental
 description: |

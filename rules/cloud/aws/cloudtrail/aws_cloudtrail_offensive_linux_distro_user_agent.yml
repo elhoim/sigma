@@ -1,4 +1,4 @@
-title: AWS API Call From Offensive Security Linux Distribution
+title: Potential AWS API Call From Offensive Security Linux Distribution
 id: cd1dc561-df20-4844-a542-6e7cb0e80467
 status: experimental
 description: |
@@ -25,5 +25,5 @@ detection:
             - 'pentoo'
     condition: selection
 falsepositives:
-    - Authorized security assessments or red team exercises
+    - Authorized security assessments performed from Kali, Parrot or Pentoo hosts
 level: medium

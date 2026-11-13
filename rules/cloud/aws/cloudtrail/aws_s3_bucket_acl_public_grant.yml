@@ -1,4 +1,4 @@
-title: AWS S3 Bucket ACL Grants Access To All Or Authenticated Users
+title: Suspicious AWS S3 Bucket ACL Grant To All Or Authenticated Users
 id: 1a830bd9-ac5a-437a-97e9-8b6637a2d33f
 status: experimental
 description: |

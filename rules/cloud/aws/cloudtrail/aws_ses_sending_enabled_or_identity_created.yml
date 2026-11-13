@@ -1,4 +1,4 @@
-title: AWS SES Sending Enabled Or Sending Identity Created
+title: Potential AWS SES Sending Enablement Or Sending Identity Creation
 id: 5719bf76-d6c9-43ff-9150-ef17d0e16d6a
 status: experimental
 description: |
@@ -19,19 +19,19 @@ logsource:
 detection:
     selection_source:
         eventSource: 'ses.amazonaws.com'
-    selection_enable_v1:
+    selection_action_enable_v1:
         eventName: 'UpdateAccountSendingEnabled'
         requestParameters.enabled: 'true'
-    selection_enable_v2:
+    selection_action_enable_v2:
         eventName: 'PutAccountSendingAttributes'
         requestParameters.sendingEnabled: 'true'
-    selection_identity:
+    selection_action_identity:
         eventName:
             - 'CreateEmailIdentity'
             - 'VerifyDomainIdentity'
             - 'VerifyEmailIdentity'
         userIdentity.type: 'IAMUser'
-    condition: selection_source and (1 of selection_enable_* or selection_identity)
+    condition: selection_source and 1 of selection_action_*
 falsepositives:
     - Legitimate setup of SES for transactional email
 level: medium

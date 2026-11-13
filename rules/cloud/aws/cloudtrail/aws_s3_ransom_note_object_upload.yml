@@ -15,6 +15,7 @@ tags:
 logsource:
     product: aws
     service: cloudtrail
+    definition: 'Requirements: CloudTrail data events must be enabled for the S3 buckets to monitor, PutObject and CopyObject are not logged as management events'
 detection:
     selection:
         eventSource: 's3.amazonaws.com'
