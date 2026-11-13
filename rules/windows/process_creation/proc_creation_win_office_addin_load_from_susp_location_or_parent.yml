@@ -8,7 +8,8 @@ related:
 status: experimental
 description: |
     Detects Word, Excel, PowerPoint, Access or the VSTO installer being started with an Office add-in file (.wll, .xll, .ppa, .ppam, .xla, .xlam, .vsto) as argument, when the add-in sits in a download, archive-extraction or staging directory or is passed over HTTP, when the user opened it directly from Explorer, or when a command shell launched it.
-    Add-ins are native DLLs or .NET assemblies that Office executes without the macro security prompt, which makes them a phishing payload format (XLL campaigns) and a persistence vehicle. The related rules cover add-ins dropped into Office startup folders and the XLL image load.
+    Add-ins are native DLLs or .NET assemblies that Office executes without the macro security prompt, which makes them a phishing payload format (XLL campaigns) and a persistence vehicle.
+    The related rules cover add-ins dropped into Office startup folders and the XLL image load.
 references:
     - https://labs.reversec.com/posts/2017/04/add-in-opportunities-for-office-persistence
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_execution_via_office_addins.toml
@@ -78,7 +79,9 @@ detection:
         ParentImage|re:
             - '^[A-Za-z]:\\Program Files(?: \(x86\))?\\Logitech\\LogiOptions\\'
             - '^[A-Za-z]:\\Program Files(?: \(x86\))?\\LogiOptionsPlus\\'
-            - '^[A-Za-z]:\\Program Files(?: \(x86\))?\\Common Files\\microsoft shared\\VSTO\\'
+        CommandLine|contains: '.vsto'
+    filter_optional_vsto_runtime:
+        ParentImage|re: '^[A-Za-z]:\\Program Files(?: \(x86\))?\\Common Files\\microsoft shared\\VSTO\\'
         CommandLine|contains: '.vsto'
     condition: selection_img and selection_addin_ext and 1 of selection_ctx_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
