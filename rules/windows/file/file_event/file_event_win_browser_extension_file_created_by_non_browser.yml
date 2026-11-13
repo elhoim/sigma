@@ -28,7 +28,7 @@ detection:
             - '\User Data\'
         TargetFilename|endswith: '.crx'
     filter_main_browsers:
-        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\(?:[^\\]+\\)+|Users\\[^\\]+\\AppData\\Local\\(?:Google\\Chrome|Microsoft\\Edge|BraveSoftware\\Brave-Browser|Vivaldi|Chromium|Mozilla Firefox|Programs\\(?:Opera|Opera GX|Waterfox|LibreWolf))\\(?:[^\\]+\\)*)(?:firefox|thunderbird|waterfox|librewolf|chrome|msedge|brave|opera|vivaldi|chromium)\.exe$'
+        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\(?:[^\\]+\\)+|Users\\[^\\]+\\AppData\\Local\\(?:(?:Google\\Chrome|Microsoft\\Edge|BraveSoftware\\Brave-Browser|Vivaldi|Chromium)\\Application\\|Mozilla Firefox\\|Programs\\(?:Opera|Opera GX|Waterfox|LibreWolf)\\(?:[0-9.]+\\)?))(?:firefox|thunderbird|waterfox|librewolf|chrome|msedge|brave|opera|vivaldi|chromium)\.exe$'
     filter_main_installers:
         Image:
             - 'C:\Windows\System32\msiexec.exe'
