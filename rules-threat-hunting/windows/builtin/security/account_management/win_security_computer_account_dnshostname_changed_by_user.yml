@@ -2,9 +2,9 @@ title: Potential Computer Account DnsHostName Spoofing By User Account
 id: 7fab41ca-75f9-4fe9-aa2e-14b86de7bcd4
 status: experimental
 description: |
-    Detects a change of the "dNSHostName" attribute of a computer account performed by a user account instead of the computer account itself.
+    Detects a change of the "dNSHostName" attribute of a computer account performed by an account other than the computer account itself (a user account or another machine account).
     A low privileged domain user can create a computer account (MachineAccountQuota), clear its SPNs and set its "dNSHostName" to the name of a domain controller to obtain a certificate as that domain controller (Certifried, CVE-2022-26923).
-    Domain-joined computers update their own "dNSHostName" with their machine account. A change made by a user account mostly corresponds to a domain join or a computer rename performed by an administrator, so review whether the new "DnsHostName" matches the "TargetUserName" of the changed account.
+    Domain-joined computers update their own "dNSHostName" with their machine account. A change made by another account mostly corresponds to a domain join or a computer rename performed by an administrator, so review whether the new "DnsHostName" matches the "TargetUserName" of the changed account.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_suspicious_dnshostname_update.toml
     - https://www.thehacker.recipes/ad/movement/adcs/certifried
@@ -29,8 +29,8 @@ detection:
         EventID: 4742
     filter_main_dnshostname_unchanged:
         DnsHostName: '-'
-    filter_main_machine_account:
-        SubjectUserName|endswith: '$'
+    filter_main_self_update:
+        SubjectUserSid|fieldref: TargetSid
     filter_main_local_system:
         SubjectUserSid: 'S-1-5-18'
     condition: selection and not 1 of filter_main_*
