@@ -1,0 +1,39 @@
+title: Potential Suspicious Windows Feature Enabled - WSL Via DISM
+id: 3febcd60-253c-4066-a720-7638c3f21cf9
+related:
+    - id: c740d4cf-a1e9-41de-bb16-8a46a4f57918
+      type: similar
+    - id: 55c925c1-7195-426b-a136-a9396800e29b
+      type: similar
+status: experimental
+description: |
+    Detects the Deployment Image Servicing and Management tool "dism.exe" being used to enable the Windows Subsystem for Linux or the Virtual Machine Platform optional features.
+    Attackers enable WSL on a compromised host to run Linux tooling and ELF payloads outside the visibility of Windows-centric security controls.
+    The sibling rules cover the "Enable-WindowsOptionalFeature" PowerShell cmdlet, this one covers the DISM command line documented for manual WSL installation.
+references:
+    - https://learn.microsoft.com/en-us/windows/wsl/install-manual
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_wsl_enabled_via_dism.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1202
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\dism.exe'
+        - OriginalFileName: 'DISM.EXE'
+    selection_cli:
+        CommandLine|contains|all:
+            - '/enable-feature'
+            - '/featurename:'
+        CommandLine|contains:
+            - 'Microsoft-Windows-Subsystem-Linux'
+            - 'VirtualMachinePlatform'
+    condition: all of selection_*
+falsepositives:
+    - Administrators and developers enabling WSL on their workstation, and provisioning scripts that enable the feature during imaging
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_dism_enable_wsl_feature/info.yml
