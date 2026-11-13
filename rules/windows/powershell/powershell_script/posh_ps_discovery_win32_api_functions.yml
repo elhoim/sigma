@@ -55,6 +55,8 @@ detection:
         Path|startswith: 'C:\Program Files (x86)\Automox\WDK\Win32\WinSession\'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
-    - Monitoring and configuration management agents (SCOM discovery, Ansible, Automox) and administrators' own P/Invoke scripts that call these APIs; only the Automox script path is filtered (anchored), the SCOM and Ansible content markers are not excluded because an attacker could add the same strings to a script block, exclude them by script path or hash in the environment
+    - SCOM discovery scripts (e.g. DiscoverWindowsComputerProperties.ps1 calling DsGetSiteName)
+    - Ansible Windows modules and module utilities that declare these APIs through Add-Type
+    - Administrator scripts that call these APIs through P/Invoke
 level: medium
 regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_discovery_win32_api_functions/info.yml
