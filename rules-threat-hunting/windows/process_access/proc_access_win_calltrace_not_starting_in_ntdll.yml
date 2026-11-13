@@ -38,15 +38,20 @@ detection:
             - 'C:\Windows\System32\wow64cpu.dll+'
             - 'C:\Windows\System32\wow64win.dll+'
             - 'C:\Windows\SysWOW64\ntdll.dll+'
+    filter_main_edgewebview:
+        TargetImage|startswith: 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application\'
+        TargetImage|endswith: '\msedgewebview2.exe'
     filter_optional_symantec:
         SourceImage|startswith: 'C:\Program Files\Symantec\Symantec Endpoint Protection\'
         CallTrace|startswith: 'C:\Windows\System32\sysfer.dll+'
-    filter_optional_target_products:
-        TargetImage|startswith:
-            - 'C:\Program Files (x86)\Malwarebytes Anti-Exploit\mbae-svc.exe'
-            - 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application\'
-            - 'C:\Program Files\Adobe\Acrobat DC\Acrobat\'
-            - 'C:\Program Files\Cisco\AMP\'
+    filter_optional_malwarebytes:
+        TargetImage: 'C:\Program Files (x86)\Malwarebytes Anti-Exploit\mbae-svc.exe'
+    filter_optional_cisco_amp:
+        TargetImage|startswith: 'C:\Program Files\Cisco\AMP\'
+        TargetImage|endswith: '\sfc.exe'
+    filter_optional_acrobat:
+        TargetImage|startswith: 'C:\Program Files\Adobe\Acrobat DC\Acrobat\'
+        TargetImage|endswith: '\AcroCEF.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Security agents, anti-exploit tools, anti-cheat engines, debuggers and sandboxed browsers that implement their own system call stubs
