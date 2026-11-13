@@ -42,23 +42,18 @@ detection:
               - 'pwsh.dll'
               - 'Cmd.Exe'
     selection_shell_encoded:
-        CommandLine|contains:
+        CommandLine|contains|windash:
             - ' -e '
             - ' -ec '
             - ' -en '
             - ' -enc'
-            - ' /e '
-            - ' /ec '
-            - ' /enc'
     selection_shell_hidden:
-        CommandLine|contains:
+        CommandLine|contains|windash:
             - ' -w hidden'
             - ' -w h '
             - ' -win hidden'
             - ' -windowstyle hidden'
             - ' -windowstyle h '
-            - ' /w hidden'
-            - ' /windowstyle hidden'
     selection_shell_exec:
         CommandLine|contains:
             - 'iex '
