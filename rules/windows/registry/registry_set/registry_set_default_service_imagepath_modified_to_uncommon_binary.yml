@@ -1,0 +1,153 @@
+title: Potential Privilege Escalation Via Default Service ImagePath Modification
+id: 5adcf019-d057-44c8-97aa-0f8d63627af9
+related:
+    - id: a07f0359-4c90-4dc4-a681-8ffea40b4f47
+      type: similar
+status: experimental
+description: |
+    Detects the "ImagePath" value of a built-in Windows service (Active Directory Web Services, DNS, Certificate Services, Netlogon, VSS, W3SVC, Winmgmt, WSearch and about seventy others) being changed to a binary outside the System32 folder, or to a command interpreter, script host or living-off-the-land binary.
+    Members of groups such as Server Operators, or any principal granted SERVICE_CHANGE_CONFIG on a service, can redirect a SYSTEM service to a binary or command of their choice and obtain SYSTEM privileges at the next service start.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/services/service-security-and-access-rights
+    - https://www.ired.team/offensive-security/privilege-escalation/weak-service-permissions
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_reg_service_imagepath_mod.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1112
+    - attack.t1543.003
+    - attack.t1569.002
+    - attack.t1574.011
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_service:
+        TargetObject|contains: '\Services\'
+        TargetObject|endswith:
+            - '\ADWS\ImagePath'
+            - '\AppHostSvc\ImagePath'
+            - '\AppReadiness\ImagePath'
+            - '\AudioEndpointBuilder\ImagePath'
+            - '\AxInstSV\ImagePath'
+            - '\camsvc\ImagePath'
+            - '\CertSvc\ImagePath'
+            - '\COMSysApp\ImagePath'
+            - '\CscService\ImagePath'
+            - '\defragsvc\ImagePath'
+            - '\DeviceAssociationService\ImagePath'
+            - '\DeviceInstall\ImagePath'
+            - '\DevQueryBroker\ImagePath'
+            - '\Dfs\ImagePath'
+            - '\DFSR\ImagePath'
+            - '\diagnosticshub.standardcollector.service\ImagePath'
+            - '\DiagTrack\ImagePath'
+            - '\DmEnrollmentSvc\ImagePath'
+            - '\DNS\ImagePath'
+            - '\dot3svc\ImagePath'
+            - '\Eaphost\ImagePath'
+            - '\GraphicsPerfSvc\ImagePath'
+            - '\hidserv\ImagePath'
+            - '\HvHost\ImagePath'
+            - '\IISADMIN\ImagePath'
+            - '\IKEEXT\ImagePath'
+            - '\InstallService\ImagePath'
+            - '\iphlpsvc\ImagePath'
+            - '\IsmServ\ImagePath'
+            - '\LanmanServer\ImagePath'
+            - '\MSiSCSI\ImagePath'
+            - '\NcbService\ImagePath'
+            - '\Netlogon\ImagePath'
+            - '\Netman\ImagePath'
+            - '\NtFrs\ImagePath'
+            - '\PlugPlay\ImagePath'
+            - '\Power\ImagePath'
+            - '\PrintNotify\ImagePath'
+            - '\ProfSvc\ImagePath'
+            - '\PushToInstall\ImagePath'
+            - '\RSoPProv\ImagePath'
+            - '\sacsvr\ImagePath'
+            - '\SENS\ImagePath'
+            - '\SensorDataService\ImagePath'
+            - '\SgrmBroker\ImagePath'
+            - '\ShellHWDetection\ImagePath'
+            - '\shpamsvc\ImagePath'
+            - '\StorSvc\ImagePath'
+            - '\svsvc\ImagePath'
+            - '\swprv\ImagePath'
+            - '\SysMain\ImagePath'
+            - '\Themes\ImagePath'
+            - '\TieringEngineService\ImagePath'
+            - '\TokenBroker\ImagePath'
+            - '\TrkWks\ImagePath'
+            - '\UALSVC\ImagePath'
+            - '\UserManager\ImagePath'
+            - '\vm3dservice\ImagePath'
+            - '\vmicguestinterface\ImagePath'
+            - '\vmicheartbeat\ImagePath'
+            - '\vmickvpexchange\ImagePath'
+            - '\vmicrdv\ImagePath'
+            - '\vmicshutdown\ImagePath'
+            - '\vmicvmsession\ImagePath'
+            - '\vmicvss\ImagePath'
+            - '\vmvss\ImagePath'
+            - '\VSS\ImagePath'
+            - '\w3logsvc\ImagePath'
+            - '\W3SVC\ImagePath'
+            - '\WalletService\ImagePath'
+            - '\WAS\ImagePath'
+            - '\wercplsupport\ImagePath'
+            - '\WerSvc\ImagePath'
+            - '\Winmgmt\ImagePath'
+            - '\wisvc\ImagePath'
+            - '\wmiApSrv\ImagePath'
+            - '\WPDBusEnum\ImagePath'
+            - '\WSearch\ImagePath'
+    selection_lolbin_value:
+        Details|contains:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\ieexec.exe'
+            - '\iexpress.exe'
+            - '\installutil.exe'
+            - '\Microsoft.Workflow.Compiler.exe'
+            - '\msbuild.exe'
+            - '\mshta.exe'
+            - '\msiexec.exe'
+            - '\msxsl.exe'
+            - '\net.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\reg.exe'
+            - '\RegAsm.exe'
+            - '\RegSvcs.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\vssadmin.exe'
+            - '\wbadmin.exe'
+            - '\wmic.exe'
+            - '\wscript.exe'
+    filter_main_system32_binary:
+        Details|startswith:
+            - '"C:\Windows\System32\'
+            - '"%systemroot%\System32\'
+            - '"%windir%\System32\'
+            - 'C:\Windows\System32\'
+            - '%systemroot%\System32\'
+            - '%windir%\System32\'
+            # Sysmon escapes the percent sign of environment variables in the Details field
+            - '"%%systemroot%%\System32\'
+            - '"%%windir%%\System32\'
+            - '%%systemroot%%\System32\'
+            - '%%windir%%\System32\'
+    condition: selection_service and (selection_lolbin_value or not filter_main_system32_binary)
+falsepositives:
+    - Virtualisation and management agents that relocate a listed service binary outside System32 during installation (for example VMware or Hyper-V integration components under Program Files)
+    - Promotion of a domain controller, which registers the Active Directory Web Services (ADWS) service with its binary under the Windows\ADWS folder
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_default_service_imagepath_modified_to_uncommon_binary/info.yml
