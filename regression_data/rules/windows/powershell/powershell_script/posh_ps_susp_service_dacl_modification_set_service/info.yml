@@ -1,0 +1,13 @@
+id: f8f6975e-1b82-4872-9280-bb9fa4e5e664
+description: Atomic Red Team replay of real events captured on the lab VMs (T1564-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 22d80745-6f2c-46da-826b-77adaededd74
+      title: Suspicious Service DACL Modification Via Set-Service Cmdlet - PS
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_service_dacl_modification_set_service/22d80745-6f2c-46da-826b-77adaededd74.evtx

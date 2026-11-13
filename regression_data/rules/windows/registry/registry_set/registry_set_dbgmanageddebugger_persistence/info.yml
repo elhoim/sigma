@@ -1,0 +1,13 @@
+id: f32c7011-07c2-4364-a492-5ba348508cbf
+description: Atomic Red Team replay of real events captured on the lab VMs (T1112-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 9827ae57-3802-418f-994b-d5ecf5cd974b
+      title: Potential Registry Persistence Attempt Via DbgManagedDebugger
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dbgmanageddebugger_persistence/9827ae57-3802-418f-994b-d5ecf5cd974b.evtx

@@ -14,6 +14,7 @@ tags:
     - attack.execution
     - attack.stealth
     - attack.t1574
+    - attack.t1546
 logsource:
     category: registry_set
     product: windows
@@ -26,3 +27,4 @@ detection:
 falsepositives:
     - Legitimate use of the key to setup a debugger. Which is often the case on developers machines
 level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_dbgmanageddebugger_persistence/info.yml
