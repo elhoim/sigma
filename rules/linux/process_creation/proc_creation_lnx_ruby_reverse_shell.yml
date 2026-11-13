@@ -7,8 +7,10 @@ references:
     - https://www.revshells.com/
 author: '@d4ns4n_'
 date: 2023-04-07
+modified: 2026-11-10
 tags:
     - attack.execution
+    - attack.t1059.004
 logsource:
     category: process_creation
     product: linux
@@ -28,6 +30,23 @@ detection:
             - ' pdksh'
             - ' sh'
             - ' tcsh'
+            # The shell is often preceded by a path or a quote in the payload, e.g. exec "bash -i" or exec sprintf("/bin/sh -i ...")
+            - '"ash'
+            - '"bash'
+            - '"bsh'
+            - '"csh'
+            - '"ksh'
+            - '"pdksh'
+            - '"sh'
+            - '"tcsh'
+            - '/ash'
+            - '/bash'
+            - '/bsh'
+            - '/csh'
+            - '/ksh'
+            - '/pdksh'
+            - '/sh'
+            - '/tcsh'
     condition: selection
 falsepositives:
     - Unknown
