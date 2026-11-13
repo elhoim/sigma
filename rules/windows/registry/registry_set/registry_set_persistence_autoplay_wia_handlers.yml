@@ -1,0 +1,51 @@
+title: Potential Persistence Via AutoPlay Or Still Image Event Handler Registration
+id: 44499296-5963-4afb-9d32-8636e73bdc76
+status: experimental
+description: |
+    Detects the registration or modification of an AutoPlay handler ("Explorer\AutoplayHandlers\Handlers") or of a Windows Image Acquisition / Still Image push model application ("StillImage\Registered Applications" and "StillImage\Events\STIProxyEvent") by a process other than Windows Installer or the Windows servicing stack.
+    The program behind an AutoPlay handler is started by the shell when a matching media or device arrives, and a registered Still Image application is started when a scanner or camera event such as a button press occurs.
+    An attacker can add a handler or redirect the "InvokeProgID", "InvokeVerb", "InitCmdLine" or "CLSID" value of a handler that an installed product already registered, which gives an event triggered persistence that autostart inventories rarely show.
+references:
+    - https://www.hexacorn.com/blog/2019/09/07/beyond-good-ol-run-key-part-114/
+    - https://www.hexacorn.com/blog/2012/07/23/beyond-good-ol-run-key/
+    - https://learn.microsoft.com/en-us/windows/win32/shell/how-to-register-a-handler-for-a-device-event
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_autoplay:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\'
+        TargetObject|endswith:
+            - '\CLSID'
+            - '\InitCmdLine'
+            - '\InvokeProgID'
+            - '\InvokeVerb'
+    selection_wia:
+        TargetObject|contains:
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications\'
+            - '\Control\StillImage\Events\STIProxyEvent\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    filter_main_media_player_setup:
+        Image: 'C:\Windows\System32\unregmp2.exe'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Installers of media players, disc burning, photo or scanner software that are not based on Windows Installer
+    - Scanner and multifunction printer driver packages that register their scan utility for device events
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_autoplay_wia_handlers/info.yml
