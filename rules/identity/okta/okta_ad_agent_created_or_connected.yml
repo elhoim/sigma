@@ -1,4 +1,4 @@
-title: Okta Active Directory Agent Created or Connected
+title: Potential Rogue Okta Active Directory Agent Created Or Connected
 id: 156df002-060b-425a-9a9e-70a601f06983
 status: experimental
 description: |
@@ -10,8 +10,8 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.credential-access
-    - attack.persistence
     - attack.defense-impairment
+    - attack.persistence
     - attack.t1556.007
 logsource:
     product: okta

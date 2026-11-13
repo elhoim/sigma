@@ -1,4 +1,4 @@
-title: Okta Activity via Gimme-AWS-Creds Tool
+title: Okta Activity Via Gimme-AWS-Creds Tool
 id: a742ef09-0a63-4811-844f-1bbb4c754a4f
 status: experimental
 description: |
@@ -6,6 +6,7 @@ description: |
     Attackers with stolen Okta credentials can use such tooling to obtain AWS access from the command line.
 references:
     - https://github.com/Nike-Inc/gimme-aws-creds
+    - https://github.com/Nike-Inc/gimme-aws-creds/blob/019764ab2044a6220ce30f0357291f689b24b369/gimme_aws_creds/common.py#L30-L33
 author: elhoim
 date: 2026-10-15
 tags:
