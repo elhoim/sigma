@@ -1,0 +1,52 @@
+title: Potential Inno Setup Uninstaller Hijack Via Unins000 File Creation
+id: 381a3dad-4b30-45b1-a82d-7c24692f19e6
+status: experimental
+description: |
+    Detects the creation or replacement of an Inno Setup uninstaller pair ("unins000.exe" and its instruction file "unins000.dat") inside "Program Files" by a command shell, a script host or a file copy or download utility.
+    The Inno Setup uninstaller executes the "[UninstallRun]" entries stored in "unins000.dat". An attacker can generate a pair that runs an arbitrary command and copy it over the files of an installed product, the command is then executed by the genuine and often signed "unins000.exe" when the product is uninstalled or upgraded.
+    A real installation writes these files from the temporary setup process of Inno Setup, not from the utilities listed in this rule.
+references:
+    - https://www.hexacorn.com/blog/2019/02/02/beyond-good-ol-run-key-part-101/
+    - https://jrsoftware.org/inno-setup/documentation/topic_runsection.htm
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_target:
+        TargetFilename|contains:
+            - ':\Program Files (x86)\'
+            - ':\Program Files\'
+        TargetFilename|endswith:
+            - '\unins000.dat'
+            - '\unins000.exe'
+            - '\unins001.dat'
+            - '\unins001.exe'
+    selection_image:
+        Image|endswith:
+            - '\bitsadmin.exe'
+            - '\certutil.exe'
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\curl.exe'
+            - '\expand.exe'
+            - '\extrac32.exe'
+            - '\mshta.exe'
+            - '\powershell.exe'
+            - '\powershell_ise.exe'
+            - '\pwsh.exe'
+            - '\robocopy.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+            - '\xcopy.exe'
+    condition: all of selection_*
+falsepositives:
+    - Application deployment by copying an already installed program directory with a script, "xcopy" or "robocopy"
+    - Restore of a program directory from a backup by a script
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_inno_setup_uninstaller_overwrite_susp_process/info.yml
