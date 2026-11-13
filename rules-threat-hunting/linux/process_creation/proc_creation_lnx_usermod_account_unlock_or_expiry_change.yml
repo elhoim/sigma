@@ -24,17 +24,20 @@ detection:
     selection_usermod_img:
         Image|endswith: '/usermod'
     selection_usermod_cli:
-        CommandLine|contains:
-            - ' -U '
-            - ' --unlock '
-            - ' -e '
-            - ' --expiredate '
+        # '-U' is matched case-sensitively, as '-u' is '--uid'
+        - CommandLine|re: ' -U '
+        - CommandLine|contains:
+              - ' --unlock '
+              - ' -e '
+              - ' --expiredate '
+              - ' --expiredate='
     selection_chage_img:
         Image|endswith: '/chage'
     selection_chage_cli:
         CommandLine|contains:
             - ' -E '
             - ' --expiredate '
+            - ' --expiredate='
     condition: all of selection_usermod_* or all of selection_chage_*
 falsepositives:
     - Administrators managing account lifecycle
