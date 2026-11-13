@@ -1,0 +1,47 @@
+title: Potential Office Macro Or DDE Execution Via COM Automation In PowerShell Script
+id: 70b2df3b-d373-4e47-8bd9-af27e418a086
+related:
+    - id: 36fbec91-fa1b-4d5d-8df1-8d8edcb632ad
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script block content that instantiates an Office application COM object ("Excel.Application", "Word.Application", "Access.Application") and, in the same script block, runs a macro (".Run("), executes an Excel 4.0 macro ("ExecuteExcel4Macro"), starts a DDE conversation ("DDEInitiate"), opens an Access database ("OpenCurrentDatabase") or sets the macro security level ("AutomationSecurity").
+    Driving Office through COM from a script lets an attacker execute VBA, XLM or DDE payloads inside a trusted Office process without the user opening a document, and bypasses the macro warnings a user would normally see.
+references:
+    - https://learn.microsoft.com/en-us/office/vba/api/excel.application.run
+    - https://learn.microsoft.com/en-us/office/vba/api/excel.application.executeexcel4macro
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/9f0361b2-edcf-4dd4-b507-cc54d7019c47.yaml
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/6e30f32f-1647-400a-bca5-d2582bd0d060.yaml
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/92c77267-2cf0-4931-a217-3203d2fd6428.yaml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1059.001
+    - attack.t1137
+    - attack.t1559.001
+logsource:
+    category: ps_script
+    product: windows
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_com_object:
+        ScriptBlockText|contains:
+            - 'Excel.Application'
+            - 'Word.Application'
+            - 'Access.Application'
+    selection_action:
+        ScriptBlockText|contains:
+            - '.Run('
+            - '.Run "'
+            - ".Run '"
+            - 'ExecuteExcel4Macro'
+            - 'DDEInitiate'
+            - 'OpenCurrentDatabase'
+            - 'AutomationSecurity'
+    condition: all of selection_*
+falsepositives:
+    - Reporting or finance scripts that open workbooks and run a macro through COM automation; filter on the script path or the running account
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_office_application_com_automation_macro_execution/info.yml

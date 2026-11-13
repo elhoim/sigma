@@ -1,0 +1,13 @@
+id: 4c96585b-7e4c-4e6a-a5b9-7a80723099ee
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 70b2df3b-d373-4e47-8bd9-af27e418a086
+      title: Potential Office Macro Or DDE Execution Via COM Automation In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_office_application_com_automation_macro_execution/70b2df3b-d373-4e47-8bd9-af27e418a086.evtx
