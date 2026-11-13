@@ -1,0 +1,13 @@
+id: bd31c609-b2e4-4a3a-8d08-627fbe3c2342
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 3a06967d-2eb8-4ea0-8966-0fdc904f4122
+      title: Potential Scriptlet Execution - Scrobj.DLL Loaded By Uncommon System Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_dll_scrobj_uncommon_system_process_load/3a06967d-2eb8-4ea0-8966-0fdc904f4122.evtx

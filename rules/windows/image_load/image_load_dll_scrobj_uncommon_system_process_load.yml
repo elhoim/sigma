@@ -1,0 +1,59 @@
+title: Potential Scriptlet Execution - Scrobj.DLL Loaded By Uncommon System Process
+id: 3a06967d-2eb8-4ea0-8966-0fdc904f4122
+related:
+    - id: fe20dda1-6f37-4379-bbe0-a98d400cae90
+      type: similar
+status: experimental
+description: |
+    Detects the Windows Script Component runtime "scrobj.dll" being loaded by a Microsoft binary located in System32 or SysWOW64 other than the script hosts and the few components that use it legitimately (cscript, wscript, mshta, msiexec, smartscreen, taskhostw, w3wp, mobsync, cmd, OpenWith, WMIADAP, powershell).
+    scrobj.dll executes COM scriptlets (.sct files); its load into an unusual system process, for example into regsvr32.exe via "regsvr32 /i:<url> scrobj.dll" (Squiblydoo) or into a process whose COM object was hijacked, usually means a scriptlet is being run in that process to bypass application control. regsvr32.exe is deliberately not excluded.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Regsvr32/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_scrobj_load.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1059
+    - attack.t1218.010
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        ImageLoaded|endswith: '\scrobj.dll'
+        Image|contains:
+            - ':\Windows\System32\'
+            - ':\Windows\SysWOW64\'
+    filter_main_known_hosts:
+        Image:
+            - 'C:\Windows\System32\cscript.exe'
+            - 'C:\Windows\SysWOW64\cscript.exe'
+            - 'C:\Windows\System32\wscript.exe'
+            - 'C:\Windows\SysWOW64\wscript.exe'
+            - 'C:\Windows\System32\mshta.exe'
+            - 'C:\Windows\SysWOW64\mshta.exe'
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+            - 'C:\Windows\System32\smartscreen.exe'
+            - 'C:\Windows\SysWOW64\smartscreen.exe'
+            - 'C:\Windows\System32\taskhostw.exe'
+            - 'C:\Windows\SysWOW64\taskhostw.exe'
+            - 'C:\Windows\System32\inetsrv\w3wp.exe'
+            - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
+            - 'C:\Windows\System32\mobsync.exe'
+            - 'C:\Windows\SysWOW64\mobsync.exe'
+            - 'C:\Windows\System32\cmd.exe'
+            - 'C:\Windows\SysWOW64\cmd.exe'
+            - 'C:\Windows\System32\OpenWith.exe'
+            - 'C:\Windows\SysWOW64\OpenWith.exe'
+            - 'C:\Windows\System32\wbem\WMIADAP.exe'
+            - 'C:\Windows\SysWOW64\wbem\WMIADAP.exe'
+            - 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+            - 'C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_dll_scrobj_uncommon_system_process_load/info.yml
