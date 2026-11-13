@@ -6,6 +6,7 @@ description: |
     The codec is compiled on first import, which happens when a script decodes a ROT-13 obfuscated payload through the codecs module. Legitimate programs rarely use this codec, so the bytecode file appearing on a host is an artefact of an obfuscated script being run, as seen in malicious PyPI packages and Python loaders.
 references:
     - https://docs.python.org/3/library/codecs.html#text-transforms
+    - https://www.elastic.co/security-labs/dprk-code-of-conduct
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/defense_evasion_encoding_rot13_python_script.toml
 author: elhoim
 date: 2026-11-10
@@ -20,9 +21,7 @@ logsource:
     product: windows
 detection:
     selection:
-        Image|endswith:
-            - '\python.exe'
-            - '\pythonw.exe'
+        Image|re|i: '\\pythonw?[0-9.]*\.exe$' # python.exe, pythonw.exe and versioned names such as python3.12.exe
         TargetFilename|contains|all:
             - '\encodings\__pycache__\rot_13.cpython-'
             - '.pyc'
