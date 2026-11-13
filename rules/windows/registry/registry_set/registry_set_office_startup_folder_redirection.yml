@@ -7,6 +7,7 @@ description: |
     An attacker can redirect a startup folder to a location that is not monitored in order to get an add-in or a macro enabled file loaded each time the application starts.
 references:
     - https://www.hexacorn.com/blog/2016/11/24/beyond-good-ol-run-key-part-51/
+    - https://learn.microsoft.com/en-us/troubleshoot/microsoft-365-apps/excel/files-open-automatically
 author: elhoim
 date: 2026-11-12
 tags:
