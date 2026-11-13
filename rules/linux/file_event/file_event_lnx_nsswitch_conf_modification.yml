@@ -1,4 +1,4 @@
-title: Linux Name Service Switch Configuration Modified
+title: Potential Persistence Via Linux Name Service Switch Configuration Modification
 id: 7226c3ef-03fc-4205-8d2a-d761f54db54a
 related:
     - id: 10ac0730-c24e-4f4c-81f8-b13a1ac95a1d # Non-Standard Nsswitch.Conf Creation - Potential CVE-2025-32463 Exploitation
@@ -12,32 +12,20 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
+    - attack.credential-access
     - attack.defense-impairment
     - attack.persistence
-    - attack.credential-access
     - attack.t1556
 logsource:
-    product: linux
     category: file_event
+    product: linux
 detection:
     selection:
         TargetFilename: '/etc/nsswitch.conf'
     filter_main_package_managers:
-        Image|endswith:
-            - '/apk'
-            - '/apt'
-            - '/apt-get'
-            - '/dnf'
-            - '/dpkg'
-            - '/pacman'
-            - '/rpm'
-            - '/yum'
-            - '/zypper'
+        Image|re: '^/(usr/)?s?bin/(apk|apt|apt-get|dnf|dpkg|pacman|rpm|yum|zypper)$'
     filter_main_auth_helpers:
-        Image|endswith:
-            - '/authconfig'
-            - '/authselect'
-            - '/pam-auth-update'
+        Image|re: '^/(usr/)?s?bin/(authconfig|authselect|pam-auth-update)$'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Configuration management tools or administrators enrolling the host in a directory service (SSSD, LDAP, Winbind)
