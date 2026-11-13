@@ -1,0 +1,36 @@
+title: Potential SeIncreaseBasePriorityPrivilege Abuse By Non-System Account
+id: 8387092b-32ef-4108-ab3e-8d3fe0dc2716
+status: experimental
+description: |
+    Detects a privileged operation (Security event 4674) that exercised "SeIncreaseBasePriorityPrivilege" with the PROCESS_SET_INFORMATION access mask (512) from an account other than SYSTEM, LOCAL SERVICE or NETWORK SERVICE.
+    This privilege lets a process change the scheduling priority and CPU affinity of threads in another process. Outside of the operating system itself it is rarely exercised; tooling that pins the threads of a privileged target process to a chosen core (to race or starve security products) or that manipulates scheduling as part of an exploitation chain surfaces here.
+    Requires "Audit Non Sensitive Privilege Use" (the subcategory of this privilege) to be enabled for success events.
+references:
+    - https://github.com/Octoberfest7/ThreadCPUAssignment_POC/tree/941d67f20542600c4c08e819785913655a2e7fb1
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4674
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_thread_cpu_priority_hijack.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1134
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4674
+        PrivilegeList: 'SeIncreaseBasePriorityPrivilege'
+        AccessMask: 512
+    filter_main_system_accounts:
+        SubjectUserSid:
+            - 'S-1-5-18'
+            - 'S-1-5-19'
+            - 'S-1-5-20'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Administrators changing process priority or affinity in Task Manager or Process Explorer
+    - Benchmark, real-time audio/video and game launcher software that raises the priority of other processes
+level: medium
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_seincreasebasepriorityprivilege_use_non_system_account/info.yml

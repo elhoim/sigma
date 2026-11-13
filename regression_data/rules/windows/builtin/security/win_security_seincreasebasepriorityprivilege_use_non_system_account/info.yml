@@ -1,0 +1,13 @@
+id: 12c1e940-c71c-4a52-baf6-da35f83dfc60
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 8387092b-32ef-4108-ab3e-8d3fe0dc2716
+      title: Potential SeIncreaseBasePriorityPrivilege Abuse By Non-System Account
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_seincreasebasepriorityprivilege_use_non_system_account/8387092b-32ef-4108-ab3e-8d3fe0dc2716.evtx
