@@ -1,0 +1,52 @@
+title: Potential Persistence Via Suspicious Service Failure Command
+id: f2b81b2a-b55d-420e-af2b-0353c85df447
+related:
+    - id: 38879043-7e1e-47a9-8d46-6bec88e201df # Potential Persistence Attempt Via Existing Service Tampering
+      type: similar
+status: experimental
+description: |
+    Detects a service recovery program ("FailureCommand" value of a service key) that uses a command shell, a script host, a proxy execution binary, a URL or a program in a user writable directory.
+    The Service Control Manager runs this command, by default as SYSTEM, when the service fails and its failure actions include "run a program". The action can be delayed, and a service can be made to fail on purpose, which separates the configuration from the execution.
+    Unlike command line based detections of "sc.exe failure" or "reg.exe add", this rule also covers changes made through the ChangeServiceConfig2 API, which are written by "services.exe".
+references:
+    - https://www.hexacorn.com/blog/2020/10/19/beyond-good-ol-run-key-part-130/
+    - https://learn.microsoft.com/en-us/windows/win32/api/winsvc/ns-winsvc-service_failure_actionsw
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_key:
+        TargetObject|contains: '\Services\'
+        TargetObject|endswith: '\FailureCommand'
+    selection_value:
+        Details|contains:
+            - ':\PerfLogs\'
+            - ':\ProgramData\'
+            - ':\Temp\'
+            - ':\Users\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\Temp\'
+            - 'bitsadmin'
+            - 'certutil'
+            - 'cmd /c'
+            - 'cmd.exe'
+            - 'cscript'
+            - 'http://'
+            - 'https://'
+            - 'mshta'
+            - 'powershell'
+            - 'pwsh'
+            - 'regsvr32'
+            - 'rundll32'
+            - 'wscript'
+    condition: all of selection_*
+falsepositives:
+    - Software agents that register a batch or PowerShell recovery script for their own service
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_service_failure_command_susp/info.yml
