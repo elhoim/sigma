@@ -1,0 +1,69 @@
+title: Potential Payload Download From Google Drive Direct Download URL
+id: 53d610db-076a-4ec9-862f-3bf22d5bff03
+related:
+    - id: b6e04788-29e1-4557-bb14-77f761848ab8
+      type: similar
+status: experimental
+description: |
+    Detects a command line that fetches a file through a Google Drive direct download URL ("export=download" on drive.google.com or drive.usercontent.google.com) either from a command-line download utility or scripting host, or from a browser with the "confirm=no_antivirus" parameter that skips the virus-scan warning for large files.
+    Adversaries host loaders and archives on Google Drive to abuse a trusted domain, and use the direct download form so that the file is written without the Drive preview page.
+references:
+    - https://abnormal.ai/threat-intelligence/blog/google-drive-matanbuchus-malware
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/command_and_control_google_drive_malicious_file_download.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1102
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_url:
+        CommandLine|contains:
+            - 'drive.google.com/uc?'
+            - 'drive.google.com/u/0/uc?'
+            - 'drive.usercontent.google.com/download?'
+    selection_export:
+        CommandLine|contains: 'export=download'
+    selection_tool_img:
+        - Image|endswith:
+              - '\bitsadmin.exe'
+              - '\certutil.exe'
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\curl.exe'
+              - '\mshta.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\wget.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'bitsadmin.exe'
+              - 'CertUtil.exe'
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'curl.exe'
+              - 'MSHTA.EXE'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'wscript.exe'
+    selection_browser_img:
+        Image|endswith:
+            - '\brave.exe'
+            - '\browser.exe'
+            - '\chrome.exe'
+            - '\dragon.exe'
+            - '\firefox.exe'
+            - '\msedge.exe'
+            - '\opera.exe'
+            - '\vivaldi.exe'
+            - '\whale.exe'
+    selection_browser_bypass:
+        CommandLine|contains: 'confirm=no_antivirus'
+    condition: selection_url and selection_export and (selection_tool_img or all of selection_browser_*)
+falsepositives:
+    - Scripts or software updaters that legitimately pull files from a shared Google Drive link
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_google_drive_direct_download_url/info.yml
