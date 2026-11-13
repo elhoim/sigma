@@ -8,16 +8,19 @@ references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnels.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localxpose.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/sharewithexpose.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnelsrlt.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/iroh.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/tailcat.md
 author: elhoim
 date: 2026-11-09
 tags:
     - attack.command-and-control
-    - attack.t1572
     - attack.t1105
+    - attack.t1572
     - detection.threat-hunting
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
     selection_node_manager:
         CommandLine|contains:
