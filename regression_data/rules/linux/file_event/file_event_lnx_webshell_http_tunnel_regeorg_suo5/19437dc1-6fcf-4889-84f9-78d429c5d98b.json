@@ -1,0 +1,1 @@
+{"EventID": 11, "RuleName": "-", "UtcTime": "2026-11-13 17:18:48.830", "ProcessGuid": "{2acc291f-4678-6af7-7901-e0652d560000}", "ProcessId": 6654, "Image": "/var/tmp/dib1738b/bin/apache2", "TargetFilename": "/var/www/lab/html/tunnel.php", "CreationUtcTime": "2026-11-13 17:18:48.830", "User": "-"}
