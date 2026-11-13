@@ -1,0 +1,47 @@
+title: Potential Persistence Via Remote Desktop Client Add-in DLL Registration
+id: ee54f6e1-dcc0-428e-b1f1-0045f8243308
+status: experimental
+description: |
+    Detects the registration of a DLL that the Remote Desktop client (mstsc.exe) loads, either through the undocumented "ClxDllPath" value or through a virtual channel add-in whose "Name" value points to a commonly abused directory.
+    The DLL referenced by "ClxDllPath" is loaded each time mstsc.exe starts, and the add-ins registered under the "AddIns" key of the client are loaded when a connection is established.
+    An attacker can use both values in order to get a DLL executed in the context of the Remote Desktop client.
+references:
+    - https://www.hexacorn.com/blog/2016/08/19/beyond-good-ol-run-key-part-44/
+    - https://www.hexacorn.com/blog/2016/08/26/beyond-good-ol-run-key-part-45/
+    - https://learn.microsoft.com/en-us/windows/win32/termserv/dvc-plug-in-registration
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_clx:
+        TargetObject|endswith: '\Microsoft\Terminal Server Client\ClxDllPath'
+    selection_addin_key:
+        TargetObject|contains|all:
+            - '\Microsoft\Terminal Server Client\'
+            - '\AddIns\'
+        TargetObject|endswith: '\Name'
+    selection_addin_details:
+        Details|contains:
+            - '\$Recycle.Bin\'
+            - '\AppData\Local\Temp\'
+            - '\Desktop\'
+            - '\Downloads\'
+            - '\PerfLogs\'
+            - '\ProgramData\'
+            - '\Users\Public\'
+            - '\Windows\Temp\'
+            - '%Public%'
+            - '%Temp%'
+            - '%tmp%'
+    condition: selection_clx or all of selection_addin_*
+falsepositives:
+    - Remote Desktop virtual channel plug-ins that are installed in ProgramData by their vendor
+    - Developers testing a virtual channel plug-in from their profile
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_mstsc_client_addin_dll/info.yml
