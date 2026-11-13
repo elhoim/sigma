@@ -69,7 +69,7 @@ detection:
             - ':\Windows\Sysmon64a.exe'
     condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
-    - Administrative tools that enumerate lsass modules with full access, such as tasklist.exe /m
+    - Administrative tools that enumerate lsass modules with full access
     - Unknown
 level: medium
 regression_tests_path: regression_data/rules/windows/process_access/proc_access_win_lsass_memdump/info.yml
