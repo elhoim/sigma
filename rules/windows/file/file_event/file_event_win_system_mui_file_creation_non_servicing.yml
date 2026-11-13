@@ -12,12 +12,12 @@ references:
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.execution
     - attack.stealth
-    - attack.t1574
     - attack.t1036
+    - attack.t1574
 logsource:
     category: file_event
     product: windows
