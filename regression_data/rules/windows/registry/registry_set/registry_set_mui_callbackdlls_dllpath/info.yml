@@ -1,0 +1,13 @@
+id: f8b8f57b-8a68-48bb-9f54-e51efab4c4e3
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: c3630e41-8ea1-462f-b663-230af5421b0d
+      title: Potential Persistence Via MUI CallbackDlls Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_mui_callbackdlls_dllpath/c3630e41-8ea1-462f-b663-230af5421b0d.evtx
