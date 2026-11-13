@@ -37,7 +37,6 @@ detection:
             - '\Start Menu\Programs\Startup\'
     filter_main_installers_and_servicing:
         Image|startswith:
-            - 'C:\$WINDOWS.~BT\Sources\'
             - 'C:\Program Files (x86)\'
             - 'C:\Program Files\'
             - 'C:\ProgramData\Microsoft\Windows Defender\'
@@ -48,6 +47,7 @@ detection:
             - 'C:\Windows\WinSxS\'
     filter_main_windows_components:
         Image:
+            - 'C:\$WINDOWS.~BT\Sources\mighost.exe'
             - 'C:\Windows\explorer.exe'
             - 'C:\Windows\System32\cleanmgr.exe'
             - 'C:\Windows\System32\CompatTelRunner.exe'
