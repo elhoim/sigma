@@ -1,4 +1,4 @@
-title: AdminSDHolder SDProp Exclusion Added Via dSHeuristics
+title: Suspicious AdminSDHolder SDProp Exclusion Added Via dSHeuristics
 id: a4023a52-add8-4b54-9a57-b7a3e751aa76
 status: experimental
 description: |
@@ -7,6 +7,7 @@ description: |
     Requires "Audit Directory Service Changes" with a SACL on the Directory Service object (CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,...).
 references:
     - https://www.cert.ssi.gouv.fr/uploads/guide-ad.html#dsheuristics_bad
+    - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/e5899be4-862e-496f-9a38-33950617d2c5
     - https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/appendix-c--protected-accounts-and-groups-in-active-directory
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_sdprop_exclusion_dsheuristics.toml
 author: elhoim

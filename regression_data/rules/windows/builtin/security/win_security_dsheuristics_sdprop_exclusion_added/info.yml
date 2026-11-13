@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: a4023a52-add8-4b54-9a57-b7a3e751aa76
-      title: AdminSDHolder SDProp Exclusion Added Via dSHeuristics
+      title: Suspicious AdminSDHolder SDProp Exclusion Added Via dSHeuristics
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
