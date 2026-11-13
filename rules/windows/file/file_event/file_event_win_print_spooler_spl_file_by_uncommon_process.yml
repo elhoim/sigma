@@ -5,6 +5,7 @@ description: |
     Detects the creation of a spool file (".spl") in "System32\spool\PRINTERS" by a process other than the Print Spooler and its helper processes, printing-related system binaries, applications installed under Program Files or the user's explorer.
     Spool files are normally written by spoolsv.exe on behalf of printing applications; a .spl written directly by a script host, a user-dropped tool or a shell is the staging step of the PrintDemon family of local privilege escalations (CVE-2020-1048, CVE-2020-1337), where a crafted spool job is replayed by the spooler as SYSTEM to write an arbitrary file.
 references:
+    - https://windows-internals.com/printdemon-cve-2020-1048/
     - https://www.safebreach.com/blog/how-we-bypassed-cve-2020-1048-patch-and-got-cve-2020-1337/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_printspooler_suspicious_spl_file.toml
 author: elhoim
