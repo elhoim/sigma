@@ -36,10 +36,18 @@ detection:
             - '\ProgramData\'
             - '\Users\Public\'
             - '\Windows\Temp\'
+            - '%LocalAppData%\Temp\'
+            - '%ProgramData%'
             - '%Public%'
+            - '%SystemRoot%\Temp\'
             - '%Temp%'
             - '%tmp%'
-    condition: selection_clx or all of selection_addin_*
+            - '%windir%\Temp\'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    condition: (selection_clx or all of selection_addin_*) and not 1 of filter_main_*
 falsepositives:
     - Remote Desktop virtual channel plug-ins that are installed in ProgramData by their vendor
     - Developers testing a virtual channel plug-in from their profile
