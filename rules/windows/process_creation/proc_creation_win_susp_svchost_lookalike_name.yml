@@ -7,7 +7,7 @@ status: experimental
 description: |
     Detects the execution of a process whose file name is a near-miss misspelling of "svchost.exe" (dropped, swapped, doubled or substituted characters such as "svhost.exe", "scvhost.exe", "svch0st.exe" or "svchostt.exe").
     Malware commonly picks such names so that the process blends into the many legitimate Service Host entries in Task Manager while escaping exact-match detections on "svchost.exe". No legitimate Windows component uses these names.
-    Limitation: the rule matches an explicit list of 37 file names, not an edit distance. Names with two or more edits (e.g. "svc_host.exe") and Unicode homoglyph variants are not detected.
+    Limitation: the rule matches an explicit list of 37 file names, not an edit distance. Other single-character insertions or substitutions not in the list (e.g. "svc_host.exe"), names with two or more edits and Unicode homoglyph variants are not detected.
 references:
     - https://www.zscaler.com/blogs/cybersecurity-best-practices/process-masquerading
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_masquerading_as_svchost.toml
@@ -59,9 +59,10 @@ detection:
             - '\svchost2.exe'
             - '\svchost_.exe'
             - '\svchost-.exe'
+            - '\svvchost.exe'
+            # architecture suffix
             - '\svchost32.exe'
             - '\svchost64.exe'
-            - '\svvchost.exe'
             # double extension
             - '\svchost.exe.exe'
     condition: selection
