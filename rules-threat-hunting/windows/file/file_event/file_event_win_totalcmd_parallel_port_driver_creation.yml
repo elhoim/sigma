@@ -1,0 +1,30 @@
+title: Total Commander Parallel Port Driver File Creation
+id: ccddc8e9-de71-47e0-acdb-b72d4b330c40
+status: experimental
+description: |
+    Detects the creation of the Total Commander parallel port driver file "cglptnt.sys" or "cglpt64.sys" in the Windows drivers directory.
+    The file is copied there when Total Commander is started with the "/INSTALLDRIVER" switch and it is loaded by the "cglptnt" kernel driver service.
+    The driver is only needed for the legacy parallel port file transfer, so its presence is uncommon and an attacker could abuse the service to load a replaced driver file.
+references:
+    - https://www.hexacorn.com/blog/2018/06/10/beyond-good-ol-run-key-part-79/
+    - https://www.ghisler.ch/wiki/index.php/Command_line_parameters
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1543.003
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - ':\Windows\System32\drivers\cglpt64.sys'
+            - ':\Windows\System32\drivers\cglptnt.sys'
+    condition: selection
+falsepositives:
+    - Legitimate installation of the parallel port driver by a Total Commander user or by a deployment script
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_totalcmd_parallel_port_driver_creation/info.yml
