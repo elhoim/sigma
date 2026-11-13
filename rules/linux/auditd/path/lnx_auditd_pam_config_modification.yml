@@ -1,10 +1,9 @@
-title: PAM Configuration Or Module Modification - Auditd
+title: Potential PAM Configuration Or Module Modification - Auditd
 id: a47ac179-3e03-479b-8a78-697f82a4d38c
 status: experimental
 description: |
     Detects writes to Pluggable Authentication Modules (PAM) configuration files or to PAM module directories.
     Adversaries tamper with the PAM stack to accept any password, to load a malicious PAM module or to capture credentials in clear text.
-    This rule requires auditd file watches on the PAM configuration and module locations, for example "-w /etc/pam.d/ -p wa -k pam", "-w /etc/pam.conf -p wa -k pam" and "-w /lib/x86_64-linux-gnu/security/ -p wa -k pam".
 references:
     - https://x-c3ll.github.io/posts/PAM-backdoor-DNS/
     - https://www.group-ib.com/blog/pluggable-authentication-module/
@@ -21,6 +20,11 @@ tags:
 logsource:
     product: linux
     service: auditd
+    definition: |
+        Required auditd configuration (write and attribute watches on the PAM configuration and module locations):
+        -w /etc/pam.d/ -p wa -k pam
+        -w /etc/pam.conf -p wa -k pam
+        -w /lib/x86_64-linux-gnu/security/ -p wa -k pam
 detection:
     selection_config:
         type: 'PATH'
