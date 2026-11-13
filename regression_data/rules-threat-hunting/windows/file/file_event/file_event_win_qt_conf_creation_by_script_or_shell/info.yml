@@ -1,0 +1,13 @@
+id: 6a750e55-4b9b-4800-8052-a67b05473b69
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 2acfc3e8-6c5e-46cc-a835-6dbac810c239
+      title: Qt Configuration File Created By Shell Or Script Interpreter
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_qt_conf_creation_by_script_or_shell/2acfc3e8-6c5e-46cc-a835-6dbac810c239.evtx
