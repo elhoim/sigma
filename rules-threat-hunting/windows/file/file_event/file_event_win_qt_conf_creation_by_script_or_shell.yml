@@ -1,0 +1,44 @@
+title: Qt Configuration File Created By Shell Or Script Interpreter
+id: 2acfc3e8-6c5e-46cc-a835-6dbac810c239
+status: experimental
+description: |
+    Detects the creation or replacement of a "qt.conf" file by a command shell, a script host or a download utility.
+    Applications built with the Qt framework read "qt.conf" from their own directory. The "Plugins" entry of its "[Paths]" section sets the directory from which the application loads its Qt plugins, which are native DLLs.
+    An attacker can add or modify this file next to an installed Qt application to make it load plugins from a directory he controls, a persistence that needs no registry change. The file is normally written by the installer of the application.
+references:
+    - https://www.hexacorn.com/blog/2019/07/13/beyond-good-ol-run-key-part-110/
+    - https://www.hexacorn.com/blog/2020/08/16/beyond-good-ol-run-key-part-126/
+    - https://doc.qt.io/qt-6/qt-conf.html
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\qt.conf'
+        Image|endswith:
+            - '\bitsadmin.exe'
+            - '\certutil.exe'
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\curl.exe'
+            - '\mshta.exe'
+            - '\powershell.exe'
+            - '\powershell_ise.exe'
+            - '\pwsh.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+    condition: selection
+falsepositives:
+    - Script based deployment or extraction of Qt applications, for example package managers that unpack archives with PowerShell
+    - Developers who generate "qt.conf" from build scripts
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_qt_conf_creation_by_script_or_shell/info.yml

@@ -1,0 +1,13 @@
+id: 3352c080-b5e4-4246-b616-89a1209da0f4
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 6bc426c2-8800-4eac-8c77-3b944971ec40
+      title: Qt Plugin Path Environment Variable Set Persistently
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_qt_plugin_path_env_variable/6bc426c2-8800-4eac-8c77-3b944971ec40.evtx
