@@ -1,0 +1,13 @@
+id: 1cdfe08f-c17a-497c-bb91-9c2f49cea244
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 8d7a5662-f3d9-4145-9715-afa9ad17dc64
+      title: WSL Distribution Registered Via Lxss Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_wsl_distribution_registered/8d7a5662-f3d9-4145-9715-afa9ad17dc64.evtx
