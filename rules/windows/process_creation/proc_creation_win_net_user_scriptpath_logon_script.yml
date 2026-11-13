@@ -1,0 +1,43 @@
+title: Potential Persistence Via Net User Logon Script Path
+id: 4f9d7eb8-b97d-48e9-a026-82091e0049c6
+status: experimental
+description: |
+    Detects the execution of "net.exe" or "net1.exe" with the "user" command and the "/scriptpath" option, which assigns a logon script to a local or domain user account.
+    The script is searched in the "Netlogon" share, by default "%SystemRoot%\System32\Repl\Import\Scripts" on a standalone host, and is started by "userinit.exe" at every logon of that account.
+    An attacker with administrative rights can use this account property as a persistence mechanism that leaves no Run key or scheduled task.
+references:
+    - https://www.hexacorn.com/blog/2016/05/27/beyond-good-ol-run-key-part-38/
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/net-user
+    - https://learn.microsoft.com/en-us/troubleshoot/windows-server/user-profiles-and-logon/assign-logon-script-profile-local-user
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\net.exe'
+              - '\net1.exe'
+        - OriginalFileName:
+              - 'net.exe'
+              - 'net1.exe'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'user'
+            - '/scriptpath:'
+    filter_main_clear:
+        CommandLine|endswith:
+            - '/scriptpath:'
+            - '/scriptpath: '
+            - '/scriptpath:""'
+            - '/scriptpath:"" '
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Administrators or provisioning scripts that assign logon scripts to accounts with "net user" instead of a group policy
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_net_user_scriptpath_logon_script/info.yml
