@@ -1,4 +1,4 @@
-title: Process Image Path With Trailing Space - Linux
+title: Potential Masquerading Via Trailing Space In Process Image Path - Linux
 id: fa91bde9-8927-42f8-a3c1-41935b11d207
 related:
     - id: b6e2a2e3-2d30-43b1-a4ea-071e36595690 # macOS
@@ -8,7 +8,7 @@ description: |
     Detects the execution of a binary whose file name ends with a space character.
     Adversaries append a space to the name of a malicious binary or script so that it looks identical to a legitimate one (e.g. "init " or "sshd ") in process listings and file browsers.
 references:
-    - https://sandflysecurity.com/blog/linux-file-masquerading-and-malicious-pids-sandfly-1-2-6-update
+    - https://github.com/elastic/detection-rules/blob/0475804db02a36aa0cc9331765424469bac35655/rules/cross-platform/defense_evasion_processes_with_trailing_spaces.toml
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1036.006/T1036.006.md
 author: elhoim
 date: 2026-10-01
