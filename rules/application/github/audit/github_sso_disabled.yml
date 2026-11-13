@@ -1,4 +1,4 @@
-title: Github SAML Or OIDC Single Sign-On Disabled
+title: Suspicious GitHub SAML Or OIDC Single Sign-On Disabling
 id: bac18d95-bf95-4c37-9d9a-986e9b75718a
 status: experimental
 description: |
@@ -11,8 +11,8 @@ author: elhoim
 date: 2026-10-15
 tags:
     - attack.credential-access
-    - attack.persistence
     - attack.defense-impairment
+    - attack.persistence
     - attack.t1556
 logsource:
     product: github
