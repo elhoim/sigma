@@ -1,0 +1,13 @@
+id: 768ff02f-cfe3-4732-87cf-65e58b7b8a0d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: af1190ef-8cf9-44ee-a9e9-d211349b5aff
+      title: Potential Anonymous Named Pipe Access Enabled Via NullSessionPipes Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_lanmanserver_nullsessionpipes_modification/af1190ef-8cf9-44ee-a9e9-d211349b5aff.evtx
