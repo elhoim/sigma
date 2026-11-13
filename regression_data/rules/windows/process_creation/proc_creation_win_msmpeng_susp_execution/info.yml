@@ -1,0 +1,13 @@
+id: 24b847c9-0605-499b-9973-f5bfc9345b05
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: bbcfe80c-88bb-43d3-ad83-df5eed57a461
+      title: Suspicious Microsoft Antimalware Service Executable Execution
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_msmpeng_susp_execution/bbcfe80c-88bb-43d3-ad83-df5eed57a461.evtx
