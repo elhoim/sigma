@@ -4,6 +4,7 @@ status: experimental
 description: |
     Detects the execution of a binary with the compiler default output name "a.out", or a C/C++/Go compiler invoked on sources or with an output located in a world-writable directory such as "/tmp", "/var/tmp" or "/dev/shm".
     Adversaries deliver source code (e.g. local privilege escalation exploits or implants) and compile it on the target to evade static detection of delivered binaries.
+    Hunt for compilations on hosts that are not build or developer machines, especially when the compiler runs under a web service, an interactive SSH session or a non-developer account, and for an "a.out" or freshly built binary executed shortly afterwards.
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1027.004/T1027.004.md
 author: elhoim
@@ -38,7 +39,8 @@ detection:
     condition: selection_aout or all of selection_compiler_*
 falsepositives:
     - Developers compiling and testing code in temporary directories
-    - Build systems and package builds using temporary directories
+    - Build systems and package builds using temporary directories (e.g. pip building C extensions)
+    - Go builds using cgo, which invoke gcc on files in the "/tmp/go-build*" work directory
 level: low
 simulation:
     - type: atomic-red-team
