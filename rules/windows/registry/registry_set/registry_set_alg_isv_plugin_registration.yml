@@ -3,8 +3,9 @@ id: 7aca897d-0a11-48fc-9657-016ede9be446
 status: experimental
 description: |
     Detects the creation or modification of a value under the Application Layer Gateway (ALG) "ISV" registry key, other than the default FTP plug-in.
-    The Application Layer Gateway service (alg.exe) enumerates this key, watches it for changes and instantiates the listed plug-ins as COM objects.
+    The Application Layer Gateway service (alg.exe) enumerates this key, watches it for changes and is designed to instantiate the listed plug-ins as COM objects.
     A new value is uncommon as the only default plug-in is the "FTP Client/Server Protocol" one, and it could be an attempt to get a COM object loaded by the service.
+    Loading of a third-party plug-in this way has not been demonstrated: the referenced research could make the service re-read the key but did not observe the COM instantiation.
 references:
     - https://www.hexacorn.com/blog/2018/01/28/beyond-good-ol-run-key-part-71/
 author: elhoim
