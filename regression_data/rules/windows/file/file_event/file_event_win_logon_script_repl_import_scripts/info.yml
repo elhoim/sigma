@@ -1,0 +1,13 @@
+id: 5cf95355-3db8-4042-9ac1-953af7f32c63
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 5ba96710-cc2d-40b7-a16f-ca7401026be0
+      title: Potential Persistence Via File Creation In Local Logon Script Directory
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_logon_script_repl_import_scripts/5ba96710-cc2d-40b7-a16f-ca7401026be0.evtx

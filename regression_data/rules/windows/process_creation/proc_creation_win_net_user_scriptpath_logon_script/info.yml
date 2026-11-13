@@ -1,0 +1,13 @@
+id: 239dbd9f-fe67-4f5e-89ca-d2eb991adb3f
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 4f9d7eb8-b97d-48e9-a026-82091e0049c6
+      title: Potential Persistence Via Net User Logon Script Path
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_net_user_scriptpath_logon_script/4f9d7eb8-b97d-48e9-a026-82091e0049c6.evtx
