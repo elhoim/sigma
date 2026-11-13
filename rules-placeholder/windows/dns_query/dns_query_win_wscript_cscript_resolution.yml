@@ -25,12 +25,12 @@ detection:
     filter_optional_trusted_domains: # Mostly certificate distribution domains
         - QueryName:
               - 'crl.starfieldtech.com'
-              - 'ocsp.usertrust.com'
-              - 'officecdn.microsoft.com'
-              - 'oneocsp.microsoft.com'
               - 'ocsp.comodoca.com'
               - 'ocsp.sectigo.com'
               - 'ocsp.starfieldtech.com'
+              - 'ocsp.usertrust.com'
+              - 'officecdn.microsoft.com'
+              - 'oneocsp.microsoft.com'
               - 'www.python.org'
         - QueryName|endswith:
               - '.digicert.com'
