@@ -9,6 +9,7 @@ description: |
     Adversaries record audio to surveil users or capture sensitive conversations; this complements the process creation rule on the AudioDeviceCmdlets command line by inspecting the script content, which also catches scripts loaded from files or memory.
 references:
     - https://github.com/PowerShellMafia/PowerSploit/blob/d943001a7defb5e0d1657085a77a0e78609be58f/Exfiltration/Get-MicrophoneAudio.ps1
+    - https://github.com/frgnca/AudioDeviceCmdlets/blob/26d08d30e9d804c016c994117f9b038b7d50da95/README.md
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1123/T1123.md
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/collection_posh_audio_capture.toml
 author: elhoim
@@ -49,5 +50,6 @@ detection:
 falsepositives:
     - Defensive scripts that scan for PowerSploit function names
     - Legitimate scripts that switch the default recording device or record audio for accessibility, conferencing or kiosk purposes
+    - Scripts that call the WinMM API only to enumerate audio input devices ("waveInGetNumDevs") or to play sounds through "mciSendString"
 level: medium
 regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_audio_capture_capabilities/info.yml
