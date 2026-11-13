@@ -1,0 +1,45 @@
+title: Potential Persistence Via WER Runtime Exception Helper Module Registration
+id: 03c0bd87-3db3-4a54-b7eb-5a25b9ca6bde
+status: experimental
+description: |
+    Detects the registration of a Windows Error Reporting (WER) runtime exception helper module whose DLL is located outside of the Program Files directories and is not one of the default Windows or .NET Framework modules.
+    The value name under the "RuntimeExceptionHelperModules" key is the full path of a DLL that WerFault.exe loads when a process that registered it with "WerRegisterRuntimeExceptionModule" crashes.
+    An attacker can register a DLL from a user-writable location in order to get code executed inside WerFault.exe.
+references:
+    - https://www.hexacorn.com/blog/2018/09/08/beyond-good-ol-run-key-part-88/
+    - https://learn.microsoft.com/en-us/windows/win32/wer/wer-settings
+    - https://learn.microsoft.com/en-us/windows/win32/api/werapi/nf-werapi-werregisterruntimeexceptionmodule
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\Windows Error Reporting\RuntimeExceptionHelperModules\'
+    filter_main_program_files:
+        TargetObject|contains:
+            - '\RuntimeExceptionHelperModules\C:\Program Files (x86)\'
+            - '\RuntimeExceptionHelperModules\C:\Program Files\'
+    filter_main_windows_defaults:
+        TargetObject|endswith:
+            - '\RuntimeExceptionHelperModules\C:\Windows\System32\iertutil.dll'
+            - '\RuntimeExceptionHelperModules\C:\Windows\System32\msiwer.dll'
+            - '\RuntimeExceptionHelperModules\C:\Windows\System32\wbiosrvc.dll'
+            - '\RuntimeExceptionHelperModules\C:\Windows\SysWOW64\iertutil.dll'
+            - '\RuntimeExceptionHelperModules\C:\Windows\SysWOW64\msiwer.dll'
+    filter_main_dotnet:
+        TargetObject|contains:
+            - '\RuntimeExceptionHelperModules\C:\Windows\Microsoft.NET\Framework\'
+            - '\RuntimeExceptionHelperModules\C:\Windows\Microsoft.NET\Framework64\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Per-user installations of software that registers a crash helper module from the user profile, such as Chromium based browsers (chrome_wer.dll) or Firefox (mozwer.dll)
+    - Software installed on a non-system drive
+    - Windows updates that register an additional default helper module from the System32 directory
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_wer_runtime_exception_helper_module/info.yml
