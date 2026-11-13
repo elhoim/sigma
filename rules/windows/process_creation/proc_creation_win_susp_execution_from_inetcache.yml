@@ -3,7 +3,7 @@ id: a9957f8e-f2de-466c-850a-40fa0edfb714
 status: experimental
 description: |
     Detects a process started by Windows Explorer or a common archive manager (WinRAR, 7-Zip, Bandizip) whose image or command line points into the Internet Explorer cache folder "AppData\Local\Microsoft\Windows\INetCache\IE".
-    Files opened straight from a download prompt, a WebDAV share or an Internet shortcut land in this folder, and a user double-clicking such a file is a common first stage of phishing campaigns (e.g. the Water Hydra CVE-2024-21412 campaign).
+    Files opened straight from a download prompt, a WebDAV share or an Internet shortcut land in this folder, and a user double-clicking such a file is a common first stage of phishing campaigns.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_execution_from_inetcache.toml
     - https://www.trendmicro.com/en_us/research/24/b/cve202421412-water-hydra-targets-traders-with-windows-defender-s.html
@@ -28,7 +28,7 @@ detection:
         - Image|contains: '\AppData\Local\Microsoft\Windows\INetCache\IE\'
         - CommandLine|contains: '\AppData\Local\Microsoft\Windows\INetCache\IE\'
     filter_main_program_files:
-        Image|re: '^[A-Za-z]:\\Program Files( \(x86\))?\\'
+        Image|re|i: '^[a-z]:\\Program Files( \(x86\))?\\'
     filter_main_builtin_viewers:
         Image:
             - 'C:\Windows\explorer.exe'
