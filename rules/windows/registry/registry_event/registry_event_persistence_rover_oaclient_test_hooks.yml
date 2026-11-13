@@ -3,7 +3,7 @@ id: d1c201af-5c10-4bff-b31b-1a67f5a7c247
 status: experimental
 description: |
     Detects the creation of, or a write below, two registry keys that act as on/off switches for internal Microsoft test hooks.
-    The presence of the class key "{16d12736-7a9e-4765-bec6-f301d679caaa}" under "CLSID" makes "userinit.exe" load "%SystemRoot%\System32\rover.dll" and call its "RunMonitor" export at every logon. The presence of the key "SOFTWARE\Microsoft\OASys\OAClient" makes the legacy error reporting client "dwwin.exe" load "%SystemRoot%\System32\btlog.dll" when an application crashes.
+    The presence of the class key "{16d12736-7a9e-4765-bec6-f301d679caaa}" under "CLSID" makes "userinit.exe" load "%SystemRoot%\System32\rover.dll" and call its "RunMonitor" export at every logon. The presence of the key "SOFTWARE\Microsoft\OASys\OAClient" makes the legacy error reporting client "dwwin.exe" load "%SystemRoot%\System32\btlog.dll" when an application crashes (documented on Windows XP).
     Neither key exists on a production system and no value is needed, the key alone enables the hook. Together with a DLL dropped under the expected name they give a persistence that autostart inventories do not list.
 references:
     - https://www.hexacorn.com/blog/2014/05/21/beyond-good-ol-run-key-part-12/
