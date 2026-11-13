@@ -11,6 +11,7 @@ description: |
 references:
     - https://github.com/NeffIsBack/wsuks
     - https://github.com/GoSecure/pywsus
+    - https://github.com/nettitude/SharpWSUS/blob/53b1a71754ef44118b3756dd9ff9b68fadd97fae/README.md
     - https://www.elastic.co/guide/en/security/8.19/potential-wsus-abuse-for-lateral-movement.html
 author: elhoim
 date: 2026-10-15
@@ -26,15 +27,15 @@ detection:
     selection:
         ParentImage|endswith: '\wuauclt.exe'
         Image|contains: '\SoftwareDistribution\Download\Install\'
-    filter_optional_defender:
+    filter_main_defender:
         Image|contains:
             - '\am_delta'
             - '\AM_Engine_Patch_'
             - '\am_base'
             - '\mpam-fe'
-    filter_optional_msrt:
+    filter_main_msrt:
         Image|contains: '\Windows-KB890830-'
-    condition: selection and not 1 of filter_optional_*
+    condition: selection and not 1 of filter_main_*
 falsepositives:
     - Legitimate third-party or custom updates published through a WSUS server (e.g. via WSUS Package Publisher or Configuration Manager third-party updates)
     - Other legitimate Microsoft update packages executed from the install folder that are not covered by the filters

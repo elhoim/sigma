@@ -12,6 +12,7 @@ description: |
 references:
     - https://github.com/NeffIsBack/wsuks
     - https://github.com/GoSecure/pywsus
+    - https://github.com/nettitude/SharpWSUS/blob/53b1a71754ef44118b3756dd9ff9b68fadd97fae/README.md
     - https://www.elastic.co/guide/en/security/8.19/potential-wsus-abuse-for-lateral-movement.html
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-server-update-services/deploy/2-configure-wsus
 author: elhoim

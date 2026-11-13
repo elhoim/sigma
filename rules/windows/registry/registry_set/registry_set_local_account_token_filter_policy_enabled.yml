@@ -11,14 +11,14 @@ description: |
 references:
     - https://github.com/NeffIsBack/wsuks
     - https://learn.microsoft.com/en-us/troubleshoot/windows-server/windows-security/user-account-control-and-remote-restriction
-    - https://redcanary.com/blog/blackbyte-ransomware/
+    - https://www.zscaler.com/blogs/cybersecurity-best-practices/blackbyte-ransomware
 author: elhoim
 date: 2026-10-15
 tags:
     - attack.defense-impairment
     - attack.persistence
-    - attack.t1112
     - attack.privilege-escalation
+    - attack.t1112
     - attack.t1548.002
 logsource:
     category: registry_set
