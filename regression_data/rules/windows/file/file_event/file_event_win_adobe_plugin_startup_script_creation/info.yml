@@ -1,0 +1,13 @@
+id: b7849d98-6706-4d87-bdc7-9f419a111f2d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: ea369390-7476-4a8c-bb0b-b6083e2ae74c
+      title: Potential Persistence Via Adobe Plug-In Or Startup Script File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_adobe_plugin_startup_script_creation/ea369390-7476-4a8c-bb0b-b6083e2ae74c.evtx
