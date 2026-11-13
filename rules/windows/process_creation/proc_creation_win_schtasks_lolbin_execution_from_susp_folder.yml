@@ -5,6 +5,8 @@ related:
       type: similar
     - id: 3a734d25-df5c-4b99-8034-af1ddb5883a4
       type: similar
+    - id: 81325ce1-be01-4250-944f-b4789644556f
+      type: similar
 status: experimental
 description: |
     Detects the Task Scheduler service (svchost.exe hosting the "Schedule" service) starting a scripting host, shell or other living-off-the-land binary whose command line references a user-writable folder such as a user profile, "ProgramData", "Windows\Temp", "Windows\Tasks", "PerfLogs" or "Intel".
@@ -78,9 +80,10 @@ detection:
         Image: 'C:\Windows\System32\cscript.exe'
         CommandLine|re|i: '^(?:"C:\\Windows\\System32\\cscript\.exe"|C:\\Windows\\System32\\cscript\.exe)\s+(?:/\S+\s+)*"?C:\\Windows\\System32\\calluxxprovider\.vbs"?(?:\s|$)'
     filter_optional_microsoft_autopatch_mde:
-        # Anchored: only known benign PowerShell switches may precede a .ps1 in the Microsoft folders, which must be the last argument
+        # Anchored: only known benign PowerShell switches may precede one of the three known Autopatch / MDE setup scripts, which must be the last argument
+        # The script names are pinned because users can create folders under "C:\Windows\Temp"
         Image: 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
-        CommandLine|re|i: '^(?:"[^"]*powershell\.exe"|\S*powershell\.exe)\s+(?:-(?:NoProfile|NoLogo|NonInteractive|ExecutionPolicy|WindowStyle|File)(?:\s+(?:Bypass|Hidden|RemoteSigned|Unrestricted|AllSigned))?\s+)*"?C:\\(?:ProgramData\\Microsoft\\AutopatchSetupScheduled|Windows\\Temp\\MSS\\MDESetup)\\(?:[^"\\:/.][^"\\:/]*\\)*[^"\\:/.][^"\\:/]*\.ps1"?\s*$'
+        CommandLine|re|i: '^(?:"[^"]*powershell\.exe"|\S*powershell\.exe)\s+(?:-(?:NoProfile|NoLogo|NonInteractive|ExecutionPolicy|WindowStyle|File)(?:\s+(?:Bypass|Hidden|RemoteSigned|Unrestricted|AllSigned))?\s+)*"?C:\\(?:ProgramData\\Microsoft\\AutopatchSetupScheduled\\SetupAutopatchClient(?:V2)?Package|Windows\\Temp\\MSS\\MDESetup\\Invoke-MDESetup)\.ps1"?\s*$'
     condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Legitimate scheduled tasks created by third-party software that run scripts or batch files from ProgramData or from a user profile
