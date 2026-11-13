@@ -1,0 +1,13 @@
+id: c3f19b90-73cf-40de-a030-dce1d37415e9
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 29ffadc0-9585-4895-80de-684dfc5ca252
+      title: Potential .NET Payload Compilation Via Script Host Or LOLBin
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_dotnet_compiler_susp_parent/29ffadc0-9585-4895-80de-684dfc5ca252.evtx
