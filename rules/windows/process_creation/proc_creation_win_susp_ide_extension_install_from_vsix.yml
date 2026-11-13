@@ -5,7 +5,7 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the installation of an IDE extension from a local VSIX package ("--install-extension" with a ".vsix" path) when the package sits in a staging directory (Users\Public, AppData\Local\Temp, Downloads, ProgramData, Windows\Temp) or when the installing process was started by a script host or installer rather than by the user from a terminal.
+    Detects the installation of an IDE extension from a local VSIX package ("--install-extension" with a ".vsix" path) when the package sits in a staging directory (Users\Public, AppData\Local\Temp, Downloads, ProgramData, Windows\Temp) or when the installing process was started by a script host or installer.
     VS Code and compatible editors (Cursor, VSCodium, Windsurf) use this command line to sideload extensions outside the marketplace. A sideloaded malicious extension runs arbitrary code every time the editor starts and gives persistence under the developer's account.
 references:
     - https://code.visualstudio.com/docs/configure/extensions/extension-marketplace#_install-from-a-vsix
@@ -46,6 +46,7 @@ detection:
     condition: selection_cli and (selection_staging_path or selection_script_parent)
 falsepositives:
     - Extension developers installing a locally built VSIX from a PowerShell, Node or Python build script
+    - Developers running "code --install-extension <file>.vsix" in an interactive PowerShell terminal, since code.cmd then runs under cmd.exe with powershell.exe as its parent
     - Software deployment scripts that install approved extensions from a staging directory
 level: medium
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_ide_extension_install_from_vsix/info.yml
