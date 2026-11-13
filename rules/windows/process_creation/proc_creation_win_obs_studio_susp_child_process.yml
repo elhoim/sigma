@@ -1,0 +1,54 @@
+title: Potential Persistence Via OBS Studio Script Child Process
+id: 147af16f-bc63-48b2-9d6a-615f1b34e119
+status: experimental
+description: |
+    Detects OBS Studio ("obs64.exe" or "obs32.exe") starting a command shell, a script host or a proxy execution binary.
+    OBS Studio loads the Lua and Python scripts registered in the scene collection of the user profile each time it starts. A script can run arbitrary programs, public scripts exist that start a list of applications together with OBS.
+    An attacker can register such a script to execute commands whenever the user opens OBS Studio. OBS itself only starts its own helper executables.
+references:
+    - https://www.hexacorn.com/blog/2023/04/14/beyond-good-ol-run-key-part-142/
+    - https://docs.obsproject.com/scripting
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1059
+    - attack.t1546
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith:
+            - '\obs32.exe'
+            - '\obs64.exe'
+    selection_child:
+        - Image|endswith:
+              - '\bitsadmin.exe'
+              - '\certutil.exe'
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\mshta.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\regsvr32.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'bitsadmin.exe'
+              - 'CertUtil.exe'
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'MSHTA.EXE'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'REGSVR32.EXE'
+              - 'RUNDLL32.EXE'
+              - 'wscript.exe'
+    condition: all of selection_*
+falsepositives:
+    - Streamers who use an OBS script or plug-in to start companion tools or batch files with OBS
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_obs_studio_susp_child_process/info.yml
