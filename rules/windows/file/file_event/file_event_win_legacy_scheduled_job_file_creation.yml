@@ -29,9 +29,11 @@ detection:
         Image: 'C:\Program Files\CCleaner\CCleaner64.exe'
         TargetFilename: 'C:\Windows\Tasks\CCleanerCrashReporting.job'
     filter_optional_manageengine:
-        Image|startswith:
-            - 'C:\Program Files (x86)\DesktopCentral_Agent\'
-            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\'
+        Image:
+            - 'C:\Program Files (x86)\DesktopCentral_Agent\bin\dcagentregister.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\bin\dcagentregister.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\dcconfig.exe'
+            - 'C:\Program Files (x86)\ManageEngine\UEMS_Agent\Updates\UemsComponentUpgrader.exe'
     filter_optional_epson:
         Image: 'C:\Program Files (x86)\epson\Epson Scan 2\Update\e_dtsksd.exe'
     filter_optional_killer:
