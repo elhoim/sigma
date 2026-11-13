@@ -1,16 +1,18 @@
-title: AWS EC2 VM Export Failure
+title: AWS EC2 VM Export Task Created
 id: 54b9a76a-3c71-4673-b4b3-2edb4566ea7b
 status: test
-description: An attempt to export an AWS EC2 instance has been detected. A VM Export might indicate an attempt to extract information from an instance.
+description: |
+    Detects the creation of an AWS EC2 instance export task that did not fail.
+    A VM export copies the whole disk of an instance to an S3 bucket and might indicate an attempt to extract information from an instance.
 references:
-    - https://docs.aws.amazon.com/vm-import/latest/userguide/vmexport.html#export-instance
+    - https://docs.aws.amazon.com/vm-import/latest/userguide/export-instance.html
 author: Diogo Braz
 date: 2020-04-16
-modified: 2022-10-05
+modified: 2026-09-24
 tags:
     - attack.collection
-    - attack.t1005
     - attack.exfiltration
+    - attack.t1005
     - attack.t1537
 logsource:
     product: aws
@@ -19,11 +21,13 @@ detection:
     selection:
         eventName: 'CreateInstanceExportTask'
         eventSource: 'ec2.amazonaws.com'
-    filter1:
+    filter_main_error_message:
         errorMessage|contains: '*'
-    filter2:
+    filter_main_error_code:
         errorCode|contains: '*'
-    filter3:
+    filter_main_failure:
         responseElements|contains: 'Failure'
-    condition: selection and not 1 of filter*
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legitimate export of EC2 instances by administrators, for example for migration to an on-premises virtualization environment
 level: low
