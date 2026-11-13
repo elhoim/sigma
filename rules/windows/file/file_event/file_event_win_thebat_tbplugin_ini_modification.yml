@@ -1,0 +1,35 @@
+title: Potential Persistence Via The Bat! Plug-In Configuration File Modification
+id: c7e7f0fd-4146-4bd9-9437-05f7eb9bd7a0
+status: experimental
+description: |
+    Detects the creation or replacement of "TBPlugin.INI", the plug-in list of the mail client The Bat!, by a process other than The Bat! itself.
+    The "[Plugins]" section of this file, stored in the mail directory of the user ("%APPDATA%\The Bat!\Mail"), names the plug-in libraries (".tbp" files, which are DLLs) that the mail client loads at startup.
+    The Turla group registered its Outlook and The Bat! backdoor this way. A plug-in added to the file by another process is loaded each time the user opens the mail client and gets access to the mail flow.
+references:
+    - https://www.hexacorn.com/blog/2018/12/02/beyond-good-ol-run-key-part-95/
+    - https://www.welivesecurity.com/wp-content/uploads/2018/08/Eset-Turla-Outlook-Backdoor.pdf
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\TBPlugin.INI'
+    filter_main_thebat:
+        Image:
+            - 'C:\Program Files (x86)\The Bat!\thebat.exe'
+            - 'C:\Program Files (x86)\The Bat!\thebat32.exe'
+            - 'C:\Program Files\The Bat!\thebat.exe'
+            - 'C:\Program Files\The Bat!\thebat32.exe'
+            - 'C:\Program Files\The Bat!\thebat64.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Installers of anti-spam or encryption plug-ins for The Bat! that register themselves in the file
+    - Backup or profile migration tools that restore the mail directory
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_thebat_tbplugin_ini_modification/info.yml
