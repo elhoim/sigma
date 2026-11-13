@@ -1,0 +1,13 @@
+id: d3f938f7-e9e2-4516-8f47-5e416c827845
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 786b471d-6079-43b8-bd26-6b4ac90d9249
+      title: SQL Server Management Studio Add-In Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_ssms_addin_registration/786b471d-6079-43b8-bd26-6b4ac90d9249.evtx
