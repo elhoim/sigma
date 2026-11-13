@@ -1,0 +1,34 @@
+title: Flash Player Mms.CFG Configuration File Creation
+id: d5b37af3-f496-4c34-aafa-aa1cc3033ed5
+status: experimental
+description: |
+    Detects the creation of the Adobe Flash Player administration file "mms.cfg" in the system directories.
+    The file sets machine wide Flash Player options. With "SilentAutoUpdateEnable=1" and "SilentAutoUpdateServerDomain=<server>" the Flash Player update service downloads and installs its updates from the named server in the background, which can be abused to deliver and run code from a server controlled by an attacker.
+    Flash Player is end of life and removed from supported systems, so a new "mms.cfg" is uncommon. Review the content of the file and the writing process.
+references:
+    - https://www.hexacorn.com/blog/2020/05/13/flash-player-background-updates-from-an-internal-server-via-mms-cfg/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.command-and-control
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1105
+    - attack.t1546
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - ':\Windows\System32\Macromed\Flash\mms.cfg'
+            - ':\Windows\System32\mms.cfg'
+            - ':\Windows\SysWOW64\Macromed\Flash\mms.cfg'
+            - ':\Windows\SysWOW64\mms.cfg'
+    condition: selection
+falsepositives:
+    - Administrators of legacy environments that still deploy Flash Player with a central configuration file
+    - Flash Player installers and uninstallers
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_flash_player_mms_cfg_creation/info.yml
