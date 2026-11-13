@@ -1,4 +1,4 @@
-title: Data Upload Via Wget HTTP POST - Linux
+title: Potential Data Upload Via Wget HTTP POST - Linux
 id: 670b89cb-bd2b-460e-b0ed-cf55d6bc110a
 related:
     - id: cb39d16b-b3b6-4a7a-8222-1cf24b686ffc # Auditd
@@ -28,6 +28,8 @@ detection:
         CommandLine|contains:
             - '--body-data'
             - '--body-file'
+            - '--method POST'
+            - '--method PUT'
             - '--method=POST'
             - '--method=PUT'
             - '--post-data'
