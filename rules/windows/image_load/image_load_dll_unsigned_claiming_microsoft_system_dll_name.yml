@@ -10,10 +10,10 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.stealth
     - attack.execution
     - attack.persistence
     - attack.privilege-escalation
+    - attack.stealth
     - attack.t1036.001
     - attack.t1574.001
 logsource:
