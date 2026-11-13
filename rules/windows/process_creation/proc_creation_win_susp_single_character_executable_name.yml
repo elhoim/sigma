@@ -7,8 +7,8 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the execution of a process whose image name is a single letter or digit followed by ".exe" (for example "a.exe" or "1.exe") while its PE version information carries a different, longer original file name.
-    Attackers rename staged utilities and signed system tools to such throw-away names to save keystrokes during hands-on-keyboard activity and to evade name-based detections. Compiler default outputs such as "a.exe" carry no original file name and are not matched.
+    Detects the execution of a process whose image name is a single letter or digit followed by ".exe" (for example "c.exe" or "1.exe") while its PE version information carries a different, longer original file name.
+    Attackers rename staged utilities and signed system tools to such throw-away names to save keystrokes during hands-on-keyboard activity and to evade name-based detections. Binaries without an original file name, or whose original file name is itself a single character (such as a compiler default "a.exe" output), are not matched.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_short_program_name.toml
     - https://mgreen27.github.io/posts/2019/05/12/BinaryRename.html
