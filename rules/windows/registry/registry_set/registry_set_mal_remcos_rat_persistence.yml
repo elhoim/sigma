@@ -2,12 +2,13 @@ title: Remcos RAT Registry Persistence And Licence Key
 id: 95672800-dad0-43ff-a668-4c249df12062
 status: experimental
 description: |
-    Detects registry values written by the Remcos remote access trojan: its autorun entry named "Remcos" or "Rmc-<6 characters>" under the CurrentVersion\Run key, and the "licence" value it stores under its "Software\Remcos-<id>" or "Software\Rmc-<id>" configuration key.
-    Remcos is a commodity RAT distributed through phishing campaigns and loaders such as GuLoader; the default builder keeps these registry names, so they identify an infection even when the executable is packed or renamed.
+    Detects registry values written by the Remcos remote access trojan: its autorun entry named "Remcos" or "Rmc-<6 characters>" under the CurrentVersion\Run or Policies\Explorer\Run key, and the "licence" value it stores under its "Software\Remcos-<id>" or "Software\Rmc-<id>" configuration key.
+    Remcos is a commodity RAT distributed through phishing campaigns and loaders; the default builder keeps these registry names, so they identify an infection even when the executable is packed or renamed.
 references:
     - https://any.run/malware-trends/remcos
     - https://www.fortinet.com/blog/threat-research/latest-remcos-rat-phishing
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_remcos_rat_iocs.toml
+    - https://www.elastic.co/security-labs/dissecting-remcos-rat-part-one
 author: elhoim
 date: 2026-11-10
 tags:
@@ -24,6 +25,8 @@ detection:
         TargetObject|contains:
             - '\Windows\CurrentVersion\Run\Remcos'
             - '\Windows\CurrentVersion\Run\Rmc-'
+            - '\Policies\Explorer\Run\Remcos'
+            - '\Policies\Explorer\Run\Rmc-'
     selection_licence:
         TargetObject|contains:
             - '\Software\Remcos-'
