@@ -1,0 +1,36 @@
+title: Potential Local Session Manager Debugger Hijack - Ntsd Launched By Svchost
+id: 80e090ef-8730-4ab7-9150-821b4e11e70f
+status: experimental
+description: |
+    Detects the execution of a process named "ntsd.exe" or "ntsd.com" by svchost.exe (Windows 10 and later) or lsm.exe (Windows 7) with the command line that the Local Session Manager service uses to attach a debugger to itself ("-d -G -x -p").
+    The service only does so when the "DebugTS" or "LSMBreakOnStart" debugging values are set, and it starts the debugger as SYSTEM without a full path or extension.
+    The debugger is not part of a default Windows installation, so this could be a planted "ntsd.exe" or "ntsd.com" that is used for persistence.
+references:
+    - https://www.hexacorn.com/blog/2017/04/02/beyond-good-ol-run-key-part-61/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\lsm.exe'
+            - '\svchost.exe'
+        Image|endswith:
+            - '\ntsd.com'
+            - '\ntsd.exe'
+        CommandLine|contains|all:
+            - ' -d '
+            - ' -G '
+            - ' -x '
+            - ' -p '
+    condition: selection
+falsepositives:
+    - Debugging of the Local Session Manager service with the genuine debugger from the Debugging Tools for Windows
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_ntsd_lsm_debugger_launch/info.yml
