@@ -8,14 +8,17 @@ related:
 status: experimental
 description: |
     Detects the loading of an unsigned DLL from a folder that is writable by standard users or that never hosts third-party libraries on a clean system, such as "PerfLogs", "Users\Public", the "Tasks" folders, "Intel", "AMD\Temp", the recycle bin or static Windows subfolders (Fonts, Help, INF, Cursors, Branding...).
-    Attackers drop a renamed signed executable together with a malicious DLL in such a folder so that the trusted executable sideloads the DLL. Unlike the sibling rules, this rule is not limited to a fixed list of abused DLL names or host utilities.
+    Attackers drop a renamed signed executable together with a malicious DLL in such a folder so that the trusted executable sideloads the DLL.
+    Unlike the sibling rules, this rule is not limited to a fixed list of abused DLL names or host utilities.
 references:
-    - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+    - https://www.elastic.co/security-labs/blog/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_unsigned_dll_loaded_from_suspdir.toml
 author: elhoim
 date: 2026-11-10
 tags:
     - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
     - attack.stealth
     - attack.t1574.001
 logsource:
@@ -53,6 +56,7 @@ detection:
             - ':\Windows\Help\'
             - ':\Windows\IdentityCRL\'
             - ':\Windows\IME\'
+            - ':\Windows\Intel\'
             - ':\Windows\ImmersiveControlPanel\'
             - ':\Windows\INF\'
             - ':\Windows\L2Schemas\'
