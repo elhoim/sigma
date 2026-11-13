@@ -1,0 +1,13 @@
+id: 82b40a1a-90de-4a2d-9bc5-641a4c6d2dc8
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 474ecaed-084f-4397-8237-53cfe6595840
+      title: Tunnelling Service Client Execution By Image Name
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_tunnel_service_client_execution_by_name/474ecaed-084f-4397-8237-53cfe6595840.evtx

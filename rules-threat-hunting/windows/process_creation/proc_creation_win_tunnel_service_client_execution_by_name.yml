@@ -1,0 +1,51 @@
+title: Tunnelling Service Client Execution By Image Name
+id: 474ecaed-084f-4397-8237-53cfe6595840
+related:
+    - id: 3ab65069-d82a-4d44-a759-466661a082d1
+      type: similar
+status: experimental
+description: |
+    Detects the execution of the client programs of public tunnelling services by their default image name or script name: Staqlab ("staqlab-tunnel.exe" or "staqlab-tunnels.exe"), LocaltoNet ("localtonet.exe"), LocalXpose ("loclx.exe"), Loophole ("loophole.exe"), Packetriot ("pktriot.exe"), JPRQ ("jprq.exe"), Openport ("openport.exe"), BTunnel ("btunnel.exe") and PageKite ("pagekite.exe" or the "pagekite.py" script).
+    These clients publish a local port (RDP, SMB, a web server or a command and control listener) on an Internet-reachable address of the service through an outbound connection, and have been used to deliver malware and to keep access to compromised hosts. Most of them are unsigned Go binaries without version information, so only the file name is available; a renamed client is not matched. The rule is therefore a hunting aid to be combined with the DNS and network rules for the corresponding service domains.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/staqlab.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtonet.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/packetriot.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localxpose.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/loophole.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/jprq.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/openport.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/btunnels.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/pagekite.md
+    - https://www.trendaisecurity.com/en-us/resources-insights/deep-research/how-cybercriminals-abuse-cloud-tunneling-services
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.t1090
+    - attack.t1572
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\staqlab-tunnel.exe'
+            - '\staqlab-tunnels.exe'
+            - '\localtonet.exe'
+            - '\loclx.exe'
+            - '\loophole.exe'
+            - '\pktriot.exe'
+            - '\jprq.exe'
+            - '\openport.exe'
+            - '\btunnel.exe'
+            - '\pagekite.exe'
+    selection_pagekite_script:
+        CommandLine|contains: 'pagekite.py'
+    condition: 1 of selection_*
+falsepositives:
+    - Developers and administrators who use one of these services to share a local service
+    - Unrelated software that uses one of the generic image names such as "loophole.exe" or "openport.exe", or a command line that merely mentions "pagekite.py"
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_tunnel_service_client_execution_by_name/info.yml
