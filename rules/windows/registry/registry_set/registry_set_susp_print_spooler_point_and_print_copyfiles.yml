@@ -2,7 +2,7 @@ title: Suspicious Print Spooler Point And Print Registry Modification
 id: ec011562-102d-442a-af3e-d26396c5fbfd
 status: experimental
 description: |
-    Detects registry modifications under a printer's "Print\Printers\<name>" key that redirect the spooler to the "spool\drivers\x64\4" directory: either the "SpoolDirectory" value pointing into the driver store, or a "CopyFiles\<name>\Module" value pointing to a DLL inside "spool\drivers\x64\4".
+    Detects registry modifications under a printer's "Print\Printers\<name>" key that redirect the spooler into its driver directory: either the "SpoolDirectory" value pointing under "spool\drivers", or a "CopyFiles\<name>\Module" value pointing to a DLL inside the version 4 driver directory ("spool\drivers\x64\4" or "spool\drivers\arm64\4").
     The spooler service loads the DLL named in a printer's CopyFiles "Module" value as SYSTEM. Attackers with a local printer first point "SpoolDirectory" to a writable path under the driver store, drop a DLL there through a print job, then register it as a CopyFiles module, as exploited in CVE-2020-1030 and later Point and Print variants.
     Normal printer installations keep "SpoolDirectory" under "spool\PRINTERS" and reference CopyFiles modules from "spool\drivers\x64\3".
 references:
@@ -29,7 +29,9 @@ detection:
             - '\Print\Printers\'
             - '\CopyFiles\'
         TargetObject|endswith: '\Module'
-        Details|contains: '\spool\drivers\x64\4\'
+        Details|contains:
+            - '\spool\drivers\arm64\4\'
+            - '\spool\drivers\x64\4\'
     condition: 1 of selection_*
 falsepositives:
     - Printer driver or print management software that stages driver files in a custom spool directory under the driver store
