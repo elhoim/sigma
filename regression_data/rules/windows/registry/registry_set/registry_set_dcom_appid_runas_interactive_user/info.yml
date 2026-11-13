@@ -1,0 +1,13 @@
+id: c1886cb8-6e92-448d-92cb-82565997d55b
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 96edd4d0-0a0b-4970-bf7c-0a5ffbf6f915
+      title: Potential RemoteMonologue Activity - DCOM AppID RunAs Set To Interactive User
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_dcom_appid_runas_interactive_user/96edd4d0-0a0b-4970-bf7c-0a5ffbf6f915.evtx
