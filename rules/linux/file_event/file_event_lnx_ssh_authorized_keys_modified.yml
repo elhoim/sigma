@@ -1,4 +1,4 @@
-title: SSH Authorized Keys File Created Or Modified
+title: Potential Persistence Via SSH Authorized Keys File Creation Or Modification
 id: 820324d8-4c8f-4ca1-a81f-42720555c2bf
 status: experimental
 description: |
@@ -13,8 +13,8 @@ tags:
     - attack.privilege-escalation
     - attack.t1098.004
 logsource:
-    product: linux
     category: file_event
+    product: linux
 detection:
     selection:
         TargetFilename|contains: '/.ssh/'
@@ -22,10 +22,7 @@ detection:
             - '/authorized_keys'
             - '/authorized_keys2'
     filter_optional_cloud_agents:
-        Image|endswith:
-            - '/cloud-init'
-            - '/google_guest_agent'
-            - '/waagent'
+        Image|re: '^/usr/s?bin/(cloud-init|google_guest_agent|waagent)$'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Legitimate key provisioning by administrators, configuration management tools or cloud guest agents

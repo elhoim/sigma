@@ -1,4 +1,4 @@
-title: Container Escape Enumeration Tool Or Container Runtime Socket Abuse
+title: Suspicious Container Escape Enumeration Tool Or Container Runtime Socket Abuse
 id: bdac3544-7fd7-49db-9ed6-d732690c26f2
 status: experimental
 description: |
@@ -13,9 +13,9 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
+    - attack.discovery
     - attack.privilege-escalation
     - attack.t1611
-    - attack.discovery
     - attack.t1613
 logsource:
     category: process_creation

@@ -1,4 +1,4 @@
-title: Linux RC Startup Script Created Or Modified
+title: Potential Persistence Via Linux RC Startup Script
 id: 3fd20ebd-e243-43f6-8eb1-9724033179b4
 status: experimental
 description: |
@@ -13,8 +13,8 @@ tags:
     - attack.privilege-escalation
     - attack.t1037.004
 logsource:
-    product: linux
     category: file_event
+    product: linux
 detection:
     selection:
         - TargetFilename:
@@ -24,16 +24,7 @@ detection:
               - '/etc/init.d/'
               - '/etc/rc.d/'
     filter_main_package_managers:
-        Image|endswith:
-            - '/apk'
-            - '/apt'
-            - '/apt-get'
-            - '/dnf'
-            - '/dpkg'
-            - '/pacman'
-            - '/rpm'
-            - '/yum'
-            - '/zypper'
+        Image|re: '^/(usr/)?s?bin/(apk|apt|apt-get|dnf|dpkg|pacman|rpm|yum|zypper)$'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Software installed outside of a package manager (e.g. vendor installers or "make install") registering an init script

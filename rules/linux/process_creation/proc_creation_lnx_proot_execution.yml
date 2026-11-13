@@ -1,4 +1,4 @@
-title: PRoot Bring Your Own Filesystem Tool Execution
+title: Potential Bring Your Own Filesystem Via PRoot Execution
 id: 146bfae8-ad3d-4876-937c-4c9702de531c
 status: experimental
 description: |
@@ -11,10 +11,10 @@ references:
 author: elhoim
 date: 2026-10-15
 tags:
-    - attack.stealth
-    - attack.t1564.006
     - attack.command-and-control
+    - attack.stealth
     - attack.t1105
+    - attack.t1564.006
 logsource:
     category: process_creation
     product: linux
