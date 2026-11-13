@@ -1,0 +1,32 @@
+title: Potential Persistence Via Linux Name Service Switch Configuration Modification
+id: 7226c3ef-03fc-4205-8d2a-d761f54db54a
+related:
+    - id: 10ac0730-c24e-4f4c-81f8-b13a1ac95a1d # Non-Standard Nsswitch.Conf Creation - Potential CVE-2025-32463 Exploitation
+      type: similar
+status: experimental
+description: |
+    Detects the creation or modification of the system Name Service Switch configuration file "/etc/nsswitch.conf" by a process other than a package manager or the distribution authentication configuration helpers.
+    Adversaries may add a malicious NSS source so that a rogue "libnss_*.so" library is loaded by every process that resolves users, groups or hosts, which can be used to inject code, intercept lookups or create hidden accounts.
+references:
+    - https://man7.org/linux/man-pages/man5/nsswitch.conf.5.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.credential-access
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.t1556
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename: '/etc/nsswitch.conf'
+    filter_main_package_managers:
+        Image|re: '^/(usr/)?s?bin/(apk|apt|apt-get|dnf|dpkg|pacman|rpm|yum|zypper)$'
+    filter_main_auth_helpers:
+        Image|re: '^/(usr/)?s?bin/(authconfig|authselect|pam-auth-update)$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Configuration management tools or administrators enrolling the host in a directory service (SSSD, LDAP, Winbind)
+level: medium
