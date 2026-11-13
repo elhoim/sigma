@@ -6,19 +6,20 @@ description: |
     An MSI package installed directly out of an archive was most likely delivered by e-mail or download and run by a user without extracting it first, which is how commodity loaders and fake installers are commonly delivered. Legitimate software is distributed as a standalone MSI or EXE installer.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_msiexec_installsource_archive_file.toml
+    - https://learn.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec
 author: elhoim
 date: 2026-11-10
 tags:
-    - attack.stealth
     - attack.execution
-    - attack.t1218.007
+    - attack.stealth
     - attack.t1204.002
+    - attack.t1218.007
 logsource:
-    product: windows
     category: registry_set
+    product: windows
 detection:
-    selection:
+    selection_installsource:
         Image|endswith: '\msiexec.exe'
         TargetObject|endswith: '\InstallSource'
         Details|contains: ':\Users\'
@@ -27,7 +28,7 @@ detection:
             - '.zip\'
             - '.7z\'
             - '.rar\'
-    condition: all of selection*
+    condition: all of selection_*
 falsepositives:
     - Users installing legitimate software shipped as an MSI inside an archive without extracting it first
 level: low
