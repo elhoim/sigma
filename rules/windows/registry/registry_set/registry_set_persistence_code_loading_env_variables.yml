@@ -8,7 +8,8 @@ description: |
     Detects a persistent user or system environment variable, written under the "Environment" registry keys, whose name makes a runtime, a profiler interface or a debugger load a library or start a program chosen by the value.
     The first group is rarely set on a production host and is reported for any value: "JS_PROFILER" and "JS_DM_CLSID" (JScript profiler and diagnostic mode COM class loaded by Internet Explorer components), "APPX_PROCESS" (makes the .NET runtime load the phantom "WinAppXRT.dll"), "JVM_DLL" (Java virtual machine library used by Java launchers), "GS_DLL" (Ghostscript interpreter library), "COR_PROFILER_PATH", "_NT_DEBUGGER_EXTENSION_PATH" and "WINDBG_INVOKE_EDITOR" (debugger extension directory and editor command) and "SRCSRV_INI_FILE".
     The second group is set by legitimate development software and is reported only when the value points to a user writable or remote location: "OPENSSL_MODULES", "OPENSSL_ENGINES", "INTEL_LIBITTNOTIFY32", "INTEL_LIBITTNOTIFY64", "CUDA_INJECTION32_PATH" and "CUDA_INJECTION64_PATH".
-    These variables give code execution inside every process that honours them, which can be abused for persistence. The "COR_PROFILER" family is covered by a separate rule.
+    These variables give code execution inside every process that honours them, which can be abused for persistence.
+    The "COR_PROFILER" family is covered by a separate rule.
 references:
     - https://www.hexacorn.com/blog/2014/04/27/beyond-good-ol-run-key-part-11/
     - https://www.hexacorn.com/blog/2014/08/31/beyond-good-ol-run-key-part-17/
@@ -23,9 +24,9 @@ references:
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.execution
     - attack.stealth
     - attack.t1574
 logsource:
@@ -67,7 +68,9 @@ detection:
               - '%USERPROFILE%'
         - Details|startswith: '\\\\'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: (selection_rare_name or all of selection_dev_*) and not 1 of filter_main_*
 falsepositives:
     - Developers who use a script debugger, a Java service wrapper, Ghostscript front ends or WinDbg and set these variables persistently
