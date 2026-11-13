@@ -2,8 +2,9 @@ title: Potential PsExec Staging - Download From Live Sysinternals Via Command Li
 id: 35916b02-e20f-43df-add5-364c585be785
 status: experimental
 description: |
-    Detects a command line that fetches PsExec from Microsoft's public "live.sysinternals.com" share with a download utility or cmdlet (Invoke-WebRequest, iwr, curl, wget, certutil, bitsadmin, Start-BitsTransfer) or that references the tool through the share's WebDAV path.
-    Ransomware such as The Gentlemen's locker pulls PsExec from this trusted Microsoft host when it is absent on the compromised machine, immediately before using it to spread to other hosts; administrators normally deploy PsExec through software distribution rather than ad-hoc downloads on servers.
+    Detects a command line that fetches PsExec from Microsoft's public "live.sysinternals.com" share, by URL or through the share's WebDAV path, with a download or copy utility or cmdlet (Invoke-WebRequest, iwr, Invoke-RestMethod, curl, wget, certutil, bitsadmin, Start-BitsTransfer, copy, Copy-Item, robocopy).
+    Ransomware such as The Gentlemen's locker pulls PsExec from this trusted Microsoft host when it is absent on the compromised machine, immediately before using it to spread to other hosts.
+    Administrators normally deploy PsExec through software distribution rather than ad-hoc downloads on servers.
 references:
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
@@ -26,6 +27,7 @@ detection:
         CommandLine|contains:
             - 'Invoke-WebRequest'
             - 'iwr '
+            - 'Invoke-RestMethod'
             - 'curl '
             - 'wget '
             - 'certutil'
