@@ -27,6 +27,9 @@ logsource:
 detection:
     selection:
         ScriptBlockText|contains:
+            - '[cHAr](65)+[cHaR]([byTe]0x6d)+[ChaR]([ByTe]0x73)+[CHaR]([BYte]0x69'
+            - 'AllocHGlobal((9076'
+            - 'AllocHGlobal(9076'
             - 'amsiContext'
             - 'amsiInitFailed'
             - 'AmsiInitialize'
