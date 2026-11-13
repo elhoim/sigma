@@ -1,0 +1,13 @@
+id: 987a4142-f907-447f-82ed-5c338f819378
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: f3c20d48-d6f9-4d0b-9747-5418c6c16d55
+      title: Potential Proxy Execution Via Rundll32 Advpack UserInstStubWrapper
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_advpack_userinststubwrapper/f3c20d48-d6f9-4d0b-9747-5418c6c16d55.evtx
