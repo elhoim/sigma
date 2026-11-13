@@ -1,0 +1,13 @@
+id: e6a41f41-6461-4a44-aed1-2d73a5719143
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 3a8a4ee7-a1f3-4ef3-9499-527b67be571e
+      title: Potential Lateral Movement Via Remote AT Job
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_at_remote_job_unc_target/3a8a4ee7-a1f3-4ef3-9499-527b67be571e.evtx
