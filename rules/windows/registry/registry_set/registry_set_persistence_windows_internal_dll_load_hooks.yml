@@ -1,0 +1,65 @@
+title: Potential Persistence Via Windows Internal DLL Load Hook Registry Values
+id: 7970e526-62d6-4b18-be33-906da1e0648e
+status: experimental
+description: |
+    Detects the creation or modification of registry values that make a Windows component load an arbitrary library and that are either undocumented test hooks or rarely changed settings.
+    Covered values: "TestAggregatorDll" and "TestUndockedAggregatorDll" under "Diagnostics\DiagTrack\TestHooks" (loaded by "AggregatorHost.exe" at system start), "AdmParseLibrary" under "Group Policy\Test" (loaded when administrative templates are parsed), "GPExtensionDLL" of the Windows Firewall service "mpssvc" (loaded by "fwpolicyiomgr.dll"), "PeerdistDllName" of the BranchCache client when it is not "peerdist.dll", the "Internet Settings\LUI" error dialog handlers of "wininet.dll" when they differ from the default "wininetlui.dll" entry, and a library registered under "MSDTC\XADLL" from a user writable or remote location.
+    The test hook values do not exist on a default installation. All of them result in a DLL being loaded into a signed Microsoft process, mostly with SYSTEM rights.
+references:
+    - https://www.hexacorn.com/blog/2022/01/22/beyond-good-ol-run-key-part-137/
+    - https://www.hexacorn.com/blog/2022/01/23/beyond-good-ol-run-key-part-138/
+    - https://www.hexacorn.com/blog/2025/07/05/beyond-good-ol-run-key-part-147/
+    - https://www.hexacorn.com/blog/2025/07/05/beyond-good-ol-run-key-part-148/
+    - https://www.hexacorn.com/blog/2025/07/11/beyond-good-ol-run-key-part-149/
+    - https://www.hexacorn.com/blog/2025/12/31/beyond-good-ol-run-key-part-149-update/
+    - https://www.hexacorn.com/blog/2025/10/25/beyond-good-ol-run-key-part-153/
+    - https://www.hexacorn.com/blog/2025/12/31/beyond-good-ol-run-key-part-152/
+    - https://learn.microsoft.com/en-us/troubleshoot/windows/win32/xa-transaction-require-registry-entry
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_test_hooks:
+        TargetObject|endswith:
+            - '\Services\mpssvc\Parameters\GPExtensionDLL'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack\TestHooks\TestAggregatorDll'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack\TestHooks\TestUndockedAggregatorDll'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Test\AdmParseLibrary'
+    selection_peerdist:
+        TargetObject|endswith: '\Microsoft\Windows NT\CurrentVersion\PeerDist\Extension\PeerdistDllName'
+    filter_main_peerdist_default:
+        Details: 'peerdist.dll'
+    selection_lui:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Internet Settings\LUI\'
+    filter_main_lui_default:
+        Details:
+            - '%SystemRoot%\system32\wininetlui.dll!InternetErrorDlgEx'
+            - 'C:\Windows\system32\wininetlui.dll!InternetErrorDlgEx'
+    selection_xadll_key:
+        TargetObject|contains: '\SOFTWARE\Microsoft\MSDTC\XADLL\'
+    selection_xadll_value:
+        - Details|contains:
+              - ':\PerfLogs\'
+              - ':\ProgramData\'
+              - ':\Temp\'
+              - ':\Users\'
+              - ':\Windows\Tasks\'
+              - ':\Windows\Temp\'
+        - Details|startswith: '\\\\'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    condition: (selection_test_hooks or (selection_peerdist and not filter_main_peerdist_default) or (selection_lui and not filter_main_lui_default) or all of selection_xadll_*) and not filter_main_empty
+falsepositives:
+    - Database client software that registers an XA library for the Distributed Transaction Coordinator from a non standard directory
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_windows_internal_dll_load_hooks/info.yml
