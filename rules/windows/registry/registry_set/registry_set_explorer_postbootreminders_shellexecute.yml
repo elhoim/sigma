@@ -1,0 +1,27 @@
+title: Explorer PostBootReminders ShellExecute Value Set
+id: d69a88c9-d37f-4be6-a4bf-d62b275f8d06
+status: experimental
+description: |
+    Detects the creation of a "ShellExecute" value under the Explorer "PostBootReminders" registry key.
+    Each subkey of that key describes a notification balloon that the shell displays at the next logon and then deletes, and the "ShellExecute" value holds the program that is started when the user clicks the balloon.
+    An attacker can add such an entry in the user hive in order to get a program executed after the next logon, in a way that looks like a system notification.
+references:
+    - https://www.hexacorn.com/blog/2016/09/24/beyond-good-ol-run-key-part-46/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Explorer\PostBootReminders\'
+        TargetObject|endswith: '\ShellExecute'
+    condition: selection
+falsepositives:
+    - Windows components that queue a logon reminder with an action, such as the password expiry or the cached logon warning
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_explorer_postbootreminders_shellexecute/info.yml
