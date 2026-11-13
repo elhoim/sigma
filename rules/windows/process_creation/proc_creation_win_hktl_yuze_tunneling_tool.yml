@@ -30,14 +30,16 @@ detection:
               - 'yuze.dll'
               - ',RunYuze'
               - ' RunYuze'
+    selection_rundll32_img:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
     selection_rundll32_args:
-        Image|endswith: '\rundll32.exe'
         CommandLine|contains:
             - ' reverse -c '
             - ' reverse -s '
             - ' proxy -l '
             - ' fwd -l '
-            - ' fwd -r '
+            - ' fwd -f '
     selection_reverse_args:
         # The reverse sub-command with -c (client) or -s (server) is specific to Yuze
         CommandLine|contains:
@@ -45,7 +47,7 @@ detection:
             - '.exe reverse -s '
             - '.exe" reverse -c '
             - '.exe" reverse -s '
-    condition: 1 of selection_*
+    condition: selection_name or all of selection_rundll32_* or selection_reverse_args
 falsepositives:
     - Unlikely
 level: high
