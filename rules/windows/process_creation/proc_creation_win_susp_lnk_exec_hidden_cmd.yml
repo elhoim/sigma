@@ -13,9 +13,10 @@ references:
 author: Swachchhanda Shrawan Poudel (Nextron Systems)
 date: 2025-03-19
 tags:
-    - attack.initial-access
     - attack.execution
+    - attack.stealth
     - attack.t1204.002
+    - attack.t1027.010
 logsource:
     category: process_creation
     product: windows

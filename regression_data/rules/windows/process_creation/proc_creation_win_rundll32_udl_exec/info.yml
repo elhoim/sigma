@@ -1,0 +1,13 @@
+id: 63a6194d-d994-437f-9f9f-10d787558759
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-2 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 0ea52357-cd59-4340-9981-c46c7e900428
+      title: Potentially Suspicious Rundll32.EXE Execution of UDL File
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_udl_exec/0ea52357-cd59-4340-9981-c46c7e900428.evtx

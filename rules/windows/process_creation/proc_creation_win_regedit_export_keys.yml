@@ -12,7 +12,6 @@ author: Oddvar Moe, Sander Wiebing, oscd.community
 date: 2020-10-07
 modified: 2024-03-13
 tags:
-    - attack.exfiltration
     - attack.discovery
     - attack.t1012
 logsource:
@@ -37,3 +36,4 @@ detection:
 falsepositives:
     - Legitimate export of keys
 level: low
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_regedit_export_keys/info.yml

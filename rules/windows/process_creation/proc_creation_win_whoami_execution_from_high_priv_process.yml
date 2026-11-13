@@ -12,7 +12,6 @@ author: Florian Roth (Nextron Systems), Teymur Kheirkhabarov
 date: 2022-01-28
 modified: 2023-12-04
 tags:
-    - attack.privilege-escalation
     - attack.discovery
     - attack.t1033
 logsource:
@@ -31,3 +30,4 @@ detection:
 falsepositives:
     - Unknown
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_whoami_execution_from_high_priv_process/info.yml
