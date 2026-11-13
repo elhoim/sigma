@@ -1,0 +1,13 @@
+id: 67430370-4629-4231-be84-9ec52c0a5a35
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 5cd4b46a-ad5a-40cc-b126-03e6a475da44
+      title: Potential Persistence Via Windows Update ServiceStartup Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_windows_update_servicestartup/5cd4b46a-ad5a-40cc-b126-03e6a475da44.evtx
