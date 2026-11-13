@@ -23,7 +23,7 @@ detection:
     selection:
         verb: 'create'
         objectRef.resource: 'pods'
-        hostNetwork: true
+        requestObject.spec.hostNetwork: true
     condition: selection
 falsepositives:
     - System components such as CNI plugins, kube-proxy and node monitoring agents, which are usually deployed as DaemonSets within the kube-system namespace.

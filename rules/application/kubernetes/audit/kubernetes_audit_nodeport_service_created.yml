@@ -21,7 +21,7 @@ detection:
     selection:
         verb: 'create'
         objectRef.resource: 'services'
-        type: 'NodePort'
+        requestObject.spec.type: 'NodePort'
     condition: selection
 falsepositives:
     - Legitimate services exposed via NodePort by cluster administrators, for example in bare-metal clusters without a load balancer.
