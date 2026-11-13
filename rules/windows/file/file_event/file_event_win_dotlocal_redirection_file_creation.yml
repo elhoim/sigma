@@ -9,7 +9,6 @@ description: |
     Sysmon reports the creation of a directory as a file creation event as well.
     When a file or a directory with that name exists next to an executable, the loader looks for the DLLs of the program in the directory of the executable, or in the ".local" directory, before the normal search locations.
     An attacker can create such a redirection file or directory next to a legitimate executable in order to get a planted DLL loaded.
-    For an application with a manifest, the redirection is only honoured when the "DevOverrideEnable" value is set under the "Image File Execution Options" key.
     The creation of a DLL inside a ".exe.local" directory is covered by the rule "Potential DLL Search Order Hijacking Via DotLocal Redirection Folder".
 references:
     - https://www.hexacorn.com/blog/2015/01/09/beyond-good-ol-run-key-part-23/
