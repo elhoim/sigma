@@ -7,6 +7,7 @@ references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#ssh_certificate_authority
 author: Romain Gaillard (@romain-gaillard)
 date: 2024-07-29
+modified: 2026-10-15
 tags:
     - attack.initial-access
     - attack.persistence
@@ -21,6 +22,7 @@ detection:
     selection:
         action:
             - 'ssh_certificate_authority.create' # An SSH certificate authority for an organization or enterprise was created.
+            - 'ssh_certificate_authority.destroy' # An SSH certificate authority for an organization or enterprise was deleted.
             - 'ssh_certificate_requirement.disable' # The requirement for members to use SSH certificates to access an organization resources was disabled.
     condition: selection
 falsepositives:
