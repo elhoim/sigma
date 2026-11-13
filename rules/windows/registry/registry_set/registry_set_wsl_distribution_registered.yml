@@ -8,7 +8,7 @@ description: |
     Detects the "PackageFamilyName" value being written under a distribution subkey of the per-user "Lxss" registry key, which happens when a new Windows Subsystem for Linux distribution is registered on the host.
     Attackers install a WSL distribution to run Linux tooling and ELF payloads that Windows security products and process-based detections do not inspect. In environments where WSL is not in use, any new distribution is worth reviewing.
 references:
-    - https://learn.microsoft.com/en-us/windows/wsl/wsl-config
+    - https://learn.microsoft.com/en-us/windows/wsl/disk-space
     - https://learn.microsoft.com/en-us/windows/wsl/basic-commands
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_wsl_registry_modification.toml
 author: elhoim
