@@ -81,6 +81,6 @@ detection:
             - 5904
     condition: selection
 falsepositives:
-    - Ports carrying TLS negotiated in-band (e.g. HTTP to HTTPS redirects on port 80, TLS-enabled MSSQL/MySQL/MongoDB/Oracle sessions)
+    - Encrypted sessions on these ports, where TLS is negotiated in-band (e.g. TLS-enabled MSSQL, MySQL, MongoDB or Oracle sessions) or the service is configured for TLS on a non-standard port (e.g. HTTPS on 8080)
     - Legitimate use of cleartext services on these ports in environments where it is accepted
 level: low
