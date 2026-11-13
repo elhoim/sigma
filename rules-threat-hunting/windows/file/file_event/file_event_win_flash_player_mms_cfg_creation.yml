@@ -10,11 +10,11 @@ references:
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.command-and-control
     - attack.persistence
     - attack.privilege-escalation
-    - attack.command-and-control
-    - attack.t1546
     - attack.t1105
+    - attack.t1546
     - detection.threat-hunting
 logsource:
     category: file_event
