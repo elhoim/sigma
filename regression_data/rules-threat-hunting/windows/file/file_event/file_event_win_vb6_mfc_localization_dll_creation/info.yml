@@ -1,0 +1,13 @@
+id: 6e12d6bc-762f-413b-bb10-208d0a292cee
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: f0d90def-9682-4f90-a253-ba3fd44100d4
+      title: Visual Basic 6 Or MFC Localization DLL Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_vb6_mfc_localization_dll_creation/f0d90def-9682-4f90-a253-ba3fd44100d4.evtx
