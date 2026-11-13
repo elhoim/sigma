@@ -1,0 +1,37 @@
+title: Bluetooth Stack Program Or Support DLL Registry Value Set
+id: 2d037084-4813-4ce4-8dde-23fca95f6e17
+status: experimental
+description: |
+    Detects the modification of registry values of Bluetooth stacks that reference a program or a DLL: the "SupportDLL" value of the Microsoft stack and the "IasStartAplPath" and "APPFILEPATH2" values of the Toshiba stack.
+    The "SupportDLL" value registers a vendor DLL that Windows 8 loads in order to switch the Bluetooth radio on or off, and the Toshiba values hold a program that the stack starts when a Bluetooth connection is established.
+    These values are normally only written by the driver package or by the vendor utility, so that a change could be used to get a program or a DLL executed.
+references:
+    - https://www.hexacorn.com/blog/2017/01/28/beyond-good-ol-run-key-part-58/
+    - https://www.hexacorn.com/blog/2017/01/29/beyond-good-ol-run-key-part-59/
+    - https://learn.microsoft.com/en-us/windows-hardware/drivers/bluetooth/bluetooth-software-radio-switch-function-prototypes
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_microsoft:
+        TargetObject|endswith:
+            - '\Services\BTHPORT\Parameters\Radio Support\SupportDLL'
+            - '\Services\BthServ\Parameters\Radio Support\SupportDLL'
+    selection_toshiba:
+        TargetObject|contains: '\Software\Toshiba\BluetoothStack\'
+        TargetObject|endswith:
+            - '\Mng\IasStartAplPath'
+            - '\SCORIGINAL\APPFILEPATH2'
+    condition: 1 of selection_*
+falsepositives:
+    - Installation of a Bluetooth radio driver package that registers its radio support DLL
+    - Users of the Toshiba Bluetooth stack that configure a program for a connection in the vendor utility
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_bluetooth_stack_autostart_values/info.yml
