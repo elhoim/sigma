@@ -1,0 +1,47 @@
+title: Remote Access Tool - Potential ScreenConnect Rogue Relay By IP Address Or Tunnel Domain
+id: fa2f9bc9-f952-4ba5-a194-a9b5392be007
+related:
+    - id: 75bfe6e6-cd8e-429e-91d3-03921e1d7962
+      type: similar
+status: experimental
+description: |
+    Detects a ScreenConnect (ConnectWise Control) client started with an access session command line whose relay host parameter "h=" is a raw IP address or a free tunnelling service domain instead of a named relay server.
+    ScreenConnect is widely abused by scammers and intrusion crews who run their own relay on a rented VPS or behind a Cloudflare/ngrok tunnel; legitimate deployments by IT or managed service providers almost always point the client to a DNS name of the organisation or of ConnectWise's cloud (*.screenconnect.com).
+    The related rule fires on every ScreenConnect access-session installation; this rule isolates the relay-host anomaly.
+references:
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-025a
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_newly_observed_screenconnect_host_server.toml
+    - https://blackpointcyber.com/blog/screenconnect-abuse-surges-in-rogue-access-campaigns/
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1219.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_client:
+        - Image|endswith: '\ScreenConnect.ClientService.exe'
+        - OriginalFileName: 'ScreenConnect.ClientService.exe'
+    selection_session:
+        CommandLine|contains|all:
+            - 'e=Access&'
+            - 'y=Guest&'
+            - '&h='
+    selection_relay_ip:
+        CommandLine|re: '&h=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}&'
+    selection_relay_tunnel:
+        CommandLine|contains:
+            - '.trycloudflare.com&'
+            - '.ngrok.io&'
+            - '.ngrok-free.app&'
+            - '.ngrok.app&'
+            - '.loca.lt&'
+            - '.serveo.net&'
+            - '.devtunnels.ms&'
+    condition: selection_client and selection_session and 1 of selection_relay_*
+falsepositives:
+    - Organisations that point their self-hosted ScreenConnect clients to the relay's IP address instead of a DNS name
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_remote_access_tools_screenconnect_relay_ip_or_tunnel/info.yml
