@@ -1,0 +1,13 @@
+id: f0a23133-5a94-4e9b-829a-8ce6aa3e8bfa
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 147af16f-bc63-48b2-9d6a-615f1b34e119
+      title: Potential Persistence Via OBS Studio Script Child Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_obs_studio_susp_child_process/147af16f-bc63-48b2-9d6a-615f1b34e119.evtx
