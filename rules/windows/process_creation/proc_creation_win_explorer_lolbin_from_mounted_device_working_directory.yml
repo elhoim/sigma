@@ -1,0 +1,70 @@
+title: Potential Execution From Mounted Image Via Explorer With LOLBin Or Script Host
+id: 6af845f1-2dc1-4486-ab78-c420b5616812
+related:
+    - id: d4ca7c59-e9e4-42d8-bf57-91a776efcb87
+      type: similar
+status: experimental
+description: |
+    Detects a system binary from the C: drive (shell, script host, installer or other signed proxy-execution binary) started by explorer.exe with its working directory on the D:, E:, F: or G: drive.
+    When a user double-clicks a shortcut or a file inside a mounted ISO, IMG or VHD, the launched command inherits the mounted volume as working directory while the executable comes from C:\Windows.
+    Phishing campaigns (for example NOBELIUM's EnvyScout) deliver ISO containers for this reason.
+    The related rule covers LOLBins running from a non-C working directory with any parent; this rule adds shells, PowerShell, msiexec, wmic, schtasks and MSBuild and requires the Explorer parent.
+references:
+    - https://www.microsoft.com/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/
+    - https://www.volexity.com/blog/2021/05/27/suspected-apt29-operation-launches-election-fraud-themed-phishing-campaigns/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_execution_from_mounted_device.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1204.002
+    - attack.t1218
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\explorer.exe'
+        Image|startswith: 'C:\'
+        CurrentDirectory|startswith:
+            - 'D:\'
+            - 'E:\'
+            - 'F:\'
+            - 'G:\'
+    selection_img:
+        - Image|endswith:
+              - '\bitsadmin.exe'
+              - '\certutil.exe'
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\msbuild.exe'
+              - '\mshta.exe'
+              - '\msiexec.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\regsvr32.exe'
+              - '\rundll32.exe'
+              - '\schtasks.exe'
+              - '\wmic.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'bitsadmin.exe'
+              - 'CertUtil.exe'
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'MSBuild.exe'
+              - 'MSHTA.EXE'
+              - 'msiexec.exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'REGSVR32.EXE'
+              - 'RUNDLL32.EXE'
+              - 'schtasks.exe'
+              - 'wmic.exe'
+              - 'wscript.exe'
+    condition: all of selection_*
+falsepositives:
+    - Users opening a command prompt, a PowerShell shortcut or an MSI installer from a folder on a secondary data drive or a mounted software ISO
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_lolbin_from_mounted_device_working_directory/info.yml
