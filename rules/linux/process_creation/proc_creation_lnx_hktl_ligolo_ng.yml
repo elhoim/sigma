@@ -1,0 +1,54 @@
+title: HackTool - Ligolo-ng Agent Or Proxy Execution - Linux
+id: 36fcff01-1568-4cf4-8695-9d94ec5dff23
+status: experimental
+description: |
+    Detects the execution of the Ligolo-ng tunnelling tool on Linux by its characteristic command line arguments: the agent dialling back to its proxy with "-connect" together with "-ignore-cert" or "-accept-fingerprint", and the proxy started with "-selfcert" or "-autocert" and a listening address.
+    Ligolo-ng builds a reverse TLS tunnel that gives the operator routed, layer 3 access to the networks reachable from the host running the agent.
+    The binaries are plain Go executables that are usually renamed, so the rule keys on the arguments.
+    The Go flag parser accepts both the single and the double dash forms, and the "-flag=value" syntax, so all of them are covered.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/ligolo-ng.md
+    - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/proxy/main.go
+    - https://docs.ligolo.ng/
+author: elhoim
+date: 2026-11-13
+tags:
+    - attack.command-and-control
+    - attack.t1090
+    - attack.t1572
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_agent_connect:
+        CommandLine|contains:
+            - ' -connect '
+            - ' -connect='
+            - ' --connect '
+            - ' --connect='
+    selection_agent_cert:
+        CommandLine|contains:
+            - ' -ignore-cert'
+            - ' --ignore-cert'
+            - ' -accept-fingerprint'
+            - ' --accept-fingerprint'
+    selection_proxy_cert:
+        CommandLine|contains:
+            - ' -selfcert'
+            - ' --selfcert'
+            - ' -autocert'
+            - ' --autocert'
+    selection_proxy_context:
+        - Image|endswith: '/proxy'
+        - Image|contains: 'ligolo'
+        - CommandLine|contains:
+              - ' -laddr'
+              - ' --laddr'
+              - ' -selfcert-domain'
+              - ' --selfcert-domain'
+    condition: all of selection_agent_* or all of selection_proxy_*
+falsepositives:
+    - Administrators using Ligolo-ng to reach an isolated lab or management network
+    - Unrelated software using the same combination of "-connect" and "-ignore-cert" arguments
+level: high
+regression_tests_path: regression_data/rules/linux/process_creation/proc_creation_lnx_hktl_ligolo_ng/info.yml

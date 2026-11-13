@@ -1,0 +1,37 @@
+title: Potential Ligolo-ng Agent Connection To Default Proxy Port - Linux
+id: 3b59159c-0d2f-49a9-8eec-12664604affd
+status: experimental
+description: |
+    Detects outbound network connections to TCP port 11601 from a process that is not a common web browser.
+    11601 is the default listening port of the Ligolo-ng proxy, to which the Ligolo-ng agent dials back to establish a reverse TLS tunnel used for pivoting.
+    The agent is a plain Go binary that is usually renamed, so the destination port is the only stable network indicator when the default is kept.
+    Operators can change the port with the "-laddr" argument, in which case this rule does not match.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/ligolo-ng.md
+    - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/proxy/main.go
+    - https://docs.ligolo.ng/
+author: elhoim
+date: 2026-11-13
+tags:
+    - attack.command-and-control
+    - attack.t1090
+    - attack.t1572
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        Initiated: 'true'
+        DestinationPort: 11601
+    filter_main_browsers:
+        Image|endswith:
+            - '/brave'
+            - '/chrome'
+            - '/chromium'
+            - '/firefox'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Legitimate software or internal services listening on TCP port 11601
+    - Administrators using Ligolo-ng to reach an isolated lab or management network
+level: medium
+regression_tests_path: regression_data/rules/linux/network_connection/net_connection_lnx_hktl_ligolo_ng_default_port/info.yml
