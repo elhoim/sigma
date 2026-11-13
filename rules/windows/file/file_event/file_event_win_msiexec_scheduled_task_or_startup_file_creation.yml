@@ -5,8 +5,9 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the Windows Installer process "msiexec.exe" creating a file in the scheduled task store (Windows\System32\Tasks) or in a per-user or common Startup folder.
-    Malicious MSI packages use custom actions to register a scheduled task or drop a Startup item so that the payload survives a reboot, while the installation itself appears legitimate. Software installers occasionally register an update task the same way, so the most common vendor tasks are filtered.
+    Detects the Windows Installer process "msiexec.exe" creating a file in the scheduled task store (Windows\System32\Tasks, Windows\SysWOW64\Tasks, Windows\Tasks) or in a per-user or common Startup folder.
+    Malicious MSI packages use custom actions to register a scheduled task or drop a Startup item so that the payload survives a reboot, while the installation itself appears legitimate.
+    Software installers occasionally register an update task the same way, so the most common vendor tasks are filtered.
 references:
     - https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_msi_installer_task_startup.toml
@@ -21,19 +22,22 @@ tags:
     - attack.t1218.007
     - attack.t1547.001
 logsource:
-    product: windows
     category: file_event
+    product: windows
 detection:
     selection:
         Image|endswith: '\msiexec.exe'
         TargetFilename|contains:
             - ':\Windows\System32\Tasks\'
+            - ':\Windows\SysWOW64\Tasks\'
+            - ':\Windows\Tasks\'
             - ':\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\'
             - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\'
     filter_optional_known_vendor_tasks:
         - TargetFilename: 'C:\Windows\System32\Tasks\Adobe Acrobat Update Task'
         - TargetFilename|startswith:
-              - 'C:\Windows\System32\Tasks\HP\Sure Click\'
+              - 'C:\Windows\System32\Tasks\HP\Sure Click\Sure Click '
+              - 'C:\Windows\System32\Tasks\HP\Sure Click\Upgrade Repair '
               - 'C:\Windows\System32\Tasks\IntelSURQC-Upgrade-'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
