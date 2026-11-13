@@ -1,0 +1,49 @@
+title: Potential Persistence Via Adobe Plug-In Or Startup Script File Creation
+id: ea369390-7476-4a8c-bb0b-b6083e2ae74c
+status: experimental
+description: |
+    Detects the creation of files in two kinds of Adobe application folders whose content is loaded automatically when the application starts or quits.
+    Adobe Acrobat and Acrobat Reader enumerate the "plug_ins\Test_Tools" folder of their installation at startup and load every ".api" file found there as a DLL. The folder is not created by the installer.
+    Adobe After Effects and other Creative Cloud applications run every ExtendScript file (".jsx", ".jsxbin") placed in their "Scripts\Startup" and "Scripts\Shutdown" folders, in alphabetical order, at start and at exit.
+    A file dropped in these folders by a process other than the Adobe installation and update components gives code execution inside a signed Adobe process at each launch.
+references:
+    - https://www.hexacorn.com/blog/2024/11/15/beyond-good-ol-run-key-part-144/
+    - https://www.hexacorn.com/blog/2022/09/02/adobe-jsx-and-jsxbin-files/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_acrobat_test_tools:
+        TargetFilename|contains: '\plug_ins\Test_Tools\'
+        TargetFilename|endswith: '.api'
+    selection_extendscript_dir:
+        TargetFilename|contains: '\Adobe\'
+    selection_extendscript_file:
+        TargetFilename|contains:
+            - '\Scripts\Shutdown\'
+            - '\Scripts\Startup\'
+        TargetFilename|endswith:
+            - '.jsx'
+            - '.jsxbin'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_main_adobe_installer:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Common Files\Adobe\'
+            - 'C:\Program Files\Common Files\Adobe\'
+    condition: (selection_acrobat_test_tools or all of selection_extendscript_*) and not 1 of filter_main_*
+falsepositives:
+    - Third party After Effects or Creative Cloud script packs whose installer copies a startup script
+    - Motion design users who save their own script into the "Startup" folder
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_adobe_plugin_startup_script_creation/info.yml
