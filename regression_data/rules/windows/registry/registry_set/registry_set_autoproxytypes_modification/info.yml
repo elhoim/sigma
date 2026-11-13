@@ -1,0 +1,13 @@
+id: 6429d294-6349-4def-8d66-5d356cd42342
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 3164a880-5d1f-4f2a-8472-999c2eacaf8c
+      title: AutoProxyTypes Registry Key Modification
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_autoproxytypes_modification/3164a880-5d1f-4f2a-8472-999c2eacaf8c.evtx
