@@ -21,7 +21,6 @@ date: 2023-09-15
 tags:
     - attack.stealth
     - attack.t1218
-    - attack.execution
     - detection.threat-hunting
 logsource:
     category: process_creation
