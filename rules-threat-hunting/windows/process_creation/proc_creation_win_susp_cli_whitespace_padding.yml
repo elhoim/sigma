@@ -10,7 +10,9 @@ description: |
     Detects a process whose command line contains a run of 100 or more consecutive space characters.
     Adversaries pad a command with whitespace to push the real payload out of the visible part of a Run dialog, a shortcut properties window, a console title or a truncated log field, and to break naive signature matching on the surrounding tokens.
     The related rules require an explorer.exe parent with a '#' marker or an LNK parent; this rule applies to any parent and is meant for hunting.
+    Hypothesis: a padded command line that is not produced by a known installer or build tool hides its real tokens past the padding; review the parent process (explorer.exe after a Run dialog or File Explorer paste, an LNK, a script host) and the text after the padding to confirm.
 references:
+    - https://mrd0x.com/filefix-clickfix-alternative/
     - https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/defense_evasion_whitespace_padding_command_line.toml
 author: elhoim
