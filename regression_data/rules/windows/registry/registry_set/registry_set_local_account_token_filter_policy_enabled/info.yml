@@ -1,0 +1,18 @@
+id: 1e7697bc-1461-4673-8468-9c2c7d45d9ba
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: f383c216-b67a-4521-9046-fa12a62e71a4
+      title: Potential Remote UAC Restrictions Disabled Via LocalAccountTokenFilterPolicy
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_local_account_token_filter_policy_enabled/f383c216-b67a-4521-9046-fa12a62e71a4.evtx
+    - name: Atomic Red Team replay 01 (T1112-1, event 13) - selection
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_local_account_token_filter_policy_enabled-art01/f383c216-b67a-4521-9046-fa12a62e71a4.evtx
