@@ -1,0 +1,13 @@
+id: f5b050e6-db8e-4411-b413-02d1c173a316
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: a2636f66-9ba1-414b-90e1-dfb3c2e449af
+      title: Potential DNS Query To Abused Top Level Domain By Scripting Or LOLBin Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/dns_query/dns_query_win_susp_tld_by_scripting_or_lolbin_process/a2636f66-9ba1-414b-90e1-dfb3c2e449af.evtx

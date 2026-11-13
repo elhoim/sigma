@@ -1,0 +1,99 @@
+title: Potential DNS Query To Abused Top Level Domain By Scripting Or LOLBin Process
+id: a2636f66-9ba1-414b-90e1-dfb3c2e449af
+status: experimental
+description: |
+    Detects DNS queries for domains under top level domains that are heavily abused for phishing and malware distribution (free or very cheap registrations such as .top, .xyz, .tk, .ml, .cf, .ga, .gq, .buzz, .icu, .cfd, .click ...) when the query comes from a script interpreter, a living-off-the-land binary, a scripting runtime or a program running from a user-writable staging folder.
+    Browsers and mail clients query such domains all the time; PowerShell, mshta, rundll32, MSBuild, msiexec, node or python reaching out to them is a strong hint of a loader or command and control stage.
+    Hypothesis: a script, LOLBin or staged binary resolves an attacker-controlled domain under a cheap TLD to fetch a payload or reach its command and control server.
+    Confirm with the parent process and command line of the querying process, and with a network connection or file write by the same process right after the query.
+references:
+    - https://www.cybercrimeinfocenter.org/top-20-tlds-by-malicious-phishing-domains
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_dns_susp_tld.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1071.004
+    - detection.threat-hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\bitsadmin.exe'
+              - '\cscript.exe'
+              - '\curl.exe'
+              - '\dllhost.exe'
+              - '\InstallUtil.exe'
+              - '\java.exe'
+              - '\javaw.exe'
+              - '\MSBuild.exe'
+              - '\mshta.exe'
+              - '\msiexec.exe'
+              - '\node.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\python.exe'
+              - '\pythonw.exe'
+              - '\regsvr32.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+              - '.pif'
+              - '.scr'
+        - Image|contains:
+              - ':\ProgramData\'
+              - ':\Users\Public\'
+              - '\Downloads\'
+    selection_tld:
+        QueryName|endswith:
+            - '.accountant'
+            - '.beauty'
+            - '.boats'
+            - '.bond'
+            - '.buzz'
+            - '.cam'
+            - '.cf'
+            - '.cfd'
+            - '.christmas'
+            - '.click'
+            - '.country'
+            - '.cyou'
+            - '.date'
+            - '.download'
+            - '.faith'
+            - '.ga'
+            - '.gq'
+            - '.hair'
+            - '.icu'
+            - '.loan'
+            - '.lol'
+            - '.makeup'
+            - '.men'
+            - '.ml'
+            - '.mom'
+            - '.monster'
+            - '.motorcycles'
+            - '.party'
+            - '.quest'
+            - '.racing'
+            - '.rest'
+            - '.review'
+            - '.science'
+            - '.skin'
+            - '.surf'
+            - '.tk'
+            - '.top'
+            - '.win'
+            - '.xyz'
+            - '.zip'
+    filter_main_defender:
+        Image|startswith:
+            - 'C:\ProgramData\Microsoft\Windows Defender\Platform\'
+            - 'C:\ProgramData\Microsoft\Windows Defender Advanced Threat Protection\Platform\'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Developer tooling (node, python, java, curl) contacting package mirrors or project sites hosted under these TLDs
+    - Software installed under ProgramData that calls home to a vendor domain under one of these TLDs
+level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/dns_query/dns_query_win_susp_tld_by_scripting_or_lolbin_process/info.yml
