@@ -7,6 +7,9 @@ status: experimental
 description: |
     Detects a generative AI desktop tool, local LLM runtime or AI coding assistant (Ollama, LM Studio, Jan, GPT4All, KoboldCpp, llama.cpp server, text-generation-webui, Claude, Cursor, Copilot, Codex, Gemini CLI, Grok, Qwen) resolving a domain under a top level domain that is heavily abused for phishing and malware infrastructure.
     These tools talk to a small set of vendor and model hosting domains under established TLDs; a query to an abused TLD points at a malicious plugin, extension or model package, a compromised tool, or AI-generated code that was executed by the tool and connects to attacker infrastructure.
+    Hypothesis: a malicious plugin, extension or model package loaded by the tool, or the tool's own web fetch steered by injected instructions, resolves an attacker-controlled domain under a cheap TLD to fetch a payload or exfiltrate data.
+    Code that the tool spawns as a child process (shell, node, python) is attributed to that child in Sysmon event ID 22, not to the tool, and is covered by the scripting and LOLBin sibling rule.
+    Confirm with the domain reputation, the tool's loaded plugins or extensions, and a network connection or file write by the same process right after the query.
 references:
     - https://www.cybercrimeinfocenter.org/top-20-tlds-by-malicious-phishing-domains
     - https://www.elastic.co/security-labs/elastic-advances-llm-security
