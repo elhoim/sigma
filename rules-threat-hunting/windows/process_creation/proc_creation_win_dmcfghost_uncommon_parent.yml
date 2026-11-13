@@ -3,8 +3,9 @@ id: 17d9d16c-0ed0-4fc9-a11e-0edb1c3c0ad6
 status: experimental
 description: |
     Detects the execution of "dmcfghost.exe", the host process of the push router client for OMA client provisioning, by a parent process other than a Windows service host.
-    When it starts, the program loads the library named by the "TestDllPath2" value of "HKLM\SOFTWARE\Microsoft\PushRouter\Test". Started from a Run key, a scheduled task or a shell it can therefore serve as a signed loader for an attacker's DLL.
+    When it starts, the program loads the library named by the "TestDllPath2" value of "HKLM\SOFTWARE\Microsoft\PushRouter\Test". Started from a Run key or a shell it can therefore serve as a signed loader for an attacker's DLL.
     The binary is rarely used on desktop and server systems. This hunting rule reports its start outside of the service context so that the parent and the registry value can be reviewed.
+    Launches by "svchost.exe", including scheduled tasks, are excluded, so this rule does not cover them.
 references:
     - https://www.hexacorn.com/blog/2018/10/10/beyond-good-ol-run-key-part-91/
 author: elhoim

@@ -10,9 +10,9 @@ references:
 author: elhoim
 date: 2026-11-12
 tags:
+    - attack.execution
     - attack.persistence
     - attack.privilege-escalation
-    - attack.execution
     - attack.stealth
     - attack.t1574
 logsource:
@@ -22,7 +22,9 @@ detection:
     selection:
         TargetObject|contains: '\SOFTWARE\Microsoft\PushRouter\Test\'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Unlikely
