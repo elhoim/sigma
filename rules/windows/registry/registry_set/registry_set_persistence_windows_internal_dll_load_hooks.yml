@@ -11,6 +11,7 @@ references:
     - https://www.hexacorn.com/blog/2025/07/05/beyond-good-ol-run-key-part-147/
     - https://www.hexacorn.com/blog/2025/07/05/beyond-good-ol-run-key-part-148/
     - https://www.hexacorn.com/blog/2025/07/11/beyond-good-ol-run-key-part-149/
+    - https://www.hexacorn.com/blog/2025/12/31/beyond-good-ol-run-key-part-149-update/
     - https://www.hexacorn.com/blog/2025/10/25/beyond-good-ol-run-key-part-153/
     - https://www.hexacorn.com/blog/2025/12/31/beyond-good-ol-run-key-part-152/
     - https://learn.microsoft.com/en-us/troubleshoot/windows/win32/xa-transaction-require-registry-entry
@@ -54,7 +55,9 @@ detection:
               - ':\Windows\Temp\'
         - Details|startswith: '\\\\'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     condition: (selection_test_hooks or (selection_peerdist and not filter_main_peerdist_default) or (selection_lui and not filter_main_lui_default) or all of selection_xadll_*) and not filter_main_empty
 falsepositives:
     - Database client software that registers an XA library for the Distributed Transaction Coordinator from a non standard directory
