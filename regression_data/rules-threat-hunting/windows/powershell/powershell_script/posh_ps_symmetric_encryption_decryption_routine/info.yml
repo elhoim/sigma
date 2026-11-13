@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 5bfe058d-12f5-44cb-90b0-c21a8fce340e
-      title: PowerShell Script With Symmetric Encryption Or Decryption Routine
+      title: Potential Symmetric Encryption Or Decryption Routine In PowerShell Script
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
