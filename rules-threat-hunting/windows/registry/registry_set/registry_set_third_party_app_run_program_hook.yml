@@ -1,0 +1,74 @@
+title: Third Party Application Run Program Hook Registry Value Modified
+id: e574f6fd-a063-43f7-8753-746152c9d194
+status: experimental
+description: |
+    Detects the modification of registry values in which legacy third party software stores a user defined program that it starts on an event: the external viewer and virus scanner of WinRAR and WinZip, the virus scanner of Internet Download Manager, Download Accelerator and MSN Messenger, the ICQ agent applications, the "run program" actions of Synaptics and Alps touchpad utilities and several Nero values.
+    The values are a normal feature of these products, but they are rarely changed and a write by a process other than the product itself can be a discreet persistence: the program is started by the trusted application, for example after each download or when a touchpad button is pressed.
+    This is a hunting rule for hosts where these products are installed, review the value data and the writing process.
+references:
+    - https://www.hexacorn.com/blog/2012/07/23/beyond-good-ol-run-key/
+    - https://www.hexacorn.com/blog/2012/09/16/beyond-good-ol-run-key-part-2/
+    - https://www.hexacorn.com/blog/2015/04/26/beyond-good-ol-run-key-part-30/
+    - https://www.hexacorn.com/blog/2015/05/29/beyond-good-ol-run-key-part-31/
+    - https://www.hexacorn.com/blog/2016/02/16/beyond-good-ol-run-key-part-34/
+    - https://www.hexacorn.com/blog/2018/12/26/beyond-good-ol-run-key-part-97/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_endswith:
+        TargetObject|endswith:
+            - '\SOFTWARE\Ahead\InCD\UI\LaunchOnBlankDisc'
+            - '\SOFTWARE\Ahead\Nero BurnRights\PathToBurnRights'
+            - '\SOFTWARE\Ahead\Nero Mobile\Installer\Signed'
+            - '\SOFTWARE\Ahead\Nero Mobile\Installer\Unsigned'
+            - '\Software\DownloadManager\VScannerProgram'
+            - '\Software\Microsoft\MSNMessenger\AntiVirus'
+            - '\Software\SpeedBit\Download Accelerator\AntiVirusEXE'
+            - '\Software\WinRAR\Viewer\ExternalViewer'
+            - '\Software\WinRAR\VirusScan\Name'
+    selection_contains:
+        TargetObject|contains:
+            - '\Software\Alps\Apoint\Button\AppReg'
+            - '\Software\Alps\Apoint\EasyLauncher\C'
+            - '\Software\Mirabilis\ICQ\Agent\Apps\'
+            - '\Software\Nico Mak Computing\WinZip\programs\'
+            - '\Software\Synaptics\SynTPEnh\PlugInConfig\TouchPadPS2\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_optional_winrar:
+        Image:
+            - 'C:\Program Files (x86)\WinRAR\WinRAR.exe'
+            - 'C:\Program Files\WinRAR\WinRAR.exe'
+        TargetObject|contains: '\Software\WinRAR\'
+    filter_optional_winzip:
+        Image|startswith:
+            - 'C:\Program Files (x86)\WinZip\'
+            - 'C:\Program Files\WinZip\'
+        TargetObject|contains: '\Software\Nico Mak Computing\WinZip\'
+    filter_optional_idm:
+        Image:
+            - 'C:\Program Files (x86)\Internet Download Manager\IDMan.exe'
+            - 'C:\Program Files\Internet Download Manager\IDMan.exe'
+        TargetObject|contains: '\Software\DownloadManager\'
+    filter_optional_synaptics:
+        Image|startswith: 'C:\Program Files\Synaptics\SynTP\'
+        TargetObject|contains: '\Software\Synaptics\'
+    filter_optional_alps:
+        Image|startswith:
+            - 'C:\Program Files\Apoint2K\'
+            - 'C:\Program Files\DellTPad\'
+        TargetObject|contains: '\Software\Alps\'
+    condition: 1 of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Users who configure an external viewer or a virus scanner in the listed applications when the product is installed outside of its default directory
+    - Software deployment or profile migration tools that restore application settings
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_third_party_app_run_program_hook/info.yml
