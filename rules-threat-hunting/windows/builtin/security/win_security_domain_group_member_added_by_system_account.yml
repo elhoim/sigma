@@ -1,9 +1,14 @@
 title: Domain Group Member Added By SYSTEM Account
 id: dcce696f-abf5-4088-99e4-6bcb8ccf2c7c
+related:
+    - id: c43c26be-2e87-46c7-8661-284588c5a53e
+      type: similar
 status: experimental
 description: |
     Detects a member being added to a security-enabled global or universal domain group by the local SYSTEM account (S-1-5-18) of a domain controller, excluding the Domain Users group.
-    Group membership is normally changed by an administrator or a provisioning service account. A change attributed to SYSTEM indicates code running as SYSTEM on the domain controller, which an attacker reaches through a privilege escalation exploit, a vulnerable service or a built-in group such as Server Operators, and then uses to grant a controlled account domain privileges.
+    Group membership is normally changed by an administrator or a provisioning service account.
+    A change attributed to SYSTEM indicates code running as SYSTEM on the domain controller, which an attacker reaches through a privilege escalation exploit, a vulnerable service or a built-in group such as Server Operators, and then uses to grant a controlled account domain privileges.
+    Hypothesis: a process running as SYSTEM on the domain controller changed a group membership; confirm it with the process created as SYSTEM on that domain controller at the same time (Security 4688 or Sysmon process creation) and with later logons of the added MemberSid.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_group_modification_by_system.toml
 author: elhoim
