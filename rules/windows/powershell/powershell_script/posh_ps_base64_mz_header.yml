@@ -1,4 +1,4 @@
-title: Base64 MZ Header In PowerShell ScriptBlock
+title: Suspicious Base64 MZ Header In PowerShell ScriptBlock
 id: 81c3b74e-a26f-430a-a1a5-f8661501a7fd
 related:
     - id: 22e58743-4ac8-4a9f-bf19-00a0428d8c5f
@@ -6,7 +6,8 @@ related:
 status: experimental
 description: |
     Detects a PowerShell script block that contains the Base64 encoding of a DOS/PE executable header ("MZ" followed by the standard e_cblp/e_cp fields).
-    Scripts embed a whole executable this way to decode it in memory and load it with reflection or an injection routine, so that no PE file is written to disk. The related rule looks for the same strings on the process command line; this one covers scripts, modules and encoded commands as logged by script block logging.
+    Scripts embed a whole executable this way to decode it in memory and load it with reflection or an injection routine, so that no PE file is written to disk.
+    The related rule looks for the same strings on the process command line; this one covers scripts, modules and encoded commands as logged by script block logging.
 references:
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_posh_portable_executable.toml

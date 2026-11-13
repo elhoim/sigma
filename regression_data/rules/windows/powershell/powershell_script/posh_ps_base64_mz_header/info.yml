@@ -4,7 +4,7 @@ date: 2026-11-10
 author: elhoim
 rule_metadata:
     - id: 81c3b74e-a26f-430a-a1a5-f8661501a7fd
-      title: Base64 MZ Header In PowerShell ScriptBlock
+      title: Suspicious Base64 MZ Header In PowerShell ScriptBlock
 regression_tests_info:
     - name: Positive Detection Test
       type: evtx
