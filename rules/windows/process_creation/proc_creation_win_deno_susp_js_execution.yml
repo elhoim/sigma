@@ -5,10 +5,8 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the Deno JavaScript/TypeScript runtime executing code passed inline on the command line (a "data:" URL, often base64-encoded, or
-    a snippet containing "eval(", "atob(", "import(" or "Deno.Command(") or fetched directly from an HTTP(S) URL outside the official Deno registries.
-    Deno is a signed, legitimate developer tool that threat actors bring along as a "bring your own runtime" loader: the LeakNet ransomware operator
-    and ClickFix campaigns launch "deno.exe -A data:application/javascript;base64,..." from VBS or PowerShell to run a C2 loader entirely in memory.
+    Detects the Deno JavaScript/TypeScript runtime executing code passed inline on the command line (a "data:" URL, often base64-encoded, or a snippet containing "eval(", "atob(", "import(" or "Deno.Command(") or fetched directly from an HTTP(S) URL outside the official Deno registries.
+    Deno is a signed, legitimate developer tool that threat actors bring along as a "bring your own runtime" loader: the LeakNet ransomware operator and ClickFix campaigns launch "deno.exe -A data:application/javascript;base64,..." from VBS or PowerShell to run a C2 loader entirely in memory.
     This rule complements the file_event rule that watches Deno's remote module cache: it fires on the process creation itself, before any file is written.
 references:
     - https://reliaquest.com/blog/threat-spotlight-casting-a-wider-net-clickfix-deno-and-leaknets-scaling-threat
@@ -19,11 +17,11 @@ author: elhoim
 date: 2026-11-09
 tags:
     - attack.command-and-control
-    - attack.t1105
     - attack.execution
-    - attack.t1059.007
     - attack.stealth
     - attack.t1027.010
+    - attack.t1059.007
+    - attack.t1105
 logsource:
     category: process_creation
     product: windows
