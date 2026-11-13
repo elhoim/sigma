@@ -14,13 +14,13 @@ references:
 author: elhoim
 date: 2026-11-09
 tags:
-    - attack.initial-access
-    - attack.t1195.001
-    - attack.execution
-    - attack.t1059
     - attack.command-and-control
-    - attack.t1102
+    - attack.execution
     - attack.exfiltration
+    - attack.initial-access
+    - attack.t1059
+    - attack.t1102
+    - attack.t1195.001
     - attack.t1567
 logsource:
     product: windows
