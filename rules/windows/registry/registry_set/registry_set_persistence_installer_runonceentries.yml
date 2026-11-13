@@ -1,0 +1,33 @@
+title: Potential Persistence Via Windows Installer RunOnceEntries Registry Key
+id: c4a86c16-2649-455c-8de9-2ab8be9dc3fb
+status: experimental
+description: |
+    Detects a value written under the "CurrentVersion\Installer\RunOnceEntries" registry key by a process other than "msiexec.exe".
+    Windows Installer stores in this key the command line it has to resume after a reboot in the middle of an installation. After the restart "msiexec.exe" is started with "/@ <identifier>" and loads its real arguments from the matching value.
+    An attacker can plant a value there so that a Windows Installer command of his choice, for example the installation of a package, is run by "msiexec.exe" when the pending entry is processed. Only the Windows Installer service is expected to write to this key.
+references:
+    - https://www.hexacorn.com/blog/2019/05/29/beyond-good-ol-run-key-part-105/
+    - https://github.com/wine-mirror/wine/blob/6265f77003e2d501a83e8a1780b5e78ad55b230f/programs/msiexec/msiexec.c#L695-L705
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Installer\RunOnceEntries\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_installer_runonceentries/info.yml
