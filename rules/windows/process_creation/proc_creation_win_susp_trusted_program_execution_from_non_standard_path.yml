@@ -6,7 +6,8 @@ related:
 status: experimental
 description: |
     Detects "explorer.exe", "WINWORD.EXE", "w3wp.exe" or "DISM.EXE" (by image name or by original file name, so renamed copies are included) running from a location other than their installation folders under Windows, the Office installation paths or the IIS folder.
-    These Microsoft programs are well known DLL search order hijacking targets; attackers copy one of them next to a malicious DLL in a writable folder so that the trusted, signed executable loads the DLL into its memory and lends it its reputation. The sibling rule covers core system binaries but not Word, the IIS worker process or Explorer.
+    These Microsoft programs are well known DLL search order hijacking targets; attackers copy one of them next to a malicious DLL in a writable folder so that the trusted, signed executable loads the DLL into its memory and lends it its reputation.
+    The sibling rule covers core system binaries but not Word, the IIS worker process or Explorer.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_suspicious_explorer_winword.toml
     - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
@@ -46,13 +47,26 @@ detection:
         Image|startswith:
             - 'C:\Program Files (x86)\Windows Kits\'
             - 'C:\Program Files\Windows Kits\'
-        Image|endswith: '\Deployment Tools\amd64\DISM\dism.exe'
+        Image|endswith:
+            - '\Deployment Tools\amd64\DISM\dism.exe'
+            - '\Deployment Tools\arm64\DISM\dism.exe'
+            - '\Deployment Tools\x86\DISM\dism.exe'
+    filter_main_dism_servicing:
+        # Windows servicing locations, as excluded for dism.exe by e4a6b256
+        Image|startswith:
+            - 'C:\$WINDOWS.~BT\'
+            - 'C:\$WinREAgent\'
+            - 'C:\Windows\SoftwareDistribution\'
+            - 'C:\Windows\SystemTemp\'
+            - 'C:\Windows\uus\'
+            - 'C:\Windows\WinSxS\'
+        Image|endswith: '\dism.exe'
     filter_main_w3wp:
         Image:
             - 'C:\Windows\System32\inetsrv\w3wp.exe'
             - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
     filter_main_winword:
-        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\Microsoft Office\\|Program Files\\WindowsApps\\Microsoft\.Office\.Desktop\.|PROGRA~[12]\\MICROS~)(?:[^\\]+\\)*WINWORD\.EXE$'
+        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\Microsoft Office(?: \d\d)?\\|Program Files\\WindowsApps\\Microsoft\.Office\.Desktop\.|PROGRA~[12]\\MICROS~)(?:[^\\]+\\)*WINWORD\.EXE$'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Office installed on a non-default drive or in a custom folder, and portable or offline DISM copies used by deployment teams; add their paths to the filters
