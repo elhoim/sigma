@@ -5,7 +5,7 @@ description: |
     Detects the execution of the Windows Management Instrumentation Tester "wbemtest.exe", the built-in GUI client that connects to any WMI namespace, runs WQL queries and invokes class methods, locally or against a remote computer.
     Administrators rarely use wbemtest outside of WMI troubleshooting; attackers with an interactive session use it to enumerate the host or domain and to execute methods such as Win32_Process.Create without a scripting engine.
 references:
-    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-architecture
+    - https://learn.microsoft.com/en-us/intune/configmgr/develop/core/understand/introduction-to-wbemtest
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/execution_wmi_wbemtest.toml
 author: elhoim
 date: 2026-11-10
