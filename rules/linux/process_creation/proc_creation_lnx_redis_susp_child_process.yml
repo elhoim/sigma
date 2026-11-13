@@ -50,5 +50,5 @@ detection:
         - Image|re: '/python[23]\.[0-9]+$'
     condition: all of selection_*
 falsepositives:
-    - Unlikely
+    - Redis Sentinel running its configured "notification-script" or "client-reconfig-script" (usually a shell script) on a failover or warning-level event
 level: high
