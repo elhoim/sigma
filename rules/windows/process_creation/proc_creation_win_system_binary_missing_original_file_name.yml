@@ -2,8 +2,9 @@ title: Potential Tampered System Binary - Version Resource Missing From Known Wi
 id: 5f1b8512-8083-45b3-a668-cedf199a8748
 status: experimental
 description: |
-    Detects the execution of an image named like a well-known Windows system executable (cmd, powershell, rundll32, regsvr32, mshta, certutil, wmic, msbuild, wscript, cscript, cmstp, msiexec, regasm, regsvcs, installutil) while Sysmon reports its OriginalFileName as "-", which means the binary has no version resource or no OriginalFilename entry.
-    Every genuine build of these Microsoft binaries carries an OriginalFilename. A copy whose version resource was stripped or rewritten defeats OriginalFileName-based detections and breaks the Authenticode signature; dropping a tool under a system binary name without version information is a masquerading indicator.
+    Detects the execution of an image named like a well-known Windows system executable (cmd, powershell, pwsh, rundll32, regsvr32, mshta, certutil, wmic, msbuild, wscript, cscript, cmstp, msiexec, regasm, regsvcs, installutil) while Sysmon reports its OriginalFileName as "-", which means the binary has no version resource or no OriginalFilename entry.
+    Every genuine build of these Microsoft binaries carries an OriginalFilename.
+    A copy whose version resource was stripped or rewritten defeats OriginalFileName-based detections and breaks the Authenticode signature; dropping a tool under a system binary name without version information is a masquerading indicator.
 references:
     - https://adversarial-detection-engineering.github.io/ofndb/gotchas/
     - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
@@ -14,8 +15,8 @@ tags:
     - attack.t1027.005
     - attack.t1036
 logsource:
-    product: windows
     category: process_creation
+    product: windows
 detection:
     selection:
         Image|endswith:
