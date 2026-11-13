@@ -1,0 +1,76 @@
+title: Potential Persistence Via Code Loading Environment Variable
+id: 13f94d79-15fc-479c-8e54-8d77d21ad8c7
+related:
+    - id: ad89044a-8f49-4673-9a55-cbd88a1b374f # Enabling COR Profiler Environment Variables
+      type: similar
+status: experimental
+description: |
+    Detects a persistent user or system environment variable, written under the "Environment" registry keys, whose name makes a runtime, a profiler interface or a debugger load a library or start a program chosen by the value.
+    The first group is rarely set on a production host and is reported for any value: "JS_PROFILER" and "JS_DM_CLSID" (JScript profiler and diagnostic mode COM class loaded by Internet Explorer components), "APPX_PROCESS" (makes the .NET runtime load the phantom "WinAppXRT.dll"), "JVM_DLL" (Java virtual machine library used by Java launchers), "GS_DLL" (Ghostscript interpreter library), "COR_PROFILER_PATH", "_NT_DEBUGGER_EXTENSION_PATH" and "WINDBG_INVOKE_EDITOR" (debugger extension directory and editor command) and "SRCSRV_INI_FILE".
+    The second group is set by legitimate development software and is reported only when the value points to a user writable or remote location: "OPENSSL_MODULES", "OPENSSL_ENGINES", "INTEL_LIBITTNOTIFY32", "INTEL_LIBITTNOTIFY64", "CUDA_INJECTION32_PATH" and "CUDA_INJECTION64_PATH".
+    These variables give code execution inside every process that honours them, which can be abused for persistence. The "COR_PROFILER" family is covered by a separate rule.
+references:
+    - https://www.hexacorn.com/blog/2014/04/27/beyond-good-ol-run-key-part-11/
+    - https://www.hexacorn.com/blog/2014/08/31/beyond-good-ol-run-key-part-17/
+    - https://www.hexacorn.com/blog/2019/06/07/beyond-good-ol-run-key-part-107/
+    - https://www.hexacorn.com/blog/2019/11/18/beyond-good-ol-run-key-part-123/
+    - https://www.hexacorn.com/blog/2021/02/24/beyond-good-ol-run-key-part-132/
+    - https://www.hexacorn.com/blog/2021/05/03/debug-environment-variable-are-o/
+    - https://www.hexacorn.com/blog/2022/11/19/beyond-good-ol-run-key-part-139/
+    - https://www.hexacorn.com/blog/2022/12/30/beyond-good-ol-run-key-part-140/
+    - https://www.hexacorn.com/blog/2026/01/02/beyond-good-ol-run-key-part-154/
+    - https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/general-environment-variables
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_rare_name:
+        TargetObject|endswith:
+            - '\Environment\_NT_DEBUGGER_EXTENSION_PATH'
+            - '\Environment\APPX_PROCESS'
+            - '\Environment\COR_PROFILER_PATH'
+            - '\Environment\GS_DLL'
+            - '\Environment\JS_DM_CLSID'
+            - '\Environment\JS_PROFILER'
+            - '\Environment\JVM_DLL'
+            - '\Environment\SRCSRV_INI_FILE'
+            - '\Environment\WINDBG_INVOKE_EDITOR'
+    selection_dev_name:
+        TargetObject|endswith:
+            - '\Environment\CUDA_INJECTION32_PATH'
+            - '\Environment\CUDA_INJECTION64_PATH'
+            - '\Environment\INTEL_LIBITTNOTIFY32'
+            - '\Environment\INTEL_LIBITTNOTIFY64'
+            - '\Environment\OPENSSL_ENGINES'
+            - '\Environment\OPENSSL_MODULES'
+    selection_dev_value:
+        - Details|contains:
+              - ':\PerfLogs\'
+              - ':\ProgramData\'
+              - ':\Temp\'
+              - ':\Users\'
+              - ':\Windows\Tasks\'
+              - ':\Windows\Temp\'
+              - '%APPDATA%'
+              - '%LOCALAPPDATA%'
+              - '%PUBLIC%'
+              - '%TEMP%'
+              - '%TMP%'
+              - '%USERPROFILE%'
+        - Details|startswith: '\\\\'
+    filter_main_empty:
+        Details: '(Empty)'
+    condition: (selection_rare_name or all of selection_dev_*) and not 1 of filter_main_*
+falsepositives:
+    - Developers who use a script debugger, a Java service wrapper, Ghostscript front ends or WinDbg and set these variables persistently
+    - Portable installations of OpenSSL based software, Intel VTune or the NVIDIA CUDA toolkit inside a user profile
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_code_loading_env_variables/info.yml
