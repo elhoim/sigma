@@ -1,0 +1,13 @@
+id: af2ce109-2421-4dc5-90b5-f49ef4ae799e
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 507d3764-d048-40d9-aaef-5ef195da3905
+      title: Potential Persistence Via Explorer AppKey ShellExecute Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_appkey_shellexecute/507d3764-d048-40d9-aaef-5ef195da3905.evtx
