@@ -1,0 +1,13 @@
+id: 042c35a0-83f9-4b22-b769-29d2728c0b4b
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 5083256a-f2e3-4c98-bd0c-177c88548947
+      title: Potential Discovery Via Win32 Network And Session APIs In PowerShell Script
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_discovery_win32_api_functions/5083256a-f2e3-4c98-bd0c-177c88548947.evtx
