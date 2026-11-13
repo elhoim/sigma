@@ -15,8 +15,8 @@ date: 2026-11-09
 tags:
     - attack.discovery
     - attack.t1033
-    - attack.t1087.001
     - attack.t1069.001
+    - attack.t1087.001
 logsource:
     product: windows
     category: process_creation
@@ -28,7 +28,7 @@ detection:
         - IntegrityLevel:
               - 'System'
               - 'S-1-16-16384'
-        - User|contains:
+        - User|contains: # covers many language settings
               - 'AUTHORI'
               - 'AUTORI'
     filter_main_net_parent:
