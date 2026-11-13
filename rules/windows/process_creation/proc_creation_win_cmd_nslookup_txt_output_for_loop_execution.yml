@@ -6,7 +6,8 @@ related:
 status: experimental
 description: |
     Detects a cmd.exe command line in which the output of an nslookup TXT (or ANY) record query is parsed by a "for /f" loop, optionally filtered with findstr.
-    This idiom retrieves a payload or a command from DNS TXT records and executes it without a browser, PowerShell or mshta on the command line. It is used by ClickFix-style lures that ask the victim to paste a one-liner into the Run dialog, and by loaders that stage their next command over DNS.
+    This idiom retrieves a payload or a command from DNS TXT records and executes it without a browser, PowerShell or mshta on the command line.
+    It is used by ClickFix-style lures that ask the victim to paste a one-liner into the Run dialog, and by loaders that stage their next command over DNS.
     The related rule covers nslookup TXT queries spawned by PowerShell; this rule covers the pure command shell pipeline.
 references:
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/dns_staging_detection_clickfix_inspired_nslookup_execution.yml
