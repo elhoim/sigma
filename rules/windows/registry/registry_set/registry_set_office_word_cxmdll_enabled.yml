@@ -1,0 +1,27 @@
+title: Potential Persistence Via Word CxmDll Registry Value
+id: 87de5393-c7de-4b3d-b09a-1d6ff3f72e20
+status: experimental
+description: |
+    Detects the creation of the "CxmDll" value in the Word registry key of Microsoft Office.
+    When this value is set to 1, Word 2010 loads a library named "WWLIBcxm.DLL" from the Office directory or from a directory of the search path instead of its main library "WWLIB.DLL".
+    An attacker can enable this test hook and plant a proxy DLL with that name in order to get code executed each time Word starts.
+    The "Office Test\Special\Perf" hook of the same family is covered by the rule "Office Application Startup - Office Test".
+references:
+    - https://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Office\'
+        TargetObject|endswith: '\Word\CxmDll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_office_word_cxmdll_enabled/info.yml

@@ -1,0 +1,13 @@
+id: 9cb162d1-fc39-4d34-9981-9b9742772e39
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 853edd32-64a6-4d26-9d49-cb0b2fa9c365
+      title: Potential Persistence Via Word WWLIBcxm DLL - File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_office_wwlibcxm_dll_creation/853edd32-64a6-4d26-9d49-cb0b2fa9c365.evtx

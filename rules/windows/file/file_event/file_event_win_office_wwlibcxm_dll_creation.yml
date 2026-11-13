@@ -1,0 +1,25 @@
+title: Potential Persistence Via Word WWLIBcxm DLL - File Creation
+id: 853edd32-64a6-4d26-9d49-cb0b2fa9c365
+status: experimental
+description: |
+    Detects the creation of a file named "WWLIBcxm.dll".
+    Word 2010 loads a library with that name instead of its main library "WWLIB.DLL" when the "CxmDll" registry value is enabled.
+    The file is not part of an Office installation, so its creation could be the preparation of a persistence through that test hook.
+references:
+    - https://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\WWLIBcxm.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_office_wwlibcxm_dll_creation/info.yml
