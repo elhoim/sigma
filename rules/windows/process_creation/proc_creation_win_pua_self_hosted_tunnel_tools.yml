@@ -5,20 +5,22 @@ related:
       type: similar
 status: experimental
 description: |
-    Detects the execution of self-hosted TCP, SOCKS and WebSocket tunnelling tools by their image name combined with their forwarding arguments, or by the arguments alone when they are distinctive enough: GOST ("-L"/"-F" with rtcp://, rudp://, socks5:// or relay+tls:// URIs), wstunnel ("client"/"server" with a ws:// or wss:// endpoint), bore ("local ... --to"), Shootback ("slaver.py -m ... -t" and "master.py -m ... -c") and FRP started with a TOML, YAML or frps INI configuration, which the existing FRP rule does not match when the binary is renamed.
+    Detects the execution of self-hosted TCP, SOCKS and WebSocket tunnelling tools by their image name combined with their forwarding arguments, or by the arguments alone when they are distinctive enough: GOST ("-L" with rtcp:// or rudp:// listeners, "-F" with relay+ or socks5+ forward chains such as relay+tls://), wstunnel ("client"/"server" with a ws:// or wss:// endpoint), bore ("local ... --to"), Shootback ("slaver.py -m ... -t" and "master.py -m ... -c") and FRP started with a TOML, YAML or frps INI configuration, which the existing FRP rule does not match when the binary is renamed.
     These tools forward internal services to a server controlled by the operator and are used by numerous intrusion sets (Cadet Blizzard, MirrorFace, Octo Tempest, MuddyWater, Volt Typhoon) to reach RDP, SMB or SSH inside the victim network.
 references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gost.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/wstunnel.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/shootback.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/bore.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/frp.md
     - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/
 author: elhoim
 date: 2026-11-12
 tags:
     - attack.command-and-control
-    - attack.t1572
     - attack.t1090
     - attack.t1095
+    - attack.t1572
 logsource:
     product: windows
     category: process_creation
@@ -84,5 +86,6 @@ detection:
 falsepositives:
     - Administrators or developers using these tools for legitimate port forwarding or lab access
     - Unrelated Python projects that ship a "master.py" taking "-m" and "-c" options
+    - Editors or scripts opening an FRP configuration file (frpc.toml, frps.yaml, ...) without running FRP
 level: medium
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_pua_self_hosted_tunnel_tools/info.yml
