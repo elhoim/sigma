@@ -1,0 +1,13 @@
+id: 2d4c0231-68af-455f-8b22-058f815d3d7b
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 0eea0806-57ca-4359-9d6c-3dd8088397e4
+      title: Potential Persistence Via Handwriting Recognizer DLL Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_handwriting_recognizer_dll/0eea0806-57ca-4359-9d6c-3dd8088397e4.evtx
