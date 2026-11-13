@@ -1,0 +1,79 @@
+title: External IP Address Or Geolocation Lookup Via CLI - Linux
+id: 3531f74f-ae8a-4192-ada2-e64c873d4fe6
+related:
+    - id: ec82e2a5-81ea-4211-a1f8-37a0286df2c2 # Windows DNS
+      type: similar
+    - id: edf3485d-dac4-4d50-90e4-b0e5813f7e60 # Windows network connection
+      type: similar
+status: experimental
+description: |
+    Detects "curl" or "wget" querying a public external IP address or IP geolocation lookup service.
+    Malware and post-exploitation scripts commonly look up the public IP address and geolocation of a compromised host to profile the victim, decide whether to proceed (e.g. geofencing) or report back to the operator.
+    Hunt for such lookups on servers that have no reason to query their public address, and for lookups shortly after a new process tree from a web service, SSH session or scheduled task appeared on the host.
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1614/T1614.md
+author: elhoim
+date: 2026-10-01
+tags:
+    - attack.discovery
+    - attack.t1016
+    - attack.t1614
+    - detection.threat-hunting
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_img:
+        Image|endswith:
+            - '/curl'
+            - '/wget'
+    selection_domain:
+        CommandLine|contains:
+            - 'api.2ip.ua'
+            - 'api.bigdatacloud.net'
+            - 'api.ipify.org'
+            - 'bot.whatismyipaddress.com'
+            - 'canireachthe.net'
+            - 'checkip.amazonaws.com'
+            - 'checkip.dyndns.org'
+            - 'curlmyip.com'
+            - 'db-ip.com'
+            - 'eth0.me'
+            - 'freegeoip.app'
+            - 'geoipy.com'
+            - 'getip.pro'
+            - 'icanhazip.com'
+            - 'ident.me'
+            - 'ifconfig.co'
+            - 'ifconfig.io'
+            - 'ifconfig.me'
+            - 'ip-api.com'
+            - 'ip.360.cn'
+            - 'ip.anysrc.net'
+            - 'ip.taobao.com'
+            - 'ip.tyk.nu'
+            - 'ipaddressworld.com'
+            - 'ipapi.co'
+            - 'ipconfig.io'
+            - 'ipecho.net'
+            - 'ipinfo.io'
+            - 'ipip.net'
+            - 'ipof.in'
+            - 'ipv6-test.com'
+            - 'ipwho.is'
+            - 'jsonip.com'
+            - 'myexternalip.com'
+            - 'seeip.org'
+            - 'wgetip.com'
+            - 'whatismyip.akamai.com'
+            - 'whois.pconline.com.cn'
+            - 'wtfismyip.com'
+    condition: all of selection_*
+falsepositives:
+    - Administrators, dynamic DNS updaters or monitoring scripts checking the public IP address
+level: low
+simulation:
+    - type: atomic-red-team
+      name: Get geolocation info through IP-Lookup services using curl freebsd, linux or macos
+      technique: T1614
+      atomic_guid: 552b4db3-8850-412c-abce-ab5cc8a86604
