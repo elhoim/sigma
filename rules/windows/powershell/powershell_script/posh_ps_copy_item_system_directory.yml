@@ -6,7 +6,7 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1556.002/T1556.002.md#atomic-test-1---install-and-register-password-filter-dll
 author: frack113, Nasreddine Bencherchali (Nextron Systems)
 date: 2021-12-27
-modified: 2026-11-05
+modified: 2026-11-13
 tags:
     - attack.persistence
     - attack.credential-access
@@ -19,7 +19,8 @@ logsource:
 detection:
     selection:
         # Case-insensitive, covers the Copy-Item aliases, any abbreviation of -Destination and any parameter order
-        ScriptBlockText|re|i: '\b(?:Copy-Item|cpi|copy|cp)\s(?:[^\r\n;|]{0,256}\s)?-D[a-z]*[:\s]\s*[''"]?[a-z]:\\Windows\\(?:System32|SysWOW64)\b'
+        # The destination prefix accepts a drive letter, an admin share (\\host\c$) or a variable such as $env:SystemDrive
+        ScriptBlockText|re|i: '\b(?:Copy-Item|cpi|copy|cp)\s(?:[^\r\n;|]{0,256}\s)?-D[a-z]*[:\s]\s*[^\s;|]{0,64}\\Windows\\(?:System32|SysWOW64)\b'
     condition: selection
 falsepositives:
     - Unknown
