@@ -10,15 +10,15 @@ date: 2022-10-21
 modified: 2022-12-28
 tags:
     - attack.defense-impairment
-    - attack.initial-access
     - attack.execution
-    - attack.t1566
-    - attack.t1566.002
+    - attack.initial-access
     - attack.t1059
     - attack.t1059.002
     - attack.t1204
     - attack.t1204.001
     - attack.t1553
+    - attack.t1566
+    - attack.t1566.002
 logsource:
     category: process_creation
     product: macos
