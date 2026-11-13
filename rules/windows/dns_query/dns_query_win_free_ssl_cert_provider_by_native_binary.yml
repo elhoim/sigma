@@ -2,7 +2,7 @@ title: Potential C2 Channel Setup - Free SSL Certificate Provider Resolved By Na
 id: 92346402-b1c4-4ae4-804f-5928f275caf1
 status: experimental
 description: |
-    Detects a DNS query for a free SSL certificate provider domain (letsencrypt.org, zerossl.com, sslforfree.com, freessl.org) issued by a native Windows binary located in System32, SysWOW64, the .NET Framework folders, explorer.exe or notepad.exe, excluding the service host and Edge components that legitimately validate certificates.
+    Detects a DNS query for a free SSL certificate provider domain (letsencrypt.org, zerossl.com, sslforfree.com, freessl.org) issued by a native Windows binary located in System32, SysWOW64, the .NET Framework folders, explorer.exe or notepad.exe, excluding the service host that legitimately validates certificates.
     Native Windows utilities have no reason to contact a certificate authority's web or ACME endpoints; malware that obtains or validates a free certificate for its encrypted command and control channel, or that is injected into or masquerading as a system binary, produces this lookup.
 references:
     - https://letsencrypt.org/docs/
@@ -40,12 +40,6 @@ detection:
         Image:
             - 'C:\Windows\System32\svchost.exe'
             - 'C:\Windows\SysWOW64\svchost.exe'
-    filter_main_edge:
-        Image|startswith:
-            - 'C:\Program Files (x86)\Microsoft\Edge\Application\'
-            - 'C:\Program Files (x86)\Microsoft\EdgeUpdate\'
-            - 'C:\Program Files\Microsoft\Edge\Application\'
-            - 'C:\Windows\SystemApps\Microsoft.MicrosoftEdge_'
     condition: 1 of selection_domain* and selection_native_image and not 1 of filter_main_*
 falsepositives:
     - Administrative scripts (powershell.exe, curl.exe, certreq.exe) interacting with ACME providers to request certificates; add the script host or the issuing server to the filter
