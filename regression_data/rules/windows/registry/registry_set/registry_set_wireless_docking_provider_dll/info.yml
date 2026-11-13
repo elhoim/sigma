@@ -1,0 +1,13 @@
+id: f8d4d075-f9bd-4c89-a7dd-9e1821927ec7
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 6e8c193b-25e3-4725-8f13-54a178e874f2
+      title: Potential Persistence Via Wireless Docking Provider DLL Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_wireless_docking_provider_dll/6e8c193b-25e3-4725-8f13-54a178e874f2.evtx
