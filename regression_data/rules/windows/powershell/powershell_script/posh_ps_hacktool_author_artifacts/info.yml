@@ -1,0 +1,13 @@
+id: 9978cb1e-72d5-4dd4-950c-6ae0283ff125
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: d90541d2-724c-4570-8a5b-46ec6d247389
+      title: Suspicious PowerShell Script Containing Offensive Tool Author Artifacts
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_hacktool_author_artifacts/d90541d2-724c-4570-8a5b-46ec6d247389.evtx
