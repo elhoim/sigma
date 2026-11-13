@@ -42,7 +42,9 @@ detection:
             - '\Software\Nico Mak Computing\WinZip\programs\'
             - '\Software\Synaptics\SynTPEnh\PlugInConfig\TouchPadPS2\'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     filter_optional_winrar:
         Image:
             - 'C:\Program Files (x86)\WinRAR\WinRAR.exe'
