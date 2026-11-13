@@ -1,0 +1,34 @@
+title: Suspicious AdminSDHolder SDProp Exclusion Added Via dSHeuristics
+id: a4023a52-add8-4b54-9a57-b7a3e751aa76
+status: experimental
+description: |
+    Detects a directory service change (Security event 5136) that sets the forest-wide "dSHeuristics" attribute to a value whose 16th character (dwAdminSDExMask) is non-zero.
+    That character tells the Security Descriptor Propagator (SDProp) to stop re-applying the AdminSDHolder permissions to the Account Operators, Server Operators, Print Operators and/or Backup Operators groups. An attacker who holds rights on one of those groups can then grant themselves lasting permissions on it that SDProp would otherwise revert every hour, which is a stealthy domain persistence technique.
+    Requires "Audit Directory Service Changes" with a SACL on the Directory Service object (CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,...).
+references:
+    - https://www.cert.ssi.gouv.fr/uploads/guide-ad.html#dsheuristics_bad
+    - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/e5899be4-862e-496f-9a38-33950617d2c5
+    - https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/appendix-c--protected-accounts-and-groups-in-active-directory
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_sdprop_exclusion_dsheuristics.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+    - attack.t1484
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 5136
+        AttributeLDAPDisplayName: 'dSHeuristics'
+        OperationType: '%%14674' # Value Added
+        AttributeValue|re: '^.{15}[1-9a-fA-F]'
+    condition: selection
+falsepositives:
+    - Deliberate hardening that removes the operator groups from SDProp protection after their members were stripped of privileged rights (should be a documented change)
+level: high
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_dsheuristics_sdprop_exclusion_added/info.yml

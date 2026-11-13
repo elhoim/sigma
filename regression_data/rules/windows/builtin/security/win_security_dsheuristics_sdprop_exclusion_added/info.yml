@@ -1,0 +1,13 @@
+id: b1f45e40-ea68-4d74-a243-e0e35e4ba544
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: a4023a52-add8-4b54-9a57-b7a3e751aa76
+      title: Suspicious AdminSDHolder SDProp Exclusion Added Via dSHeuristics
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_dsheuristics_sdprop_exclusion_added/a4023a52-add8-4b54-9a57-b7a3e751aa76.evtx
