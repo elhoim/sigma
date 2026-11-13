@@ -1,0 +1,13 @@
+id: d816a8dc-0a9a-4feb-a118-bbb0bb7a1ee7
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: bf90127e-739a-43e2-a045-ecdd592939df
+      title: Potential Persistence Via Default HTML Editor Registry Keys
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_default_html_editor/bf90127e-739a-43e2-a045-ecdd592939df.evtx
