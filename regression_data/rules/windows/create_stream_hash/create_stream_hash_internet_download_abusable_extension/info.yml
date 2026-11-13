@@ -1,0 +1,13 @@
+id: 381939ab-0808-4158-9e7a-60e042d9824c
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 1812afaa-8e76-4527-8908-72266514765f
+      title: Potential Phishing Payload Download - Internet Zone File With Abusable Extension
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/create_stream_hash/create_stream_hash_internet_download_abusable_extension/1812afaa-8e76-4527-8908-72266514765f.evtx
