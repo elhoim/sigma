@@ -4,7 +4,7 @@ status: experimental
 description: |
     Detects the creation or modification of a value under the "Rpc\Extensions" registry key.
     Starting with Windows 7, the RPC runtime (rpcrt4.dll and RpcEpMap.dll) reads this key and loads the extension DLLs it names into the processes that use RPC.
-    The default values are only written by the operating system, so that a write could be an attempt to get a DLL loaded by a large number of processes.
+    The default values are only written by the operating system, so a write by another process could be an attempt to get a DLL loaded by a large number of processes.
 references:
     - https://www.hexacorn.com/blog/2015/09/12/beyond-good-ol-run-key-part-32/
 author: elhoim
