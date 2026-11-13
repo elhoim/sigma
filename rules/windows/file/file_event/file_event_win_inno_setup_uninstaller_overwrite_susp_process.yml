@@ -7,7 +7,7 @@ description: |
     A real installation writes these files from the temporary setup process of Inno Setup, not from the utilities listed in this rule.
 references:
     - https://www.hexacorn.com/blog/2019/02/02/beyond-good-ol-run-key-part-101/
-    - https://jrsoftware.org/ishelp/index.php?topic=uninstallrunsection
+    - https://jrsoftware.org/inno-setup/documentation/topic_runsection.htm
 author: elhoim
 date: 2026-11-12
 tags:
