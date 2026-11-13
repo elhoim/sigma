@@ -1,25 +1,31 @@
 title: Potential HTTP Tunnel Webshell File Creation - ReGeorg, Neo-reGeorg, Suo5
 id: 3dfdf05f-3159-46d1-aae4-cfb9ff53bde9
+related:
+    - id: 2ea44a60-cfda-11ea-87d0-0242ac130003
+      type: similar
 status: experimental
 description: |
-    Detects the creation, inside a web server content directory, of a file carrying one of the default names of the server-side components of the reGeorg, Neo-reGeorg and suo5 HTTP tunnelling tools ("tunnel.aspx", "tunnel.ashx", "tunnel.jsp", "tunnel.jspx", "tunnel.php", "tunnel.nosocket.php", "suo5.jsp", "suo5.jspx", "suo5.aspx", "suo5.php").
+    Detects the creation, inside a web server content directory, of a file carrying one of the default names of the server-side components of the reGeorg, Neo-reGeorg and suo5 HTTP tunnelling tools ("tunnel.aspx", "tunnel.ashx", "tunnel.jsp", "tunnel.jspx", "tunnel.php", "tunnel.nosocket.php", "tunnel.tomcat.5.jsp", "suo5.jsp", "suo5.jspx", "suo5.aspx", "suo5.php", "suo5.js").
     These web shells turn a compromised web server into a SOCKS proxy: the operator's client wraps TCP traffic in HTTP requests to the page, which relays it into the internal network. They are dropped after the exploitation of an Internet-facing application and are a common pivoting step of state-sponsored and criminal intrusions. The existing web server rule only looks at access log patterns.
 references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/neo-regeorg.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/regeorg.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/suo5.md
-    - https://www.cert.ssi.gouv.fr/cti/CERTFR-2025-CTI-009/
+    - https://github.com/sensepost/reGeorg/tree/1ca54c2a6ab22ded150d04cff8fdb796990b1ced
+    - https://github.com/L-codes/Neo-reGeorg/tree/5357264a5bdd13d50eb9d845bc6e86556b533d0b/templates
+    - https://github.com/zema1/suo5/tree/6904c18e276c2dc36250838d68135a5893c4f66b/assets
+    - https://cert.cyber.gouv.fr/uploads/CERTFR-2025-CTI-009.pdf
 author: elhoim
 date: 2026-11-10
 tags:
-    - attack.persistence
     - attack.command-and-control
+    - attack.persistence
+    - attack.t1090
     - attack.t1505.003
     - attack.t1572
-    - attack.t1090
 logsource:
-    product: windows
     category: file_event
+    product: windows
 detection:
     selection_name:
         TargetFilename|endswith:
@@ -29,10 +35,12 @@ detection:
             - '\tunnel.jspx'
             - '\tunnel.php'
             - '\tunnel.nosocket.php'
+            - '\tunnel.tomcat.5.jsp'
             - '\suo5.jsp'
             - '\suo5.jspx'
             - '\suo5.aspx'
             - '\suo5.php'
+            - '\suo5.js'
     selection_webroot:
         TargetFilename|contains:
             - '\inetpub\'
