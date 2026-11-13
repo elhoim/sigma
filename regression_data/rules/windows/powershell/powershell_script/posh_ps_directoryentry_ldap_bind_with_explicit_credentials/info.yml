@@ -1,0 +1,13 @@
+id: a52fe657-b7fd-4709-8b98-940e535fd659
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: ab7bf17a-4105-4361-9a0d-11d463cf8755
+      title: Potential Credential Validation Via DirectoryEntry LDAP Bind With Explicit Credentials
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_directoryentry_ldap_bind_with_explicit_credentials/ab7bf17a-4105-4361-9a0d-11d463cf8755.evtx
