@@ -1,0 +1,40 @@
+title: MATLAB Batch Execution Of Script From Uncommon Location
+id: d4018f9f-424c-4b9e-8e09-21afaca76c75
+status: experimental
+description: |
+    Detects the execution of "MATLAB.exe" in batch mode ("-r" or "-batch" statement) where the statement references a script in a temporary, public or download directory.
+    MATLAB runs the given statement without user interaction. While it executes a script, an unknown function name is resolved against MEX files ("*.mexw64", "*.mex32") of the current folder, which are native DLLs that MATLAB loads and calls through their "mexFunction" export.
+    A signed MATLAB binary can thus be used to load an attacker's library, or a script of a user can be modified to do so later. Batch execution is common in engineering automation, this hunting rule only looks at uncommon script locations.
+references:
+    - https://www.hexacorn.com/blog/2023/05/12/matlab-persistent-lolbin-2-years-too-late-but-always/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.stealth
+    - attack.t1218
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\MATLAB.exe'
+        - OriginalFileName: 'MATLAB.exe'
+    selection_batch:
+        CommandLine|contains:
+            - ' -r '
+            - ' -batch '
+    selection_location:
+        CommandLine|contains:
+            - ':\PerfLogs\'
+            - ':\Temp\'
+            - ':\Users\Public\'
+            - ':\Windows\Temp\'
+            - '\AppData\Local\Temp\'
+            - '\Downloads\'
+    condition: all of selection_*
+falsepositives:
+    - Test and build automation that generates MATLAB scripts in a temporary directory
+    - Users who run scripts directly from their download folder
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_matlab_batch_script_uncommon_location/info.yml
