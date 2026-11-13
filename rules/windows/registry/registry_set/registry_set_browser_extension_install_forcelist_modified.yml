@@ -1,0 +1,42 @@
+title: Potential Browser Extension Force-Install Via Chromium Policy Registry Key
+id: a2dc4dd6-8b19-4fb8-831d-8fdb8fade781
+related:
+    - id: 27ba3207-dd30-4812-abbf-5d20c57d474e
+      type: similar
+status: experimental
+description: |
+    Detects a value being written under the "ExtensionInstallForcelist" policy key of Google Chrome, Microsoft Edge, Brave or Chromium by a process other than the Intune, Configuration Manager or OMA-DM agents. Writes made by the Group Policy client (svchost.exe) are not excluded, because the event carries no service name.
+    The force-list policy makes the browser silently install and pin an extension (by extension ID and update URL) that the user cannot remove. Malware and adware set it to install a credential or cookie stealing extension without the Web Store or developer mode; legitimate deployments go through Group Policy or MDM, not through reg.exe, PowerShell or an installer.
+references:
+    - https://chromeenterprise.google/policies/#ExtensionInstallForcelist
+    - https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/extensioninstallforcelist
+    - https://www.malwarebytes.com/blog/news/2022/06/forced-chrome-extensions-keep-reappearing
+    - https://redcanary.com/threat-detection-report/trends/browser-threats/
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.credential-access
+    - attack.persistence
+    - attack.t1176.001
+    - attack.t1539
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Policies\Google\Chrome\ExtensionInstallForcelist\'
+            - '\Policies\Microsoft\Edge\ExtensionInstallForcelist\'
+            - '\Policies\BraveSoftware\Brave\ExtensionInstallForcelist\'
+            - '\Policies\Chromium\ExtensionInstallForcelist\'
+    filter_optional_mdm_agents:
+        Image:
+            - 'C:\Program Files (x86)\Microsoft Intune Management Extension\Microsoft.Management.Services.IntuneWindowsAgent.exe'
+            - 'C:\Windows\CCM\CcmExec.exe'
+            - 'C:\Windows\System32\omadmclient.exe'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Group Policy processing (svchost.exe hosting the Group Policy client) applying a legitimate extension force-list policy; the registry event carries no service name, so these writes are not filtered. Review the extension IDs against the approved list
+    - Browser management through third-party RMM or endpoint management agents that write the policy key directly; add the agent image to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_browser_extension_install_forcelist_modified/info.yml
