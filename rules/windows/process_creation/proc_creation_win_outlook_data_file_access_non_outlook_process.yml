@@ -30,5 +30,6 @@ detection:
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Backup, archiving and migration tools (robocopy, 7-Zip, mailbox migration utilities) handling PST/OST files; filter the tool image
+    - The Outlook Inbox Repair Tool (SCANPST.EXE) in the Microsoft Office folder started with a data file path
 level: low
 regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_outlook_data_file_access_non_outlook_process/info.yml
