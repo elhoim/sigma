@@ -11,7 +11,9 @@ tags:
     - attack.collection
     - attack.privilege-escalation
     - attack.credential-access
+    - attack.stealth
     - attack.t1557.001
+    - attack.t1134.001
 logsource:
     product: windows
     service: security
