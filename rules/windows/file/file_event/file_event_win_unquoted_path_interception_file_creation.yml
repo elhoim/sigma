@@ -1,0 +1,37 @@
+title: Potential Path Interception Via Unquoted Program Files Path - File Creation
+id: 2413ad16-c7c2-4b3f-aa62-597fffc32e14
+status: experimental
+description: |
+    Detects the creation of an executable or a DLL whose name is a truncated form of the Program Files path, such as "C:\Program.dll", "C:\Program Files.exe" or a single word EXE or DLL directly below the Program Files directory.
+    When a command line holds an unquoted path that contains spaces, Windows tries each space delimited prefix as a program name, and rundll32.exe does the same for the DLL path, so that a file planted with such a name is executed instead of the intended one.
+    The creation of "C:\program.exe" is covered by the rule "Creation Exe for Service with Unquoted Path".
+references:
+    - https://www.hexacorn.com/blog/2016/03/26/beyond-good-ol-run-key-part-37/
+    - https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.009
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_root:
+        TargetFilename|endswith:
+            - ':\Program Files (x86).dll'
+            - ':\Program Files (x86).exe'
+            - ':\Program Files.dll'
+            - ':\Program Files.exe'
+            - ':\Program.com'
+            - ':\Program.dll'
+    selection_program_files:
+        TargetFilename|re|i: '^[a-z]:\\Program Files( \(x86\))?\\[^\\ ]+\.(exe|dll)$'
+    condition: 1 of selection_*
+falsepositives:
+    - Badly packaged software that drops an executable or a DLL directly in the root of the Program Files directory
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_unquoted_path_interception_file_creation/info.yml
