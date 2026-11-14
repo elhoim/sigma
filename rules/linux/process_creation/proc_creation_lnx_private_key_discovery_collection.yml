@@ -62,7 +62,7 @@ detection:
     filter_optional_public_ca_store:
         # "find" whose only search roots are the system CA stores, which hold public certificates only
         Image|endswith: '/find'
-        CommandLine|re: '^\S*find\s+((/etc/pki/ca-trust|/etc/ssl/certs|/usr/share/ca-certificates)(/[A-Za-z0-9_/-]*)?\s+)+-'
+        CommandLine|re: '^\S*find\s+((/etc/pki/ca-trust|/etc/ssl/certs|/usr/share/ca-certificates)(/[A-Za-z0-9_/-]*)?\s+)+-[^/]*$'
     filter_optional_ssh_identity_option:
         # Using a private key as identity file ("scp -i", "rsync -e 'ssh -i'") authenticates with the key but does not copy it
         - Image|endswith: '/scp'
