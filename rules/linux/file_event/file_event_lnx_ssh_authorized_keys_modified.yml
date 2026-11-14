@@ -21,10 +21,10 @@ detection:
         TargetFilename|endswith:
             - '/authorized_keys'
             - '/authorized_keys2'
-    filter_optional_cloud_agents:
-        Image|re: '^/usr/s?bin/(cloud-init|google_guest_agent|waagent)$'
+    filter_optional_google_guest_agent:
+        Image|endswith: '/google_guest_agent'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
-    - Legitimate key provisioning by administrators, configuration management tools or cloud guest agents
+    - Legitimate key provisioning by administrators, configuration management tools or cloud guest agents (cloud-init and waagent are Python programs, so their writes are attributed to the Python interpreter and are not filtered)
     - Users adding their own keys with "ssh-copy-id"
 level: medium

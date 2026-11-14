@@ -25,7 +25,11 @@ detection:
               - '/etc/rc.d/'
     filter_main_package_managers:
         Image|re: '^/(usr/)?s?bin/(apk|apt|apt-get|dnf|dpkg|pacman|rpm|yum|zypper)$'
-    condition: selection and not 1 of filter_main_*
+    filter_optional_ansible_atomic_move:
+        # Ansible writes a hidden ".ansible_tmp*" file next to the target and renames it over the original
+        Image|contains: '/python'
+        TargetFilename|contains: '/.ansible_tmp'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Software installed outside of a package manager (e.g. vendor installers or "make install") registering an init script
     - Administrators or configuration management tools editing "/etc/rc.local"

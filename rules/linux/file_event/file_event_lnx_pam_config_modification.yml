@@ -32,7 +32,11 @@ detection:
         Image|re: '^/usr/bin/perl[0-9.]*$'
         TargetFilename|startswith: '/etc/pam.d/common-'
         TargetFilename|endswith: '.pam-new'
-    condition: 1 of selection_* and not 1 of filter_main_*
+    filter_optional_ansible_atomic_move:
+        # Ansible writes a hidden ".ansible_tmp*" file next to the target and renames it over the original
+        Image|contains: '/python'
+        TargetFilename|contains: '/.ansible_tmp'
+    condition: 1 of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Configuration management tools (Ansible, Puppet, Chef, Salt) or administrators hardening the PAM stack
     - Third-party authentication agents (e.g. SSSD, Duo, Okta ASA) installing their own PAM module outside a package manager

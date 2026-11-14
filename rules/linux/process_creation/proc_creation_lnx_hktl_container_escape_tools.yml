@@ -2,7 +2,7 @@ title: Suspicious Container Escape Enumeration Tool Or Container Runtime Socket 
 id: bdac3544-7fd7-49db-9ed6-d732690c26f2
 status: experimental
 description: |
-    Detects the execution of well-known container breakout and enumeration tools (DEEPCE, CDK, amicontained, Break Out The Box), as well as command-line HTTP clients talking directly to a container runtime socket (Docker, containerd or CRI-O).
+    Detects the execution of well-known container breakout and enumeration tools (DEEPCE, CDK, amicontained, Break Out The Box), as well as command-line HTTP clients sending data or exec/create requests directly to a container runtime socket (Docker, containerd or CRI-O). Read-only queries such as listing containers or reading the version are not matched.
     Adversaries who have gained access to a container use these tools to enumerate capabilities, mounts and runtime sockets, and abuse a mounted runtime socket to start a privileged container and escape to the host.
 references:
     - https://github.com/stealthcopter/deepce
@@ -46,8 +46,18 @@ detection:
             - 'containerd.sock'
             - 'crio.sock'
             - 'docker.sock'
+    selection_socket_action:
+        # Creating or running containers through the socket is what the escape needs; read-only queries (version, ping, container list) are monitoring
+        CommandLine|contains:
+            - ' --data'
+            - ' --request POST'
+            - ' -d '
+            - ' -X POST'
+            - ' -XPOST'
+            - '/containers/create'
+            - '/exec'
     condition: 1 of selection_tools_* or selection_cdk_cli or all of selection_socket_*
 falsepositives:
     - Authorized container security assessments
-    - Monitoring or orchestration scripts that query the Docker Engine API through its UNIX socket with curl
+    - Deployment or orchestration scripts that create or exec containers through the Docker Engine API on its UNIX socket with curl
 level: high
