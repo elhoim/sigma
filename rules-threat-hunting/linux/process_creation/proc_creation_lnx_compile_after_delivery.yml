@@ -36,7 +36,13 @@ detection:
             - ' /dev/shm/'
             - ' /tmp/'
             - ' /var/tmp/'
-    condition: selection_aout or all of selection_compiler_*
+    filter_optional_build_tools:
+        # Work directories of language toolchains and package builds that invoke the C compiler (cgo, pip C extensions, rustc linking)
+        CommandLine|contains:
+            - ' /tmp/go-build'
+            - ' /tmp/pip-'
+            - ' /tmp/rustc'
+    condition: selection_aout or (all of selection_compiler_* and not 1 of filter_optional_*)
 falsepositives:
     - Developers compiling and testing code in temporary directories
     - Build systems and package builds using temporary directories (e.g. pip building C extensions)
