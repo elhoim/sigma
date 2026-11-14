@@ -1,0 +1,13 @@
+id: e5ddd2b1-ed06-4f49-8b7c-cd6ba3092c0b
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 4ec7fab8-7c9c-45a6-8d8a-7b9fdddd30b9
+      title: HackTool - ReGeorg, Neo-reGeorg Or Suo5 Client Execution - Windows
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_regeorg_neoreg_suo5_client/4ec7fab8-7c9c-45a6-8d8a-7b9fdddd30b9.evtx
