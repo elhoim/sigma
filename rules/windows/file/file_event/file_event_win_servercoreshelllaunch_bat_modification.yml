@@ -1,0 +1,33 @@
+title: Potential Persistence Via ServerCoreShellLaunch.BAT Modification
+id: 2e890cb1-971e-479a-9469-abc22f99e11f
+status: experimental
+description: |
+    Detects the creation or replacement of "servercoreshelllaunch.bat" in the System32 directory by a process other than the Windows servicing stack.
+    On Windows Server 2022 and 2025 this batch file is the default shell command of the Server Core Shell Launcher ("servercoreshell.exe") and is executed when the shell of a session is initialised.
+    The file is owned by TrustedInstaller and only changes through servicing. Commands added to it are run at each logon on the server.
+references:
+    - https://www.hexacorn.com/blog/2025/08/17/beyond-good-ol-run-key-part-150/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: ':\Windows\System32\servercoreshelllaunch.bat'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    filter_main_servicing_poqexec:
+        Image: 'C:\Windows\System32\poqexec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_servercoreshelllaunch_bat_modification/info.yml
