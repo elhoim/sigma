@@ -1,0 +1,51 @@
+title: Uncommon Child Process Of Change.EXE, Query.EXE Or Reset.EXE
+id: 4dbb7dc1-0a26-4c69-84fc-78332a2f9b2e
+status: experimental
+description: |
+    Detects "change.exe", "query.exe" or "reset.exe" starting a program other than the Remote Desktop Services utilities they are designed to launch.
+    These tools read the executable for each subcommand from the "Terminal Server\Utilities" registry keys. By default they only start "chglogon.exe", "chgport.exe", "chgusr.exe", "qappsrv.exe", "qprocess.exe", "query.exe" itself for nested calls, "quser.exe", "qwinsta.exe" and "rwinsta.exe" from the system directory.
+    Any other child process indicates that the registry command table was modified to use these signed binaries for proxy execution or persistence.
+references:
+    - https://www.hexacorn.com/blog/2020/07/30/beyond-good-ol-run-key-part-125/
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/change
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.stealth
+    - attack.t1218
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage:
+            - 'C:\Windows\System32\change.exe'
+            - 'C:\Windows\System32\query.exe'
+            - 'C:\Windows\System32\reset.exe'
+            - 'C:\Windows\SysWOW64\change.exe'
+            - 'C:\Windows\SysWOW64\query.exe'
+            - 'C:\Windows\SysWOW64\reset.exe'
+    filter_main_default_utilities:
+        Image:
+            - 'C:\Windows\System32\chglogon.exe'
+            - 'C:\Windows\System32\chgport.exe'
+            - 'C:\Windows\System32\chgusr.exe'
+            - 'C:\Windows\System32\conhost.exe'
+            - 'C:\Windows\System32\qappsrv.exe'
+            - 'C:\Windows\System32\qprocess.exe'
+            - 'C:\Windows\System32\quser.exe'
+            - 'C:\Windows\System32\qwinsta.exe'
+            - 'C:\Windows\System32\rwinsta.exe'
+            - 'C:\Windows\SysWOW64\chglogon.exe'
+            - 'C:\Windows\SysWOW64\chgport.exe'
+            - 'C:\Windows\SysWOW64\chgusr.exe'
+            - 'C:\Windows\SysWOW64\qappsrv.exe'
+            - 'C:\Windows\SysWOW64\qprocess.exe'
+            - 'C:\Windows\SysWOW64\quser.exe'
+            - 'C:\Windows\SysWOW64\qwinsta.exe'
+            - 'C:\Windows\SysWOW64\rwinsta.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_change_query_reset_uncommon_child_process/info.yml

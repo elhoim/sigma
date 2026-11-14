@@ -1,0 +1,37 @@
+title: Potential Persistence Via Terminal Server Utilities Registry Command Table
+id: 46c49290-e9f9-41b8-8b9c-6f1b9f61ed40
+status: experimental
+description: |
+    Detects a value written under the "Terminal Server\Utilities" registry keys "change", "query" or "reset" by a process other than the Windows servicing stack.
+    The system tools "change.exe", "query.exe" and "reset.exe" do not implement their subcommands themselves. They read these keys to map a subcommand such as "logon", "user" or "session" to the executable they start.
+    Adding an entry or changing an existing one makes these signed tools launch an arbitrary program, for example when an administrator or a logon script runs "query user" or "change logon". The keys are owned by TrustedInstaller and do not change during normal operation.
+references:
+    - https://www.hexacorn.com/blog/2020/07/30/beyond-good-ol-run-key-part-125/
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/change
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1546
+    - attack.t1218
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Control\Terminal Server\Utilities\change\'
+            - '\Control\Terminal Server\Utilities\query\'
+            - '\Control\Terminal Server\Utilities\reset\'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_terminal_server_utilities_command_table/info.yml
