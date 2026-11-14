@@ -1,0 +1,43 @@
+title: Potential HP Or Symantec DLL Sideloading - Hpqhvsei And RasTls
+id: c30ede32-670a-4356-aa04-3a760a241aec
+related:
+    - id: f9df325d-d7bc-4a32-8a1a-2cc61dcefc63 # Third Party Software DLL Sideloading
+      type: similar
+status: experimental
+description: |
+    Detects the loading of "hpqhvsei.dll" or "RasTls.dll" from a directory other than the installation folders of the Hewlett Packard and Symantec products they belong to.
+    The signed executables "hpqhvind.exe" (HP) and "RasTls.exe" (Symantec) load these libraries from their own directory without verification. ShadowPad and PlugX operators copy the executable together with a malicious library, and usually an encrypted payload file, into a writable folder and start it for persistence.
+    Other pairs of the same loader family ("AppLaunch.exe" with "mscoree.dll", "consent.exe" with "secur32.dll", "BDReinit.exe" with "log.dll", "Oleview.exe" with "iviewers.dll", "TosBtKbd.exe" with "tosbtkbd.dll") are covered by existing sideloading rules.
+references:
+    - https://www.hexacorn.com/blog/2023/02/25/beyond-good-ol-run-key-part-141/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection_hp:
+        ImageLoaded|endswith: '\hpqhvsei.dll'
+    filter_main_hp:
+        ImageLoaded|startswith:
+            - 'C:\Program Files (x86)\Hewlett-Packard\'
+            - 'C:\Program Files (x86)\HP\'
+            - 'C:\Program Files\Hewlett-Packard\'
+            - 'C:\Program Files\HP\'
+    selection_symantec:
+        ImageLoaded|endswith: '\RasTls.dll'
+    filter_main_symantec:
+        ImageLoaded|startswith:
+            - 'C:\Program Files (x86)\Symantec\'
+            - 'C:\Program Files\Symantec\'
+    condition: (selection_hp and not filter_main_hp) or (selection_symantec and not filter_main_symantec)
+falsepositives:
+    - HP imaging software or Symantec network access components installed in a non default directory
+level: medium
+regression_tests_path: regression_data/rules/windows/image_load/image_load_side_load_hp_symantec_shadowpad_pairs/info.yml

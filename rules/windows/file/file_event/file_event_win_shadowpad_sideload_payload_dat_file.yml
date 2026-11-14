@@ -1,0 +1,32 @@
+title: Suspicious DLL Sideloading Payload File Creation - ShadowPad Loader Pairs
+id: 27b5dd40-d9ef-488d-8b36-70ff88a2c90f
+status: experimental
+description: |
+    Detects the creation of a file named after the encrypted payload that accompanies known ShadowPad sideloading sets: "secur32.dll.dat" (host "consent.exe"), "log.dll.dat" (host "BDReinit.exe" of Bitdefender), "iviewers.dll.dat" (host "Oleview.exe") and "RasTls.dat" (host "RasTls.exe" of Symantec).
+    In these sets a legitimate signed executable loads a malicious DLL from its own directory, which then decrypts and runs the payload stored in the ".dat" file next to it. The three files are dropped together in a writable folder.
+    The double extension ".dll.dat" names are not used by the legitimate products.
+references:
+    - https://www.hexacorn.com/blog/2023/02/25/beyond-good-ol-run-key-part-141/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.execution
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\iviewers.dll.dat'
+            - '\log.dll.dat'
+            - '\RasTls.dat'
+            - '\secur32.dll.dat'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_shadowpad_sideload_payload_dat_file/info.yml
