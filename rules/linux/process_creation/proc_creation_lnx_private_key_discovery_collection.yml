@@ -31,13 +31,11 @@ detection:
             - '/tar'
             - '/zip'
     selection_tools_cli:
-        CommandLine|contains:
-            - '.gnupg'
-            - '/etc/wireguard'
-            - 'id_dsa'
-            - 'id_ecdsa'
-            - 'id_ed25519'
-            - 'id_rsa'
+        - CommandLine|contains:
+              - '.gnupg'
+              - '/etc/wireguard'
+        # Private key names that are not followed by ".pub" (public keys are not secret)
+        - CommandLine|re: 'id_(dsa|ecdsa|ed25519|rsa)(_sk)?([^._]|$)'
     selection_find_img:
         Image|endswith:
             - '/find'
@@ -53,15 +51,32 @@ detection:
     selection_wg_img:
         Image|endswith: '/wg'
     selection_wg_cli:
+        - CommandLine|contains: ' showconf'
+        - CommandLine|contains|all:
+              - ' show '
+              - ' private-key'
+    filter_optional_public_ca_store:
+        # System CA bundles hold public certificates only
+        Image|endswith:
+            - '/find'
+            - '/locate'
+            - '/plocate'
         CommandLine|contains:
-            - ' private-key'
-            - ' showconf'
-    filter_main_public_key:
-        CommandLine|endswith: '.pub'
-    condition: (all of selection_tools_* or all of selection_find_* or all of selection_wg_*) and not 1 of filter_main_*
+            - ' /etc/pki/ca-trust'
+            - ' /etc/ssl/certs'
+            - ' /usr/share/ca-certificates'
+    filter_optional_ssh_identity_option:
+        # Using a private key as identity file ("scp -i", "rsync -e 'ssh -i'") authenticates with the key but does not copy it
+        Image|endswith:
+            - '/rsync'
+            - '/scp'
+        CommandLine|re: '\s-i\s+\S*id_(dsa|ecdsa|ed25519|rsa)(_sk)?(\s|$)'
+    condition: (all of selection_tools_* or (all of selection_find_* and not filter_optional_public_ca_store) or all of selection_wg_*) and not filter_optional_ssh_identity_option
 falsepositives:
     - Backup jobs or configuration management copying user home directories or key material
     - Administrators locating or saving WireGuard configurations (e.g. "wg-quick save")
+    - Certificate inventory or expiry checks that search for ".pem" or ".key" files
+    - Administrators reading "/etc/wireguard" files or backing up the "~/.gnupg" directory
 level: medium
 simulation:
     - type: atomic-red-team
