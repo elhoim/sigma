@@ -47,15 +47,14 @@ detection:
             - 'crio.sock'
             - 'docker.sock'
     selection_socket_action:
-        # Creating or running containers through the socket is what the escape needs; read-only queries (version, ping, container list) are monitoring
-        CommandLine|contains:
-            - ' --data'
-            - ' --request POST'
-            - ' -d '
-            - ' -X POST'
-            - ' -XPOST'
-            - '/containers/create'
-            - '/exec'
+        # Creating, running or building containers through the socket is what the escape needs; read-only queries (version, ping, container list) are monitoring
+        - CommandLine|contains:
+              - '/build'
+              - '/containers/create'
+              - '/exec'
+              - '/images/create'
+              - '/start'
+        - CommandLine|re: '\s(-[a-zA-Z]*[dFTX]|--(data|form|json|request|upload-file))'
     condition: 1 of selection_tools_* or selection_cdk_cli or all of selection_socket_*
 falsepositives:
     - Authorized container security assessments

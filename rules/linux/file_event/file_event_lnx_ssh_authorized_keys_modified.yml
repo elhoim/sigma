@@ -22,7 +22,9 @@ detection:
             - '/authorized_keys'
             - '/authorized_keys2'
     filter_optional_google_guest_agent:
-        Image|endswith: '/google_guest_agent'
+        Image:
+            - '/usr/bin/google_guest_agent'
+            - '/usr/sbin/google_guest_agent'
     condition: selection and not 1 of filter_optional_*
 falsepositives:
     - Legitimate key provisioning by administrators, configuration management tools or cloud guest agents (cloud-init and waagent are Python programs, so their writes are attributed to the Python interpreter and are not filtered)
