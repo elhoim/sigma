@@ -1,0 +1,31 @@
+title: Suspicious Process Execution From NTFS Alternate Data Stream
+id: a0a442f1-08f4-4de7-9190-24c06a3e8f56
+related:
+    - id: 7f43c430-5001-4f8b-aaa9-c3b88f18fa5c
+      type: similar
+    - id: 9248c7e1-2bf3-4661-a22c-600a8040b446
+      type: similar
+status: experimental
+description: |
+    Detects a process whose image path, or whose complete command line, is an NTFS alternate data stream path ("C:\folder\file.ext:streamname").
+    Executables hidden in a stream of another file are invisible to Explorer and to "dir" without the /R switch; running them directly (through the Win32 API, WMI or a scheduled task) is uncommon for legitimate software. The related rules cover specific tools that read or write streams; this rule covers the execution itself.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/fileio/file-streams
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_unusual_dir_ads.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.stealth
+    - attack.t1564.004
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - Image|re: '^[A-Za-z]:\\[^:]+:[^\\:]+$'
+        - CommandLine|re: '^(?:[A-Za-z]:\\[^:"\s]+:[^\\:"\s]+|"[A-Za-z]:\\[^:"]+:[^\\:"]+")$'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_execution_from_alternate_data_stream/info.yml
