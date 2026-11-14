@@ -37,16 +37,15 @@ detection:
             - ' /tmp/'
             - ' /var/tmp/'
     filter_optional_build_tools:
-        # Work directories of language toolchains and package builds that invoke the C compiler (cgo, pip C extensions, rustc linking)
-        CommandLine|contains:
-            - ' /tmp/go-build'
-            - ' /tmp/pip-'
-            - ' /tmp/rustc'
+        # Work directories of language toolchains and package builds that invoke the C compiler (cgo, pip C extensions, rustc linking), required together with the toolchain as parent process
+        ParentImage|re: '/(cargo|go|python[0-9.]*|rustc)$'
+        CommandLine|re: ' /tmp/(go-build[0-9]+/b[0-9]+/|pip-[a-z-]+-[A-Za-z0-9_]+/|rustc[A-Za-z0-9]+/)'
     condition: selection_aout or (all of selection_compiler_* and not 1 of filter_optional_*)
 falsepositives:
     - Developers compiling and testing code in temporary directories
     - Build systems and package builds using temporary directories (e.g. pip building C extensions)
     - Go builds using cgo, which invoke gcc on files in the "/tmp/go-build*" work directory
+    - Builds started by another parent (for example make or a shell script) in the "/tmp/go-build*", "/tmp/pip-*" or "/tmp/rustc*" directories are not filtered
 level: low
 simulation:
     - type: atomic-red-team
