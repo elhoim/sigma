@@ -1,0 +1,36 @@
+title: Potential Persistence Via Linux RC Startup Script
+id: 3fd20ebd-e243-43f6-8eb1-9724033179b4
+status: experimental
+description: |
+    Detects the creation or modification of SysV/BSD style RC startup scripts ("/etc/rc.local", "/etc/rc.common", "/etc/rc.d/" and "/etc/init.d/") by a process other than a package manager.
+    Adversaries may add commands to these scripts to establish persistence, as they are executed with root privileges during system boot.
+references:
+    - https://man7.org/linux/man-pages/man8/systemd-rc-local-generator.8.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037.004
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        - TargetFilename:
+              - '/etc/rc.common'
+              - '/etc/rc.local'
+        - TargetFilename|startswith:
+              - '/etc/init.d/'
+              - '/etc/rc.d/'
+    filter_main_package_managers:
+        Image|re: '^/(usr/)?s?bin/(apk|apt|apt-get|dnf|dpkg|pacman|rpm|yum|zypper)$'
+    filter_optional_ansible_atomic_move:
+        # Ansible writes a hidden ".ansible_tmp*" file next to the target and renames it over the original
+        Image|re: '^/usr/bin/python[0-9.]*$'
+        TargetFilename|re: '^/etc/(init\.d|rc\.d)/\.ansible_tmp[^/]+$'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Software installed outside of a package manager (e.g. vendor installers or "make install") registering an init script
+    - Administrators or configuration management tools editing "/etc/rc.local"
+level: medium

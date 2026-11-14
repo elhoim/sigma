@@ -1,0 +1,54 @@
+title: Suspicious Child Process Of Redis Server
+id: 593b18f7-77e5-4087-97d0-10a3742e9dab
+status: experimental
+description: |
+    Detects the Redis server process spawning a shell, scripting interpreter or download utility.
+    Redis does not spawn such processes during normal operation; this behaviour is typical of exploitation of an exposed Redis instance, for example the Debian/Ubuntu Lua sandbox escape (CVE-2022-0543) that uses "package.loadlib" to call "io.popen", or a malicious module loaded through rogue replication.
+references:
+    - https://www.ubercomp.com/posts/2022-01-20_redis_on_debian_rce
+    - https://nvd.nist.gov/vuln/detail/CVE-2022-0543
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1059.004
+    - attack.t1190
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_parent:
+        ParentImage|endswith:
+            - '/redis-check-rdb' # Debian/Ubuntu: /usr/bin/redis-server is a symlink to redis-check-rdb, which is the image reported for the server process
+            - '/redis-server'
+    selection_child:
+        - Image|endswith:
+              - '/ash'
+              - '/bash'
+              - '/csh'
+              - '/curl'
+              - '/dash'
+              - '/ksh'
+              - '/nc'
+              - '/nc.openbsd'
+              - '/nc.traditional'
+              - '/ncat'
+              - '/netcat'
+              - '/perl'
+              - '/python'
+              - '/python2'
+              - '/python3'
+              - '/ruby'
+              - '/sh'
+              - '/socat'
+              - '/tcsh'
+              - '/telnet'
+              - '/wget'
+              - '/zsh'
+        # The python3 symlink resolves to the versioned interpreter, e.g. /usr/bin/python3.14
+        - Image|re: '/python[23]\.[0-9]+$'
+    condition: all of selection_*
+falsepositives:
+    - Redis Sentinel running its configured "notification-script" or "client-reconfig-script" (usually a shell script) on a failover or warning-level event
+level: high
