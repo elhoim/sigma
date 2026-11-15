@@ -14,8 +14,8 @@ tags:
     - attack.persistence
     - attack.privilege-escalation
     - attack.stealth
-    - attack.t1546
     - attack.t1218
+    - attack.t1546
 logsource:
     category: registry_set
     product: windows
