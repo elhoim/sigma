@@ -2,7 +2,8 @@ title: Suspicious Container Escape Enumeration Tool Or Container Runtime Socket 
 id: bdac3544-7fd7-49db-9ed6-d732690c26f2
 status: experimental
 description: |
-    Detects the execution of well-known container breakout and enumeration tools (DEEPCE, CDK, amicontained, Break Out The Box), as well as command-line HTTP clients sending data or exec/create requests directly to a container runtime socket (Docker, containerd or CRI-O). Read-only queries such as listing containers or reading the version are not matched.
+    Detects the execution of well-known container breakout and enumeration tools (DEEPCE, CDK, amicontained, Break Out The Box), as well as command-line HTTP clients sending data or exec/create requests directly to a container runtime socket (Docker, containerd or CRI-O).
+    Plain queries without an explicit request method or data flag, such as listing containers or reading the version, are not matched.
     Adversaries who have gained access to a container use these tools to enumerate capabilities, mounts and runtime sockets, and abuse a mounted runtime socket to start a privileged container and escape to the host.
 references:
     - https://github.com/stealthcopter/deepce
