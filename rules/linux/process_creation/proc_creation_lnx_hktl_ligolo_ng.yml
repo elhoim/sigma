@@ -8,6 +8,7 @@ description: |
     The Go flag parser accepts both the single and the double dash forms, and the "-flag=value" syntax, so all of them are covered.
 references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/ligolo-ng.md
+    - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/agent/main.go
     - https://github.com/nicocha30/ligolo-ng/blob/e543732f4be6dc899096ae322ae620bf010bfbfc/cmd/proxy/main.go
     - https://docs.ligolo.ng/
 author: elhoim
