@@ -22,8 +22,8 @@ logsource:
     product: windows
 detection:
     selection:
-        - Image|re: '^[A-Za-z]:\\[^:]+:[^\\:]+$'
-        - CommandLine|re: '^(?:[A-Za-z]:\\[^:"\s]+:[^\\:"\s]+|"[A-Za-z]:\\[^:"]+:[^\\:"]+")$'
+        - Image|re: '^[A-Za-z]:\\[^:]+:[^\\:]+(?::\$DATA)?$'
+        - CommandLine|re: '^(?:[A-Za-z]:\\[^:"\s]+:[^\\:"\s]+(?::\$DATA)?|"[A-Za-z]:\\[^:"]+:[^\\:"]+(?::\$DATA)?")$'
     condition: selection
 falsepositives:
     - Unlikely
