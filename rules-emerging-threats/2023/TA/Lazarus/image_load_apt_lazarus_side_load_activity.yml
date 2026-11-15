@@ -7,10 +7,8 @@ references:
     - https://www.bleepingcomputer.com/news/security/lazarus-hackers-breach-aerospace-firm-with-new-lightlesscan-malware/
 author: Thurein Oo, Nasreddine Bencherchali (Nextron Systems)
 date: 2023-10-18
-modified: 2026-11-02
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.001
