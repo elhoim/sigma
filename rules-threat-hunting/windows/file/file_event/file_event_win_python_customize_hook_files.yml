@@ -9,7 +9,7 @@ description: |
     When present on the module search path (e.g. in the per-user or global "site-packages" folder), these modules are imported automatically by the "site" module at every Python interpreter startup.
     Adversaries abuse this behaviour to execute arbitrary code each time Python is started, as a persistence mechanism.
     Hunting hypothesis: these files are rarely created outside of Python installation, IDE or virtual environment setup, so a creation by an unexpected process or in a user-writable "site-packages" folder is worth investigating.
-    Review the creating process (Image) and the file content, and check for the Python interpreter loading it at the next startup (Sysmon Event ID 7 or a process creation of "python.exe").
+    Review the creating process (Image) and the file content, and check for a subsequent process creation of "python.exe", which imports the file at startup.
 references:
     - https://docs.python.org/3/library/site.html
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1546.018/T1546.018.md
