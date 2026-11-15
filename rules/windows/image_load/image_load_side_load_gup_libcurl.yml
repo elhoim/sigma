@@ -6,9 +6,8 @@ references:
     - https://labs.withsecure.com/publications/fin7-target-veeam-servers
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2023-05-05
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

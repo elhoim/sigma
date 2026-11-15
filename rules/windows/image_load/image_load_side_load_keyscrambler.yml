@@ -15,9 +15,8 @@ references:
     - https://twitter.com/DTCERT/status/1712785426895839339
 author: Swachchhanda Shrawan Poudel
 date: 2024-04-15
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

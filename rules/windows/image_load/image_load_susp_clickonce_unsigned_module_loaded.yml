@@ -6,9 +6,8 @@ references:
     - https://posts.specterops.io/less-smartscreen-more-caffeine-ab-using-clickonce-for-trusted-code-execution-1446ea8051c5
 author: '@SerkinValery'
 date: 2023-06-08
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.001

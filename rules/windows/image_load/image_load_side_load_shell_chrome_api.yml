@@ -12,9 +12,8 @@ references:
     - https://strontic.github.io/xcyclopedia/library/DeviceEnroller.exe-24BEF0D6B0ECED36BB41831759FDE18D.html
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022-12-01
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

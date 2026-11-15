@@ -6,9 +6,8 @@ references:
     - https://www.hexacorn.com/blog/2023/06/07/this-lolbin-doesnt-exist/
 author: X__Junior (Nextron Systems)
 date: 2023-06-20
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001
