@@ -24,11 +24,16 @@ detection:
         Initiated: 'true'
         DestinationPort: 11601
     filter_main_browsers:
-        Image|endswith:
-            - '/brave'
-            - '/chrome'
-            - '/chromium'
-            - '/firefox'
+        Image:
+            - '/opt/brave.com/brave/brave'
+            - '/opt/google/chrome/chrome'
+            - '/usr/lib/chromium/chromium'
+            - '/usr/lib/firefox-esr/firefox-esr'
+            - '/usr/lib/firefox/firefox'
+            - '/usr/lib64/firefox/firefox'
+    filter_main_browsers_snap:
+        Image|startswith: '/snap/firefox/'
+        Image|endswith: '/usr/lib/firefox/firefox'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Legitimate software or internal services listening on TCP port 11601
