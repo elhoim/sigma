@@ -5,6 +5,7 @@ description: |
     Detects the execution of the Global Socket (gs-netcat) or QSocket (qs-netcat, qs-lite, qs-proxy) tools, either by their default binary names or, when renamed, by their characteristic command line of a shared secret (-s) combined with the listen (-l) and interactive (-i) options.
     These tools connect two hosts behind NAT or a firewall through a public relay network using only a shared secret, and provide interactive reverse shells, port forwarding and file transfer without any listening port.
 references:
+    - https://github.com/hackerschoice/gsocket/blob/95f814d46a713c024bc79ba7a816fd4cdb0d624a/README.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gsocket.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/qsocket.md
 author: elhoim
@@ -31,9 +32,11 @@ detection:
             - ' -l'
             - ' -i'
     filter_main_common_tools:
-        Image|endswith:
-            - '/grep'
-            - '/ls'
+        Image:
+            - '/bin/grep'
+            - '/bin/ls'
+            - '/usr/bin/grep'
+            - '/usr/bin/ls'
     condition: 1 of selection_* and not 1 of filter_main_*
 falsepositives:
     - Authorised use of the Global Socket or QSocket toolkits by administrators
