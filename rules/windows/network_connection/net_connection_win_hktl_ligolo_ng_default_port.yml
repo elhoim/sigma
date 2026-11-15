@@ -23,18 +23,24 @@ detection:
     selection:
         Initiated: 'true'
         DestinationPort: 11601
-    filter_main_browsers:
-        Image|endswith:
-            - '\brave.exe'
-            - '\chrome.exe'
-            - '\firefox.exe'
-            - '\iexplore.exe'
-            - '\msedge.exe'
-            - '\opera.exe'
-            - '\vivaldi.exe'
-    condition: selection and not 1 of filter_main_*
+    filter_main_edge_ie:
+        Image:
+            - 'C:\Program Files (x86)\Internet Explorer\iexplore.exe'
+            - 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+            - 'C:\Program Files\Internet Explorer\iexplore.exe'
+            - 'C:\Program Files\Microsoft\Edge\Application\msedge.exe'
+    filter_optional_browsers:
+        Image:
+            - 'C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe'
+            - 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+            - 'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+            - 'C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe'
+            - 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+            - 'C:\Program Files\Mozilla Firefox\firefox.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
 falsepositives:
     - Legitimate software or internal services listening on TCP port 11601
+    - Web browsers installed per user (for example Opera or Vivaldi) browsing a service on TCP port 11601
     - Administrators using Ligolo-ng to reach an isolated lab or management network
 level: medium
 regression_tests_path: regression_data/rules/windows/network_connection/net_connection_win_hktl_ligolo_ng_default_port/info.yml
