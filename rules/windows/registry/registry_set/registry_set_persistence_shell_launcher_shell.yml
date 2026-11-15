@@ -24,7 +24,9 @@ detection:
             - '\SOFTWARE\Microsoft\Windows Embedded\Shell Launcher\'
         TargetObject|endswith: '\Shell'
     filter_main_empty:
-        Details: '(Empty)'
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
     filter_main_servicing_trustedinstaller:
         Image: 'C:\Windows\servicing\TrustedInstaller.exe'
     filter_main_servicing_tiworker:
