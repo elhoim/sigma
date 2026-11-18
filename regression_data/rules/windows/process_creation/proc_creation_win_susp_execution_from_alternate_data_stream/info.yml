@@ -1,0 +1,13 @@
+id: b33fdce6-2d34-4939-9a5a-7d8e72009365
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: a0a442f1-08f4-4de7-9190-24c06a3e8f56
+      title: Suspicious Process Execution From NTFS Alternate Data Stream
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_execution_from_alternate_data_stream/a0a442f1-08f4-4de7-9190-24c06a3e8f56.evtx
