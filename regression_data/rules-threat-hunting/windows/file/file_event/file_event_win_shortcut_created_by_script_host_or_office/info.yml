@@ -1,0 +1,13 @@
+id: 3260d98b-bebf-49ad-a449-1761e30efbad
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: d503e985-6343-4083-bceb-efe0da7f2f5a
+      title: Shortcut Created On Desktop Or Start Menu By Script Host Or Office Application
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_shortcut_created_by_script_host_or_office/d503e985-6343-4083-bceb-efe0da7f2f5a.evtx
