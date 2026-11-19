@@ -1,0 +1,48 @@
+title: Suspicious Global Socket Or QSocket Netcat Execution
+id: 2a5742d2-0f49-4881-8cea-a94cf5c95260
+status: experimental
+description: |
+    Detects the execution of the Global Socket (gs-netcat) or QSocket (qs-netcat, qs-lite, qs-proxy) tools, either by their default binary names or, when renamed, by their characteristic command line of a shared secret (-s) combined with the listen (-l) and interactive (-i) options.
+    These tools connect two hosts behind NAT or a firewall through a public relay network using only a shared secret, and provide interactive reverse shells, port forwarding and file transfer without any listening port.
+references:
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gsocket.md
+    - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/qsocket.md
+    - https://github.com/hackerschoice/gsocket/blob/95f814d46a713c024bc79ba7a816fd4cdb0d624a/README.md
+    - https://github.com/qsocket/qs-netcat/blob/862755ec74d1bf713b5850c7fbf545b9ec41caeb/README.md
+author: elhoim
+date: 2026-11-13
+tags:
+    - attack.command-and-control
+    - attack.t1071
+    - attack.t1095
+    - attack.t1572
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\gs-netcat.exe'
+            - '\gsocket.exe'
+            - '\qs-netcat.exe'
+            - '\qs-lite.exe'
+            - '\qs-proxy.exe'
+    selection_cli_secret:
+        CommandLine|contains: ' -s '
+    selection_cli_listen:
+        - CommandLine|contains: ' -l '
+        - CommandLine|endswith: ' -l'
+    selection_cli_interactive:
+        - CommandLine|contains: ' -i '
+        - CommandLine|endswith: ' -i'
+    filter_main_windows_tools:
+        Image:
+            - 'C:\Windows\System32\curl.exe'
+            - 'C:\Windows\System32\OpenSSH\ssh.exe'
+            - 'C:\Windows\SysWOW64\curl.exe'
+    condition: selection_img or (all of selection_cli_* and not 1 of filter_main_*)
+falsepositives:
+    - Authorised use of the Global Socket or QSocket toolkits by administrators
+    - Other netcat-like tools or scripts using the same option letters (-s source address, -l listen, -i interval)
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_gsocket_qsocket_netcat_execution/info.yml
