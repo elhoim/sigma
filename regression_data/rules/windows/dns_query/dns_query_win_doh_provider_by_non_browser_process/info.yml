@@ -1,0 +1,13 @@
+id: 11b0bdf0-b170-406d-8c32-670da7aa2705
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: a7bda810-94bd-4878-bc83-46b23da66520
+      title: Potential DNS Over HTTPS Usage By Non-Browser Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/dns_query/dns_query_win_doh_provider_by_non_browser_process/a7bda810-94bd-4878-bc83-46b23da66520.evtx

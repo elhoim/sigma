@@ -1,0 +1,57 @@
+title: Potential DNS Over HTTPS Usage By Non-Browser Process
+id: a7bda810-94bd-4878-bc83-46b23da66520
+related:
+    - id: 04b45a8a-d11d-49e4-9acc-4a1b524407a5
+      type: similar
+status: experimental
+description: |
+    Detects a DNS query for a public DNS-over-HTTPS resolver hostname of Cloudflare, Google or Quad9, issued by a process that is not a web browser installed under Program Files (or per user) or the Windows DNS client service.
+    Browsers resolve these names when their built-in secure DNS is enabled; any other process doing so is about to tunnel its own name resolution inside HTTPS, which hides the domains it contacts from DNS logging and filtering.
+    Malware uses DoH to resolve command and control domains and to exfiltrate data without touching the local resolver.
+references:
+    - https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/DoH_traffic.yml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.command-and-control
+    - attack.t1071.004
+    - attack.t1572
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'cloudflare-dns.com'
+            - 'mozilla.cloudflare-dns.com'
+            - 'dns.google'
+            - 'dns.quad9.net'
+            - 'dns64.dns.google'
+            - 'dns11.quad9.net'
+            - 'one.one.one.one'
+    filter_main_browsers:
+        Image|startswith:
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+        Image|endswith:
+            - '\brave.exe'
+            - '\chrome.exe'
+            - '\chromium.exe'
+            - '\firefox.exe'
+            - '\librewolf.exe'
+            - '\msedge.exe'
+            - '\msedgewebview2.exe'
+            - '\opera.exe'
+            - '\thunderbird.exe'
+            - '\vivaldi.exe'
+            - '\waterfox.exe'
+    filter_main_dns_client:
+        Image: 'C:\Windows\System32\svchost.exe'
+    filter_optional_browsers_per_user_install:
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(Google\\Chrome\\Application\\chrome|Microsoft\\Edge\\Application\\msedge|BraveSoftware\\Brave-Browser\\Application\\brave|Vivaldi\\Application\\vivaldi|Programs\\Opera( GX)?\\opera)\.exe$'
+    condition: selection and not 1 of filter_*
+falsepositives:
+    - Applications with their own DoH client (some Electron apps, VPN clients, privacy tools, Android emulators) and DoH test tooling; add the image to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/dns_query/dns_query_win_doh_provider_by_non_browser_process/info.yml
