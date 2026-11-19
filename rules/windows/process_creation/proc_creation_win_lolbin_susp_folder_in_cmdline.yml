@@ -1,0 +1,135 @@
+title: Potential Payload Execution From Suspicious Folder Via LOLBin Command Line
+id: 570cc2d4-4c58-4933-a1b9-633e55e8095d
+related:
+    - id: 3dfd06d2-eaf4-4532-9555-68aca59f57c4
+      type: similar
+    - id: 15b75071-74cc-47e0-b4c6-b43744a62a2b
+      type: similar
+status: experimental
+description: |
+    Detects a scripting host, shell or other living-off-the-land binary whose command line references a file in a folder that is writable by standard users ("PerfLogs", "Users\Public", "Windows\Tasks", "Intel", "AMD\Temp") or in a static Windows subfolder (Fonts, Help, INF, Cursors, Branding...) that rarely hosts scripts or libraries run from the command line.
+    Attackers stage scripts, DLLs and installers in these trusted-looking paths and run them through the LOLBin. Unlike the sibling rules, this rule inspects the command line (the payload location) rather than the location of the executed image, and is not limited to rundll32.
+references:
+    - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
+    - https://www.elastic.co/security-labs/hunting-for-lateral-movement-using-event-query-language
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_from_unusual_path_cmdline.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1036.005
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1059.005
+    - attack.t1218.003
+    - attack.t1218.004
+    - attack.t1218.005
+    - attack.t1218.009
+    - attack.t1218.010
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\cmstp.exe'
+              - '\cscript.exe'
+              - '\InstallUtil.exe'
+              - '\mshta.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\RegAsm.exe'
+              - '\regsvr32.exe'
+              - '\RegSvcs.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'CMSTP.EXE'
+              - 'cscript.exe'
+              - 'InstallUtil.exe'
+              - 'MSHTA.EXE'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'RegAsm.exe'
+              - 'REGSVR32.EXE'
+              - 'RegSvcs.exe'
+              - 'RUNDLL32.EXE'
+              - 'wscript.exe'
+    selection_cli:
+        CommandLine|contains:
+            - ':\AMD\Temp\'
+            - ':\Intel\'
+            - ':\PerfLogs\'
+            - ':\Users\Public\'
+            - ':\Windows\addins\'
+            - ':\Windows\appcompat\'
+            - ':\Windows\apppatch\'
+            - ':\Windows\AppReadiness\'
+            - ':\Windows\bcastdvr\'
+            - ':\Windows\Boot\'
+            - ':\Windows\Branding\'
+            - ':\Windows\CbsTemp\'
+            - ':\Windows\Containers\'
+            - ':\Windows\csc\'
+            - ':\Windows\Cursors\'
+            - ':\Windows\debug\'
+            - ':\Windows\diagnostics\'
+            - ':\Windows\DigitalLocker\'
+            - ':\Windows\dot3svc\'
+            - ':\Windows\en-US\'
+            - ':\Windows\Fonts\'
+            - ':\Windows\Globalization\'
+            - ':\Windows\Help\'
+            - ':\Windows\IdentityCRL\'
+            - ':\Windows\IME\'
+            - ':\Windows\ImmersiveControlPanel\'
+            - ':\Windows\INF\'
+            - ':\Windows\L2Schemas\'
+            - ':\Windows\LiveKernelReports\'
+            - ':\Windows\Logs\'
+            - ':\Windows\media\'
+            - ':\Windows\Migration\'
+            - ':\Windows\ModemLogs\'
+            - ':\Windows\ms\'
+            - ':\Windows\OCR\'
+            - ':\Windows\panther\'
+            - ':\Windows\Performance\'
+            - ':\Windows\PLA\'
+            - ':\Windows\PolicyDefinitions\'
+            - ':\Windows\Prefetch\'
+            - ':\Windows\PrintDialog\'
+            - ':\Windows\Provisioning\'
+            - ':\Windows\RemotePackages\'
+            - ':\Windows\rescache\'
+            - ':\Windows\Resources\'
+            - ':\Windows\SchCache\'
+            - ':\Windows\schemas\'
+            - ':\Windows\security\'
+            - ':\Windows\ServiceState\'
+            - ':\Windows\servicing\'
+            - ':\Windows\Setup\'
+            - ':\Windows\ShellComponents\'
+            - ':\Windows\ShellExperiences\'
+            - ':\Windows\SKB\'
+            - ':\Windows\System32\Speech\'
+            - ':\Windows\TAPI\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\TextInput\'
+            - ':\Windows\tracing\'
+            - ':\Windows\twain_32\'
+            - ':\Windows\Vss\'
+            - ':\Windows\WaaS\'
+            - ':\Windows\wlansvc\'
+    condition: all of selection_*
+falsepositives:
+    - Built-in troubleshooters and the Windows servicing stack that reference their own scripts and logs under "C:\Windows\diagnostics\system" or "C:\Windows\Logs\CBS"
+    - Administrative scripts and logging commands that read or write under the matched Windows subfolders (for example log collection scripts redirecting output to "C:\Windows\Logs")
+    - Vendor installers staging helper scripts in "C:\Intel" or "C:\Users\Public"
+    - Opening the Speech Recognition control panel (rundll32.exe loading "C:\Windows\System32\Speech\SpeechUX\sapi.cpl")
+    - OEM image deployment steps run by "windeploy.exe" or OEM scripts (for example "C:\Windows\Setup\Scripts\SetupComplete.cmd", "powercfg" logging to "C:\Windows\INF\PowerPlan.log" or "regsvr32" of "C:\Windows\Help\OEM\scripts\checkmui.dll")
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_susp_folder_in_cmdline/info.yml
