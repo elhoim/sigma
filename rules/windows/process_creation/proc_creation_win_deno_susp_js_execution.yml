@@ -1,0 +1,64 @@
+title: Suspicious Inline Or Remote JavaScript Execution Via Deno
+id: 4acba9a4-d4a9-4392-85dc-728040aa7ff4
+related:
+    - id: 6c0ce3b6-85e2-49d4-9c3f-6e008ce9796e
+      type: similar
+status: experimental
+description: |
+    Detects the Deno JavaScript/TypeScript runtime executing code passed inline on the command line (a "data:" URL, often base64-encoded, or a snippet containing "eval(", "atob(", "import(" or "Deno.Command(") or fetched directly from an HTTP(S) URL outside the official Deno registries.
+    Deno is a signed, legitimate developer tool that threat actors bring along as a "bring your own runtime" loader: the LeakNet ransomware operator and ClickFix campaigns launch "deno.exe -A data:application/javascript;base64,..." from VBS or PowerShell to run a C2 loader entirely in memory.
+    This rule complements the file_event rule that watches Deno's remote module cache: it fires on the process creation itself, before any file is written.
+references:
+    - https://reliaquest.com/blog/threat-spotlight-casting-a-wider-net-clickfix-deno-and-leaknets-scaling-threat
+    - https://taggart-tech.com/evildeno/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_susp_javascript_via_deno.toml
+    - https://docs.deno.com/runtime/fundamentals/modules/
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.execution
+    - attack.stealth
+    - attack.t1027.010
+    - attack.t1059.007
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\deno.exe'
+        - OriginalFileName: 'deno.exe'
+    selection_cli_data_url:
+        CommandLine|contains:
+            - 'data:application/javascript'
+            - 'data:application/typescript'
+            - 'data:text/javascript'
+            - 'data:text/typescript'
+    selection_cli_inline_code:
+        CommandLine|contains:
+            - 'atob('
+            - 'Deno.Command('
+            - 'eval('
+            - 'fromCharCode('
+            - 'import('
+    selection_cli_remote_url:
+        CommandLine|contains:
+            - 'http://'
+            - 'https://'
+    filter_main_official_registries:
+        CommandLine|contains:
+            - ' https://deno.land/'
+            - '"https://deno.land/'
+            - ' https://docs.deno.com/'
+            - '"https://docs.deno.com/'
+            - ' https://examples.deno.land/'
+            - '"https://examples.deno.land/'
+            - ' https://jsr.io/'
+            - '"https://jsr.io/'
+    condition: selection_img and (selection_cli_data_url or selection_cli_inline_code or (selection_cli_remote_url and not filter_main_official_registries))
+falsepositives:
+    - Developer workstations and CI runners running Deno scripts straight from a third-party URL (for example a raw GitHub file) or evaluating one-liners with "deno eval"
+    - Build or deployment tooling that installs Deno scripts with "deno install" from a URL that is not on the official Deno registries
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_deno_susp_js_execution/info.yml
