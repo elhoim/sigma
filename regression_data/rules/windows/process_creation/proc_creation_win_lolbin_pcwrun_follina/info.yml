@@ -1,0 +1,13 @@
+id: 9ec662a1-8607-4944-a7b0-a30661c01c98
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-4 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 6004abd0-afa4-4557-ba90-49d172e0a299
+      title: Execute Pcwrun.EXE To Leverage Follina
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_pcwrun_follina/6004abd0-afa4-4557-ba90-49d172e0a299.evtx

@@ -1,0 +1,13 @@
+id: 8772e8f2-385e-4531-be23-e30ec240edfd
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-4 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: b97cd4b1-30b8-4a9d-bd72-6293928d52bc
+      title: Indirect Command Execution By Program Compatibility Wizard
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_pcwrun/b97cd4b1-30b8-4a9d-bd72-6293928d52bc.evtx

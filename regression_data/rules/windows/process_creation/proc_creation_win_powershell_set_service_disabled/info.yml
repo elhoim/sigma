@@ -1,0 +1,13 @@
+id: 2592a7bc-a87c-4748-be22-f8b966d434c6
+description: Atomic Red Team replay of real events captured on the lab VMs (T1564-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 62b20d44-1546-4e61-afce-8e175eb9473c
+      title: Service StartupType Change Via PowerShell Set-Service
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_set_service_disabled/62b20d44-1546-4e61-afce-8e175eb9473c.evtx

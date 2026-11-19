@@ -11,11 +11,10 @@ author: FPT.EagleEye Team, wagga
 date: 2020-12-11
 modified: 2023-05-04
 tags:
-    - attack.t1505.003
-    - attack.t1190
     - attack.initial-access
     - attack.persistence
-    - attack.privilege-escalation
+    - attack.t1190
+    - attack.t1505.001
 logsource:
     category: process_creation
     product: windows

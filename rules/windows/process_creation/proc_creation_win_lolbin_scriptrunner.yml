@@ -7,7 +7,6 @@ references:
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022-07-01
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1218
 logsource:
@@ -23,3 +22,4 @@ detection:
 falsepositives:
     - Legitimate use when App-v is deployed
 level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_scriptrunner/info.yml
