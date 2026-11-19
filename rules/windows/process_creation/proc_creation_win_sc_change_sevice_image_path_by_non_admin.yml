@@ -14,6 +14,7 @@ tags:
     - attack.execution
     - attack.stealth
     - attack.t1574.011
+    - attack.t1543.003
 logsource:
     category: process_creation
     product: windows
@@ -35,3 +36,4 @@ detection:
 falsepositives:
     - Unknown
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_sc_change_sevice_image_path_by_non_admin/info.yml
