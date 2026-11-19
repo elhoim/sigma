@@ -1,0 +1,32 @@
+title: Potential Autoruns Evasion Via Environment Variable As Run Key Program
+id: 92f29d19-9914-4b5c-a104-2d5d75375aea
+status: experimental
+description: |
+    Detects a Run or RunOnce registry value whose data is only one or more environment variable references such as "%USERNAME%" or "%USERNAME%%PROCESSOR_LEVEL%", optionally followed by a file extension.
+    The entry starts a file that is literally named after the variable, for example "%USERNAME%.exe", while tools such as Sysinternals Autoruns and Process Explorer expand the variable first and then report a missing file or a signed system binary.
+    No legitimate autostart entry is expected to use a bare variable without any directory part.
+references:
+    - https://www.hexacorn.com/blog/2018/01/04/yet-another-way-to-hide-from-sysinternals-tools/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1036
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\'
+            - '\Microsoft\Windows\CurrentVersion\Run'
+        # Sysmon logs a percent sign of the registry data as '%%'
+        Details|re: '^"?(%%?[A-Za-z0-9_()]+%%?)+(\.[A-Za-z0-9]{2,4})?"?$'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_run_key_bare_environment_variable/info.yml
