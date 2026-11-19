@@ -1,0 +1,13 @@
+id: faf35b5c-caf6-4f5f-822a-caa3de11293c
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 46c49290-e9f9-41b8-8b9c-6f1b9f61ed40
+      title: Potential Persistence Via Terminal Server Utilities Registry Command Table
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_terminal_server_utilities_command_table/46c49290-e9f9-41b8-8b9c-6f1b9f61ed40.evtx
