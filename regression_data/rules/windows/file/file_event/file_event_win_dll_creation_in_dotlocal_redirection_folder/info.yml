@@ -1,0 +1,13 @@
+id: 89ed2afc-32bc-4a72-9c15-40c7616f45b3
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 47d8abb5-d76c-449b-bf2a-998a1dec37d9
+      title: Potential DLL Search Order Hijacking Via DotLocal Redirection Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_dll_creation_in_dotlocal_redirection_folder/47d8abb5-d76c-449b-bf2a-998a1dec37d9.evtx
