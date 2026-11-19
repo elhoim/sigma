@@ -8,7 +8,6 @@ author: Timur Zinniatullin, oscd.community
 date: 2019-10-21
 modified: 2023-07-28
 tags:
-    - attack.exfiltration
     - attack.collection
     - attack.t1560.001
 logsource:

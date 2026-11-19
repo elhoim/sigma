@@ -16,9 +16,8 @@ author: Nasreddine Bencherchali (Nextron Systems), Georg Lauenstein (sure[secure
 date: 2023-01-03
 modified: 2024-09-19
 tags:
-    - attack.execution
     - attack.resource-development
-    - attack.t1587
+    - attack.t1588.002
 logsource:
     product: linux
     category: process_creation

@@ -9,7 +9,6 @@ references:
 author: Milad Cheraghi
 date: 2025-10-18
 tags:
-    - attack.execution
     - attack.defense-impairment
     - attack.t1685
 logsource:
