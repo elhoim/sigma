@@ -1,0 +1,13 @@
+id: 1e020540-9728-4b4c-a469-e340777f005d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 3dfdf05f-3159-46d1-aae4-cfb9ff53bde9
+      title: Potential HTTP Tunnel Webshell File Creation - ReGeorg, Neo-reGeorg, Suo5
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_webshell_http_tunnel_regeorg_suo5/3dfdf05f-3159-46d1-aae4-cfb9ff53bde9.evtx
