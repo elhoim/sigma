@@ -1,0 +1,13 @@
+id: ceeed466-635d-4d8b-a0c6-22c81b838188
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 26789bd8-26b3-4caa-912d-291e81a08587
+      title: Potential Timestomping Of Executable File In Sensitive Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_change/file_change_win_executable_timestomp_in_sensitive_folder/26789bd8-26b3-4caa-912d-291e81a08587.evtx
