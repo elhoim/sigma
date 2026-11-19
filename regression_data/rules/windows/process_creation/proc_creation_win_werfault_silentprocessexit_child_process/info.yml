@@ -1,0 +1,13 @@
+id: 5b813fe2-4597-4a70-9cff-968161562eaa
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 44d49930-869a-4571-bfeb-8a592f9052d6
+      title: Potential SilentProcessExit Monitor Process Execution Via WerFault.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_werfault_silentprocessexit_child_process/44d49930-869a-4571-bfeb-8a592f9052d6.evtx
