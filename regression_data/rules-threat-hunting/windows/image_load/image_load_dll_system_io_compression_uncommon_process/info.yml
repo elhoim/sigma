@@ -1,0 +1,13 @@
+id: 4e5d8c0f-8905-464e-b28d-d9c5bf625c9d
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: d03fcc99-9a12-450e-b2fb-a420fbca488c
+      title: System.IO.Compression Native Image Loaded By Process Outside Program Files
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/image_load/image_load_dll_system_io_compression_uncommon_process/d03fcc99-9a12-450e-b2fb-a420fbca488c.evtx
