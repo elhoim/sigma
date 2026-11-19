@@ -1,0 +1,93 @@
+title: Potential Persistence Via Scheduled Task Running LOLBin From Suspicious Folder
+id: 07d9caae-2303-4742-9bc7-665e9b186a29
+related:
+    - id: b66474aa-bd92-4333-a16c-298155b120df
+      type: similar
+    - id: 3a734d25-df5c-4b99-8034-af1ddb5883a4
+      type: similar
+    - id: 81325ce1-be01-4250-944f-b4789644556f
+      type: similar
+status: experimental
+description: |
+    Detects the Task Scheduler service (svchost.exe hosting the "Schedule" service) starting a scripting host, shell or other living-off-the-land binary whose command line references a user-writable folder such as a user profile, "ProgramData", "Windows\Temp", "Windows\Tasks", "PerfLogs" or "Intel".
+    Malware commonly persists through a scheduled task that runs a script or DLL dropped in such a folder; legitimate tasks created by Windows and by installed software usually point at "Program Files" or "System32".
+references:
+    - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_suspicious_scheduled_task_runtime.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\svchost.exe'
+        ParentCommandLine|contains: ' -s Schedule'
+    selection_child:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\control.exe'
+              - '\cscript.exe'
+              - '\explorer.exe'
+              - '\InstallUtil.exe'
+              - '\Microsoft.Workflow.Compiler.exe'
+              - '\MSBuild.exe'
+              - '\mshta.exe'
+              - '\msiexec.exe'
+              - '\msxsl.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\RegAsm.exe'
+              - '\regsvr32.exe'
+              - '\RegSvcs.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'CONTROL.EXE'
+              - 'cscript.exe'
+              - 'EXPLORER.EXE'
+              - 'InstallUtil.exe'
+              - 'Microsoft.Workflow.Compiler.exe'
+              - 'MSBuild.exe'
+              - 'MSHTA.EXE'
+              - 'msiexec.exe'
+              - 'msxsl.exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'RegAsm.exe'
+              - 'REGSVR32.EXE'
+              - 'RegSvcs.exe'
+              - 'RUNDLL32.EXE'
+              - 'wscript.exe'
+    selection_cli:
+        CommandLine|contains:
+            - ':\HP\'
+            - ':\Intel\'
+            - ':\PerfLogs\'
+            - ':\ProgramData\'
+            - ':\Users\'
+            - ':\Windows\Debug\'
+            - ':\Windows\Tasks\'
+            - ':\Windows\Temp\'
+    filter_main_calluxxprovider:
+        # Anchored: the script must be the first argument of the system cscript.exe, so a decoy argument cannot satisfy it
+        Image: 'C:\Windows\System32\cscript.exe'
+        CommandLine|re|i: '^(?:"C:\\Windows\\System32\\cscript\.exe"|C:\\Windows\\System32\\cscript\.exe)\s+(?:/\S+\s+)*"?C:\\Windows\\System32\\calluxxprovider\.vbs"?(?:\s|$)'
+    filter_optional_microsoft_autopatch_mde:
+        # Anchored: only known benign PowerShell switches may precede one of the three known Autopatch / MDE setup scripts, which must be the last argument
+        # The script names are pinned because users can create folders under "C:\Windows\Temp"
+        Image: 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+        CommandLine|re|i: '^(?:"[^"]*powershell\.exe"|\S*powershell\.exe)\s+(?:-(?:NoProfile|NoLogo|NonInteractive|ExecutionPolicy|WindowStyle|File)(?:\s+(?:Bypass|Hidden|RemoteSigned|Unrestricted|AllSigned))?\s+)*"?C:\\(?:ProgramData\\Microsoft\\AutopatchSetupScheduled\\SetupAutopatchClient(?:V2)?Package|Windows\\Temp\\MSS\\MDESetup\\Invoke-MDESetup)\.ps1"?\s*$'
+    condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Legitimate scheduled tasks created by third-party software that run scripts or batch files from ProgramData or from a user profile
+    - Administrator-created maintenance tasks running PowerShell scripts or batch files from a user folder
+    - Windows Installer maintenance tasks that run msiexec.exe as SYSTEM against a package in ProgramData
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_schtasks_lolbin_execution_from_susp_folder/info.yml
