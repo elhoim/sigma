@@ -1,0 +1,13 @@
+id: 90d546bd-d9c5-420a-8d69-926e00a2ff7c
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 2f77122f-f635-4512-a023-76b8fe5ca096
+      title: Potential Invoke-Expression Reconstruction Via Environment Variable Or Method String Slicing
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_iex_dynamic_reconstruction/2f77122f-f635-4512-a023-76b8fe5ca096.evtx

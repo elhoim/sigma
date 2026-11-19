@@ -1,0 +1,44 @@
+title: Potential Invoke-Expression Reconstruction Via Environment Variable Or Method String Slicing
+id: 2f77122f-f635-4512-a023-76b8fe5ca096
+related:
+    - id: 1b9dc62e-6e9e-42a3-8990-94d7a10007f7
+      type: similar
+    - id: f3a98ce4-6164-4dd4-867c-4d83de7eca51
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script block content that rebuilds the "iex" (Invoke-Expression) command at runtime by picking individual characters out of an environment variable string (for example "$env:ComSpec[4,15,25]"), out of a ".Name[..]" slice, or out of the string form of a method reference (for example "''.IndexOf.ToString()[...]") and joining them.
+    Obfuscation frameworks such as Invoke-Obfuscation generate these constructs so that the Invoke-Expression keyword never appears in the script and keyword-based detections miss it; legitimate scripts have no reason to assemble a cmdlet name from indexed characters.
+references:
+    - https://github.com/danielbohannon/Invoke-Obfuscation/blob/f20e7f843edd0a3a7716736e9eddfa423395dd26/README.md
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_obfuscation_iex_env_vars_reconstruction.toml
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_obfuscation_iex_string_reconstruction.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1027.010
+    - attack.t1059.001
+    - attack.t1140
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_env_var_slice:
+        # $env:ComSpec[4,15,25] or $variable[1]+$variable[3]+'x'
+        - ScriptBlockText|re|i: '\$env:\w+\[\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]'
+        - ScriptBlockText|re|i: '\$(?:\w+|\w+:\w+)\[\s*\d+\s*\]\s*\+\s*\$(?:\w+|\w+:\w+)\[\s*\d+\s*\]\s*\+\s*[''"]x[''"]'
+    selection_name_slice:
+        # (Get-Command *).Name[3,11,2] style slices
+        ScriptBlockText|re|i: '\.name\[\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]'
+    selection_method_string_slice:
+        # ''.IndexOf.ToString()[...] style: method reference converted to string and indexed
+        ScriptBlockText|re|i: '[''"][''"]\.(?:Insert|Normalize|Chars|Substring|Remove|LastIndexOfAny|LastIndexOf|IsNormalized|IndexOfAny|IndexOf)[^\[]{0,80}\[\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\]'
+    condition: 1 of selection_*
+falsepositives:
+    - Scripts that select three or more items of a Name property array by index, such as "(Get-Process).Name[0,1,2]"
+    - The Maester PowerShell module, which Elastic excludes from its equivalent rule
+level: medium
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_iex_dynamic_reconstruction/info.yml
