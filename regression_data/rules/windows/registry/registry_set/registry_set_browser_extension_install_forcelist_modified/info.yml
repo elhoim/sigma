@@ -1,0 +1,13 @@
+id: 5af7cede-2612-433e-bf9d-c7ddfc6f57c0
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: a2dc4dd6-8b19-4fb8-831d-8fdb8fade781
+      title: Potential Browser Extension Force-Install Via Chromium Policy Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_browser_extension_install_forcelist_modified/a2dc4dd6-8b19-4fb8-831d-8fdb8fade781.evtx
