@@ -1,0 +1,35 @@
+title: Outlook Data File Referenced By Non-Outlook Process
+id: f34db2e7-6ddd-4114-b3ac-ce8074489678
+related:
+    - id: 91c945bc-2ad1-4799-a591-4d00198a1215
+      type: similar
+status: experimental
+description: |
+    Detects a process other than the installed Outlook started with an Outlook data file (".pst" or ".ost") on its command line.
+    PST and OST files hold a user's complete mailbox; attackers copy, archive or parse them with scripts, archivers and dedicated tools to collect e-mail before exfiltration, whereas normal use only opens them through Outlook.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_outlook_email_archive.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.collection
+    - attack.t1005
+    - attack.t1114.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        # Extension followed by a delimiter: words such as "host", "post" or ".ostrich" are not data files
+        CommandLine|re|i: '\.(pst|ost)(\.|["''\s*,;)]|$)'
+    filter_main_outlook:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft Office\'
+            - 'C:\Program Files\Microsoft Office\'
+        Image|endswith: '\OUTLOOK.EXE'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Backup, archiving and migration tools (robocopy, 7-Zip, mailbox migration utilities) handling PST/OST files; filter the tool image
+    - The Outlook Inbox Repair Tool (SCANPST.EXE) in the Microsoft Office folder started with a data file path
+level: low
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_outlook_data_file_access_non_outlook_process/info.yml
