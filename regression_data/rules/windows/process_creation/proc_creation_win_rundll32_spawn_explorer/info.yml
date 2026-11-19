@@ -1,0 +1,13 @@
+id: b6907bec-b750-4674-b955-756ffb80edaa
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: caa06de8-fdef-4c91-826a-7f9e163eef4b
+      title: RunDLL32 Spawning Explorer
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_spawn_explorer/caa06de8-fdef-4c91-826a-7f9e163eef4b.evtx

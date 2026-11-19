@@ -38,3 +38,4 @@ detection:
 falsepositives:
     - Scripts created by developers and admins
 level: medium
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_curl_fileupload/info.yml
