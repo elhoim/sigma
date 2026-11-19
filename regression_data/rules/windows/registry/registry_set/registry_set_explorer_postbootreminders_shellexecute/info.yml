@@ -1,0 +1,13 @@
+id: 6159c8ab-0c7b-4034-b4a5-2398fc0810ef
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: d69a88c9-d37f-4be6-a4bf-d62b275f8d06
+      title: Explorer PostBootReminders ShellExecute Value Set
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_explorer_postbootreminders_shellexecute/d69a88c9-d37f-4be6-a4bf-d62b275f8d06.evtx
