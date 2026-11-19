@@ -1,0 +1,34 @@
+title: Potential Persistence Via MUI CallbackDlls Registry Key
+id: c3630e41-8ea1-462f-b663-230af5421b0d
+status: experimental
+description: |
+    Detects a "DllPath" value written under the "Control\MUI\CallbackDlls" registry key by a process other than the Windows servicing stack.
+    The kernel32 function NotifyUILanguageChange enumerates the subkeys of this key and loads the library named by each "DllPath" value when the user interface language or the system locale changes. The libraries have to be signed.
+    The entries are created by Windows components at installation and do not change afterwards. An attacker can add an entry, or redirect an existing one, to have a signed but vulnerable or abusable DLL loaded on that event.
+references:
+    - https://www.hexacorn.com/blog/2018/10/12/beyond-good-ol-run-key-part-93/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Control\MUI\CallbackDlls\'
+        TargetObject|endswith: '\DllPath'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_mui_callbackdlls_dllpath/info.yml
