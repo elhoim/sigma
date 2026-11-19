@@ -1,0 +1,33 @@
+title: Potential RunOnce Persistence Via SPReview.EXE Execution
+id: 3d82a36e-32af-4288-862e-f2c7c108145c
+status: experimental
+description: |
+    Detects the execution of the service pack review tool "spreview.exe" with the "/WuExecuted" or "/WusaExecuted" argument.
+    With one of these arguments the tool reads the "SPReviewEnabler" value of "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Pending" and writes its content to the "RunOnce\SPReview" value of the current user.
+    Outside of a service pack installation this is a way to create a RunOnce entry through a signed Microsoft binary.
+references:
+    - https://www.hexacorn.com/blog/2019/10/24/beyond-good-ol-run-key-part-121/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1218
+    - attack.t1547.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\spreview.exe'
+        - OriginalFileName: 'spreview.exe'
+    selection_cli:
+        CommandLine|contains:
+            - 'WuExecuted'
+            - 'WusaExecuted'
+    condition: all of selection_*
+falsepositives:
+    - Installation of a service pack on Windows 7 or Windows Server 2008 R2
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_spreview_wuexecuted/info.yml
