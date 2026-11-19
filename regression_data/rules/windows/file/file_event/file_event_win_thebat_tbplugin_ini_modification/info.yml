@@ -1,0 +1,13 @@
+id: 5058341c-0d16-4b02-8bc5-63050cdeed87
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: c7e7f0fd-4146-4bd9-9437-05f7eb9bd7a0
+      title: Potential Persistence Via The Bat! Plug-In Configuration File Modification
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_thebat_tbplugin_ini_modification/c7e7f0fd-4146-4bd9-9437-05f7eb9bd7a0.evtx
