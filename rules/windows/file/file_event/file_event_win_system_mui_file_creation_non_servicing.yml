@@ -1,0 +1,52 @@
+title: Potential System MUI Resource File Tampering
+id: f4f07974-0cce-40a1-af90-3b9f08b77be9
+status: experimental
+description: |
+    Detects the creation or replacement of a Multilingual User Interface resource file (".mui") in a language folder of "System32", "SysWOW64" or of the Windows Defender program directory by a process that is not part of Windows servicing, Windows Installer or driver installation.
+    System components read strings from these files and some of them hand a string directly to ShellExecute or display it as a SysLink hyperlink that is opened on click, for example in "shwebsvc.dll.mui", "comsnap.dll.mui" or the Windows Defender user interface.
+    An attacker with rights to replace such a file can change the string to a command or a file of his choice and obtain a discreet, registry-less persistence or proxy execution through a signed Microsoft binary. MUI files are owned by TrustedInstaller and are only expected to change through servicing.
+references:
+    - https://www.hexacorn.com/blog/2018/04/29/beyond-good-ol-run-key-part-78/
+    - https://www.hexacorn.com/blog/2017/01/19/beyond-good-ol-run-key-part-56/
+    - https://learn.microsoft.com/en-us/windows/win32/intl/mui-resource-management
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1036
+    - attack.t1574
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains:
+            - ':\Program Files\Windows Defender\'
+            - ':\Windows\System32\'
+            - ':\Windows\SysWOW64\'
+        TargetFilename|endswith: '.mui'
+    filter_main_driver_store:
+        TargetFilename|contains:
+            - ':\Windows\System32\DriverStore\'
+            - ':\Windows\System32\spool\drivers\'
+    filter_main_servicing_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    filter_main_system_tools:
+        Image:
+            - 'C:\Windows\System32\Dism\DismHost.exe'
+            - 'C:\Windows\System32\drvinst.exe'
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\System32\poqexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Third party setup programs, not based on Windows Installer, that copy the MUI file of a control panel applet or of a driver utility into a system language folder
+    - Operating system upgrade or image servicing tools that run outside of the servicing stack
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_system_mui_file_creation_non_servicing/info.yml

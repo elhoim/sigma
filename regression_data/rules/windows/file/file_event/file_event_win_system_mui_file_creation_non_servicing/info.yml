@@ -1,0 +1,13 @@
+id: 97e21375-110a-448d-851b-806a0643646c
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: f4f07974-0cce-40a1-af90-3b9f08b77be9
+      title: Potential System MUI Resource File Tampering
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_system_mui_file_creation_non_servicing/f4f07974-0cce-40a1-af90-3b9f08b77be9.evtx
