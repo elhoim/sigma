@@ -1,0 +1,29 @@
+title: Potential Persistence Via Explorer AppKey ShellExecute Value
+id: 507d3764-d048-40d9-aaef-5ef195da3905
+status: experimental
+description: |
+    Detects the modification of a "ShellExecute" value under the Explorer "AppKey" registry key.
+    Each numbered "AppKey" subkey maps an application command key of the keyboard (browser, mail, media, calculator and other launch keys) to an action, and the "ShellExecute" value holds the program that Explorer starts when the key is pressed.
+    An attacker can set it in the user or in the machine hive in order to get a program executed each time the key is pressed.
+references:
+    - https://www.hexacorn.com/blog/2018/07/06/beyond-good-ol-run-key-part-80/
+    - https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-appcommand
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Explorer\AppKey\'
+        TargetObject|endswith: '\ShellExecute'
+    condition: selection
+falsepositives:
+    - Keyboard vendor utilities that remap the multimedia and application launch keys
+    - Administrators or users that remap a launch key by hand
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_appkey_shellexecute/info.yml
