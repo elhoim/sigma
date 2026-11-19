@@ -1,0 +1,40 @@
+title: Event Log Source Registered By Scripting Host
+id: e0b4e9ca-ccde-42f5-b51e-76a9db26c68e
+related:
+    - id: 35f41cd7-c98e-469f-8a02-ec4ba0cc7a7e
+      type: similar
+status: experimental
+description: |
+    Detects a scripting host (PowerShell, Windows Script Host, MSHTA) registering a new event log source by writing the "EventMessageFile" value under "HKLM\SYSTEM\CurrentControlSet\Services\EventLog\<log>\<source>", which is what "New-EventLog" and "[System.Diagnostics.EventLog]::CreateEventSource" do.
+    Legitimate event sources are registered by application installers; a script creating one, often with a name that imitates a Windows component, prepares to inject fake or misleading entries into the Application or System log so that malicious activity hides among expected events or confuses responders.
+references:
+    - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/25a1848d-1b23-4835-a5a1-09f77f91ffd8.yaml
+    - https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventlog.createeventsource
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-eventlog
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.t1036
+    - attack.t1070
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\powershell_ise.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+        TargetObject|contains: '\SYSTEM\CurrentControlSet\Services\EventLog\'
+        TargetObject|endswith: '\EventMessageFile'
+    condition: selection
+falsepositives:
+    - PowerShell engine setup re-registering its own event log sources (Windows PowerShell, PowerShellCore); not filtered because an attacker can create a source in those logs
+    - Application deployment scripts that register a custom event source for their own logging; add the source name to a filter
+    - Monitoring agents installed via PowerShell
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_eventlog_source_registered_by_scripting_host/info.yml
