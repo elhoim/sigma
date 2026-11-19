@@ -1,0 +1,38 @@
+title: Potential Persistence Via PolicyManager DLL Path Registry Values
+id: 50d9d30b-41ae-4436-96bb-b5aa1d31f232
+status: experimental
+description: |
+    Detects the "PreCheckDLLPath" or "transportDllPath" values under the "SOFTWARE\Microsoft\PolicyManager" registry key being set to a library outside of the Windows system directory.
+    The Policy Manager ("policymanager.dll"), which applies MDM and configuration service provider policies, reads these optional values from its policy definitions and loads the libraries they name when the policy area is evaluated.
+    The default definitions only reference libraries in "System32". An attacker with administrative rights can add or change such a value to have a DLL loaded by the processes that host the Policy Manager.
+references:
+    - https://www.hexacorn.com/blog/2019/01/05/beyond-good-ol-run-key-part-100/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\PolicyManager\'
+        TargetObject|endswith:
+            - '\PreCheckDLLPath'
+            - '\transportDllPath'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_system32:
+        Details|startswith:
+            - '%SystemRoot%\system32\'
+            - '%windir%\system32\'
+            - 'C:\Windows\System32\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Third party device management components that register a policy area with a library in their own installation directory
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_policymanager_dll_path_values/info.yml
