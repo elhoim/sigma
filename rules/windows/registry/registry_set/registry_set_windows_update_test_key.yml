@@ -1,0 +1,30 @@
+title: Potential Windows Update Test Mode Abuse Via Registry
+id: ee3e25f4-4df1-4783-85ab-1a5c8cab8fe6
+status: experimental
+description: |
+    Detects a value written under the "WindowsUpdate\Test" registry key.
+    The Windows Update client and "SIHClient.exe" read this undocumented key to enable internal test features once a signed authorisation cabinet ("autest.cab") is found at the location named by "AlternateTestCabPath". In test mode the values "EventerHookDll", "AllowTestEngine" and "AlternateServiceStackDLLPath" make the update service load the given libraries, and many other values override service locations, certificate checks and policies.
+    The key does not exist on production systems, so any value set below it is unexpected and can indicate an attempt to obtain persistence in, or to tamper with, the Windows Update service.
+references:
+    - https://www.hexacorn.com/blog/2020/09/06/beyond-good-ol-run-key-part-127-testhooks-bonus/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1112
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Test\'
+    filter_main_empty:
+        Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_windows_update_test_key/info.yml
