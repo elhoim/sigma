@@ -1,0 +1,45 @@
+title: Suspicious Service Disabled Via Registry By SolarWinds Orion Process
+id: a26bdbd1-bbef-43d2-82e1-9158196e1280
+related:
+    - id: 9afce94f-1d67-4f07-a892-f7b3601effa3
+      type: similar
+status: experimental
+description: |
+    Detects a SolarWinds Orion platform process (Business Layer Host, Collector, NetFlow services, Administration, Configuration Wizard, Diagnostics) setting the "Start" value of a service that is not part of SolarWinds to 4 (disabled).
+    The SUNBURST backdoor ran inside SolarWinds.BusinessLayerHost.exe and, before executing its operator's commands, disabled security services by writing their Start value to 4 in the registry; the Orion processes have no reason to change the start type of third-party services.
+references:
+    - https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_solarwinds_backdoor_service_disabled_via_registry.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.initial-access
+    - attack.persistence
+    - attack.t1112
+    - attack.t1195.002
+    - attack.t1685
+    - detection.emerging-threats
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|contains:
+            - '\ConfigurationWizard'
+            - '\NetflowDatabaseMaintenance'
+            - '\NetFlowService'
+            - '\SolarWinds.Administration'
+            - '\SolarWinds.BusinessLayerHost'
+            - '\SolarWinds.Collector.Service'
+            - '\SolarwindsDiagnostics'
+        TargetObject|contains: '\Services\'
+        TargetObject|endswith: '\Start'
+        Details: 'DWORD (0x00000004)'
+    filter_optional_solarwinds_own_services:
+        TargetObject|re|i: '^HKLM\\System\\CurrentControlSet\\Services\\(Orion|SolarWinds)[^\\]*\\Start$'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Orion configuration or diagnostics runs that disable a non-SolarWinds service, which is not an expected product behaviour
+level: high
+regression_tests_path: regression_data/rules-emerging-threats/2020/TA/SolarWinds-Supply-Chain/registry_set_apt_unc2452_solarwinds_process_disables_service/info.yml
