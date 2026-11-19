@@ -1,0 +1,30 @@
+title: RunOnce Application Restart Entry Written By Uncommon Process
+id: 7016dcf1-84c7-4847-b261-b08bf90884d2
+status: experimental
+description: |
+    Detects a "RunOnce" registry value named "Application Restart #<number>" that is written by a process other than the Windows client/server runtime process.
+    At shutdown or restart Windows records the applications that called RegisterApplicationRestart under such value names so that they are started again at the next logon. The entries are created by the session subsystem ("winsrvext.dll" hosted in "csrss.exe").
+    Analysts tend to ignore these entries because they look like operating system housekeeping. An attacker can use the same naming to hide a RunOnce persistence. This is a hunting rule, review the command stored in the value.
+references:
+    - https://www.hexacorn.com/blog/2018/11/25/beyond-good-ol-run-key-part-94/
+    - https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-registerapplicationrestart
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.001
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\RunOnce\Application Restart #'
+    filter_main_csrss:
+        Image: 'C:\Windows\System32\csrss.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - A Windows component other than "csrss.exe" recording application restart entries on some builds
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_runonce_application_restart_uncommon_writer/info.yml
