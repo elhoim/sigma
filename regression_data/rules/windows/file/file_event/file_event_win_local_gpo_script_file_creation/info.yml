@@ -1,0 +1,13 @@
+id: 94c328b9-2706-4f5e-8624-6962fc320883
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 80b2b653-1765-42bb-bdf5-ae5815fec8ca
+      title: Potential Persistence Via Local Group Policy Script - File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_local_gpo_script_file_creation/80b2b653-1765-42bb-bdf5-ae5815fec8ca.evtx
