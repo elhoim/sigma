@@ -1,0 +1,13 @@
+id: 68eef987-443f-47f0-aa9b-1b661de2ba43
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 5658ac17-2afb-43d4-87bb-7ada5c1eb22b
+      title: Potential DLL Sideloading Of Unsigned DLL From Suspicious Location
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_unsigned_dll_from_susp_location/5658ac17-2afb-43d4-87bb-7ada5c1eb22b.evtx
