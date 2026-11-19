@@ -1,0 +1,32 @@
+title: Potential Loader Staging - DLL Created In Random-Named AppData Roaming Folder
+id: 99e021d5-de19-4d95-9e1c-1c90d6ffc4eb
+status: experimental
+description: |
+    Detects the creation of a DLL file directly inside a folder under "AppData\Roaming" whose name is a 12 to 15 character alphanumeric string, optionally ending with a single non-alphanumeric character, as used by the CleanUpLoader (Oyster/Broomstick) fake PuTTY, WinSCP and Teams installers.
+    Legitimate software stores Roaming data under vendor or product names; a random alphanumeric folder holding a freshly written DLL, which the loader then registers with a scheduled task running "rundll32 <dll>,DllRegisterServer", is a staging pattern of malware loaders.
+references:
+    - https://redcanary.com/threat-detection-report/threats/cleanuploader/
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1036.005
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|re|i: '\\AppData\\Roaming\\[a-z0-9]{12,15}[^a-z0-9\\]?\\[^\\]+\.dll$'
+    filter_main_installers:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+            - 'C:\Windows\explorer.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Applications that generate a random per-install folder name under Roaming (some Electron or Squirrel based updaters use GUID-like names, which contain dashes and are not matched)
+    - Software whose vendor or product folder name happens to be 12 to 15 letters or digits and that writes a DLL directly into it
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_dll_creation_in_random_named_roaming_folder/info.yml
