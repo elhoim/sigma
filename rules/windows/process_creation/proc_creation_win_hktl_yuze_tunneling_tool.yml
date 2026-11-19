@@ -1,0 +1,54 @@
+title: HackTool - Yuze Tunneling Tool Execution
+id: 7324479b-b566-4538-a3d9-8403c02cdef5
+related:
+    - id: d7654f02-e04b-4934-9838-65c46f187ebc
+      type: similar
+status: experimental
+description: |
+    Detects the execution of Yuze, a lightweight open-source SOCKS5 tunneling and port forwarding tool, either by its binary or DLL name and "RunYuze" export loaded through rundll32, or by its characteristic "reverse", "proxy" and "fwd" sub-command syntax.
+    Yuze was used by the Warlock ransomware operators after web shell deployment to proxy command and control traffic and pivot into the internal network.
+references:
+    - https://www.trendmicro.com/en_us/research/26/c/dissecting-a-warlock-attack.html
+    - https://github.com/P001water/yuze/blob/4a07d640bf06038d85d5a30e7e786dc1d8824cbe/README.md
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_tunnel_yuze.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.command-and-control
+    - attack.stealth
+    - attack.t1090
+    - attack.t1218.011
+    - attack.t1572
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_name:
+        - Image|endswith: '\yuze.exe'
+        - OriginalFileName: 'yuze.exe'
+        - CommandLine|contains:
+              - 'yuze.dll'
+              - ',RunYuze'
+              - ' RunYuze'
+    selection_rundll32_img:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    selection_rundll32_args:
+        CommandLine|contains:
+            - ' reverse -c '
+            - ' reverse -s '
+            - ' proxy -l '
+            - ' fwd -l '
+            - ' fwd -f '
+    selection_reverse_args:
+        # The reverse sub-command with -c (client) or -s (server) is specific to Yuze
+        CommandLine|contains:
+            - '.exe reverse -c '
+            - '.exe reverse -s '
+            - '.exe" reverse -c '
+            - '.exe" reverse -s '
+    condition: selection_name or all of selection_rundll32_* or selection_reverse_args
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_yuze_tunneling_tool/info.yml
