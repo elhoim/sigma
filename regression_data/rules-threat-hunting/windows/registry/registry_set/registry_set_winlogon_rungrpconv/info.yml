@@ -1,0 +1,13 @@
+id: b9323e63-51ee-424c-b0c1-f4a10f20ec75
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: c658778a-e0d5-41bf-843d-b5ef5d24971d
+      title: Winlogon RunGrpConv Registry Value Set
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_winlogon_rungrpconv/c658778a-e0d5-41bf-843d-b5ef5d24971d.evtx
