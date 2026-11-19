@@ -19,13 +19,13 @@ detection:
     # The default values are matched in full. Combining a "startswith" and an "endswith" check would also allow values such as "C:\Windows\Temp\x\System32\sdclt.exe"
     filter_main_path_backup:
         TargetObject|endswith: '\MyComputer\BackupPath\(Default)'
-        Details|re: '(?i)^(%{1,2}(SystemRoot|Windir)%{1,2}|C:\\Windows)\\(System32|SysWOW64)\\sdclt\.exe$'
+        Details|re: '(?i)^(%SystemRoot%|%%SystemRoot%%|%Windir%|%%Windir%%|C:\\Windows)\\(System32|SysWOW64)\\sdclt\.exe$'
     filter_main_path_cleanup:
         TargetObject|endswith: '\MyComputer\cleanuppath\(Default)'
-        Details|re: '(?i)^(%{1,2}(SystemRoot|Windir)%{1,2}|C:\\Windows)\\(System32|SysWOW64)\\cleanmgr\.exe /D %{1,2}c$'
+        Details|re: '(?i)^(%SystemRoot%|%%SystemRoot%%|%Windir%|%%Windir%%|C:\\Windows)\\(System32|SysWOW64)\\cleanmgr\.exe /D %{1,2}c$'
     filter_main_path_defrag:
         TargetObject|endswith: '\MyComputer\DefragPath\(Default)'
-        Details|re: '(?i)^(%{1,2}(SystemRoot|Windir)%{1,2}|C:\\Windows)\\(System32|SysWOW64)\\dfrgui\.exe$'
+        Details|re: '(?i)^(%SystemRoot%|%%SystemRoot%%|%Windir%|%%Windir%%|C:\\Windows)\\(System32|SysWOW64)\\dfrgui\.exe$'
     condition: selection and not 1 of filter_main_*
 falsepositives:
     - Unlikely but if you experience FPs add specific processes and locations you would like to monitor for
