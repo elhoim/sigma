@@ -1,0 +1,35 @@
+title: Qt Plugin Path Environment Variable Set Persistently
+id: 6bc426c2-8800-4eac-8c77-3b944971ec40
+status: experimental
+description: |
+    Detects the creation of the persistent user or system environment variables "QT_PLUGIN_PATH" or "QT_QPA_PLATFORM_PLUGIN_PATH".
+    Every application built with the Qt framework that honours these variables searches the given directories for its plugins and loads the DLLs found there.
+    A persistent value affects all Qt based applications of the user or of the host and can be used to have a library loaded into them at each start. The variables are also set by developers and as a workaround for Qt platform plugin errors, so the directory in the value data has to be reviewed.
+references:
+    - https://www.hexacorn.com/blog/2020/08/16/beyond-good-ol-run-key-part-126/
+    - https://doc.qt.io/qt-6/deployment-plugins.html
+    - https://doc.qt.io/qt-6/qguiapplication.html
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Environment\QT_PLUGIN_PATH'
+            - '\Environment\QT_QPA_PLATFORM_PLUGIN_PATH'
+    filter_main_empty:
+        Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Qt and Python developers, scientific software distributions and users who follow troubleshooting guides for the "could not find or load the Qt platform plugin" error
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_qt_plugin_path_env_variable/info.yml
