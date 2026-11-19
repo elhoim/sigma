@@ -1,0 +1,13 @@
+id: 96557ea4-54cb-44d1-83a2-c8dd0fb6228b
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: b9bd606f-92e6-4cdb-aa07-de643e09eea1
+      title: Suspicious Explorer Open New Window Handler Modification
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_opennewwindow_handler/b9bd606f-92e6-4cdb-aa07-de643e09eea1.evtx
