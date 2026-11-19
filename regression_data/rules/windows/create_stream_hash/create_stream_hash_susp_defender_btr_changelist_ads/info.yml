@@ -1,0 +1,13 @@
+id: f9588c1e-10fb-46aa-9fa3-f2e06c9f4f44
+description: N/A
+date: 2026-11-09
+author: elhoim
+rule_metadata:
+    - id: 7526766d-911c-4683-a5ca-b471f586969a
+      title: Suspicious Defender Boot-Time Removal Driver Configuration ADS Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/create_stream_hash/create_stream_hash_susp_defender_btr_changelist_ads/7526766d-911c-4683-a5ca-b471f586969a.evtx
