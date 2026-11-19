@@ -1,0 +1,35 @@
+title: Potential Persistence Via UserInitLogonScript Environment Variable
+id: 22f184fa-9195-448b-a8c9-8f7c96474bd8
+related:
+    - id: 9ace0707-b560-49b8-b6ca-5148b42f39fb # Potential Persistence Via Logon Scripts - Registry
+      type: similar
+status: experimental
+description: |
+    Detects the creation of the "UserInitLogonScript" or "UserInitLogonServer" values under an "Environment" registry key.
+    Winlogon normally passes these two variables to "userinit.exe" in the process environment to name the account logon script and the server that holds it. They are not expected as persistent environment variables. When they are stored in the registry, "userinit.exe" runs "\\<UserInitLogonServer>\NETLOGON\<UserInitLogonScript>" at each logon of the user.
+references:
+    - https://www.hexacorn.com/blog/2014/11/14/beyond-good-ol-run-key-part-18/
+    - https://www.hexacorn.com/blog/2016/05/27/beyond-good-ol-run-key-part-38/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Environment\UserInitLogonScript'
+            - '\Environment\UserInitLogonServer'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_logon_scripts_userinitlogonscript/info.yml

@@ -1,0 +1,28 @@
+title: Potential Persistence Via File Creation In Local Logon Script Directory
+id: 5ba96710-cc2d-40b7-a16f-ca7401026be0
+status: experimental
+description: |
+    Detects the creation of a file inside "%SystemRoot%\System32\Repl\Import\Scripts", the default location of account logon scripts on a host that is not a domain controller.
+    The directory does not exist on a new installation of Windows. A script placed there, combined with the logon script property of a user account ("net user <name> /scriptpath:<file>"), is started by "userinit.exe" each time that user logs on.
+references:
+    - https://www.hexacorn.com/blog/2016/05/27/beyond-good-ol-run-key-part-38/
+    - https://learn.microsoft.com/en-us/troubleshoot/windows-server/user-profiles-and-logon/assign-logon-script-profile-local-user
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains:
+            - ':\Windows\System32\Repl\Import\Scripts\'
+            - ':\Windows\System32\Repl\Imports\Scripts\'
+    condition: selection
+falsepositives:
+    - Legacy standalone servers or kiosks where administrators still maintain local account logon scripts in this directory
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_logon_script_repl_import_scripts/info.yml
