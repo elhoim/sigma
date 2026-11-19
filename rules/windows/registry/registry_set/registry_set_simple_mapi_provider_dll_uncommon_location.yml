@@ -1,0 +1,47 @@
+title: Simple MAPI Provider DLL Registered From Uncommon Location
+id: 7cbf71e1-1d9f-4378-a88f-c19f4435d60a
+status: experimental
+description: |
+    Detects the registration of a mail client whose Simple MAPI or Extended MAPI provider DLL ("DLLPath" or "DLLPathEx" value under "Clients\Mail") is located outside of the Windows and Program Files directories.
+    The MAPI stub library "mapi32.dll" loads the DLL registered by the default mail client into every application that sends a mail through MAPI.
+    An attacker can register or modify a mail client entry in order to get a DLL loaded by these applications.
+references:
+    - https://www.hexacorn.com/blog/2013/09/19/beyond-good-ol-run-key-part-4/
+    - https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/how-to-choose-a-specific-version-of-mapi-to-load
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Clients\Mail\'
+        TargetObject|endswith:
+            - '\DLLPath'
+            - '\DLLPathEx'
+    filter_main_protected_locations:
+        Details|startswith:
+            - '"C:\Program Files (x86)\'
+            - '"C:\Program Files\'
+            - '"C:\Windows\System32\'
+            - '"C:\Windows\SysWOW64\'
+            - '%CommonProgramFiles%\'
+            - '%CommonProgramFiles(x86)%\'
+            - '%ProgramFiles%\'
+            - '%ProgramFiles(x86)%\'
+            - '%SystemRoot%\System32\'
+            - '%SystemRoot%\SysWOW64\'
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    filter_main_bare_system_name:
+        Details: 'mapi32.dll'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Mail clients installed per user or on a non-system drive, such as a per-user Thunderbird installation
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_simple_mapi_provider_dll_uncommon_location/info.yml
