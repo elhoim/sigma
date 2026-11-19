@@ -1,0 +1,58 @@
+title: Potential AI Coding Agent Instruction File Planted In Downloads Folder
+id: 51772749-f0a5-446d-a5cc-1824f694d538
+status: experimental
+description: |
+    Detects the creation of an AI coding-agent instruction file (AGENTS.md, CLAUDE.md or GEMINI.md) in a user's Downloads folder by a web browser, by Explorer (built-in ZIP extraction) or by an archive tool.
+    A web page can save such a file into Downloads without user interaction, and opening an archive extracts it there.
+    Coding agents such as Codex, Claude Code and Gemini CLI treat these files as trusted project instructions when started in that folder, which can make them rewrite their own configuration, register an MCP server, install a package or leak credentials.
+references:
+    - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder
+    - https://github.com/google-gemini/gemini-cli/blob/b9776560ea5710bc673891499aaec68c737d160a/docs/cli/gemini-md.md
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/initial_access_genai_agent_instruction_file_in_downloads.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1189
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_path:
+        TargetFilename|contains: '\Downloads\'
+        TargetFilename|endswith:
+            - '\AGENTS.md'
+            - '\AGENTS.md:Zone.Identifier'
+            - '\CLAUDE.md'
+            - '\CLAUDE.md:Zone.Identifier'
+            - '\GEMINI.md'
+            - '\GEMINI.md:Zone.Identifier'
+    selection_img:
+        Image|endswith:
+            - '\7z.exe'
+            - '\7zFM.exe'
+            - '\7zG.exe'
+            - '\Bandizip.exe'
+            - '\brave.exe'
+            - '\chrome.exe'
+            - '\explorer.exe'
+            - '\firefox.exe'
+            - '\msedge.exe'
+            - '\opera.exe'
+            - '\peazip.exe'
+            - '\Rar.exe'
+            - '\tar.exe'
+            - '\UnRAR.exe'
+            - '\unzip.exe'
+            - '\vivaldi.exe'
+            - '\whale.exe'
+            - '\WinRAR.exe'
+            - '\winzip32.exe'
+            - '\winzip64.exe'
+    condition: all of selection_*
+falsepositives:
+    - Developers downloading or extracting a legitimate repository archive that ships an AGENTS.md or CLAUDE.md into their Downloads folder
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_ai_agent_instruction_file_in_downloads/info.yml
