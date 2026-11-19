@@ -1,0 +1,39 @@
+title: Potential Persistence Via Text Services Framework Input Processor Registration
+id: 34299d21-ed6f-4207-8c42-6a210223f921
+status: experimental
+description: |
+    Detects the registration of a Text Services Framework (TSF) text input processor under the "CTF\TIP" registry key by a registration utility, a script host or a command interpreter.
+    A registered text service is an in-process COM server that is loaded into every process of the user that uses text input, at the next logon and without any entry in the usual autostart locations.
+    An attacker can register a text service DLL, for example with regsvr32.exe, in order to get it loaded by most graphical processes.
+    The "CTF\LangBarAddin" key is covered by the rule "Common Autorun Keys Modification".
+references:
+    - https://www.hexacorn.com/blog/2013/01/19/beyond-good-ol-run-key-part-3/
+    - https://www.praetorian.com/blog/leveraging-microsoft-text-services-framework-tsf-for-red-team-operations/
+    - https://learn.microsoft.com/en-us/windows/win32/tsf/text-service-registration
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\CTF\TIP\'
+        Image|endswith:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\reg.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+    condition: selection
+falsepositives:
+    - Installation of a third-party input method editor or keyboard software that registers its text service with regsvr32.exe
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_ctf_tip_registration_uncommon_process/info.yml
