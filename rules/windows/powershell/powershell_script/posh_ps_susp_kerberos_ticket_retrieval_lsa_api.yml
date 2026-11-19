@@ -1,0 +1,41 @@
+title: Suspicious Kerberos Ticket Retrieval Via LSA Authentication Package API In PowerShell Script
+id: 0906670c-126d-4ddc-bec6-3a5b8b78f2cc
+related:
+    - id: 3245cd30-e015-40ff-a31d-5cadd5f377ec
+      type: similar
+status: experimental
+description: |
+    Detects PowerShell script blocks that call "LsaCallAuthenticationPackage" with Kerberos ticket cache message types such as "KerbRetrieveEncodedTicketMessage", "KerbQueryTicketCacheExMessage" or "KerbDecryptDataMessage".
+    This LSA API path is how in-memory Kerberos ticket dumpers written in PowerShell enumerate every logon session and export its TGT/TGS tickets without touching lsass memory or dropping a tool such as Rubeus or Mimikatz.
+references:
+    - https://github.com/MzHmO/PowershellKerberos/blob/53c1fceeae55ec70ec5c910aa04a465d2e008ed6/dumper.ps1
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_posh_kerb_ticket_dump.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.credential-access
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1106
+    - attack.t1558
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_api:
+        ScriptBlockText|contains: 'LsaCallAuthenticationPackage'
+    selection_message:
+        ScriptBlockText|contains:
+            - 'KerbDecryptDataMessage'
+            - 'KerbQueryTicketCacheEx2Message'
+            - 'KerbQueryTicketCacheExMessage'
+            - 'KerbQueryTicketCacheMessage'
+            - 'KerbRetrieveEncodedTicketMessage'
+            - 'KerbRetrieveTicketMessage'
+            - 'KERB_RETRIEVE_TKT_REQUEST'
+    condition: all of selection_*
+falsepositives:
+    - Kerberos troubleshooting scripts that enumerate the ticket cache through the LSA API instead of klist.exe
+level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_kerberos_ticket_retrieval_lsa_api/info.yml
