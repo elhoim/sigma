@@ -1,0 +1,32 @@
+title: Explorer Band Object Component Category Registration
+id: 78dbcda0-3531-4188-9455-91b879b133d2
+status: experimental
+description: |
+    Detects the registration of a COM class in one of the Explorer band object component categories: desk band ({00021492-0000-0000-C000-000000000046}), vertical Explorer bar ({00021493-0000-0000-C000-000000000046}) or horizontal Explorer bar ({00021494-0000-0000-C000-000000000046}).
+    Band objects are in-process COM servers that Explorer or Internet Explorer loads to display a toolbar, and they are not listed by Sysinternals Autoruns.
+    An attacker can register a band object in order to get a DLL loaded by the shell.
+references:
+    - https://www.hexacorn.com/blog/2017/12/30/beyond-good-ol-run-key-part-70/
+    - https://learn.microsoft.com/en-us/windows/win32/shell/band-objects
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546.015
+    - detection.threat-hunting
+logsource:
+    category: registry_add
+    product: windows
+detection:
+    selection:
+        EventType: CreateKey
+        TargetObject|endswith:
+            - '\Implemented Categories\{00021492-0000-0000-C000-000000000046}'
+            - '\Implemented Categories\{00021493-0000-0000-C000-000000000046}'
+            - '\Implemented Categories\{00021494-0000-0000-C000-000000000046}'
+    condition: selection
+falsepositives:
+    - Installation of legitimate software that ships a taskbar toolbar or an Explorer bar, such as hardware vendor utilities and system monitoring tools
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_add/registry_add_explorer_band_object_category_registration/info.yml
