@@ -1,0 +1,13 @@
+id: 3e28b7c5-e588-4438-9b29-67bec0d37dc9
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: f0f2beea-7db1-48e9-a255-070b94d55c8a
+      title: Potential Azure WireServer Access By Shell, LOLBin Or Scripting Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/network_connection/net_connection_win_azure_wireserver_access_by_shell_or_scripting_process/f0f2beea-7db1-48e9-a255-070b94d55c8a.evtx
