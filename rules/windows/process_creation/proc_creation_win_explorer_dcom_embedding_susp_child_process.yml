@@ -1,0 +1,63 @@
+title: Potential DCOM Lateral Movement - Script Host Spawned By Explorer Started With Embedding Flag
+id: 04c39486-e9df-4558-952a-3d08ac0068d6
+related:
+    - id: 10c14723-61c7-4c75-92ca-9af245723ad2
+      type: similar
+status: experimental
+description: |
+    Detects a scripting host, shell or execution proxy started by an "explorer.exe" instance that was itself launched with the "-Embedding" flag, excluding the two Explorer COM class factories used for normal shell windows.
+    Explorer is started this way when a DCOM client activates the ShellWindows, ShellBrowserWindow or similar shell COM objects, which is how Impacket "dcomexec" and manual DCOM lateral movement run commands on a remote host, and how some phishing payloads proxy execution through the trusted shell process.
+references:
+    - https://enigma0x3.net/2017/01/23/lateral-movement-via-dcom-round-2/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_via_explorer_suspicious_child_parent_args.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.lateral-movement
+    - attack.stealth
+    - attack.t1021.003
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1059.005
+    - attack.t1218.005
+    - attack.t1218.010
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\explorer.exe'
+        ParentCommandLine|contains: '-Embedding'
+    selection_img:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\mshta.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+              - '\regsvr32.exe'
+              - '\rundll32.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'MSHTA.EXE'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+              - 'REGSVR32.EXE'
+              - 'RUNDLL32.EXE'
+              - 'wscript.exe'
+    filter_main_explorer_host_factories:
+        # CLSID_SeparateSingleProcessExplorerHost and the Explorer browser host, started for ordinary shell windows
+        ParentImage: 'C:\Windows\explorer.exe'
+        ParentCommandLine|startswith:
+            - 'C:\Windows\explorer.exe /factory,{5BD95610-9434-43C2-886C-57852CC8A120}'
+            - 'C:\Windows\explorer.exe /factory,{ceff45ee-c862-41de-aee2-a022c81eda92}'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Opening a shortcut (.lnk) to cmd.exe, a script host or another listed binary from an Explorer window that was itself started with "-Embedding"; verify the shortcut target and the user action
+    - Shell extensions or automation that activate Explorer COM objects and then launch scripts through them
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_dcom_embedding_susp_child_process/info.yml

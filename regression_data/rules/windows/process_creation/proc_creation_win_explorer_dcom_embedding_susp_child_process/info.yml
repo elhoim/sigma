@@ -1,0 +1,13 @@
+id: 598e2ab0-8d0f-411b-bac5-9e25c0f9e2aa
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 04c39486-e9df-4558-952a-3d08ac0068d6
+      title: Potential DCOM Lateral Movement - Script Host Spawned By Explorer Started With Embedding Flag
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_explorer_dcom_embedding_susp_child_process/04c39486-e9df-4558-952a-3d08ac0068d6.evtx
