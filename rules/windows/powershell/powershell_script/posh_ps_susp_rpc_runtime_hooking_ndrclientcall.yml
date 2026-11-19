@@ -1,0 +1,36 @@
+title: Suspicious RPC Runtime Hooking Via NdrClientCall In PowerShell Script
+id: abddddd6-e4f1-41a8-adca-eb0a829e7e75
+status: experimental
+description: |
+    Detects PowerShell script blocks that reference the RPC runtime marshalling functions "NdrClientCall", "NdrClientCall2" or "NdrClientCall3" together with Win32 APIs used to resolve or patch code in memory ("GetProcAddress", "GetDelegateForFunctionPointer", "VirtualProtect").
+    AMSI forwards scan requests to the antimalware engine over RPC; hooking the NdrClientCall dispatch function inside the PowerShell process lets a script intercept and suppress these requests without touching amsi.dll itself.
+    Legitimate PowerShell scripts have no reason to resolve the RPC runtime marshalling functions.
+references:
+    - https://github.com/andreisss/Ghosting-AMSI/blob/3891a34b8e4c7f0591535c42f45c72a9db7b2551/README.md
+    - https://github.com/andreisss/Ghosting-AMSI/blob/3891a34b8e4c7f0591535c42f45c72a9db7b2551/ghosting.ps1
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_amsi_bypass_rpc_ndrclientcall.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.defense-impairment
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1106
+    - attack.t1685
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_rpc:
+        ScriptBlockText|contains: 'NdrClientCall'
+    selection_api:
+        ScriptBlockText|contains:
+            - 'GetDelegateForFunctionPointer'
+            - 'GetProcAddress'
+            - 'VirtualProtect'
+    condition: all of selection_*
+falsepositives:
+    - Security research or detection engineering scripts that reference the RPC runtime functions
+level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_susp_rpc_runtime_hooking_ndrclientcall/info.yml
