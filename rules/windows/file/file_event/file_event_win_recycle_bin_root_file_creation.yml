@@ -1,0 +1,35 @@
+title: Potential Data Staging - File Created In Root Of Recycle Bin Folder
+id: 8f1ae9d5-8c3f-4ca6-99d1-34ab93c13ee6
+related:
+    - id: 5ce0f04e-3efc-42af-839d-5b3a543b76c0
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a file directly in the root of a volume's "$RECYCLE.BIN" folder (not inside a per-user SID subfolder), other than the folder's own desktop.ini.
+    Windows only writes deleted items into the SID subfolders of the Recycle Bin; a file placed in its root is hidden from Explorer's Recycle Bin view and from casual directory listings, which makes the folder a favourite staging location for collected data and tooling.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_files_staged_in_recycle_bin_root.toml
+author: elhoim
+date: 2026-11-11
+tags:
+    - attack.collection
+    - attack.stealth
+    - attack.t1074.001
+    - attack.t1564.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\[^\\]+$'
+    filter_main_desktop_ini:
+        TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\desktop\.ini$'
+    filter_main_user_sid_folder:
+        # Windows creates the per-account SID folder under the Recycle Bin on first use:
+        # local system accounts (S-1-5-18/19/20, e.g. by LogonUI.exe), domain or local users (S-1-5-21-...) and Entra ID users (S-1-12-1-...)
+        TargetFilename|re|i: '^[a-z]:\\\$RECYCLE\.BIN\\S-1-(?:5-(?:18|19|20)|5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+|12-1-[0-9]+-[0-9]+-[0-9]+-[0-9]+)$'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Backup or disk tools that write metadata into the Recycle Bin root
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_recycle_bin_root_file_creation/info.yml

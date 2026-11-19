@@ -1,0 +1,13 @@
+id: ac468a3e-56c4-4d0b-b91f-a300bbaf54b7
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 8f1ae9d5-8c3f-4ca6-99d1-34ab93c13ee6
+      title: Potential Data Staging - File Created In Root Of Recycle Bin Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_recycle_bin_root_file_creation/8f1ae9d5-8c3f-4ca6-99d1-34ab93c13ee6.evtx
