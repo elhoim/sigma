@@ -1,0 +1,26 @@
+title: AWS ECS Exec Command Session Started
+id: 936d9355-9cb2-4809-a1f3-58309b000fd6
+status: experimental
+description: |
+    Detects an interactive command session being started in an Amazon ECS container using ECS Exec.
+    Adversaries may use ECS Exec to run commands inside containers and access their task role credentials or data.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ExecuteCommand.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.t1651
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 'ExecuteCommand'
+        requestParameters.interactive: 'true'
+    condition: selection
+falsepositives:
+    - Developers or operators troubleshooting containers
+level: low
