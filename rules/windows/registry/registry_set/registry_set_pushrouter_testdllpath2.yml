@@ -1,0 +1,32 @@
+title: Potential Persistence Via PushRouter TestDllPath2 Registry Value
+id: 19d9fb2e-77a8-4da9-a011-99fc870d966d
+status: experimental
+description: |
+    Detects the creation of a value under the "SOFTWARE\Microsoft\PushRouter\Test" registry key, in particular "TestDllPath2".
+    "dmcfghost.exe", the host process of the push router client for OMA client provisioning, loads the library named by "TestDllPath2" when it starts. The key is a test hook that does not exist on a default installation.
+    An attacker can store a DLL path in the value and start "dmcfghost.exe" from any autostart location, so that the visible autostart entry only references a signed Windows binary.
+references:
+    - https://www.hexacorn.com/blog/2018/10/10/beyond-good-ol-run-key-part-91/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\PushRouter\Test\'
+    filter_main_empty:
+        - Details: null
+        - Details: ''
+        - Details: '(Empty)'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_pushrouter_testdllpath2/info.yml
