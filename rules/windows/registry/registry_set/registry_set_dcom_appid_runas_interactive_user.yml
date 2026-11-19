@@ -1,0 +1,62 @@
+title: Potential RemoteMonologue Activity - DCOM AppID RunAs Set To Interactive User
+id: 96edd4d0-0a0b-4970-bf7c-0a5ffbf6f915
+status: experimental
+description: |
+    Detects the "RunAs" value of a DCOM application identifier (SOFTWARE\Classes\AppID\{GUID}\RunAs) being set to "Interactive User" by a process other than the installers and Windows components known to do so.
+    With this setting the DCOM server is activated in the security context of the user logged on at the console. An attacker with remote registry access sets it on a DCOM object and then activates that object remotely to make the logged-on user's session authenticate to a host under the attacker's control (RemoteMonologue) or to run code as that user. Remote registry writes appear with svchost.exe (RemoteRegistry service) as the writing process.
+references:
+    - https://www.ibm.com/think/x-force/remotemonologue-weaponizing-dcom-ntlm-authentication-coercions
+    - https://learn.microsoft.com/en-us/windows/win32/com/runas
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_regmod_remotemonologue.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.credential-access
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1112
+    - attack.t1187
+    - attack.t1546.015
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\AppID\{'
+        TargetObject|endswith: '\RunAs'
+        Details: 'Interactive User'
+    filter_main_defender:
+        Image|re|i: '^C:\\(ProgramData\\Microsoft\\Windows Defender\\Platform\\[0-9.-]+|Program Files\\Windows Defender)\\MsMpEng\.exe$'
+        TargetObject|contains: '{1111A26D-EF95-4A45-9F55-21E52ADF9887}'
+    filter_main_security_health:
+        Image: 'C:\Windows\System32\SecurityHealthService.exe'
+        TargetObject|contains:
+            - '{1D278EEF-5C38-4F2A-8C7D-D5C13B662567}'
+            - '{7E55A26D-EF95-4A45-9F55-21E52ADF9878}'
+    filter_main_office_c2r:
+        Image: 'C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe'
+        TargetObject|contains:
+            - '\Microsoft\Office\ClickToRun\VREGISTRY_'
+            - '{58FC39EB-9DBD-4EA7-B7B4-9404CC6ACFAB}'
+            - '{75F8B0F3-5E33-40FF-B553-E9BF16B3B108}'
+            - '{C6EB466D-5A20-4F82-8862-A0AE4E61553D}'
+            - '{C806725C-6E3A-450C-B261-74E8B49FFC9A}'
+    filter_main_poqexec:
+        # Windows servicing (component installation) writing the AppID key of an inbox DCOM server
+        Image: 'C:\Windows\System32\poqexec.exe'
+        TargetObject|contains: '{F8FD03A6-DDD9-4C1B-84EE-58159476A0D7}'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_optional_teamviewer:
+        Image:
+            - 'C:\Program Files\TeamViewer\TeamViewer.exe'
+            - 'C:\Program Files (x86)\TeamViewer\TeamViewer.exe'
+        TargetObject|contains: '{850A928D-5456-4865-BBE5-42635F1EBCA1}'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Software installers that register their own DCOM server to run as the interactive user
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_dcom_appid_runas_interactive_user/info.yml
