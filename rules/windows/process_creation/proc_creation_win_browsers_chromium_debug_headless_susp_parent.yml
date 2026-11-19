@@ -1,0 +1,75 @@
+title: Suspicious Chromium Browser Launch With Remote Debugging Or Headless Flags
+id: b95e4b64-9052-45e9-8cf5-f4601f08a61c
+related:
+    - id: b3d34dc5-2efd-4ae3-845f-8ec14921f449
+      type: similar
+    - id: 3e8207c5-fcd2-4ea6-9418-15d45b4890e4
+      type: similar
+    - id: ef9dcfed-690c-4c5d-a9d1-482cd422225c
+      type: similar
+status: experimental
+description: |
+    Detects a Chromium based browser (Chrome, Edge, Brave, Opera, Vivaldi) started with the remote debugging or headless flags, either by an uncommon parent process (command shell, script host, LOLBIN, Office application, or a binary located in a user-writable location) or with its window pushed off-screen via a negative "--window-position".
+    Infostealers such as Phemedrone use this pattern to open a hidden browser instance, connect to the DevTools protocol over the loopback debugging port and dump the cookies while bypassing Chrome's application-bound encryption.
+    Unlike the generic headless and remote debugging rules, this rule requires the suspicious launch context and is therefore suited for alerting.
+    It overlaps partly with the rule that matches headless, remote debugging and a user data directory together (3e8207c5): both can fire on the same event, but that rule ignores the parent process and the off-screen window position, and this one does not require a user data directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game
+    - https://embracethered.com/blog/posts/2024/cookie-theft-in-2024-and-what-todo/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_browsers_unusual_parent.toml
+    - https://github.com/redcanaryco/atomic-red-team/blob/59ea87397c5faf8cad1e6ebe36fd625d0063e894/atomics/T1539/T1539.yaml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.collection
+    - attack.credential-access
+    - attack.t1185
+    - attack.t1539
+    - attack.t1555.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        Image|endswith:
+            - '\brave.exe'
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\opera.exe'
+            - '\vivaldi.exe'
+    selection_flags:
+        CommandLine|contains:
+            - '--headless'
+            - '--remote-debugging-' # Covers: --remote-debugging-address, --remote-debugging-port, --remote-debugging-pipe...etc
+    selection_context_parent_image:
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\excel.exe'
+            - '\mshta.exe'
+            - '\outlook.exe'
+            - '\powerpnt.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\winword.exe'
+            - '\wmiprvse.exe'
+            - '\wscript.exe'
+    selection_context_parent_path:
+        ParentImage|contains:
+            - ':\Users\Public\'
+            - '\AppData\Local\Temp\'
+            - '\AppData\Roaming\'
+            - '\Downloads\'
+            - '\Windows\Temp\'
+    selection_context_offscreen:
+        CommandLine|contains|all:
+            - '--remote-debugging-port='
+            - '--window-position=-'
+    condition: selection_img and selection_flags and 1 of selection_context_*
+falsepositives:
+    - Batch or PowerShell wrapper scripts that drive a headless browser for automated testing, PDF rendering or web scraping. Add filters for the known automation hosts.
+    - Developers launching a browser with remote debugging from a terminal. Expected on development machines only.
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_browsers_chromium_debug_headless_susp_parent/info.yml
