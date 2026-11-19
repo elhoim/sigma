@@ -1,0 +1,13 @@
+id: 4dab6fe2-bbc9-4e9a-82d8-771731a6f06d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 2413ad16-c7c2-4b3f-aa62-597fffc32e14
+      title: Potential Path Interception Via Unquoted Program Files Path - File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_unquoted_path_interception_file_creation/2413ad16-c7c2-4b3f-aa62-597fffc32e14.evtx
