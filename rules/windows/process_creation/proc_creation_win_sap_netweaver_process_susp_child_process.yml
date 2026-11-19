@@ -1,0 +1,77 @@
+title: Potential SAP NetWeaver Exploitation - Shell Or Script Interpreter Spawned By SAP Process
+id: cc590153-2577-41ae-bb04-02f9203e9639
+related:
+    - id: 5b304bcb-ac33-49d0-87af-fa1b3ca94333
+      type: similar
+status: experimental
+description: |
+    Detects a command shell, PowerShell, Python or other script interpreter started by a core SAP NetWeaver process (Java server node "jstart"/"jlaunch", ABAP work process "disp+work", the SAP start service "sapstartsrv", the ICM "icman" or the SAP host agent), or any process started by such a parent with an encoded PowerShell command.
+    After exploiting SAP NetWeaver vulnerabilities such as CVE-2025-31324 (Visual Composer unauthenticated upload), attackers run reverse shells and loaders directly from the SAP server process, in particular Python one-liners and Base64 encoded PowerShell. The sibling rule keys on the Visual Composer web shell directory; this rule covers the SAP processes themselves.
+references:
+    - https://reliaquest.com/blog/threat-spotlight-reliaquest-uncovers-vulnerability-behind-sap-netweaver-compromise/
+    - https://onapsis.com/blog/active-exploitation-of-sap-vulnerability-cve-2025-31324/
+    - https://www.zscaler.com/resources/industry-reports/red-canary-2026-threat-detection-report.pdf
+    - https://nvd.nist.gov/vuln/detail/CVE-2025-31324
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.persistence
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1059.006
+    - attack.t1190
+    - attack.t1505.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith:
+            - '\disp+work.exe'
+            - '\icman.exe'
+            - '\jlaunch.exe'
+            - '\jstart.exe'
+            - '\saphostexec.exe'
+            - '\sapstartsrv.exe'
+    selection_child_interpreter:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\cscript.exe'
+              - '\mshta.exe'
+              - '\powershell.exe'
+              - '\powershell_ise.exe'
+              - '\pwsh.exe'
+              - '\python.exe'
+              - '\python3.exe'
+              - '\pythonw.exe'
+              - '\wscript.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'cscript.exe'
+              - 'MSHTA.EXE'
+              - 'PowerShell.EXE'
+              - 'powershell_ise.EXE'
+              - 'pwsh.dll'
+              - 'python.exe'
+              - 'wscript.exe'
+    selection_child_encoded:
+        CommandLine|contains:
+            - ' -enc '
+            - ' -EncodedCommand '
+            - 'FromBase64String'
+    filter_main_sap_control_scripts:
+        # sapstartsrv runs the instance start/stop profiles through cmd.exe
+        ParentImage|re: '^[A-Za-z]:\\usr\\sap\\.+\\sapstartsrv\.exe$'
+        Image: 'C:\Windows\System32\cmd.exe'
+        CommandLine|contains:
+            - '\usr\sap\'
+            - 'sapcpe'
+            - 'sapcontrol'
+    condition: selection_parent and 1 of selection_child_* and not 1 of filter_main_*
+falsepositives:
+    - SAP Basis administrators running operating system commands through SAP transaction SM49/SM69 external commands, which spawn cmd.exe from the work process; tune with the commands in use
+    - Instance start and stop scripts of the SAP start service that are not matched by the default filter
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_sap_netweaver_process_susp_child_process/info.yml
