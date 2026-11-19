@@ -1,0 +1,41 @@
+title: Potential Browser Extension Sideloading - Extension Package Created By Non-Browser Process
+id: 2c1ffc3c-00b0-47a7-8bd4-90b4a4a3d331
+status: experimental
+description: |
+    Detects a Firefox extension package (".xpi") being written into a Firefox profile "Extensions" folder, or a Chromium extension package (".crx") being written into a Chromium "User Data" profile, by a process that is not the browser itself.
+    Browsers write these files when the user installs an add-on from the store; malware, adware and post-exploitation scripts drop them directly into the profile (or register them through a policy) to install a cookie or credential stealing extension without the store review and the user's consent.
+references:
+    - https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_browser_extension_install.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.persistence
+    - attack.t1176.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_firefox:
+        TargetFilename|contains|all:
+            - '\AppData\Roaming\'
+            - '\Profiles\'
+            - '\Extensions\'
+        TargetFilename|endswith: '.xpi'
+    selection_chromium:
+        TargetFilename|contains|all:
+            - '\AppData\Local\'
+            - '\User Data\'
+        TargetFilename|endswith: '.crx'
+    filter_main_browsers:
+        Image|re|i: '^[A-Za-z]:\\(?:Program Files(?: \(x86\))?\\(?:[^\\]+\\)+|Users\\[^\\]+\\AppData\\Local\\(?:(?:Google\\Chrome|Microsoft\\Edge|BraveSoftware\\Brave-Browser|Vivaldi|Chromium)\\Application\\|Mozilla Firefox\\|Programs\\(?:Opera|Opera GX|Waterfox|LibreWolf)\\(?:[0-9.]+\\)?))(?:firefox|thunderbird|waterfox|librewolf|chrome|msedge|brave|opera|vivaldi|chromium)\.exe$'
+    filter_main_installers:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+            - 'C:\Windows\explorer.exe'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Enterprise deployment scripts or endpoint management agents that pre-seed browser extensions into user profiles; add their image to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_browser_extension_file_created_by_non_browser/info.yml
