@@ -1,0 +1,13 @@
+id: 23068d7e-4c0a-4d85-870c-31ce491ea209
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 7039a6d7-ca54-41b5-8783-14f215135ae0
+      title: Suspicious Windows Command Shell Script Obfuscation Or Staging Arguments
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_susp_script_obfuscation_and_staging_args/7039a6d7-ca54-41b5-8783-14f215135ae0.evtx
