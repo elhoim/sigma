@@ -1,0 +1,37 @@
+title: Potential Anonymous Named Pipe Access Enabled Via NullSessionPipes Registry Value
+id: af1190ef-8cf9-44ee-a9e9-d211349b5aff
+status: experimental
+description: |
+    Detects the NullSessionPipes value of the LanmanServer service being written.
+    Pipes listed there can be opened over SMB by anonymous (null session) clients.
+    Adversaries add their own pipe, or a pipe used by a backdoor, so that it stays reachable from the network without credentials; Turla's PowerShell loaders used this to expose their named-pipe transport.
+    Sysmon renders the multi-string value as binary data, so clearing the list cannot be told apart from setting pipes.
+references:
+    - https://www.welivesecurity.com/2019/05/29/turla-powershell-usage/
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/network-access-named-pipes-that-can-be-accessed-anonymously
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_defense_evasion_lanman_nullsessionpipe_modification.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.lateral-movement
+    - attack.persistence
+    - attack.t1021.002
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Services\LanmanServer\Parameters\NullSessionPipes'
+    filter_optional_lsass:
+        # The security configuration engine hosted in lsass.exe writes the value when it applies the security policy (Group Policy security options, domain controller promotion)
+        # Sysmon logs the value as "Binary Data", so the written pipe list cannot be checked; remove this filter where policy-driven changes must be reviewed too
+        Image: 'C:\Windows\System32\lsass.exe'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Administrators or scripts that clear or re-write the value with an empty list
+    - Group Policy setting "Network access - Named Pipes that can be accessed anonymously" applied with the organisation's approved pipe list (written by lsass.exe, excluded by an optional filter)
+    - Domain controller promotion, which adds netlogon, samr and lsarpc (written by lsass.exe, excluded by an optional filter)
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_lanmanserver_nullsessionpipes_modification/info.yml
