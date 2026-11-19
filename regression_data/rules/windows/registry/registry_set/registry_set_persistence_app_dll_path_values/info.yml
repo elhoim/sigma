@@ -1,0 +1,13 @@
+id: bed1cde4-4509-48b6-b38d-921c77cada9e
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 0490d4f3-f936-4a13-8f3b-5c8004ed9d25
+      title: Potential Persistence Via Application DLL Path Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_app_dll_path_values/0490d4f3-f936-4a13-8f3b-5c8004ed9d25.evtx
