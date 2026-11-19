@@ -1,0 +1,13 @@
+id: 1b1992b6-3ab6-4bfb-a25b-a7215ef6929c
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 838781c7-92db-4068-bb75-1bbf960645a2
+      title: Potential DLL Redirection Via DotLocal File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_dotlocal_redirection_file_creation/838781c7-92db-4068-bb75-1bbf960645a2.evtx

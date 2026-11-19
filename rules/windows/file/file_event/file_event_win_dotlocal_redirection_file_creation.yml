@@ -1,0 +1,34 @@
+title: Potential DLL Redirection Via DotLocal File Creation
+id: 838781c7-92db-4068-bb75-1bbf960645a2
+related:
+    - id: 07a99744-56ac-40d2-97b7-2095967b0e03 # Potential Privilege Escalation Attempt Via .Exe.Local Technique
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a file or a directory whose name is the name of an executable followed by ".local", such as "notepad.exe.local".
+    Sysmon reports the creation of a directory as a file creation event as well.
+    When a file or a directory with that name exists next to an executable, the loader looks for the DLLs of the program in the directory of the executable, or in the ".local" directory, before the normal search locations.
+    An attacker can create such a redirection file or directory next to a legitimate executable in order to get a planted DLL loaded.
+    The creation of a DLL inside a ".exe.local" directory is covered by the rule "Potential DLL Search Order Hijacking Via DotLocal Redirection Folder".
+references:
+    - https://www.hexacorn.com/blog/2015/01/09/beyond-good-ol-run-key-part-23/
+    - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '.exe.local'
+    condition: selection
+falsepositives:
+    - Legacy applications that are installed with a redirection file in order to use their private copies of shared DLLs
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_dotlocal_redirection_file_creation/info.yml
