@@ -1,0 +1,47 @@
+title: Potential DLL Payload Execution - Command Shell Or PowerShell Spawned By Rundll32
+id: d6d0c920-f25f-4127-9fda-6819f9d63741
+related:
+    - id: caa06de8-fdef-4c91-826a-7f9e163eef4b
+      type: similar
+status: experimental
+description: |
+    Detects "cmd.exe" or "powershell.exe"/"pwsh.exe" being started as a child of "rundll32.exe", excluding the Windows "Run as different user" shell export and the Windows Installer managed custom action host DLLs.
+    rundll32.exe loads a DLL and calls one of its exports; a DLL that immediately launches a command shell is the typical first stage of a malicious loader run via rundll32 (phishing attachments, LNK files, DLL side-loading), whereas legitimate DLL exports almost never spawn an interactive shell.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/rundll32
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_command_shell_via_rundll32.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1218.011
+logsource:
+    product: windows
+    category: process_creation
+    definition: 'Requirements: the exclusions need the ParentCommandLine field (Sysmon EID 1); Security 4688 has none'
+detection:
+    selection_parent:
+        ParentImage|endswith: '\rundll32.exe'
+    selection_child:
+        - Image|endswith:
+              - '\cmd.exe'
+              - '\powershell.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'Cmd.Exe'
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+    filter_main_run_as_new_user:
+        # Anchored: the first argument of rundll32 must be the shell32 export, so an attacker DLL cannot hide behind the marker text
+        ParentCommandLine|re|i: '^(?:"[^"]*rundll32\.exe"|\S*rundll32(?:\.exe)?)\s+"?(?:C:\\Windows\\System32\\)?shell32\.dll"?,RunAsNewUser_RunDLL(?:\s|$)'
+    filter_main_msi_custom_action:
+        ParentCommandLine|re|i: '^(?:"[^"]*rundll32\.exe"|\S*rundll32(?:\.exe)?)\s+"?C:\\Windows\\Installer\\MSI[0-9A-F]+\.tmp"?,zzzzInvokeManagedCustomActionOutOfProc(?:\s|$)'
+    condition: all of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Security 4688 events carry no ParentCommandLine, so the exclusions for "Run as different user" and for Windows Installer managed custom actions cannot apply there; expect those two cases to alert on 4688-only deployments
+    - Software installers that run a shell from a custom action DLL via rundll32; add the DLL to the filter
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_spawn_shell/info.yml
