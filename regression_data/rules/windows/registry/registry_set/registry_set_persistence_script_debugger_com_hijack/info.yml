@@ -1,0 +1,13 @@
+id: 71e50425-d512-4c1e-80e7-4e7f9038ee2b
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 5c6e5e27-ce95-425d-b937-07cb30241b5f
+      title: Potential COM Hijacking Of Script Debugger Components
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_script_debugger_com_hijack/5c6e5e27-ce95-425d-b937-07cb30241b5f.evtx
