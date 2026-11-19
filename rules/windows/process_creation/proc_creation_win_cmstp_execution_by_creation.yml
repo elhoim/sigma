@@ -8,7 +8,6 @@ author: Nik Seetharaman
 date: 2018-07-16
 modified: 2020-12-23
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1218.003
     - attack.g0069
@@ -24,3 +23,4 @@ detection:
 falsepositives:
     - Legitimate CMSTP use (unlikely in modern enterprise environments)
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmstp_execution_by_creation/info.yml

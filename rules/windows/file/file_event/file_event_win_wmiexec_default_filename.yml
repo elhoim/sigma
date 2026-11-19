@@ -12,6 +12,7 @@ tags:
     - attack.lateral-movement
     - attack.execution
     - attack.t1047
+    - attack.t1021.002
 logsource:
     category: file_event
     product: windows

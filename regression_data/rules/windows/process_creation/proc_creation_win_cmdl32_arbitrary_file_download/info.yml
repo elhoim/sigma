@@ -1,0 +1,13 @@
+id: 0b3229e9-71b5-4617-bdbe-769b358d47af
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-3 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: f37aba28-a9e6-4045-882c-d5004043b337
+      title: Potential Arbitrary File Download Via Cmdl32.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmdl32_arbitrary_file_download/f37aba28-a9e6-4045-882c-d5004043b337.evtx
