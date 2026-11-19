@@ -10,7 +10,6 @@ author: Andreas Hunkeler (@Karneades)
 date: 2021-06-22
 modified: 2024-03-25
 tags:
-    - attack.lateral-movement
     - attack.command-and-control
     - attack.t1090
 logsource:
@@ -25,3 +24,4 @@ falsepositives:
     - WSL2 network bridge PowerShell script used for WSL/Kubernetes/Docker (e.g. https://github.com/microsoft/WSL/issues/4150#issuecomment-504209723)
     - Synergy Software KVM (https://symless.com/synergy)
 level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_event/registry_event_portproxy_registry_key/info.yml

@@ -16,7 +16,6 @@ modified: 2023-11-11
 tags:
     - attack.stealth
     - attack.t1218
-    - attack.execution
 logsource:
     category: process_creation
     product: windows
@@ -46,3 +45,4 @@ detection:
 falsepositives:
     - Unknown
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_dll_loading/info.yml
