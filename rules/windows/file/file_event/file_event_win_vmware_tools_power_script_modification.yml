@@ -1,0 +1,38 @@
+title: Potential Persistence Via VMware Tools Default Power Script Modification
+id: 50016e24-d0b8-42cd-91a3-4c00d1c223a8
+related:
+    - id: 5687f942-867b-4578-ade7-1e341c46e99a # VMToolsd Suspicious Child Process
+      type: similar
+status: experimental
+description: |
+    Detects the creation or replacement of one of the default VMware Tools power operation scripts ("poweron-vm-default.bat", "poweroff-vm-default.bat", "suspend-vm-default.bat" and "resume-vm-default.bat") by a process other than Windows Installer.
+    The VMware Tools service "vmtoolsd.exe" runs these batch files as SYSTEM when the virtual machine is powered on, shut down, suspended or resumed. The files are installed by the VMware Tools package and are not meant to be edited, custom scripts are configured separately.
+    Commands added to them give a SYSTEM level persistence on virtual desktops and servers.
+references:
+    - https://www.hexacorn.com/blog/2017/01/14/beyond-good-ol-run-key-part-53/
+    - https://bohops.com/2021/10/08/analyzing-and-detecting-a-vmtools-persistence-technique/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\VMware\VMware Tools\poweroff-vm-default.bat'
+            - '\VMware\VMware Tools\poweron-vm-default.bat'
+            - '\VMware\VMware Tools\resume-vm-default.bat'
+            - '\VMware\VMware Tools\suspend-vm-default.bat'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Administrators who edit the default scripts instead of registering a custom script with "VMwareToolboxCmd.exe script"
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_vmware_tools_power_script_modification/info.yml
