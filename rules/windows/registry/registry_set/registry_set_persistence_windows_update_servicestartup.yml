@@ -1,0 +1,31 @@
+title: Potential Persistence Via Windows Update ServiceStartup Registry Key
+id: 5cd4b46a-ad5a-40cc-b126-03e6a475da44
+status: experimental
+description: |
+    Detects the creation of file copy or registration values under the "WindowsUpdate\Setup\ServiceStartup" registry key.
+    On Windows 7 and older, the Windows Update service processes each subkey of that key at start-up: it copies the file named in "CacheFile" to the path named in "TargetFile" and, depending on "RegistrationFlags", registers the DLL with regsvr32.exe.
+    An attacker can add a subkey in order to get a DLL copied and executed by the service at each boot.
+references:
+    - https://www.hexacorn.com/blog/2017/03/18/beyond-good-ol-run-key-part-60/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Microsoft\Windows\CurrentVersion\WindowsUpdate\Setup\ServiceStartup\'
+        TargetObject|endswith:
+            - '\20MUIFixUp'
+            - '\CacheFile'
+            - '\RegistrationFlags'
+            - '\TargetFile'
+    condition: selection
+falsepositives:
+    - Self-update of the Windows Update agent on Windows 7 and Windows Server 2008 R2
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_windows_update_servicestartup/info.yml
