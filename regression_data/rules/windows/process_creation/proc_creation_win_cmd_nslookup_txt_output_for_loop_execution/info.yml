@@ -1,0 +1,13 @@
+id: 24d59675-c805-42e2-b56e-65c9db22103b
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 1f4141c2-4c51-4fa9-ae42-4f666138a45c
+      title: Suspicious Nslookup TXT Record Output Fed Into Command Shell FOR Loop
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_nslookup_txt_output_for_loop_execution/1f4141c2-4c51-4fa9-ae42-4f666138a45c.evtx
