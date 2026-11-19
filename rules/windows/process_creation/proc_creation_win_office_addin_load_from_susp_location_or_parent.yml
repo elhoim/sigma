@@ -1,0 +1,91 @@
+title: Potential Malicious Office Add-In Opened From Suspicious Location Or Parent
+id: 5f7ce18d-842d-4ffb-8944-e4dac3c7bf50
+related:
+    - id: 8e1cb247-6cf6-42fa-b440-3f27d57e9936
+      type: similar
+    - id: af4c4609-5755-42fe-8075-4effb49f5d44
+      type: similar
+status: experimental
+description: |
+    Detects Word, Excel, PowerPoint, Access or the VSTO installer being started with an Office add-in file (.wll, .xll, .ppa, .ppam, .xla, .xlam, .vsto) as argument, when the add-in sits in a download, archive-extraction or staging directory or is passed over HTTP, when the user opened it directly from Explorer, or when a command shell launched it.
+    Add-ins are native DLLs or .NET assemblies that Office executes without the macro security prompt, which makes them a phishing payload format (XLL campaigns) and a persistence vehicle.
+    The related rules cover add-ins dropped into Office startup folders and the XLL image load.
+references:
+    - https://labs.reversec.com/posts/2017/04/add-in-opportunities-for-office-persistence
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_execution_via_office_addins.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.persistence
+    - attack.t1137.006
+    - attack.t1204.002
+    - attack.t1566.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\EXCEL.EXE'
+              - '\MSACCESS.EXE'
+              - '\POWERPNT.EXE'
+              - '\VSTOInstaller.exe'
+              - '\WINWORD.EXE'
+        - OriginalFileName:
+              - 'Excel.exe'
+              - 'MSACCESS.EXE'
+              - 'POWERPNT.EXE'
+              - 'VSTOInstaller.exe'
+              - 'WinWord.exe'
+    selection_addin_ext:
+        CommandLine|contains:
+            - '.wll'
+            - '.xll'
+            - '.ppa'
+            - '.xla'
+            - '.vsto'
+    selection_ctx_path:
+        CommandLine|contains:
+            - '\AppData\Local\Temp\7z'
+            - '\AppData\Local\Temp\Rar$'
+            - '\AppData\Local\Temp\Temp1_'
+            - '\AppData\Local\Temp\Temp2_'
+            - '\AppData\Local\Temp\BNZ.'
+            - '\AppData\Roaming\'
+            - '\Downloads\'
+            - ':\Users\Public\'
+            - ':\ProgramData\'
+            - ':\Windows\Temp\'
+            - 'http://'
+            - 'https://'
+    selection_ctx_parent:
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\explorer.exe'
+            - '\OpenWith.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+    filter_main_vsto_uninstall:
+        Image|endswith: '\VSTOInstaller.exe'
+        CommandLine|re: '(?i)^(?:"[^"]+"|[^\s"&|<>^]+)\s+/Uninstall\s+[^&|<>^]*$'
+    filter_main_msi_custom_action:
+        ParentImage:
+            - 'C:\Windows\System32\rundll32.exe'
+            - 'C:\Windows\SysWOW64\rundll32.exe'
+        ParentCommandLine|re: '(?i)^(?:"[^"]+"|[^\s"&|<>^]+)\s+"?[A-Za-z]:\\Windows\\Installer\\MSI[0-9A-Fa-f]+\.tmp"?,zzzzInvokeManagedCustomActionOutOfProc(?:\s|$)'
+    filter_optional_logitech:
+        ParentImage|re:
+            - '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\Logitech\\LogiOptions\\'
+            - '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\LogiOptionsPlus\\'
+        CommandLine|contains: '.vsto'
+    filter_optional_vsto_runtime:
+        ParentImage|re: '(?i)^[A-Za-z]:\\Program Files(?: \(x86\))?\\Common Files\\microsoft shared\\VSTO\\'
+        CommandLine|contains: '.vsto'
+    condition: selection_img and selection_addin_ext and 1 of selection_ctx_* and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Users double-clicking a legitimate add-in they downloaded or received, and VSTO add-ins installed by vendor installers from their own staging folders
+    - Any Office add-in launched from a command shell or PowerShell, including test harnesses, matches through the parent condition
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_office_addin_load_from_susp_location_or_parent/info.yml
