@@ -1,0 +1,13 @@
+id: 30d98fc5-2e2c-4a39-9918-9b2c636c6a5f
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: d741ddab-4aaa-4552-94bd-2ba75e02795b
+      title: Suspicious Control Panel Process Arguments
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_control_susp_arguments/d741ddab-4aaa-4552-94bd-2ba75e02795b.evtx

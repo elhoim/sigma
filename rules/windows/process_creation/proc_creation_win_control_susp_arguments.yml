@@ -1,0 +1,49 @@
+title: Suspicious Control Panel Process Arguments
+id: d741ddab-4aaa-4552-94bd-2ba75e02795b
+related:
+    - id: 0ba863e6-def5-4e50-9cea-4dd8c7dc46a4
+      type: similar
+    - id: d7eb979b-c2b5-4a6f-a3a7-c87ce6763819
+      type: similar
+status: experimental
+description: |
+    Detects the Control Panel host (control.exe) launched with arguments that do not correspond to a Control Panel applet: image file extensions, INF files, a ".cpl:" item followed by a path, directory traversal sequences, or files located in the user's AppData\Local or in Users\Public.
+    control.exe passes its argument to shell32's Control_RunDLL export, which loads the referenced file as a DLL regardless of its extension. Loaders therefore drop a CPL payload with a harmless-looking extension and call control.exe on it to execute it under a Microsoft-signed parent.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_control_panel_suspicious_args.toml
+    - https://lolbas-project.github.io/lolbas/Binaries/Control/
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1218.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\control.exe'
+        - OriginalFileName: 'CONTROL.EXE'
+    selection_cli:
+        CommandLine|contains:
+            - '.bmp'
+            - '.gif'
+            - '.inf'
+            - '.jpeg'
+            - '.jpg'
+            - '.png'
+            - '.tiff'
+            - '.cpl:/'
+            - '.cpl:\'
+            - '../../..'
+            - '/AppData/Local/'
+            - '\AppData\Local\'
+            - ':\Users\Public\'
+    condition: all of selection_*
+falsepositives:
+    - Vendor hardware or printer applets installed under the user profile and opened through control.exe
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_control_susp_arguments/info.yml
