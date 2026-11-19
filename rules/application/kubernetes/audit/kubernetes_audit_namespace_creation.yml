@@ -1,0 +1,25 @@
+title: New Kubernetes Namespace Created
+id: 5b5e1bdf-484f-4850-be00-4f2c98eb252f
+status: experimental
+description: |
+    Detects the creation of a new Kubernetes namespace.
+    Attackers may create a new namespace to deploy workloads that blend in or escape the monitoring and policies applied to existing namespaces.
+references:
+    - https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.execution
+    - attack.t1610
+logsource:
+    category: application
+    product: kubernetes
+    service: audit
+detection:
+    selection:
+        verb: 'create'
+        objectRef.resource: 'namespaces'
+    condition: selection
+falsepositives:
+    - Namespaces created by administrators, CI/CD pipelines or operators as part of normal cluster operations.
+level: low
