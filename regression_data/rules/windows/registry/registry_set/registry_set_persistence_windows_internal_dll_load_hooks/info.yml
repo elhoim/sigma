@@ -1,0 +1,13 @@
+id: e604e968-cb56-41f8-8f29-a467818ea497
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 7970e526-62d6-4b18-be33-906da1e0648e
+      title: Potential Persistence Via Windows Internal DLL Load Hook Registry Values
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_windows_internal_dll_load_hooks/7970e526-62d6-4b18-be33-906da1e0648e.evtx
