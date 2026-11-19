@@ -1,0 +1,13 @@
+id: e86be077-719d-462b-9b7e-5ed38534a7a6
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 80e090ef-8730-4ab7-9150-821b4e11e70f
+      title: Potential Local Session Manager Debugger Hijack - Ntsd Launched By Svchost
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_ntsd_lsm_debugger_launch/80e090ef-8730-4ab7-9150-821b4e11e70f.evtx
