@@ -1,0 +1,13 @@
+id: 8f8d0eca-9a41-4460-a669-a14a069494a8
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: a67434a7-e6fc-4547-8f7a-839ae570077c
+      title: MCP Server Started Via Runtime Interpreter Or Package Runner
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_mcp_server_started_via_runtime_interpreter/a67434a7-e6fc-4547-8f7a-839ae570077c.evtx
