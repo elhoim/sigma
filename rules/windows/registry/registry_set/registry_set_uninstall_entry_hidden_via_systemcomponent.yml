@@ -1,0 +1,51 @@
+title: Potential Installed Program Concealment Via SystemComponent Registry Value
+id: 7cc00add-54f5-4ed1-906c-abb697e26e41
+status: experimental
+description: |
+    Detects the "SystemComponent" value being set to 1 under an "Uninstall" registry subkey, other than by the Windows Installer for an MSI product code subkey.
+    Windows omits uninstall entries flagged as system components from "Programs and Features" and "Apps & features", so an attacker or a tool such as "Hide From Uninstall List" (HideUL) can use this value to hide remote management, remote access or other dropped software from the user and from administrators who review the installed programs.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/msi/arpsystemcomponent
+    - https://www.huntress.com/blog/daisy-chaining-rogue-rmm-tools
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access
+    - https://www.sordum.org/11081/hide-from-uninstall-list-v1-1/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_hide_from_uninstall_list_concealment.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.stealth
+    - attack.t1112
+    - attack.t1564
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Software\Microsoft\Windows\CurrentVersion\Uninstall\'
+            - '\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
+        TargetObject|endswith: '\SystemComponent'
+        Details: 'DWORD (0x00000001)'
+    filter_main_msiexec:
+        # Windows Installer writes ARPSYSTEMCOMPONENT for MSI packages that declare it (runtimes, redistributables, shared components)
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+        TargetObject|contains: '\Uninstall\{'
+    filter_main_edge_webview:
+        TargetObject|re: '(?i)^HKLM\\SOFTWARE\\(WOW6432Node\\)?Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft EdgeWebView\\SystemComponent$'
+    filter_optional_avira:
+        # Avira installers (Inno Setup stubs and the Spotlight bootstrapper) hide their own helper entries; both the installer path and the exact uninstall key must match
+        Image|re:
+            - '(?i)^C:\\Windows\\Temp\\is-[0-9A-Z]{5}\.tmp\\(?:avira_spotlight_setup_laun|avira_system_speedup|endpoint-protection-installer-x64)\.tmp$'
+            - '(?i)^C:\\Windows\\Temp\\\.CR\.[0-9]{1,5}\\(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\(?:\.CR\.[0-9]{1,5}\\)?)?(?:Avira\.Spotlight\.Bootstrapper|VpnInstaller)\.exe$'
+        TargetObject|re: '(?i)^HKLM\\SOFTWARE\\(?:WOW6432Node\\)?Microsoft\\Windows\\CurrentVersion\\Uninstall\\(?:Avira (?:Antivirus|Fallback Updater|Phantom VPN|Security_is1|System Speedup_is1)|\{68E1CCB4-4965-4713-BDEB-77F6D6C9BF9D\}_is1)\\SystemComponent$'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Non-MSI installers, software deployment agents and kiosk or shared-device hardening scripts that intentionally hide helper components from the installed programs list
+    - Browser and runtime updaters that register their own hidden uninstall entries
+    - Avira security product installers that hide their helper components (the known installer and uninstall key pairs are excluded by an optional filter)
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_uninstall_entry_hidden_via_systemcomponent/info.yml
