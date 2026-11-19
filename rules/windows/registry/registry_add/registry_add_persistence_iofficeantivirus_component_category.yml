@@ -1,0 +1,35 @@
+title: IOfficeAntiVirus Component Category Registration
+id: 74b40abf-6dfa-40fb-bba2-aee0a1c1eef7
+status: experimental
+description: |
+    Detects the registration of a COM class in the "IOfficeAntiVirus" component category ({56FFCC30-D398-11D0-B2AE-00A0C908FA49}).
+    Every class of that category is instantiated by browsers, mail clients and Office applications in order to scan a downloaded file or an opened document.
+    An attacker can register a custom component in that category in order to get a DLL loaded each time a file is scanned.
+references:
+    - https://www.hexacorn.com/blog/2018/08/04/beyond-good-ol-run-key-part-83/
+    - https://learn.microsoft.com/en-us/windows/win32/com/categorizing-by-component-capabilities
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546.015
+logsource:
+    category: registry_add
+    product: windows
+detection:
+    selection:
+        EventType: CreateKey
+        TargetObject|endswith: '\Implemented Categories\{56FFCC30-D398-11D0-B2AE-00A0C908FA49}'
+    filter_main_defender:
+        # Windows Defender IOfficeAntiVirus implementation, machine-wide registration only (Sysmon logs HKLM\SOFTWARE\Classes as HKCR)
+        TargetObject|startswith:
+            - 'HKCR\CLSID\{2781761E-28E0-4109-99FE-B9D127C57AFE}\'
+            - 'HKCR\WOW6432Node\CLSID\{2781761E-28E0-4109-99FE-B9D127C57AFE}\'
+            - 'HKLM\SOFTWARE\Classes\CLSID\{2781761E-28E0-4109-99FE-B9D127C57AFE}\'
+            - 'HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{2781761E-28E0-4109-99FE-B9D127C57AFE}\'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Installation or update of a third-party antivirus product that registers its own IOfficeAntiVirus scanner
+level: low
+regression_tests_path: regression_data/rules/windows/registry/registry_add/registry_add_persistence_iofficeantivirus_component_category/info.yml
