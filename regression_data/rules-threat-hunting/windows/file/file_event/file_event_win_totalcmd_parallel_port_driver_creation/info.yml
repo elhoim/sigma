@@ -1,0 +1,13 @@
+id: 1567314e-5c99-46ca-8326-99df38d3c48d
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: ccddc8e9-de71-47e0-acdb-b72d4b330c40
+      title: Total Commander Parallel Port Driver File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_totalcmd_parallel_port_driver_creation/ccddc8e9-de71-47e0-acdb-b72d4b330c40.evtx
