@@ -1,0 +1,30 @@
+title: Suspicious Bulk Force Stop Of Hyper-V Virtual Machines Via PowerShell
+id: 4340f78c-ad2c-4b66-b30c-7e039a1260cd
+status: experimental
+description: |
+    Detects a PowerShell command line that pipes the Hyper-V "Get-VM" inventory into "Stop-VM" with the "-TurnOff" switch, which hard powers off every virtual machine on the host at once without a guest shutdown.
+    Ransomware affiliates run this one-liner on Hyper-V hosts right before encrypting the virtual disk files, because running VMs keep their VHDX files locked.
+    Administrators stop individual machines or use graceful shutdowns; a forced bulk power-off of all VMs is a strong pre-encryption indicator.
+references:
+    - https://securelist.com/the-gentlemen-raas/120447/
+    - https://learn.microsoft.com/en-us/powershell/module/hyper-v/stop-vm
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.impact
+    - attack.t1489
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        CommandLine|contains|all:
+            - 'Get-VM'
+            - 'Stop-VM'
+            - '-TurnOff'
+    condition: selection
+falsepositives:
+    - Host maintenance scripts that hard power off all virtual machines before a planned host shutdown
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_hyperv_bulk_vm_force_stop/info.yml
