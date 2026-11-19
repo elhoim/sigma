@@ -8,7 +8,6 @@ author: Swachchhanda Shrawan Poudel (Nextron Systems)
 date: 2025-08-29
 tags:
     - attack.command-and-control
-    - attack.persistence
     - attack.t1219
 logsource:
     category: process_creation

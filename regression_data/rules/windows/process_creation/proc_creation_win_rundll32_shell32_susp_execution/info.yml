@@ -1,0 +1,38 @@
+id: 284bde36-9512-43fb-83d3-5f1ac96737f7
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 32b96012-7892-429e-b26c-ac2bf46066ff
+      title: Shell32 DLL Execution in Suspicious Directory
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
+    - name: Atomic Red Team replay 02 (T1218-1, event 1) - cli CommandLine %AppData%
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution-art02/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
+    - name: Atomic Red Team replay 03 (T1218-1, event 1) - cli CommandLine %LocalAppData%
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution-art03/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
+    - name: Atomic Red Team replay 04 (T1218-1, event 1) - cli CommandLine %Temp%
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution-art04/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
+    - name: Atomic Red Team replay 05 (T1218-1, event 1) - cli CommandLine %tmp%
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution-art05/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
+    - name: Atomic Red Team replay 06 (T1218-1, event 1) - cli CommandLine \Users\Public\
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_shell32_susp_execution-art06/32b96012-7892-429e-b26c-ac2bf46066ff.evtx
