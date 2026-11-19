@@ -1,0 +1,66 @@
+title: Potential Phishing Payload Download - Internet Zone File With Abusable Extension
+id: 1812afaa-8e76-4527-8908-72266514765f
+related:
+    - id: 573df571-a223-43bc-846e-3f98da481eca
+      type: similar
+    - id: 180c7c5c-d64b-4a63-86e9-68910451bc8b
+      type: similar
+status: experimental
+description: |
+    Detects the Mark-of-the-Web Zone.Identifier stream being written with an Internet or Restricted zone marker (ZoneId 3 or 4) for a file whose extension is a rarely downloaded but directly executable or handler-launching format: App Installer and MSIX packages (.appinstaller, .appx, .appxbundle, .msix, .msixbundle, .application, .manifest), Control Panel items (.cpl), troubleshooting packs (.diagcab, .diagpkg, .diagcfg), Windows Search and Settings connectors (.search-ms, .searchConnector-ms, .settingcontent-ms), themes (.theme, .themepack, .deskthemepack), .pif shortcuts and .symlink files.
+    Phishing campaigns deliver these formats because their protocol handlers run code or fetch remote content with little or no warning (Emotet .appinstaller lures, search-ms share lures, SettingContent-ms and DiagCab exploits, theme files leaking NTLM hashes).
+references:
+    - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/6e3f7352-d11c-4d76-8c39-2516a9df36e8
+    - https://www.microsoft.com/en-us/security/blog/2023/12/28/financially-motivated-threat-actors-misusing-app-installer/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_download_susp_extension.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.initial-access
+    - attack.t1204.002
+    - attack.t1566.001
+    - attack.t1566.002
+logsource:
+    product: windows
+    category: create_stream_hash
+detection:
+    selection:
+        Contents|contains:
+            - 'ZoneId=3'
+            - 'ZoneId=4'
+        TargetFilename|contains:
+            - '.appinstaller:Zone'
+            - '.application:Zone'
+            - '.appx:Zone'
+            - '.appxbundle:Zone'
+            - '.msix:Zone'
+            - '.msixbundle:Zone'
+            - '.manifest:Zone'
+            - '.cpl:Zone'
+            - '.diagcab:Zone'
+            - '.diagpkg:Zone'
+            - '.diagcfg:Zone'
+            - '.search-ms:Zone'
+            - '.searchConnector-ms:Zone'
+            - '.settingcontent-ms:Zone'
+            - '.theme:Zone'
+            - '.themepack:Zone'
+            - '.deskthemepack:Zone'
+            - '.pif:Zone'
+            - '.symlink:Zone'
+    filter_main_winget_source:
+        TargetFilename|re|i:
+            - '^C:\\Users\\[^\\]+\\AppData\\Local\\Temp\\WinGet\\Microsoft\.Winget\.Source'
+            - '^C:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\WinGet\\State\\defaultState\\Microsoft\.PreIndexed\.Package\\Microsoft\.Winget\.Source'
+            - '^C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WinGet\\State\\defaultState\\Microsoft\.PreIndexed\.Package\\Microsoft\.Winget\.Source'
+        TargetFilename|endswith: '.msix:Zone.Identifier'
+    filter_optional_teams_msix:
+        Image|re|i: '^C:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\Teams\\current\\Teams\.exe$'
+        TargetFilename|re|i: '^C:\\Users\\[^\\]+\\AppData\\Roaming\\Microsoft\\Teams\\tmp\\'
+        TargetFilename|endswith: '.msix:Zone.Identifier'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Users downloading MSIX/App Installer packages or themes from trusted vendor sites; filter the download folder or source URL in the Contents field
+level: medium
+regression_tests_path: regression_data/rules/windows/create_stream_hash/create_stream_hash_internet_download_abusable_extension/info.yml
