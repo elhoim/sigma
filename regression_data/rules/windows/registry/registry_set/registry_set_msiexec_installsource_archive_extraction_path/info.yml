@@ -1,0 +1,13 @@
+id: cd696dcb-9b6e-4eb6-9e38-7ae1a5da642e
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 8a393224-a3d5-4aba-b759-a90c0ffd7cde
+      title: Windows Installer Package Installed From Archive Extraction Directory
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_msiexec_installsource_archive_extraction_path/8a393224-a3d5-4aba-b759-a90c0ffd7cde.evtx
