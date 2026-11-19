@@ -10,9 +10,8 @@ references:
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-acl?view=powershell-7.4
 author: frack113
 date: 2021-12-30
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.011

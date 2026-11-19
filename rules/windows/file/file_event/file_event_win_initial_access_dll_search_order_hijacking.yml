@@ -7,9 +7,8 @@ references:
     - https://posts.specterops.io/automating-dll-hijack-discovery-81c4295904b0
 author: Tim Rauch (rule), Elastic (idea)
 date: 2022-10-21
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1566

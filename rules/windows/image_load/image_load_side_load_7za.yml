@@ -6,9 +6,8 @@ references:
     - https://www.gov.pl/attachment/ee91f24d-3e67-436d-aa50-7fa56acf789d
 author: X__Junior
 date: 2023-06-09
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

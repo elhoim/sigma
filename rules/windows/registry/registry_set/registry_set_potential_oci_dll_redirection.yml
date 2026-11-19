@@ -8,9 +8,9 @@ references:
     - https://www.crowdstrike.com/en-us/blog/4-ways-adversaries-hijack-dlls/
 author: Swachchhanda Shrawan Poudel (Nextron Systems)
 date: 2026-01-24
+modified: 2026-11-15
 tags:
     - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.defense-impairment

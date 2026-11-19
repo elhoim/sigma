@@ -7,9 +7,8 @@ references:
     - https://app.any.run/tasks/6d8cabb0-dcda-44b6-8050-28d6ce281687/
 author: frack113
 date: 2022-12-13
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001
