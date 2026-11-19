@@ -1,0 +1,13 @@
+id: ecb7934c-cf03-459e-9f0a-0f79682863e1
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 2e890cb1-971e-479a-9469-abc22f99e11f
+      title: Potential Persistence Via ServerCoreShellLaunch.BAT Modification
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_servercoreshelllaunch_bat_modification/2e890cb1-971e-479a-9469-abc22f99e11f.evtx
