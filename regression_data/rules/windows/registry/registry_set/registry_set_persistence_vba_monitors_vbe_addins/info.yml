@@ -1,0 +1,13 @@
+id: ca9a7a93-da7e-41cc-9701-ecb1ca2b7bef
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 2de28e1a-1cee-4d50-b8b4-3bba839905a3
+      title: Potential Persistence Via VBA Monitors Or VBE Add-In Registry Keys
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_vba_monitors_vbe_addins/2de28e1a-1cee-4d50-b8b4-3bba839905a3.evtx

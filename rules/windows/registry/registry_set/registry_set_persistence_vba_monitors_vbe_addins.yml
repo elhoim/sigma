@@ -1,0 +1,53 @@
+title: Potential Persistence Via VBA Monitors Or VBE Add-In Registry Keys
+id: 2de28e1a-1cee-4d50-b8b4-3bba839905a3
+status: experimental
+description: |
+    Detects the registration of a Visual Basic event monitor under "SOFTWARE\Microsoft\VBA\Monitors" (native and WOW6432Node views) or of an add-in of the Visual Basic Editor under "Software\Microsoft\VBA\VBE\6.0\Addins" (and "Addins64").
+    The "Monitors" key is a debugging hook that does not exist on a default installation: the Visual Basic 6 runtime ("MSVBVM60.DLL") and the VBA engine of Microsoft Office ("VBE6.dll", "VBE7.dll") enumerate its subkeys and create the COM object named by the "CLSID" value when "EnableEventMonitor" is set, which loads the referenced DLL into every Visual Basic application and into Office when macros run.
+    A VBE add-in with a "LoadBehavior" other than zero is a COM library that the VBA editor loads at startup.
+    Both locations can be used to persist inside signed Microsoft processes and are not covered by the rules for the Office application add-in keys.
+references:
+    - https://www.hexacorn.com/blog/2014/01/10/beyond-good-ol-run-key-part-6-2/
+    - https://www.hexacorn.com/blog/2016/10/21/beyond-good-ol-run-key-part-48/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_monitors:
+        TargetObject|contains:
+            - '\SOFTWARE\Microsoft\VBA\Monitors\'
+            - '\SOFTWARE\WOW6432Node\Microsoft\VBA\Monitors\'
+    selection_vbe_addin:
+        TargetObject|contains: '\Software\Microsoft\VBA\VBE\6.0\Addins'
+        TargetObject|endswith: '\LoadBehavior'
+    filter_main_vbe_addin_disabled:
+        TargetObject|contains: '\Software\Microsoft\VBA\VBE\6.0\Addins'
+        Details: 'DWORD (0x00000000)'
+    filter_main_vbe_addin_msiexec:
+        TargetObject|contains: '\Software\Microsoft\VBA\VBE\6.0\Addins'
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_main_vbe_addin_office:
+        TargetObject|contains: '\Software\Microsoft\VBA\VBE\6.0\Addins'
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft Office\'
+            - 'C:\Program Files\Microsoft Office\'
+        Image|endswith:
+            - '\EXCEL.EXE'
+            - '\MSACCESS.EXE'
+            - '\OUTLOOK.EXE'
+            - '\POWERPNT.EXE'
+            - '\VISIO.EXE'
+            - '\WINPROJ.EXE'
+            - '\WINWORD.EXE'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Installation of developer add-ins for the VBA editor such as Rubberduck or MZ-Tools by an installer that is not based on Windows Installer
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_vba_monitors_vbe_addins/info.yml
