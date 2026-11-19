@@ -1,0 +1,39 @@
+title: Potential Remote Scheduled Task Creation Via RPC
+id: 1bbbc34b-c9a2-46af-9c80-07d582b36054
+related:
+    - id: c4e92a97-a9ff-4392-9d2d-7a4c642768ca
+      type: similar
+    - id: 3a734d25-df5c-4b99-8034-af1ddb5883a4
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a scheduled task (Security event 4698) whose client process information identifies a remote RPC caller: "RpcCallClientLocality" is 0 and "ClientProcessId" is 0.
+    The Task Scheduler records these fields when a task is created over the network through the ITaskSchedulerService RPC interface, as done by "schtasks /s", "at \\host" and lateral movement tooling that schedules tasks on remote hosts, whereas locally created tasks carry the PID of the creating process.
+references:
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4698
+    - https://www.elastic.co/security-labs/blog/hunting-for-lateral-movement-using-event-query-language
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_remote_task_creation_winlog.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.lateral-movement
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1021
+    - attack.t1053.005
+logsource:
+    product: windows
+    service: security
+    definition: 'Requirements: The Advanced Audit Policy setting Object Access > Audit Other Object Access Events has to be enabled to log EID 4698. The RpcCallClientLocality and ClientProcessId fields are present on Windows 10 / Server 2016 and later.'
+detection:
+    selection:
+        EventID: 4698
+        RpcCallClientLocality: 0
+        ClientProcessId: 0
+    condition: selection
+falsepositives:
+    - Software deployment, patch management and monitoring systems that schedule tasks on managed hosts remotely
+    - Administrators using "schtasks /s" against remote servers
+level: medium
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_scheduled_task_created_by_remote_rpc_client/info.yml
