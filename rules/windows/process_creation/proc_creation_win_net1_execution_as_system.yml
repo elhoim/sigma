@@ -1,0 +1,56 @@
+title: Potential Account Discovery As SYSTEM - Net1.EXE Executed With System Integrity
+id: 8e853740-9b93-490e-90bf-7ac5d556b14b
+related:
+    - id: 79ce34ca-af29-4d0e-b832-fc1b377020db
+      type: similar
+status: experimental
+description: |
+    Detects "net1.exe" (the worker binary behind net.exe account, group and session commands) running with the System integrity level or under the LOCAL SYSTEM account, when it was not started by "net.exe" and is not managing a service ("start"/"stop") or activating an account.
+    Interactive administrators run net commands at high integrity through net.exe; a direct net1.exe invocation as SYSTEM typically comes from a service, scheduled task or exploit payload performing account and group discovery after privilege escalation. The whoami.exe half of this behaviour is covered by the related rule.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/secauthz/mandatory-integrity-control
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/discovery_command_system_account.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.discovery
+    - attack.t1033
+    - attack.t1069.001
+    - attack.t1087.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_img:
+        - Image|endswith: '\net1.exe'
+        - OriginalFileName: 'net1.exe'
+    selection_system:
+        - IntegrityLevel:
+              - 'System'
+              - 'S-1-16-16384'
+        - User|contains: # covers many language settings
+              - 'AUTHORI'
+              - 'AUTORI'
+    filter_main_net_parent:
+        ParentImage:
+            - 'C:\Windows\System32\net.exe'
+            - 'C:\Windows\SysWOW64\net.exe'
+    filter_main_service_control:
+        # Anchored: the whole command line must be a service start/stop or an account active-state change, so extra arguments cannot hide another command
+        CommandLine|re|i: '^(?:"[^"]*net1(?:\.exe)?"|\S*net1(?:\.exe)?)\s+(?:(?:start|stop)(?:\s+(?:"[A-Za-z0-9_. \-]+"|[A-Za-z0-9_.\-]+))?(?:\s+/y)?|user\s+[A-Za-z0-9_.\-$]+\s+/active:(?:yes|no))\s*$'
+    filter_optional_mde:
+        CurrentDirectory|startswith: 'C:\ProgramData\Microsoft\Windows Defender Advanced Threat Protection\Downloads\'
+    filter_optional_agents:
+        ParentImage:
+            - 'C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe'
+            - 'C:\Program Files\Dell\SupportAssistAgent\SRE\SRE.exe'
+            - 'C:\Program Files (x86)\SolarWinds\Agent\Plugins\JobEngine\SWJobEngineWorker2.exe'
+    filter_optional_intune:
+        # Anchored: only known benign PowerShell switches may precede a .ps1 under the Intune folder, which must be the last argument
+        ParentImage: 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+        ParentCommandLine|re|i: '^(?:"[^"]*powershell\.exe"|\S*powershell\.exe)\s+(?:-(?:NoProfile|NoLogo|NonInteractive|ExecutionPolicy|WindowStyle|File)(?:\s+(?:Bypass|Hidden|RemoteSigned|Unrestricted))?\s+)*"?C:\\Program Files \(x86\)\\Microsoft Intune Management Extension\\(?:[^"\\:/.][^"\\:/]*\\)*[^"\\:/.][^"\\:/]*\.ps1"?\s*$'
+    condition: all of selection_* and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Management agents and logon scripts running net user/group commands as SYSTEM; add their parent image to the optional filters
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_net1_execution_as_system/info.yml
