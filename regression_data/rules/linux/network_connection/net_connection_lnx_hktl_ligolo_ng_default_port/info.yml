@@ -1,0 +1,12 @@
+id: edeee875-ff27-4d2f-8f67-a2d71d752b30
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 3b59159c-0d2f-49a9-8eec-12664604affd
+      title: Potential Ligolo-ng Agent Connection To Default Proxy Port - Linux
+regression_tests_info:
+    - name: Positive Detection Test
+      type: json
+      match_count: 1
+      path: regression_data/rules/linux/network_connection/net_connection_lnx_hktl_ligolo_ng_default_port/3b59159c-0d2f-49a9-8eec-12664604affd.json

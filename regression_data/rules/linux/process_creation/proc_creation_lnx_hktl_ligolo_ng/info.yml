@@ -1,0 +1,12 @@
+id: dbfe6180-5aef-4243-ba0a-db9a479c93ec
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 36fcff01-1568-4cf4-8695-9d94ec5dff23
+      title: HackTool - Ligolo-ng Agent Or Proxy Execution - Linux
+regression_tests_info:
+    - name: Positive Detection Test
+      type: json
+      match_count: 1
+      path: regression_data/rules/linux/process_creation/proc_creation_lnx_hktl_ligolo_ng/36fcff01-1568-4cf4-8695-9d94ec5dff23.json
