@@ -1,0 +1,84 @@
+title: Potential Process Injection - Child Process Of Childless Service Host
+id: be1694b2-b578-4db8-9225-3737601f0140
+related:
+    - id: 96036718-71cc-4027-a538-d1587e0006a7
+      type: similar
+status: experimental
+description: |
+    Detects a process started by an "svchost.exe" instance that hosts a Windows service which never spawns child processes on a clean system (Storage Service, Connected Devices Platform, IKE, Cryptographic Services, Workstation, Event Log, Network List, Push Notifications, Distributed Link Tracking and others).
+    A child process of such a service host indicates that code was injected into the service process or that the service DLL was replaced, both common privilege escalation and persistence techniques that run with the service account's privileges.
+references:
+    - https://learn.microsoft.com/en-us/windows/application-management/svchost-service-refactoring
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_unusual_svchost_childproc_childless.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1055.012
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\svchost.exe'
+        ParentCommandLine|contains:
+            - ' -s AppHostSvc'
+            - ' -s BthAvctpSvc'
+            - ' -s camsvc'
+            - ' -s cdbhsvc'
+            - ' -s CDPSvc'
+            - ' -s CryptSvc'
+            - ' -s CscService'
+            - ' -s DisplayEnhancementService'
+            - ' -s EventLog'
+            - ' -s fhsvc'
+            - ' -s hidserv'
+            - ' -s IKEEXT'
+            - ' -s imgsvc'
+            - ' -s LanmanWorkstation'
+            - ' -s LicenseManager'
+            - ' -s netprofm'
+            - ' -s NlaSvc'
+            - ' -s PolicyAgent'
+            - ' -s ProfSvc'
+            - ' -s PushToInstall'
+            - ' -s ShellHWDetection'
+            - ' -s SstpSvc'
+            - ' -s StateRepository'
+            - ' -s StorSvc'
+            - ' -s TrkWks'
+            - ' -s WdiServiceHost'
+            - ' -s WdiSystemHost'
+            - ' -s WpnService'
+    filter_main_error_reporting:
+        Image:
+            - 'C:\Windows\System32\WerFault.exe'
+            - 'C:\Windows\System32\WerFaultSecure.exe'
+            - 'C:\Windows\System32\wermgr.exe'
+            - 'C:\Windows\SysWOW64\WerFault.exe'
+            - 'C:\Windows\SysWOW64\wermgr.exe'
+    filter_main_wdi_relpost:
+        ParentCommandLine|contains: ' -s WdiSystemHost'
+        Image: 'C:\Windows\System32\RelPost.exe'
+    filter_main_wdi_proxy_detection:
+        ParentCommandLine|contains: ' -s WdiServiceHost'
+        Image:
+            - 'C:\Windows\System32\rundll32.exe'
+            - 'C:\Windows\SysWOW64\rundll32.exe'
+        CommandLine|re|i: '^(?:"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\rundll32\.exe"?|rundll32(?:\.exe)?) +"?[A-Za-z]:\\Windows\\(?:System32|SysWOW64)\\winethc\.dll"?,ForceProxyDetectionOnNextRun *$'
+    filter_optional_imgsvc_scanner_software:
+        # The Windows Image Acquisition service starts vendor scanner components
+        ParentCommandLine|contains: ' -s imgsvc'
+        Image|startswith:
+            - 'C:\Program Files (x86)\'
+            - 'C:\Program Files\'
+    filter_optional_imgsvc_kodak:
+        ParentCommandLine|contains: ' -s imgsvc'
+        Image|startswith: 'C:\Windows\System32\Kodak\kds_'
+        Image|endswith: '\lib\lexexe.exe'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Third-party software that registers itself in one of these service groups, and rare Windows diagnostic children not yet in the filters; tune per environment
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_svchost_childless_service_spawning_process/info.yml
