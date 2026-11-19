@@ -1,0 +1,13 @@
+id: dace436c-cf26-45b6-ac2e-f14078509280
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 6ea612b9-af21-4d7f-b07d-56e55b7c4c22
+      title: PUA - Self-Hosted Tunnel Tool Execution - GOST, Wstunnel, Bore, Shootback, FRP
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_pua_self_hosted_tunnel_tools/6ea612b9-af21-4d7f-b07d-56e55b7c4c22.evtx
