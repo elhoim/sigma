@@ -1,0 +1,13 @@
+id: e9a1c04d-8db3-42bb-8aa7-d01b6f2bdcb3
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: add69dd6-8a63-4f89-853f-7d9549ff9dca
+      title: Potential Persistence Via Hidden Scheduled Task Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_scheduled_task_creation_hidden_setting/add69dd6-8a63-4f89-853f-7d9549ff9dca.evtx

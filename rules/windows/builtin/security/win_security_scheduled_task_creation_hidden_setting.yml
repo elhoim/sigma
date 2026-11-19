@@ -1,0 +1,35 @@
+title: Potential Persistence Via Hidden Scheduled Task Registration
+id: add69dd6-8a63-4f89-853f-7d9549ff9dca
+related:
+    - id: 3a734d25-df5c-4b99-8034-af1ddb5883a4
+      type: similar
+status: experimental
+description: |
+    Detects the registration of a scheduled task whose XML definition carries the "<Hidden>true</Hidden>" setting, as logged in the TaskContent of a Security event 4698.
+    A hidden task is not shown in the Task Scheduler console unless "Show Hidden Tasks" is enabled, so malware and post-exploitation frameworks set it to keep their persistence task out of sight; built-in Windows tasks and ordinary software installers rarely use the flag.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/taskschd/taskschedulerschema-hidden-settingstype-element
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4698
+    - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/hidden_scheduled_tasks.yml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1053.005
+    - attack.t1564
+logsource:
+    product: windows
+    service: security
+    definition: 'Requirements: Object Access > Audit Other Object Access Events enabled'
+detection:
+    selection:
+        EventID: 4698
+        TaskContent|contains: '<Hidden>true</Hidden>'
+    condition: selection
+falsepositives:
+    - Some security products and backup agents register hidden maintenance tasks; filter on the TaskName or the SubjectUserName of the deploying service account
+level: medium
+regression_tests_path: regression_data/rules/windows/builtin/security/win_security_scheduled_task_creation_hidden_setting/info.yml
