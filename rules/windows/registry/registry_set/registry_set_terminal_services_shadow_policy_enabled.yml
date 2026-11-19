@@ -1,0 +1,36 @@
+title: Potential RDP Session Shadowing Enabled Via Registry Policy
+id: fc4fb589-9333-4cdf-b80f-90f39e30a646
+related:
+    - id: 6ba5a05f-b095-4f0a-8654-b825f4f16334
+      type: similar
+status: experimental
+description: |
+    Detects the "Shadow" policy value under "Policies\Microsoft\Windows NT\Terminal Services" being set to a value between 1 and 4, which allows other users' Remote Desktop sessions to be viewed or controlled, with or without the user's consent depending on the value.
+    The policy is not configured on a default system; attackers set it to spy on or take over active RDP sessions of other users (for example administrators) without triggering a new logon, a technique known as RDP shadowing or session hijacking.
+references:
+    - https://blog.bitsadmin.com/spying-on-users-using-rdp-shadowing
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_evasion_rdp_shadowing.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.collection
+    - attack.lateral-movement
+    - attack.t1021.001
+    - attack.t1113
+    - attack.t1563.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Policies\Microsoft\Windows NT\Terminal Services\Shadow'
+        Details:
+            - 'DWORD (0x00000001)'
+            - 'DWORD (0x00000002)'
+            - 'DWORD (0x00000003)'
+            - 'DWORD (0x00000004)'
+    condition: selection
+falsepositives:
+    - Help desk or terminal server administrators intentionally enabling session shadowing through Group Policy (the policy is then written by the Group Policy client, svchost.exe, on every refresh)
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_terminal_services_shadow_policy_enabled/info.yml
