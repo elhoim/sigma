@@ -12,8 +12,8 @@ date: 2025-06-13
 tags:
     - attack.execution
     - attack.command-and-control
-    - attack.lateral-movement
     - attack.t1105
+    - attack.t1204.002
     - detection.threat-hunting
 logsource:
     category: process_creation
