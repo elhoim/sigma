@@ -1,0 +1,39 @@
+title: Startup Approved Registry Value Modified By Uncommon Process
+id: 2d905f4d-bac4-40f5-93c8-8ee4bdc63db5
+status: experimental
+description: |
+    Detects a value written under the "Explorer\StartupApproved" registry keys ("Run", "Run32" and "StartupFolder") by a process other than Windows Explorer, Task Manager or the Settings application.
+    Each value of these keys holds the enabled or disabled state of one autostart entry, as shown on the "Startup" tab of Task Manager. At logon Explorer checks every Run key and Startup folder entry against this list and skips the disabled ones.
+    A program that writes these values directly can silently disable the autostart of another program, for example a security or management agent, or re-enable an entry that the user had disabled. The value data is binary, so the new state has to be read from the registry.
+    Hunting hypothesis: a process that is not an installer of the program owning the entry (a script host, a binary in a user-writable folder, or a remote management tool) writes the approval state of a security, backup or management agent.
+    A hit is confirmed when the value data, read from the registry, marks that agent as disabled and the agent did not start at the next logon.
+references:
+    - https://www.hexacorn.com/blog/2019/02/23/beyond-good-ol-run-key-part-104/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.defense-impairment
+    - attack.persistence
+    - attack.t1112
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run\'
+            - '\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run32\'
+            - '\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\StartupFolder\'
+    filter_main_shell:
+        Image:
+            - 'C:\Windows\explorer.exe'
+            - 'C:\Windows\ImmersiveControlPanel\SystemSettings.exe'
+            - 'C:\Windows\System32\Taskmgr.exe'
+            - 'C:\Windows\SysWOW64\Taskmgr.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Applications and installers that manage their own "start with Windows" option by writing the approval state
+    - Startup management and system optimisation utilities
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_startupapproved_uncommon_process/info.yml
