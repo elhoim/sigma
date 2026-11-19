@@ -1,0 +1,28 @@
+id: 286aa888-84cf-4d13-9af7-c3553645cbc1
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 6ce549c5-dd81-495e-8e60-96c6de4d6eef
+      title: Potential Outlook Inbox Rule With Forward Or Delete Action Created Via PowerShell COM
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_outlook_rule_creation_via_com/6ce549c5-dd81-495e-8e60-96c6de4d6eef.evtx
+    - name: Atomic Red Team replay 01 (T1137.001-1, event 4104) - rules; action; action ScriptBlockText .Actions.Delete
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_outlook_rule_creation_via_com-art01/6ce549c5-dd81-495e-8e60-96c6de4d6eef.evtx
+    - name: Atomic Red Team replay 02 (T1546.018-1, event 4104) - action ScriptBlockText .Actions.Forward
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_outlook_rule_creation_via_com-art02/6ce549c5-dd81-495e-8e60-96c6de4d6eef.evtx
+    - name: Atomic Red Team replay 03 (T1567.004-2, event 4104) - action ScriptBlockText .Actions.Redirect
+      type: evtx
+      provider: Microsoft-Windows-PowerShell
+      match_count: 1
+      path: regression_data/rules/windows/powershell/powershell_script/posh_ps_outlook_rule_creation_via_com-art03/6ce549c5-dd81-495e-8e60-96c6de4d6eef.evtx
