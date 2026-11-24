@@ -6,6 +6,8 @@ description: |
     Misconfigured RBAC bindings granting permissions to "system:anonymous" or "system:unauthenticated" allow unauthenticated adversaries to interact with the cluster.
 references:
     - https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests
+    - https://www.aquasec.com/blog/leveraging-kubernetes-rbac-to-backdoor-clusters
+    - https://securitylabs.datadoghq.com/articles/kubernetes-rbac-built-in-principals-dangerous-permissions/
 author: elhoim
 date: 2026-10-15
 tags:
