@@ -6,6 +6,8 @@ description: |
     This may indicate that a session cookie of the user was stolen, for example by an infostealer, and replayed by an adversary.
 references:
     - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/login#user_signed_out_due_to_suspicious_session_cookie
+    - https://www.malwarebytes.com/blog/news/2024/01/info-stealers-can-steal-cookies-for-permanent-access-to-your-google-account
+    - https://www.securityweek.com/several-infostealers-use-persistent-cookies-to-hijack-google-accounts/
 author: elhoim
 date: 2026-10-15
 tags:
