@@ -18,6 +18,7 @@ references:
     - https://embracethered.com/blog/posts/2024/cookie-theft-in-2024-and-what-todo/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_browsers_unusual_parent.toml
     - https://github.com/redcanaryco/atomic-red-team/blob/59ea87397c5faf8cad1e6ebe36fd625d0063e894/atomics/T1539/T1539.yaml
+    - https://www.zscaler.com/blogs/cybersecurity-best-practices/google-chrome-app-bound-encryption
 author: elhoim
 date: 2026-11-09
 tags:
