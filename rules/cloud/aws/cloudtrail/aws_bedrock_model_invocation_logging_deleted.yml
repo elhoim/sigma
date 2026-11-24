@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/bedrock/latest/APIReference/API_DeleteModelInvocationLoggingConfiguration.html
     - https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html
+    - https://labs.cloudsecurityalliance.org/research/csa-research-note-aws-bedrock-attack-vectors-20260324-csa-st/
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/aws-post-exploitation/aws-bedrock-post-exploitation/index.html
 author: elhoim
 date: 2026-10-15
 tags:

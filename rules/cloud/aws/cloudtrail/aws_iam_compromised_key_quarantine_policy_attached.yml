@@ -8,6 +8,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSCompromisedKeyQuarantineV3.html
     - https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachUserPolicy.html
+    - https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/
+    - https://unit42.paloaltonetworks.com/malicious-operations-of-exposed-iam-keys-cryptojacking/
 author: elhoim
 date: 2026-10-15
 tags:

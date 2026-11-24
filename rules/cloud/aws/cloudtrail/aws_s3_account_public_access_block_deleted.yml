@@ -8,6 +8,8 @@ references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_DeletePublicAccessBlock.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+    - https://panther.com/blog/detecting-and-hunting-for-cloud-ransomware-part-1-aws-s3
+    - https://www.trendmicro.com/en_us/research/25/k/s3-ransomware.html
 author: elhoim
 date: 2026-10-15
 tags:
