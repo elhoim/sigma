@@ -9,6 +9,8 @@ references:
     - https://cloud.google.com/compute/docs/logging/audit-logging
     - https://cloud.google.com/compute/docs/connect/add-ssh-keys
     - https://cloud.google.com/compute/docs/instances/startup-scripts/linux
+    - https://about.gitlab.com/blog/plundering-gcp-escalating-privileges-in-google-cloud-platform/
+    - https://www.praetorian.com/blog/google-cloud-platform-gcp-service-account-based-privilege-escalation-paths
 author: elhoim
 date: 2026-10-15
 tags:
