@@ -9,6 +9,7 @@ description: |
 references:
     - https://www.aikido.dev/blog/fake-clawdbot-vscode-extension-malware
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_suspicious_execution_from_vscode_extension.toml
+    - https://safedep.io/dark-gpt-vscode-malicious-extension/
 author: elhoim
 date: 2026-11-10
 tags:
