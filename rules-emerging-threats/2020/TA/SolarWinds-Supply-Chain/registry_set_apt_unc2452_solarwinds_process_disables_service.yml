@@ -10,6 +10,8 @@ description: |
 references:
     - https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_solarwinds_backdoor_service_disabled_via_registry.toml
+    - https://www.security.com/threat-intelligence/solarwinds-attacks-stealthy-attackers-attempted-evade-detection
+    - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
 author: elhoim
 date: 2026-11-10
 tags:
