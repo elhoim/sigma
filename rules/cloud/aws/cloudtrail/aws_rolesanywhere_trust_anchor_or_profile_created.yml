@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/rolesanywhere/latest/APIReference/API_CreateTrustAnchor.html
     - https://docs.aws.amazon.com/rolesanywhere/latest/APIReference/API_CreateProfile.html
+    - https://hackingthe.cloud/aws/post_exploitation/iam_roles_anywhere_persistence/
+    - https://medium.com/@adan.alvarez/how-attackers-can-abuse-iam-roles-anywhere-for-persistent-aws-access-b3ced6935dca
 author: elhoim
 date: 2026-10-15
 tags:

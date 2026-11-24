@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/eks/latest/APIReference/API_AssociateAccessPolicy.html
     - https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+    - https://www.wiz.io/blog/new-attack-vectors-emerge-via-recent-eks-access-entries-and-pod-identity-features
+    - https://securitylabs.datadoghq.com/articles/eks-cluster-access-management-deep-dive/
 author: elhoim
 date: 2026-10-15
 tags:

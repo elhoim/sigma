@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+    - https://www.securityweek.com/compromised-aws-keys-abused-in-codefinger-ransomware-attacks/
+    - https://www.bleepingcomputer.com/news/security/ransomware-abuses-amazon-aws-feature-to-encrypt-s3-buckets/
 author: elhoim
 date: 2026-10-15
 tags:

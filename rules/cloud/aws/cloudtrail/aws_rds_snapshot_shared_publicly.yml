@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ModifyDBSnapshotAttribute.html
     - https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ModifyDBClusterSnapshotAttribute.html
+    - https://securitylabs.datadoghq.com/cloud-security-atlas/attacks/sharing-rds-snapshot
+    - https://cloud.hacktricks.wiki/pentesting-cloud/aws-security/aws-persistence/aws-rds-persistence/
 author: elhoim
 date: 2026-10-15
 tags:

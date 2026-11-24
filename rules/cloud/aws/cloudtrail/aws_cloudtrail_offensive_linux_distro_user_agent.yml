@@ -6,6 +6,8 @@ description: |
     AWS SDKs and the AWS CLI include the operating system and kernel release in the user agent, which reveals these distributions.
 references:
     - https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-record-contents.html
+    - https://expel.com/blog/incident-report-stolen-aws-access-keys/
+    - https://hackingthe.cloud/aws/avoiding-detection/guardduty-pentest-botocore/
 author: elhoim
 date: 2026-10-15
 tags:

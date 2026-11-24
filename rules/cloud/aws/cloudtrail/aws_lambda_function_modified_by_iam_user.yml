@@ -8,6 +8,8 @@ references:
     - https://docs.aws.amazon.com/lambda/latest/api/API_UpdateFunctionCode.html
     - https://docs.aws.amazon.com/lambda/latest/api/API_AddPermission.html
     - https://docs.aws.amazon.com/lambda/latest/dg/logging-using-cloudtrail.html
+    - https://www.sysdig.com/blog/ai-assisted-cloud-intrusion-achieves-admin-access-in-8-minutes
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/aws-persistence/aws-lambda-persistence/
 author: elhoim
 date: 2026-10-15
 tags:

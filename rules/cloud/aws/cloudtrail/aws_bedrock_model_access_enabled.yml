@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/bedrock/latest/APIReference/API_PutUseCaseForModelAccess.html
     - https://docs.aws.amazon.com/bedrock/latest/APIReference/API_CreateFoundationModelAgreement.html
+    - https://www.wiz.io/blog/jinx-2401-llm-hijacking-aws
+    - https://sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack/
 author: elhoim
 date: 2026-10-15
 tags:

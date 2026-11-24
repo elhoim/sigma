@@ -6,6 +6,8 @@ description: |
     Adversaries may use GetFederationToken with stolen long-term access keys to obtain temporary credentials, including console sessions, that survive the deletion of the original access key.
 references:
     - https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html
+    - https://www.crowdstrike.com/en-us/blog/how-adversaries-persist-with-aws-user-federation/
+    - https://securitylabs.datadoghq.com/articles/tales-from-the-cloud-trenches-unwanted-visitor/
 author: elhoim
 date: 2026-10-15
 tags:

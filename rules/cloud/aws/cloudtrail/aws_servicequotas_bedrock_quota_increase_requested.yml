@@ -6,6 +6,8 @@ description: |
     Adversaries abusing stolen credentials for LLMjacking may request higher Bedrock quotas to increase the volume of model invocations they can perform.
 references:
     - https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_RequestServiceQuotaIncrease.html
+    - https://aws-samples.github.io/threat-technique-catalog-for-aws/Techniques/T1496.A007.html
+    - https://www.sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack
 author: elhoim
 date: 2026-10-15
 tags:

@@ -6,6 +6,8 @@ description: |
     Adversaries may add a console password to an existing IAM user that has none in order to obtain persistent console access.
 references:
     - https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateLoginProfile.html
+    - https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/
+    - https://hackingthe.cloud/aws/post_exploitation/iam_persistence/
 author: elhoim
 date: 2026-10-15
 tags:
