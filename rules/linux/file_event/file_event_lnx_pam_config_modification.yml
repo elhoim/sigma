@@ -7,6 +7,8 @@ description: |
 references:
     - https://man7.org/linux/man-pages/man5/pam.d.5.html
     - https://github.com/segmentati0nf4ult/linux-pam-backdoor
+    - https://www.group-ib.com/blog/pluggable-authentication-module/
+    - https://x-c3ll.github.io/posts/PAM-backdoor-DNS/
 author: elhoim
 date: 2026-10-15
 tags:
