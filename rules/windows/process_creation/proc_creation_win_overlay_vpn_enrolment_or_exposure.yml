@@ -15,6 +15,7 @@ references:
     - https://docs.netbird.io/how-to/cli
     - https://research.checkpoint.com/2026/handala-hack-unveiling-groups-modus-operandi/
     - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/
+    - https://www.hexnode.com/blogs/tailscale-openssh-persistence-after-c2-outage/
 author: elhoim
 date: 2026-11-09
 tags:
