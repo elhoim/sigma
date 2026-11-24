@@ -10,6 +10,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/rest/api/compute/snapshots/create-or-update
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/compute#microsoftcompute
+    - https://web.archive.org/web/20250617020217/https://www.secura.com/services/information-technology/vapt/what-can-be-pentested/cloud-pentesting/how-to-extract-azure-secrets-as-a-backup-user
+    - https://securitylabs.datadoghq.com/cloud-security-atlas/attacks/stealing-virtual-machine-disk-url-sharing
 author: elhoim
 date: 2026-10-15
 tags:
