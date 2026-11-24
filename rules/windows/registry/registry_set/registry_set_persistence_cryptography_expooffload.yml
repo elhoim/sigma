@@ -7,6 +7,7 @@ description: |
     As these providers are used by most processes, an attacker can set the value in order to get a DLL loaded in many processes, where it can also access the private keys that are handled.
 references:
     - https://www.hexacorn.com/blog/2017/01/27/beyond-good-ol-run-key-part-57/
+    - https://cocomelonc.github.io/malware/2022/10/21/malware-pers-16.html
 author: elhoim
 date: 2026-11-12
 tags:
