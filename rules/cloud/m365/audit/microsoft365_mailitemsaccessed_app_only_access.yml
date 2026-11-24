@@ -10,6 +10,7 @@ references:
     - https://learn.microsoft.com/en-us/purview/audit-log-detailed-properties#usertype-and-userkey-scenarios
     - https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#common-schema
     - https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack/
+    - https://web.archive.org/web/20261013130228/https://redcanary.com/blog/threat-detection/entra-id-service-principals/
 author: elhoim
 date: 2026-10-15
 tags:
