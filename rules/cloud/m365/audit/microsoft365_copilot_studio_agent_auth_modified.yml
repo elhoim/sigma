@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-logging-copilot-studio
     - https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication
+    - https://www.microsoft.com/en-us/security/blog/2026/02/12/copilot-studio-agent-security-top-10-risks-detect-prevent/
+    - https://labs.zenity.io/post/agentic-recon-discovering-and-mapping-public-ai-agents
 author: elhoim
 date: 2026-10-15
 tags:

@@ -7,6 +7,9 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/purview/audit-copilot
     - https://learn.microsoft.com/en-us/office/office-365-management-api/copilot-schema
+    - https://arxiv.org/abs/2509.10540v1
+    - https://arxiv.org/html/2509.10540v1
+    - https://www.varonis.com/blog/echoleak
 author: elhoim
 date: 2026-10-15
 tags:

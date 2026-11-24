@@ -8,6 +8,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/new-inboundconnector?view=exchange-ps
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-inboundconnector?view=exchange-ps
+    - https://www.microsoft.com/en-us/security/blog/?p=122401
+    - https://www.varonis.com/blog/m365-bec-attack
 author: elhoim
 date: 2026-10-15
 tags:

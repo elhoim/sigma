@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/purview/audit-log-sharing
     - https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#sharepoint-sharing-schema
+    - https://www.microsoft.com/en-us/security/blog/2024/10/08/file-hosting-services-misused-for-identity-phishing
+    - https://practical365.com/investigating-document-exfiltration-with-the-graph-activity-log/
 author: elhoim
 date: 2026-10-15
 tags:
