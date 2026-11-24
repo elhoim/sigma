@@ -13,6 +13,7 @@ references:
     - https://github.com/danielbohannon/Invoke-Obfuscation/blob/f20e7f843edd0a3a7716736e9eddfa423395dd26/README.md
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_obfuscation_iex_env_vars_reconstruction.toml
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_obfuscation_iex_string_reconstruction.toml
+    - https://isc.sans.edu/diary/26762
 author: elhoim
 date: 2026-11-09
 tags:
