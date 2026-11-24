@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#protected_branch
     - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+    - https://dibsy.github.io/2026/01/25/bypassing-github-branch-protection-as-an-adversary
+    - https://www.githubforensics.com/en/blog/github-organization-compromised
 author: elhoim
 date: 2026-10-15
 tags:
