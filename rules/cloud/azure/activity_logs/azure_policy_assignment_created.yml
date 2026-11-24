@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/governance/policy/concepts/assignment-structure
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/management-and-governance
+    - https://securitylabs.datadoghq.com/articles/azure-policy-privilege-escalation/
+    - https://microsoft.github.io/Azure-Threat-Research-Matrix/Persistence/AZT508/AZT508
 author: elhoim
 date: 2026-10-15
 tags:

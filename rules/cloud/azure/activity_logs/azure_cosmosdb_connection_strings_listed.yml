@@ -8,6 +8,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/databases
     - https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/database-accounts/list-connection-strings
+    - https://www.microsoft.com/security/blog/2022/06/23/detecting-malicious-key-extractions-by-compromised-identities-for-azure-cosmos-db/
+    - https://www.wiz.io/blog/chaosdb-how-we-hacked-thousands-of-azure-customers-databases
 author: elhoim
 date: 2026-10-15
 tags:

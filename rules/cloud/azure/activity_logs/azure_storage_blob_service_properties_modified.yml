@@ -9,6 +9,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/storage
     - https://learn.microsoft.com/en-us/azure/storage/blobs/data-protection-overview
+    - https://panther.com/blog/detecting-and-hunting-for-cloud-ransomware-part-3-azure-storage
+    - https://www.microsoft.com/en-us/security/blog/2025/08/27/storm-0501s-evolving-techniques-lead-to-cloud-based-ransomware/
 author: elhoim
 date: 2026-10-15
 tags:

@@ -8,6 +8,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/bastion/shareable-link
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/networking
+    - https://www.o3c.no/knowledge/azure-vm-persistence-using-bastion-shareable-links
+    - https://blog.karims.cloud/2022/11/26/yet-another-azure-vm-persistence.html
 author: elhoim
 date: 2026-10-15
 tags:
