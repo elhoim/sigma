@@ -8,6 +8,8 @@ references:
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshots.html
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CopySnapshot.html
+    - https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques/
+    - https://securitylabs.datadoghq.com/cloud-security-atlas/attacks/sharing-ebs-snapshot
 author: elhoim
 date: 2026-10-15
 tags:
