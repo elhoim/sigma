@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-app-owners
     - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities
+    - https://www.silverfort.com/?p=16889
+    - https://www.semperis.com/blog/service-principal-ownership-abuse-in-entra-id/
 author: elhoim
 date: 2026-10-15
 tags:

@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/management-and-governance
+    - https://www.microsoft.com/security/blog/2025/08/27/storm-0501s-evolving-techniques-lead-to-cloud-based-ransomware/
+    - https://stratus-red-team.cloud/attack-techniques/azure/azure.impact.resource-lock/
 author: elhoim
 date: 2026-10-15
 tags:
