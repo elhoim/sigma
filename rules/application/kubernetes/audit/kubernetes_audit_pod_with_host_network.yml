@@ -10,6 +10,8 @@ description: |
 references:
     - https://kubernetes.io/docs/concepts/security/pod-security-standards/
     - https://www.elastic.co/guide/en/security/current/kubernetes-pod-created-with-hostnetwork.html
+    - https://bishopfox.com/blog/kubernetes-pod-privilege-escalation
+    - https://orca.security/resources/blog/controller-creating-pods-with-hostnetwork-enabled
 author: elhoim
 date: 2026-10-15
 tags:
