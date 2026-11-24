@@ -13,6 +13,8 @@ references:
     - https://github.com/GoSecure/pywsus
     - https://github.com/nettitude/SharpWSUS/blob/53b1a71754ef44118b3756dd9ff9b68fadd97fae/README.md
     - https://www.elastic.co/guide/en/security/8.19/potential-wsus-abuse-for-lateral-movement.html
+    - https://github.com/NeffIsBack/wsuks/tree/61d250eec864a52e1837f22bb9324353efd0e7bf
+    - https://github.com/GoSecure/pywsus/tree/60c8b81bbe751ff11edf046776cba78347a8c7ff
 author: elhoim
 date: 2026-10-15
 tags:

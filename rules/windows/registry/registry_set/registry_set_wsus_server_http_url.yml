@@ -10,6 +10,7 @@ references:
     - https://github.com/GoSecure/pywsus
     - https://learn.microsoft.com/en-us/windows/deployment/update/waas-wu-settings#configuring-automatic-updates-by-editing-the-registry
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-server-update-services/deploy/2-configure-wsus#configure-ssl-on-the-wsus-server
+    - https://github.com/nettitude/SharpWSUS/blob/53b1a71754ef44118b3756dd9ff9b68fadd97fae/README.md
 author: elhoim
 date: 2026-10-15
 tags:
