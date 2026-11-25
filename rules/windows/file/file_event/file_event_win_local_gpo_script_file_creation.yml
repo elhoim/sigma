@@ -1,0 +1,38 @@
+title: Potential Persistence Via Local Group Policy Script - File Creation
+id: 80b2b653-1765-42bb-bdf5-ae5815fec8ca
+status: experimental
+description: |
+    Detects the creation of a file in the scripts directories of the local Group Policy object by a process other than the Microsoft Management Console.
+    The files "scripts.ini" and "psscripts.ini" list the startup, shutdown, logon and logoff scripts of the local Group Policy, and the scripts are stored in the sibling "Startup", "Shutdown", "Logon" and "Logoff" directories.
+    An attacker can write these files directly in order to get a script executed at each boot as SYSTEM or at each logon, without using the Group Policy editor.
+references:
+    - https://www.hexacorn.com/blog/2016/05/30/beyond-good-ol-run-key-part-39/
+    - https://www.hexacorn.com/blog/2017/01/07/beyond-good-ol-run-key-part-52/
+    - https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/reset-local-password-without-agent
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1037
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_local_gpo:
+        TargetFilename|contains:
+            - ':\Windows\System32\GroupPolicy\Machine\Scripts\'
+            - ':\Windows\System32\GroupPolicy\User\Scripts\'
+    selection_local_gpo_users:
+        # Local Group Policy objects that apply to a single user or to the (non-)administrators
+        TargetFilename|contains|all:
+            - ':\Windows\System32\GroupPolicyUsers\'
+            - '\User\Scripts\'
+    filter_main_mmc:
+        Image: 'C:\Windows\System32\mmc.exe'
+    condition: 1 of selection_* and not 1 of filter_main_*
+falsepositives:
+    - Administrators or deployment tools that configure local Group Policy scripts without the Group Policy editor, for example by copying a prepared GroupPolicy directory
+    - Offline repair procedures that add a startup script, such as the Microsoft procedure to reset a local password on an Azure VM
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_local_gpo_script_file_creation/info.yml
