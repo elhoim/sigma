@@ -1,0 +1,13 @@
+id: 49fa6569-5746-4065-b8e7-3e9579385a6d
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 4dbb7dc1-0a26-4c69-84fc-78332a2f9b2e
+      title: Uncommon Child Process Of Change.EXE, Query.EXE Or Reset.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_change_query_reset_uncommon_child_process/4dbb7dc1-0a26-4c69-84fc-78332a2f9b2e.evtx
