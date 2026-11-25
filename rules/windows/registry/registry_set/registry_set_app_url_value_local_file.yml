@@ -1,0 +1,64 @@
+title: Potential Persistence Via Application URL Registry Value Pointing To Local File
+id: df55c9c5-3425-4b26-bfde-45b2af074f46
+status: experimental
+description: |
+    Detects a registry value whose name designates a purchase, registration, update or download URL of an application ("BuyUrl", "OrderUrl", "PurchaseURL", "UpdateURL" and similar) and whose data is not a web address but a "file:" URL, a UNC path or a local path to an executable or script.
+    Many desktop applications store such links in the registry at installation time and pass the value to ShellExecute when the user clicks the matching button or when the built-in updater runs. Replacing the web address by a local file turns the button or the update check into a launcher for the attacker's program, a dormant persistence that starts no process until the user or the updater triggers it.
+references:
+    - https://www.hexacorn.com/blog/2026/01/03/beyond-good-ol-run-key-part-156/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_name:
+        TargetObject|contains: '\SOFTWARE\'
+        TargetObject|endswith:
+            - '\AssistantDownloadURL'
+            - '\BuyUrl'
+            - '\CampaignDownloadUrl'
+            - '\DownloadURL'
+            - '\OrderUrl'
+            - '\PurchaseURL'
+            - '\RegisterURL'
+            - '\RegistrationURL'
+            - '\RenewURL'
+            - '\UninstallURL'
+            - '\UpdaterURL'
+            - '\UpdateURL'
+            - '\URLDownload'
+            - '\VersionCheckURL'
+            - '\WWWDownload'
+    selection_value_scheme:
+        Details|startswith:
+            - 'file:'
+            - '\\\\'
+    selection_value_local_exec:
+        Details|contains: ':\'
+        Details|endswith:
+            - '.bat'
+            - '.cmd'
+            - '.cpl'
+            - '.exe'
+            - '.hta'
+            - '.js'
+            - '.jse'
+            - '.lnk'
+            - '.msi'
+            - '.pif'
+            - '.ps1'
+            - '.scr'
+            - '.vbe'
+            - '.vbs'
+            - '.wsf'
+    condition: selection_name and 1 of selection_value_*
+falsepositives:
+    - Applications that keep the path of a locally cached installer or of their own updater executable in a value named like a URL
+    - Enterprise packaging that redirects an update URL to a file share
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_app_url_value_local_file/info.yml
