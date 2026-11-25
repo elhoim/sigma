@@ -1,0 +1,13 @@
+id: b9b9f822-48d6-40fb-aa62-6f13b7c15c8d
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: f9d72f13-c8c1-4e45-9e7e-957f82d3c5ff
+      title: Potential Service Hijack - Service ImagePath Modified By Uncommon Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_service_imagepath_modified_by_uncommon_process/f9d72f13-c8c1-4e45-9e7e-957f82d3c5ff.evtx
