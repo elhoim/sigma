@@ -17,6 +17,9 @@ description: |
 references:
     - https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/
     - https://github.com/magicsword-io/Magic-Atomics/blob/d29fb7c49edb11084a7f088efeb36bf5697f1647/backend/app/main.py#L95-L136
+    - https://www.group-ib.com/blog/clickfix-the-social-engineering-technique-hackers-use-to-manipulate-victims/
+    - https://www.recordedfuture.com/research/clickfix-campaigns-targeting-windows-and-macos
+    - https://www.rapid7.com/blog/post/ve-clickfix-phishing-campaign-fake-claude-installer/
 author: elhoim
 date: 2026-11-10
 tags:
