@@ -1,0 +1,31 @@
+title: Potential DLL Loading Via Rundll32 Fwpolicyiomgr LoadGPExtensionDll
+id: cd4d82e7-e8af-4e0a-8124-e7f143529ac1
+status: experimental
+description: |
+    Detects the execution of "rundll32.exe" with the "LoadGPExtensionDll" export of the Windows Firewall policy library "fwpolicyiomgr.dll".
+    This export loads the library named by the "GPExtensionDLL" value of the "mpssvc" service parameters key ("HKLM\System\CurrentControlSet\Services\mpssvc\Parameters"). The value does not exist by default and the export is not called from the command line by Windows.
+    The command can be used to trigger a persistence prepared in that registry value or to proxy the execution of an arbitrary DLL through signed Microsoft binaries.
+references:
+    - https://www.hexacorn.com/blog/2025/12/31/beyond-good-ol-run-key-part-149-update/
+    - https://www.hexacorn.com/blog/2025/07/11/beyond-good-ol-run-key-part-149/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.stealth
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    selection_cli:
+        CommandLine|contains|all:
+            - 'fwpolicyiomgr'
+            - 'LoadGPExtensionDll'
+    condition: all of selection_*
+falsepositives:
+    - Unlikely
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_fwpolicyiomgr_loadgpextensiondll/info.yml
