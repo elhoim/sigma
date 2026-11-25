@@ -9,6 +9,8 @@ description: |
 references:
     - https://docs.openssl.org/master/man1/openssl-passwd/
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1078.003/T1078.003.md
+    - https://isc.sans.edu/diary/31994
+    - https://securelayer7.net/learn/privilege-escalation/what-is-writable-etc-passwd
 author: elhoim
 date: 2026-10-01
 tags:
