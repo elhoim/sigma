@@ -9,6 +9,7 @@ references:
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/AxtMueller/Windows-Kernel-Explorer/blob/a601217a2834baac7d87a54abd81396be3142958/README.md
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+    - https://www.quickheal.co.in/knowledge-centre/weaponizing-legitimate-low-level-tools-how-ransomware-evades-antivirus-protections/
 author: elhoim
 date: 2026-11-10
 tags:
