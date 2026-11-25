@@ -1,0 +1,95 @@
+title: Potential Phantom DLL Hijacking Via Uncommon Non-Existent System DLL Creation
+id: fc56aa9d-c0b2-4c1e-95e2-e352b6a6c9bb
+related:
+    - id: df6ecb8b-7822-4f4b-b412-08f524b4576c # Creation Of Non-Existent System DLL
+      type: similar
+status: experimental
+description: |
+    Detects the creation of a DLL whose name and location match a "phantom" library, a file that Windows components try to load from a system directory although it does not ship with a default installation of Windows 10, Windows 11 or the matching server releases.
+    The names come from the Hexacorn "Beyond good ol' Run key" series: "XboxNetApiSvcExtHost.dll" (svchost), "LangDownloader.dll" (ctfmon), "edgegdi.dll" (gdi32 in many processes), "UsoSelfhost.dll" (MoUsoCoreWorker), "windowscoredeviceinfo.dll" (taskhostw, usoclient), "SysWOW64\rpcss.dll", "spreview.exewdscore.dll", "phoneinfo.dll" (urlmon, wersvc), "msfte.dll" and "msTracer.dll" (SearchIndexer, SearchProtocolHost), "suspend.dll" in the Internet Explorer folder, "rover.dll" (userinit), "btlog.dll" (dwwin), "WinAppXRT.dll" (.NET runtime), "DismCore.dll" in System32 and the debugger extensions "uext.dll", "ntsdexts.dll", "ext.dll" and "exts.dll" that WerFault looks for.
+    Dropping a DLL at one of these paths needs administrative rights and gives code execution inside a signed Microsoft process at boot, logon or on a common event, which is used for persistence and privilege escalation.
+    This rule extends the existing rule "Creation Of Non-Existent System DLL" with names that it does not list.
+references:
+    - https://www.hexacorn.com/blog/2024/12/20/beyond-good-ol-run-key-part-146/
+    - https://www.hexacorn.com/blog/2024/12/20/beyond-good-ol-run-key-part-145/
+    - https://www.hexacorn.com/blog/2020/09/18/beyond-good-ol-run-key-part-128/
+    - https://www.hexacorn.com/blog/2019/10/23/beyond-good-ol-run-key-part-120/
+    - https://www.hexacorn.com/blog/2016/06/02/beyond-good-ol-run-key-part-40/
+    - https://www.hexacorn.com/blog/2015/02/23/beyond-good-ol-run-key-part-28/
+    - https://www.hexacorn.com/blog/2014/07/08/beyond-good-ol-run-key-part-14/
+    - https://www.hexacorn.com/blog/2014/05/21/beyond-good-ol-run-key-part-12/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_dll:
+        TargetFilename|endswith:
+            - ':\Program Files (x86)\Internet Explorer\suspend.dll'
+            - ':\Program Files\Internet Explorer\suspend.dll'
+            - ':\Windows\System\phoneinfo.dll'
+            - ':\Windows\System32\btlog.dll'
+            - ':\Windows\System32\DismCore.dll'
+            - ':\Windows\System32\edgegdi.dll'
+            - ':\Windows\System32\LangDownloader.dll'
+            - ':\Windows\System32\msfte.dll'
+            - ':\Windows\System32\msTracer.dll'
+            - ':\Windows\System32\phoneinfo.dll'
+            - ':\Windows\System32\rover.dll'
+            - ':\Windows\System32\spreview.exewdscore.dll'
+            - ':\Windows\System32\UsoSelfhost.dll'
+            - ':\Windows\System32\wbem\phoneinfo.dll'
+            - ':\Windows\System32\WinAppXRT.dll'
+            - ':\Windows\System32\windowscoredeviceinfo.dll'
+            - ':\Windows\System32\XboxNetApiSvcExtHost.dll'
+            - ':\Windows\SysWOW64\phoneinfo.dll'
+            - ':\Windows\SysWOW64\rpcss.dll'
+            - ':\Windows\SysWOW64\wbem\phoneinfo.dll'
+    selection_dbgext_dir:
+        TargetFilename|contains:
+            - ':\Windows\System32\'
+            - ':\Windows\SysWOW64\'
+    selection_dbgext_name:
+        TargetFilename|endswith:
+            - '\pri\ext.dll'
+            - '\pri\exts.dll'
+            - '\pri\ntsdexts.dll'
+            - '\pri\uext.dll'
+            - '\System32\ext.dll'
+            - '\System32\exts.dll'
+            - '\System32\ntsdexts.dll'
+            - '\System32\uext.dll'
+            - '\SysWOW64\ext.dll'
+            - '\SysWOW64\exts.dll'
+            - '\SysWOW64\ntsdexts.dll'
+            - '\SysWOW64\uext.dll'
+            - '\winext\arcade\ext.dll'
+            - '\winext\arcade\exts.dll'
+            - '\winext\arcade\ntsdexts.dll'
+            - '\winext\arcade\uext.dll'
+            - '\winext\ext.dll'
+            - '\winext\exts.dll'
+            - '\winext\ntsdexts.dll'
+            - '\winext\uext.dll'
+            - '\WINXP\ext.dll'
+            - '\WINXP\exts.dll'
+            - '\WINXP\ntsdexts.dll'
+            - '\WINXP\uext.dll'
+    filter_main_servicing_trustedinstaller:
+        Image|endswith: ':\Windows\servicing\TrustedInstaller.exe'
+    filter_main_servicing_tiworker:
+        Image|contains: ':\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    condition: (selection_dll or all of selection_dbgext_*) and not 1 of filter_main_*
+falsepositives:
+    - A future Windows build or optional feature that starts shipping one of the listed libraries outside of the servicing stack
+    - Debugging Tools for Windows copied by hand into a system directory
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_create_non_existent_dlls_uncommon/info.yml
