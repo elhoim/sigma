@@ -1,0 +1,13 @@
+id: 36887903-8bf7-4a99-a945-a21f000e92d3
+description: N/A
+date: 2026-11-09
+author: elhoim
+rule_metadata:
+    - id: 72e192ac-2c26-4111-a95b-721d1081733b
+      title: Suspicious Named File Stream Created By Command Or Script Interpreter
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/create_stream_hash/create_stream_hash_susp_interpreter_ads_payload_extension/72e192ac-2c26-4111-a95b-721d1081733b.evtx
