@@ -1,0 +1,13 @@
+id: 5ea95131-f101-4e65-93e2-9ef97022a8dc
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 17e3f03b-8943-4e76-82b0-dfd2793e5e1f
+      title: Potential Persistence Via Account Password Set To Never Expire
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Security-Auditing
+      match_count: 1
+      path: regression_data/rules/windows/builtin/security/win_security_account_password_set_to_never_expire/17e3f03b-8943-4e76-82b0-dfd2793e5e1f.evtx
