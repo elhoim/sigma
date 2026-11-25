@@ -11,6 +11,8 @@ references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/interactsh.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/iroh.md
     - https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started
+    - https://newtonpaul.com/blog/tunneling-c2-through-microsoft-dev-tunnels/
+    - https://www.activecountermeasures.com/malware-of-the-day-tunneling-havoc-c2-with-microsoft-dev-tunnels/
 author: elhoim
 date: 2026-11-09
 tags:
