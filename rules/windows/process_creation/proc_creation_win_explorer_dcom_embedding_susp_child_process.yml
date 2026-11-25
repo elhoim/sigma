@@ -10,6 +10,7 @@ description: |
 references:
     - https://enigma0x3.net/2017/01/23/lateral-movement-via-dcom-round-2/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_via_explorer_suspicious_child_parent_args.toml
+    - https://github.com/fortra/impacket/blob/8b1a99f7c715702eafe3f24851817bb64721b156/examples/dcomexec.py
 author: elhoim
 date: 2026-11-10
 tags:
