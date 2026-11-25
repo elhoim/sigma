@@ -9,6 +9,8 @@ references:
     - https://docs.fortinet.com/document/fortiap/7.4.0/fortiwifi-and-fortiap-configuration-guide/127520
     - https://docs.fortinet.com/document/fortigate/7.4.3/fortios-log-message-reference/43567
     - https://docs.fortinet.com/document/fortigate/6.4.3/fortios-log-message-reference/43620
+    - https://github.com/wifiphisher/wifiphisher/blob/4ae336518bf29eed13d3b09f2ee6a16e7973c997/README.md
+    - https://github.com/s0lst1c3/eaphammer/blob/91e8956f640b13dbf58589430cf69b1541f9528b/README.md
 author: elhoim
 date: 2026-10-15
 tags:
