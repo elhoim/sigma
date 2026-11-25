@@ -8,6 +8,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4799
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/discovery_privileged_localgroup_membership.toml
+    - https://thedfirreport.com/2024/08/26/blacksuit-ransomware/
+    - https://trustedsec.com/blog/the-quiet-phase-active-directory-group-enumeration
 author: elhoim
 date: 2026-11-10
 tags:
