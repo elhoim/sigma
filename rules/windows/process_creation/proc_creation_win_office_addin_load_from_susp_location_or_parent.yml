@@ -13,6 +13,7 @@ description: |
 references:
     - https://labs.reversec.com/posts/2017/04/add-in-opportunities-for-office-persistence
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_execution_via_office_addins.toml
+    - https://unit42.paloaltonetworks.com/excel-add-ins-malicious-xll-files-agent-tesla/
 author: elhoim
 date: 2026-11-10
 tags:
