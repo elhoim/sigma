@@ -6,6 +6,8 @@ description: |
     The details of the detection are available in the debug context of the event.
 references:
     - https://developer.okta.com/docs/reference/api/event-types/
+    - https://www.okta.com/blog/identity-security/okta-itp-real-world-results/
+    - https://www.okta.com/blog/2025/07/boosting-security-with-okta-identity-threat-protection-and-workflows/
 author: elhoim
 date: 2026-10-15
 tags:
