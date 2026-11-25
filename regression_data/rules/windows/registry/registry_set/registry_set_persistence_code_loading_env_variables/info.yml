@@ -1,0 +1,13 @@
+id: 0882fcc7-2ea3-4bb8-9ec4-30de15ac9846
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 13f94d79-15fc-479c-8e54-8d77d21ad8c7
+      title: Potential Persistence Via Code Loading Environment Variable
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_code_loading_env_variables/13f94d79-15fc-479c-8e54-8d77d21ad8c7.evtx
