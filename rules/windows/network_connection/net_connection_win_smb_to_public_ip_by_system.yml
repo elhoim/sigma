@@ -7,6 +7,7 @@ description: |
 references:
     - https://www.securify.nl/en/blog/living-off-the-land-stealing-netntlm-hashes/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/exfiltration_smb_rare_destination.toml
+    - https://www.proofpoint.com/us/blog/threat-insight/ta577s-unusual-attack-chain-leads-ntlm-data-theft
 author: elhoim
 date: 2026-11-09
 tags:
