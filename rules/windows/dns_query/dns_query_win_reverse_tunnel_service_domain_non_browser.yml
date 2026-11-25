@@ -15,6 +15,7 @@ references:
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/pinggy.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/localtunnels.md
     - https://www.trendaisecurity.com/en-us/resources-insights/deep-research/how-cybercriminals-abuse-cloud-tunneling-services
+    - https://github.com/htr-tech/zphisher/blob/65b99bccaa746ec3edda4291ec7f4048fbd49771/zphisher.sh#L322-L336
 author: elhoim
 date: 2026-11-09
 tags:
