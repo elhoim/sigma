@@ -1,0 +1,13 @@
+id: 298ca402-70e7-47fb-aeaa-2a502ba68f99
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 4bf943c6-5146-4273-98dd-e958fd1e3abf
+      title: Invoke-Obfuscation Obfuscated IEX Invocation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_hktl_invoke_obfuscation_obfuscated_iex_commandline/4bf943c6-5146-4273-98dd-e958fd1e3abf.evtx
