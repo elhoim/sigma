@@ -12,6 +12,8 @@ description: |
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_short_program_name.toml
     - https://mgreen27.github.io/posts/2019/05/12/BinaryRename.html
+    - https://thedfirreport.com/2022/04/25/quantum-ransomware/
+    - https://thedfirreport.com/2023/05/22/icedid-macro-ends-in-nokoyawa-ransomware/
 author: elhoim
 date: 2026-11-10
 tags:
