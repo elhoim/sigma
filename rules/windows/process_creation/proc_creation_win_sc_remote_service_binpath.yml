@@ -10,6 +10,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/sc-create
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_cmd_service.toml
+    - https://pentestlab.blog/2020/07/21/lateral-movement-services/
+    - https://hacktricks.wiki/en/windows-hardening/lateral-movement/psexec-and-winexec.html
 author: elhoim
 date: 2026-11-09
 tags:
