@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#protected_branch
     - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule
+    - https://innersource.flutter.com/blog/prevent-malicious-contribution
+    - https://best.openssf.org/SCM-BestPractices/github/repository/dismisses_stale_reviews.html
 author: elhoim
 date: 2026-10-15
 tags:
