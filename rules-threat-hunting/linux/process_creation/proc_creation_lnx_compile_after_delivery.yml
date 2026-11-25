@@ -7,6 +7,8 @@ description: |
     Hunt for compilations on hosts that are not build or developer machines, especially when the compiler runs under a web service, an interactive SSH session or a non-developer account, and for an "a.out" or freshly built binary executed shortly afterwards.
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1027.004/T1027.004.md
+    - https://github.com/rapid7/metasploit-framework/blob/0d5e8f62fa5f948d207d3022b2f12f2af0c476ba/lib/msf/core/post/linux/compile.rb#L65-L88
+    - https://github.com/calebstewart/pwncat/blob/37f04d4e16ff47c7fd70e95162f9fccd327cca7e/pwncat/platform/linux.py#L1036-L1066
 author: elhoim
 date: 2026-10-01
 tags:
