@@ -16,9 +16,10 @@ author: Nasreddine Bencherchali (Nextron Systems), Karneades / Markus Neis, Jonh
 date: 2022-06-09
 modified: 2023-11-09
 tags:
-    - attack.execution
     - attack.stealth
+    - attack.command-and-control
     - attack.t1218
+    - attack.t1105
 logsource:
     category: process_creation
     product: windows
