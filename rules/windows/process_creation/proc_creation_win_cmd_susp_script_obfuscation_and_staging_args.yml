@@ -1,0 +1,81 @@
+title: Suspicious Windows Command Shell Script Obfuscation Or Staging Arguments
+id: 7039a6d7-ca54-41b5-8783-14f215135ae0
+status: experimental
+description: |
+    Detects cmd.exe command lines carrying argument patterns that are typical of malicious batch and script droppers and rarely of administrative use: inline WSH/JScript object calls, HTML-entity encoded characters, console-clearing chains used to hide output, embedded cabinet or script payloads searched with findstr, Zone.Identifier tampering through echo, and known staging idioms (pip or PowerShell download handoff, forfiles/AutoIt proxying, environment-variable obfuscation).
+    Each pattern alone is a small signal; together they cover the cmd.exe fragment of loaders that otherwise change their payload and infrastructure between campaigns.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_windows_cmd_shell_susp_args.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1027
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    selection_cli_single:
+        CommandLine|contains:
+            - ').Run('
+            - 'ActiveXObject('
+            - 'GetObject('
+            - 'unescape('
+            - '&cls&cls&cls&cls&cls&'
+            - '& ChrW('
+            - ' &&s^eT'
+            - '=wscri& set '
+            - 'start __ & __\'
+            - '&explorer /root'
+            - '/?cMD<'
+    selection_cli_html_entities:
+        CommandLine|contains: ';&#'
+    selection_cli_zone_identifier:
+        CommandLine|contains|all:
+            - 'echo'
+            - 'ZONE.identifier'
+    selection_cli_cab_in_findstr:
+        CommandLine|contains|all:
+            - 'findstr'
+            - 'TVNDRgAAAA'
+    selection_cli_chararray:
+        CommandLine|contains|all:
+            - 'echo'
+            - '.ToCharArray'
+    selection_cli_pip_webclient:
+        CommandLine|contains|all:
+            - 'pip install'
+            - 'System.Net.WebClient'
+    selection_cli_iwr_start:
+        CommandLine|contains|all:
+            - 'Invoke-WebRequest'
+            - 'Start-Process'
+    selection_cli_forfiles_findstr:
+        CommandLine|contains|all:
+            - 'findstr /V /L '
+            - 'forfiles'
+    selection_cli_autoit:
+        CommandLine|contains|all:
+            - '/AutoIt3ExecuteScript'
+            - '..'
+    selection_cli_computername_url:
+        CommandLine|contains|all:
+            - 'http'
+            - '!COmpUternaME!'
+    selection_cli_copy_ping:
+        CommandLine|contains|all:
+            - 'copy /b '
+            - '\\\\'
+            - 'ping '
+            - ' -n'
+    condition: selection_img and 1 of selection_cli_*
+falsepositives:
+    - Build, packaging and installer scripts that reconstruct files with copy /b or call PowerShell downloads from a batch wrapper
+    - Legacy administrative batch files using WSH objects from cmd.exe
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_susp_script_obfuscation_and_staging_args/info.yml
