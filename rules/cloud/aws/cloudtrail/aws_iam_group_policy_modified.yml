@@ -1,0 +1,30 @@
+title: AWS IAM Group Policy Modified
+id: fef71484-1c91-44c2-8b3c-3c85edd2c133
+status: experimental
+description: |
+    Detects inline or managed policies being added to, changed on or removed from an IAM group.
+    Adversaries may modify group policies to escalate privileges of all group members, including identities they control.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/APIReference/API_PutGroupPolicy.html
+    - https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachGroupPolicy.html
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098.003
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName:
+            - 'AttachGroupPolicy'
+            - 'DeleteGroupPolicy'
+            - 'DetachGroupPolicy'
+            - 'PutGroupPolicy'
+    condition: selection
+falsepositives:
+    - Legitimate permission management by administrators or infrastructure-as-code pipelines
+level: low

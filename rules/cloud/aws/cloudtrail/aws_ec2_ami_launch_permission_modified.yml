@@ -1,0 +1,30 @@
+title: Potential AWS EC2 AMI Sharing Via Launch Permission Modification
+id: 1c2efa41-268f-4138-b3e3-689dbf296a02
+status: experimental
+description: |
+    Detects modification of the launch permissions of an Amazon Machine Image (AMI).
+    Adding the "all" group makes the image public, while adding an account ID shares it with another AWS account.
+    Adversaries may share AMIs to exfiltrate data, credentials or proprietary software contained in the image to an account they control.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyImageAttribute.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharingamis-intro.html
+    - https://github.com/HackTricks-wiki/hacktricks-cloud/blob/49dae1447e92cf1a65390b52f95fed6c15f41d2f/src/pentesting-cloud/aws-security/aws-post-exploitation/aws-ec2-ebs-ssm-and-vpc-post-exploitation/README.md
+    - https://github.com/DavidDikker/endgame/blob/01bd004aa544deb022ae16b47be1114f17ee2863/endgame/exposure_via_sharing_apis/ec2_amis.py
+    - https://github.com/sbasu7241/AWS-Threat-Simulation-and-Detection/blob/f7762e91c4a5e8b42b61b87a2b145c0cab8ac6b6/aws.exfiltration.ec2-share-ami.md
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.exfiltration
+    - attack.t1537
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'ModifyImageAttribute'
+        requestParameters|contains: 'launchPermission'
+    condition: selection
+falsepositives:
+    - Legitimate sharing of AMIs with other accounts of the organization or with partners
+level: medium
