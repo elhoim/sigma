@@ -6,6 +6,8 @@ description: |
     Adversaries with administrative access may create custom admin roles bundling sensitive privileges, which can then be assigned to accounts they control.
 references:
     - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/admin-delegated-admin-settings
+    - https://www.elastic.co/security-labs/google-workspace-attack-surface-part-two
+    - https://www.datadoghq.com/blog/google-workspace-detections/
 author: elhoim
 date: 2026-10-15
 tags:

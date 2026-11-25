@@ -8,6 +8,8 @@ description: |
 references:
     - https://cloud.google.com/security-command-center/docs/audit-logging
     - https://cloud.google.com/security-command-center/docs/how-to-mute-findings
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/gcp-security/gcp-post-exploitation/gcp-security-command-center-post-exploitation.html
+    - https://nhimg.org/security-command-center-guide
 author: elhoim
 date: 2026-10-15
 tags:

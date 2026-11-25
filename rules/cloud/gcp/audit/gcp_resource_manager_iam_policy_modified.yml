@@ -7,6 +7,8 @@ description: |
 references:
     - https://cloud.google.com/resource-manager/docs/audit-logging
     - https://cloud.google.com/iam/docs/granting-changing-revoking-access
+    - https://rhinosecuritylabs.com/gcp/privilege-escalation-google-cloud-platform-part-2/
+    - https://github.com/DataDog/stratus-red-team/blob/2e8d01329f7a7492e8e6c46737a7548730758bfd/v2/internal/attacktechniques/gcp/persistence/invite-external-user/main.go
 author: elhoim
 date: 2026-10-15
 tags:

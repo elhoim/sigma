@@ -7,6 +7,9 @@ description: |
 references:
     - https://cloud.google.com/pubsub/docs/audit-logging
     - https://cloud.google.com/logging/docs/export/pubsub
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/gcp-security/gcp-post-exploitation/gcp-pub-sub-post-exploitation.html
+    - https://www.datadoghq.com/blog/monitoring-gcp-audit-logs/
+    - https://labs.cloudsecurityalliance.org/research/csa-research-note-cloud-logging-defense-evasion-20260610-csa/
 author: elhoim
 date: 2026-10-15
 tags:

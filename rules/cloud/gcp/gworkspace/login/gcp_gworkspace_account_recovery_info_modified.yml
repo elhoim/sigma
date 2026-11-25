@@ -6,6 +6,8 @@ description: |
     Adversaries who have compromised an account may change recovery information to maintain access or regain it after a password reset.
 references:
     - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/login
+    - https://elie.net/publication/handcrafted-fraud-and-extortion-manual-account-hijacking-in-the-wild.pdf
+    - https://www.adaptivesecurity.com/blog/google-workspace-account-takeover
 author: elhoim
 date: 2026-10-15
 tags:

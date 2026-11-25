@@ -7,6 +7,8 @@ description: |
 references:
     - https://cloud.google.com/compute/docs/logging/audit-logging
     - https://cloud.google.com/vpc/docs/routes
+    - https://cloud.hacktricks.wiki/pentesting-cloud/gcp-security/gcp-post-exploitation/gcp-compute-post-exploitation.html
+    - https://unit42.paloaltonetworks.com/compromised-cloud-compute-credentials/
 author: elhoim
 date: 2026-10-15
 tags:

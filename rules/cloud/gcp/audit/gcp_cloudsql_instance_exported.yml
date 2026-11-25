@@ -8,6 +8,8 @@ description: |
 references:
     - https://cloud.google.com/sql/docs/mysql/audit-logging
     - https://cloud.google.com/sql/docs/mysql/import-export/import-export-sql
+    - https://securitylabs.datadoghq.com/articles/google-cloud-threat-detection/
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/gcp-security/gcp-post-exploitation/gcp-cloud-sql-post-exploitation.html
 author: elhoim
 date: 2026-10-15
 tags:
