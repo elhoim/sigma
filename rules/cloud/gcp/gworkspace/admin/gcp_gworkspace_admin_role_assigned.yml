@@ -6,6 +6,8 @@ description: |
     Adversaries may assign administrator roles to accounts they control to escalate privileges or maintain persistence.
 references:
     - https://developers.google.com/workspace/admin/reports/v1/appendix/activity/admin-delegated-admin-settings#ASSIGN_ROLE
+    - https://about.gitlab.com/blog/plundering-gcp-escalating-privileges-in-google-cloud-platform/
+    - https://www.datadoghq.com/blog/google-workspace-detections/
 author: elhoim
 date: 2026-10-15
 tags:
