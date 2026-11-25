@@ -10,6 +10,8 @@ description: |
 references:
     - https://github.com/MzHmO/PowershellKerberos/blob/53c1fceeae55ec70ec5c910aa04a465d2e008ed6/dumper.ps1
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_posh_kerb_ticket_dump.toml
+    - https://github.com/jaredcatkinson/PSReflect-Functions/blob/8854a4f01b57a50e5d613e34d05c00d223a10ac8/secur32/LsaCallAuthenticationPackage.ps1
+    - https://github.com/GhostPack/Rubeus/blob/74215f68ea70bd6a66c008da91bf5fe21d20b154/Rubeus/lib/LSA.cs
 author: elhoim
 date: 2026-11-09
 tags:
