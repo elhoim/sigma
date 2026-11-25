@@ -1,0 +1,13 @@
+id: b437ec20-2c92-40ba-a75c-1976c4ad7f87
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: f34db2e7-6ddd-4114-b3ac-ce8074489678
+      title: Outlook Data File Referenced By Non-Outlook Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_outlook_data_file_access_non_outlook_process/f34db2e7-6ddd-4114-b3ac-ce8074489678.evtx
