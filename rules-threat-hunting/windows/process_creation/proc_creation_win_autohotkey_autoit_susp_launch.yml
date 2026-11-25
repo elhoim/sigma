@@ -8,6 +8,7 @@ references:
     - https://www.autohotkey.com/docs/v2/Scripts.htm
     - https://github.security.telekom.com/2023/08/darkgate-loader.html
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1059.010/T1059.010.md
+    - https://www.trendmicro.com/en_us/research/24/c/cve-2024-21412--darkgate-operators-exploit-microsoft-windows-sma.html
 author: elhoim
 date: 2026-10-01
 tags:
