@@ -1,0 +1,13 @@
+id: 63ae5c92-6bef-4f10-ad5f-51aaffa026fe
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 748f1342-85e0-47db-b0e9-45caa277499f
+      title: Suspicious Execution Of Explorer, Word, IIS Worker Or DISM From Non-Standard Path
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_trusted_program_execution_from_non_standard_path/748f1342-85e0-47db-b0e9-45caa277499f.evtx
