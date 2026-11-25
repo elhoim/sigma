@@ -9,12 +9,11 @@ references:
 author: Tom Kluter
 date: 2026-04-28
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.initial-access
-    - attack.impact
+    - attack.persistence
+    - attack.privilege-escalation
     - attack.stealth
-    - attack.t1078
+    - attack.t1078.004
 logsource:
     product: gcp
     service: google_workspace.login
