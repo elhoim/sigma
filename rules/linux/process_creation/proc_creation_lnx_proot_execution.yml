@@ -8,6 +8,7 @@ references:
     - https://proot-me.github.io/
     - https://sysdig.com/blog/proot-post-explotation-cryptomining/
     - https://github.com/foxytouxxx/freeroot
+    - https://github.com/foxytouxxx/freeroot/blob/3036df1c2cb53916a87a2689251a928951c4a257/root.sh#L82
 author: elhoim
 date: 2026-10-15
 tags:

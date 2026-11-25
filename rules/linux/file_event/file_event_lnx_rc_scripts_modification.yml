@@ -6,6 +6,9 @@ description: |
     Adversaries may add commands to these scripts to establish persistence, as they are executed with root privileges during system boot.
 references:
     - https://man7.org/linux/man-pages/man8/systemd-rc-local-generator.8.html
+    - https://www.elastic.co/security-labs/sequel-on-persistence-mechanisms
+    - https://pberba.github.io/security/2022/02/06/linux-threat-hunting-for-persistence-initialization-scripts-and-shell-configuration/
+    - https://github.com/Aegrah/PANIX/blob/98e2e502e08b30b6364f798ae77d3f015853260f/modules/setup_rc_local_backdoor.sh
 author: elhoim
 date: 2026-10-15
 tags:

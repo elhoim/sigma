@@ -6,6 +6,8 @@ description: |
     Adversaries may add their own public key to these files to maintain persistent password-less SSH access to the host.
 references:
     - https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT
+    - https://isc.sans.edu/diary/32024
+    - https://securelist.com/outlaw-botnet/116444/
 author: elhoim
 date: 2026-10-15
 tags:
