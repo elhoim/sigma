@@ -1,0 +1,13 @@
+id: 02ebf543-1085-4bfb-8006-79e9bf1baef1
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: b3b6e736-db44-43a4-9f46-20a8d894245e
+      title: Potential NTLM Credential Leak - SMB Connection To Public IP By System Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/network_connection/net_connection_win_smb_to_public_ip_by_system/b3b6e736-db44-43a4-9f46-20a8d894245e.evtx
