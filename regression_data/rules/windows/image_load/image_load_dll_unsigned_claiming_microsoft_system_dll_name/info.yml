@@ -1,0 +1,13 @@
+id: a8fbd4cb-e397-474d-b90b-a85295d8d134
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 7d3f7550-30cd-43d9-a63f-4a5ea8459ec9
+      title: Potential Spoofed Microsoft DLL - Unsigned Image Claiming A System DLL Original File Name
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_dll_unsigned_claiming_microsoft_system_dll_name/7d3f7550-30cd-43d9-a63f-4a5ea8459ec9.evtx
