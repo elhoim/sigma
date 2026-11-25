@@ -9,6 +9,8 @@ description: |
     PDF readers only start their own helper processes and the system browser; a child such as cmd.exe, powershell.exe, mshta.exe, regsvr32.exe, certutil.exe, whoami.exe or nltest.exe indicates a document exploit or a social engineering lure (embedded JavaScript, launch action) executing code from the reader.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_suspicious_pdf_reader.toml
+    - https://research.checkpoint.com/2024/foxit-pdf-flawed-design-exploitation/
+    - https://blog.didierstevens.com/2010/03/29/escape-from-pdf/
 author: elhoim
 date: 2026-11-11
 tags:
