@@ -9,6 +9,8 @@ references:
     - https://learn.microsoft.com/en-us/entra/id-governance/lifecycle-workflow-audits
     - https://learn.microsoft.com/en-us/entra/id-governance/lifecycle-workflow-extensibility
     - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities#lifecycle-workflows
+    - https://www.cloud-architekt.net/manage-privileged-identities-with-azuread-identity-governance/
+    - https://dev.to/astaykov/microsoft-entra-extensibility-is-a-gift-it-is-also-control-plane-4egn
 author: elhoim
 date: 2026-10-15
 tags:

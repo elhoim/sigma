@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/azure-sql/database/firewall-configure
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/databases
+    - https://www.varonis.com/blog/malicious-firewall-rules-in-azure-sql
+    - https://www.microsoft.com/en-us/security/blog/2026/05/18/storm-2949-turned-compromised-identity-into-cloud-wide-breach/
 author: elhoim
 date: 2026-10-15
 tags:
