@@ -1,0 +1,13 @@
+id: 953d0d40-5ae5-4d82-8b01-0ed55c3a54bf
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 381a3dad-4b30-45b1-a82d-7c24692f19e6
+      title: Potential Inno Setup Uninstaller Hijack Via Unins000 File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_inno_setup_uninstaller_overwrite_susp_process/381a3dad-4b30-45b1-a82d-7c24692f19e6.evtx
