@@ -15,6 +15,7 @@ references:
     - https://mrd0x.com/filefix-clickfix-alternative/
     - https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/defense_evasion_whitespace_padding_command_line.toml
+    - https://www.trendaisecurity.com/en-us/resources-insights/trendai-security-blog/windows-shortcut-zero-day-exploit
 author: elhoim
 date: 2026-11-10
 tags:
