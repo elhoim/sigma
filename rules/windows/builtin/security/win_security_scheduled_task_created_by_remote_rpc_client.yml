@@ -13,6 +13,7 @@ references:
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4698
     - https://www.elastic.co/security-labs/blog/hunting-for-lateral-movement-using-event-query-language
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_remote_task_creation_winlog.toml
+    - https://nxlog.co/news-and-blog/posts/windows-task-scheduler-event-ids
 author: elhoim
 date: 2026-11-10
 tags:
