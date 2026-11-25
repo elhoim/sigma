@@ -9,6 +9,8 @@ description: |
     PST and OST files hold a user's complete mailbox; attackers copy, archive or parse them with scripts, archivers and dedicated tools to collect e-mail before exfiltration, whereas normal use only opens them through Outlook.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_outlook_email_archive.toml
+    - https://securelist.com/toddycat-apt-steals-email-data-from-outlook/118044/
+    - https://www.volexity.com/blog/2020/12/14/dark-halo-leverages-solarwinds-compromise-to-breach-organizations/
 author: elhoim
 date: 2026-11-10
 tags:
