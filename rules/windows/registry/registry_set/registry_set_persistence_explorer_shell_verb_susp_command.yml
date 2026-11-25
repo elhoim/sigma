@@ -1,0 +1,78 @@
+title: Potential Persistence Via Explorer Folder Shell Verb Modification
+id: 3d00f52c-4e1b-4697-8887-721570114a0f
+status: experimental
+description: |
+    Detects the modification of Explorer shell verbs that apply to folders, drives, the folder background, the desktop background or the Explorer command store, when the command points to a script host, a download or encoded command, or a commonly abused directory.
+    Also detects a change of the default verb of the "Folder", "Directory" and "Drive" classes, which makes Explorer run an attacker defined verb each time a folder is opened.
+    The Recycle Bin, "ms-settings" and "exefile" variants are covered by other rules.
+references:
+    - https://www.hexacorn.com/blog/2018/05/28/beyond-good-ol-run-key-part-78-2/
+    - https://www.hexacorn.com/blog/2018/07/29/beyond-good-ol-run-key-part-82/
+    - https://learn.microsoft.com/en-us/windows/win32/shell/launch
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_command_key:
+        TargetObject|contains:
+            - '\DesktopBackground\Shell\'
+            - '\Directory\Background\shell\'
+            - '\Directory\shell\'
+            - '\Drive\shell\'
+            - '\Explorer\CommandStore\shell\'
+            - '\Folder\shell\'
+        TargetObject|endswith: '\command\(Default)'
+    selection_command_details:
+        Details|contains:
+            # Script hosts and proxy execution binaries
+            - 'bitsadmin'
+            - 'certutil'
+            - 'cscript'
+            - 'mshta'
+            - 'regsvr32'
+            - 'rundll32'
+            - 'wscript'
+            # Download and encoded commands
+            - ' -enc'
+            - 'DownloadString'
+            - 'FromBase64String'
+            - 'http://'
+            - 'https://'
+            - 'WindowStyle Hidden'
+            # Commonly abused directories
+            - '\$Recycle.Bin\'
+            - '\AppData\Local\Temp\'
+            - '\PerfLogs\'
+            - '\ProgramData\'
+            - '\Users\Public\'
+            - '\Windows\Temp\'
+            - '%Temp%'
+            - '%tmp%'
+    selection_default_verb:
+        TargetObject|endswith:
+            - '\Directory\shell\(Default)'
+            - '\Drive\shell\(Default)'
+            - '\Folder\shell\(Default)'
+    filter_main_default_verb_builtin:
+        Details:
+            - '(Empty)'
+            - 'explore'
+            - 'none'
+            - 'open'
+    filter_optional_office_c2r:
+        # Office Click-to-Run writes the OneDrive and SharePoint verbs (rundll32 GROOVEEX.DLL) into its virtual registry
+        Image|startswith: 'C:\Program Files\Common Files\Microsoft Shared\ClickToRun\'
+        Image|endswith: '\OfficeClickToRun.exe'
+        TargetObject|startswith: 'HKLM\SOFTWARE\Microsoft\Office\ClickToRun\'
+    condition: (all of selection_command_* and not 1 of filter_optional_*) or (selection_default_verb and not filter_main_default_verb_builtin)
+falsepositives:
+    - Administrators or tweaking tools that add a context menu entry which calls a script host or a script stored in ProgramData
+    - File manager replacements that change the default verb of the folder classes
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_explorer_shell_verb_susp_command/info.yml
