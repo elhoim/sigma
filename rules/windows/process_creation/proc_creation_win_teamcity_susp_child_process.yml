@@ -10,6 +10,8 @@ description: |
 references:
     - https://www.trendmicro.com/en_us/research/24/c/teamcity-vulnerability-exploits-lead-to-jasmin-ransomware.html
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_exploit_jetbrains_teamcity.toml
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a
+    - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
 author: elhoim
 date: 2026-11-10
 tags:
