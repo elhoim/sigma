@@ -1,0 +1,13 @@
+id: 88a45f4f-155c-43eb-abb3-fa4e7ee2ac07
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 0a932ed2-ad88-4fe8-87c3-8a3a301c7171
+      title: Potential Hidden Data Storage Via Alternate Data Stream At Volume Root
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_ads_creation_at_volume_root/0a932ed2-ad88-4fe8-87c3-8a3a301c7171.evtx
