@@ -9,6 +9,8 @@ description: |
     Windows only writes deleted items into the SID subfolders of the Recycle Bin; a file placed in its root is hidden from Explorer's Recycle Bin view and from casual directory listings, which makes the folder a favourite staging location for collected data and tooling.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_files_staged_in_recycle_bin_root.toml
+    - https://www.zscaler.com/blogs/security-research/apt37-adds-new-capabilities-air-gapped-networks
+    - https://www.welivesecurity.com/2021/06/10/backdoordiplomacy-upgrading-quarian-turian/
 author: elhoim
 date: 2026-11-11
 tags:
