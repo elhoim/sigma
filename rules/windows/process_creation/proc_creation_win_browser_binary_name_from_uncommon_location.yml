@@ -1,0 +1,49 @@
+title: Potential Browser Process Masquerading - Browser Executable Name Running From Uncommon Location
+id: f311cec5-a7fd-41fb-add4-e69bcbc59a55
+status: experimental
+description: |
+    Detects a process named like a major browser or browser updater ("chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "GoogleUpdate.exe", "MicrosoftEdgeUpdate.exe"...) running from a path other than the vendor installation directories (Program Files, the per-user AppData\Local vendor folders, the Microsoft Store WindowsApps folder) and other than the known headless-browser bundles (Playwright, Puppeteer, Burp, Selenium).
+    Malware is frequently named after a browser process to blend into process listings and to pass filename-based allow lists; a browser executable name under Downloads, Temp, Public, ProgramData or a random folder is a masquerading indicator. Code-signature fields are not available in process creation events, so the location is the usable discriminator.
+references:
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_masquerading_browsers.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.stealth
+    - attack.t1036.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\GoogleUpdate.exe'
+            # GoogleUpdateSetup.exe is not listed: the Google online installer bootstrap runs from Downloads and Temp by design
+            - '\GoogleCrashHandler.exe'
+            - '\GoogleCrashHandler64.exe'
+            - '\msedge.exe'
+            - '\msedgewebview2.exe'
+            - '\MicrosoftEdgeUpdate.exe'
+            - '\identity_helper.exe'
+            - '\brave.exe'
+            - '\BraveUpdate.exe'
+            - '\firefox.exe'
+            - '\maintenanceservice.exe'
+            - '\plugin-container.exe'
+            - '\pingsender.exe'
+    filter_main_vendor_paths:
+        Image|startswith:
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+            - 'C:\Windows\SystemTemp\'
+            - 'C:\Windows\SystemApps\'
+    filter_main_user_vendor_paths:
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\(?:Google\\(?:Chrome(?: SxS| Beta| Dev)?\\Application|Update)\\|Microsoft\\(?:Edge(?: SxS| Beta| Dev)?\\Application|EdgeUpdate|EdgeWebView\\Application)\\|BraveSoftware\\(?:Brave-Browser(?:-Beta|-Nightly)?\\Application|Update)\\|Mozilla Firefox\\|Temp\\GUM[^\\]+\.tmp\\|Temp\\MicrosoftEdgeUpdate)'
+    filter_optional_headless_bundles:
+        Image|re|i: '^[A-Za-z]:\\Users\\[^\\]+\\(?:AppData\\Local\\(?:ms-playwright|Temp\\burpbrowser|[^\\]*BurpSuitePro\\burpbrowser)\\|AppData\\Roaming\\[^\\]*BurpSuite\\burpbrowser\\|\.cache\\(?:puppeteer|selenium)\\|\.wdm\\drivers\\)'
+    condition: selection and not 1 of filter_main_* and not 1 of filter_optional_*
+falsepositives:
+    - Portable or custom-packaged browser builds (CentBrowser, Dynatrace or HP Sure Click embedded Chromium, security scanners bundling Chromium) running from non-vendor paths, including portable browsers (PortableApps) and installations on a drive other than C:; add their folders to the filters
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_browser_binary_name_from_uncommon_location/info.yml
