@@ -11,6 +11,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.symmetricalgorithm.createdecryptor
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_posh_encryption.toml
+    - https://github.com/JoelGMSec/PSRansom/blob/20bead75f20b8ecd163bf3608ed89911706db099/PSRansom.ps1#L84-L103
+    - https://github.com/the-xentropy/xencrypt/blob/32c301c0a6c7e351c1ff702b9cde6bb0df8ef4e1/xencrypt.ps1#L112-L166
 author: elhoim
 date: 2026-11-10
 tags:
