@@ -11,6 +11,8 @@ references:
     - https://learn.microsoft.com/en-us/windows/wsl/disk-space
     - https://learn.microsoft.com/en-us/windows/wsl/basic-commands
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_wsl_registry_modification.toml
+    - https://research.checkpoint.com/2017/beware-bashware-new-method-malware-bypass-security-solutions/
+    - https://www.trendaisecurity.com/en-us/resources-insights/trendai-security-blog/agenda-ransomware-deploys-linux-variant-on-windows-systems.html
 author: elhoim
 date: 2026-11-09
 tags:
