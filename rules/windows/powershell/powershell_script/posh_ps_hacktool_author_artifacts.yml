@@ -10,6 +10,8 @@ description: |
 references:
     - https://github.com/PowerShellMafia/PowerSploit/blob/d943001a7defb5e0d1657085a77a0e78609be58f/Recon/PowerView.ps1
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_posh_hacktool_authors.toml
+    - https://github.com/danielbohannon/Invoke-Obfuscation/blob/f20e7f843edd0a3a7716736e9eddfa423395dd26/Invoke-Obfuscation.ps1
+    - https://github.com/samratashok/nishang/blob/d87229d2112456470ad30a50edbf312463f2b09a/Shells/Invoke-PowerShellTcp.ps1
 author: elhoim
 date: 2026-11-10
 tags:
