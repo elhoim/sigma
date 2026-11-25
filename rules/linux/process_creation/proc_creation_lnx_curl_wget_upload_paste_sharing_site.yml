@@ -12,6 +12,8 @@ references:
     - https://0x0.st/
     - https://www.trendmicro.com/en_us/research/22/i/how-malicious-actors-abuse-native-linux-tools-in-their-attacks.html
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1102.002/T1102.002.md
+    - https://sysdig.com/blog/scarleteel-2-0/
+    - https://www.uptycs.com/blog/new-poc-exploit-backdoor-malware
 author: elhoim
 date: 2026-10-01
 tags:
