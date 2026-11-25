@@ -9,6 +9,7 @@ description: |
     A hit is confirmed when the value data, read from the registry, marks that agent as disabled and the agent did not start at the next logon.
 references:
     - https://www.hexacorn.com/blog/2019/02/23/beyond-good-ol-run-key-part-104/
+    - https://cocomelonc.github.io/persistence/2024/03/12/malware-pers-24.html
 author: elhoim
 date: 2026-11-12
 tags:
