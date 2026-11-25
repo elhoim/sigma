@@ -12,6 +12,9 @@ references:
     - https://www.netspi.com/blog/technical-blog/network-penetration-testing/exploiting-adidns/
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-5136
     - https://github.com/OTRF/Set-AuditRule
+    - https://www.synacktiv.com/en/publications/relaying-kerberos-over-smb-using-krbrelayx
+    - https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
+    - https://github.com/dirkjanm/krbrelayx/blob/dd2294331affb46e1dfb5bd761b59fcfec8d5714/dnstool.py#L546
 author: elhoim
 date: 2026-10-15
 tags:

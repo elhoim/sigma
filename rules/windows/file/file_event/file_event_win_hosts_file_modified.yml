@@ -6,6 +6,8 @@ description: |
     Adversaries may add entries to the hosts file to redirect security product update or telemetry domains to an unreachable address, or to redirect legitimate domains to attacker-controlled infrastructure.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/impact_hosts_file_modified.toml
+    - https://www.malwarebytes.com/blog/news/2016/09/hosts-file-hijacks
+    - https://www.microsoft.com/en-us/security/blog/2021/07/29/when-coin-miners-evolve-part-2-hunting-down-lemonduck-and-lemoncat-attacks/
 author: elhoim
 date: 2026-10-15
 tags:
