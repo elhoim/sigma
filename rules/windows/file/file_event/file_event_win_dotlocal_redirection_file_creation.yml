@@ -13,6 +13,8 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2015/01/09/beyond-good-ol-run-key-part-23/
     - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection
+    - https://github.com/sailay1996/awesome_windows_logical_bugs/blob/60cbb23a801f4c3195deac1cc46df27c225c3d07/dir_create2system.txt
+    - https://github.com/binderlabs/DirCreate2System/blob/2a48d7da731858d1b7e2aad2c974acd29c07bcd7/README.md
 author: elhoim
 date: 2026-11-12
 tags:
