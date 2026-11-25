@@ -11,6 +11,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_shared_modules_local_sxs_dll.toml
+    - https://www.hexacorn.com/blog/2015/01/09/beyond-good-ol-run-key-part-23/
+    - https://github.com/hfiref0x/UACME/blob/3f1885cab0e3a277db0cadc83d0a782bafa9e4cd/Source/Akagi/methods/hybrids.c#L280-L300
 author: elhoim
 date: 2026-11-10
 tags:
