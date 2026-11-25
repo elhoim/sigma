@@ -12,6 +12,7 @@ description: |
 references:
     - https://www.elastic.co/security-labs/axios-supply-chain-compromise-detections
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_suspicious_powershell_from_npm_install.toml
+    - https://securitylabs.datadoghq.com/articles/mut-4831-trojanized-npm-packages-vidar/
 author: elhoim
 date: 2026-11-09
 tags:
