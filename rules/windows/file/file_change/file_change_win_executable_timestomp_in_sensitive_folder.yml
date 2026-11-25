@@ -10,6 +10,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_timestomp_sysmon.toml
+    - https://www.inversecos.com/2022/04/defence-evasion-technique-timestomping.html
+    - https://www.ired.team/offensive-security/defense-evasion/t1099-timestomping
 author: elhoim
 date: 2026-11-09
 tags:
