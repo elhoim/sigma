@@ -8,6 +8,8 @@ description: |
 references:
     - https://www.man7.org/linux/man-pages/man8/wg.8.html
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1552.004/T1552.004.md
+    - https://sysdig.com/blog/ssh-snake/
+    - https://github.com/MegaManSec/SSH-Snake/blob/0da2dea3a77e10e5e8c6b85c0098cb9abf5634c7/Snake.sh#L1057
 author: elhoim
 date: 2026-10-01
 tags:
