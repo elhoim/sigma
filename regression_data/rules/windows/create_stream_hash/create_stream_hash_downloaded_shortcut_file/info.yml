@@ -1,0 +1,13 @@
+id: 730e3806-f085-4c13-8aea-2eab898af244
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 87edcbfb-71a2-4ada-95aa-18f396f52ff2
+      title: Potential Phishing Payload - Shortcut Or Internet Shortcut File Downloaded From The Internet
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/create_stream_hash/create_stream_hash_downloaded_shortcut_file/87edcbfb-71a2-4ada-95aa-18f396f52ff2.evtx
