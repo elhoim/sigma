@@ -1,0 +1,13 @@
+id: 5ab9f027-3068-4661-bc69-1824a02371cc
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 087790e3-3287-436c-bccf-cbd0184a7db1
+      title: Potential CommandLine Path Traversal Via Cmd.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_path_traversal/087790e3-3287-436c-bccf-cbd0184a7db1.evtx
