@@ -11,6 +11,9 @@ description: |
 references:
     - https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/DoH_traffic.yml
+    - https://securelist.com/what-did-deathstalker-hide-between-two-ferns/99616/
+    - https://github.com/sensepost/godoh/blob/f1edcfc473f4571f23af4f9c7df5ae3a5c976133/dnsclient/client.go
+    - https://blog.netlab.360.com/an-analysis-of-godlua-backdoor-en/
 author: elhoim
 date: 2026-11-10
 tags:
