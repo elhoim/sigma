@@ -1,0 +1,45 @@
+title: Potential SilentProcessExit Monitor Process Execution Via WerFault.EXE
+id: 44d49930-869a-4571-bfeb-8a592f9052d6
+related:
+    - id: 36803969-5421-41ec-b92f-8500f79c23b0
+      type: similar
+    - id: 55e29995-75e7-451a-bef0-6225e2f13597
+      type: similar
+status: experimental
+description: |
+    Detects a process started by WerFault.exe when WerFault itself was launched with the "-s -t ... -c" switches, which is the command line Windows Error Reporting uses to run the MonitorProcess configured under the SilentProcessExit registry key when a monitored process exits.
+    An attacker can register any program as the monitor for a frequently exiting process (SilentProcessExit\<process>\MonitorProcess with ReportingMode 1) so that the payload is started by a trusted Windows binary and hidden from most autostart listings. The related rules detect the registry change; this rule detects the resulting execution.
+references:
+    - https://www.hexacorn.com/blog/2019/09/19/silentprocessexit-quick-look-under-the-hood/
+    - https://www.hexacorn.com/blog/2019/09/20/werfault-command-line-switches-v0-1/
+    - https://oddvar.moe/2018/04/10/persistence-using-globalflags-in-image-file-execution-options-hidden-from-autoruns-exe/
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_masquerading_suspicious_werfault_childproc.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1036
+    - attack.t1546.012
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\WerFault.exe'
+        ParentCommandLine|contains|all:
+            - ' -s '
+            - ' -t '
+            - ' -c'
+    filter_optional_heimdal:
+        Image:
+            - 'C:\Program Files\Heimdal\Heimdal.Guard.exe'
+            - 'C:\Program Files (x86)\Heimdal\Heimdal.Guard.exe'
+    filter_optional_initcrypt:
+        Image: 'C:\Windows\SysWOW64\Initcrypt.exe'
+    condition: selection and not 1 of filter_optional_*
+falsepositives:
+    - Third-party software that registers its own SilentProcessExit monitor for crash handling or self-restart
+level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_werfault_silentprocessexit_child_process/info.yml
