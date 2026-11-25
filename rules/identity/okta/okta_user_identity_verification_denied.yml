@@ -1,0 +1,27 @@
+title: Okta User Identity Verification Denied
+id: 971ead85-baab-4eec-8f5b-5ff2fac2f6f3
+status: experimental
+description: |
+    Detects when an Okta identity verification, triggered by an Okta Account Management Policy evaluation, results in a denial.
+    This may indicate an attacker attempting to perform account management operations such as authenticator enrollment or recovery on behalf of another user.
+references:
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.initial-access
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1078.004
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventType: 'user.identity_verification'
+        outcome.result: 'DENY'
+    condition: selection
+falsepositives:
+    - Legitimate users failing the identity verification process, for example because of document or camera issues
+level: low
