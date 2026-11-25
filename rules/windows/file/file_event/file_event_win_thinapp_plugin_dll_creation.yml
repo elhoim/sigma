@@ -1,0 +1,32 @@
+title: Potential Persistence Via ThinApp Plug-in DLL - File Creation
+id: 06db7c0f-7482-40d7-b8d4-ba2d8e01011f
+status: experimental
+description: |
+    Detects the creation of a file in the "ThinstallPlugins" directory of Program Files, or of a file named "os_debug.dll".
+    The runtime of applications packaged with VMware ThinApp (formerly Thinstall) enumerates the "ThinstallPlugins" directory at start-up and loads the DLLs it holds, and it also looks for "os_debug.dll" in the directory of the packaged application.
+    An attacker can create them in order to get a DLL loaded each time a ThinApp packaged application is started.
+references:
+    - https://www.hexacorn.com/blog/2016/07/08/beyond-good-ol-run-key-part-41/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_plugins:
+        TargetFilename|contains:
+            - ':\Program Files (x86)\ThinstallPlugins\'
+            - ':\Program Files\ThinstallPlugins\'
+    selection_os_debug:
+        TargetFilename|endswith: '\os_debug.dll'
+    condition: 1 of selection_*
+falsepositives:
+    - Development or troubleshooting of ThinApp packages with debugging plug-ins
+level: medium
+regression_tests_path: regression_data/rules/windows/file/file_event/file_event_win_thinapp_plugin_dll_creation/info.yml

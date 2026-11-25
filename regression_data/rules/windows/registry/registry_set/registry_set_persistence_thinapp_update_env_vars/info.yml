@@ -1,0 +1,13 @@
+id: f633b167-42ac-43a3-a5ec-8ee967004e98
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 8314b854-8eaa-4f46-adf9-722c1c65fbf5
+      title: Potential Persistence Via ThinApp Update Environment Variables
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_thinapp_update_env_vars/8314b854-8eaa-4f46-adf9-722c1c65fbf5.evtx

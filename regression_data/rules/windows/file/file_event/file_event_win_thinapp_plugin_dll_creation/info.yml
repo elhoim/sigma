@@ -1,0 +1,13 @@
+id: 5f175872-435d-40ee-a683-2211a0598107
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 06db7c0f-7482-40d7-b8d4-ba2d8e01011f
+      title: Potential Persistence Via ThinApp Plug-in DLL - File Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_thinapp_plugin_dll_creation/06db7c0f-7482-40d7-b8d4-ba2d8e01011f.evtx

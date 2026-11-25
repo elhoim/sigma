@@ -1,0 +1,26 @@
+title: Potential Persistence Via ThinApp Update Environment Variables
+id: 8314b854-8eaa-4f46-adf9-722c1c65fbf5
+status: experimental
+description: |
+    Detects the creation of a persistent environment variable whose name starts with "TS_UPDATE_", such as "TS_UPDATE_CMDLINE" or "TS_UPDATE_0", in the user or in the system environment registry key.
+    The runtime of applications packaged with VMware ThinApp (formerly Thinstall) reads these variables at start-up and, when "TS_UPDATE_0" is set, runs the command line stored in "TS_UPDATE_CMDLINE" instead of the packaged application.
+    A persistent copy of these variables in the registry gets a program executed each time a ThinApp packaged application is started.
+references:
+    - https://www.hexacorn.com/blog/2016/07/08/beyond-good-ol-run-key-part-41/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Environment\TS_UPDATE_'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_thinapp_update_env_vars/info.yml
