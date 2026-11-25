@@ -14,6 +14,8 @@ description: |
 references:
     - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_suspicious_scheduled_task_runtime.toml
+    - https://redcanary.com/threat-detection-report/techniques/scheduled-task/
+    - https://web.archive.org/web/20260818183031/https://redcanary.com/blog/threat-intelligence/gootloader/
 author: elhoim
 date: 2026-11-09
 tags:
