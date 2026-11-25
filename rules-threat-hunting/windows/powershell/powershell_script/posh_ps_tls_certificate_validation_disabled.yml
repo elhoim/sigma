@@ -8,6 +8,7 @@ references:
     - https://github.com/samratashok/nishang/blob/b870f7a25a12020a8120537b9ae3ee73b339624b/Shells/Invoke-PoshRatHttps.ps1
     - https://learn.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.servercertificatevalidationcallback
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest
+    - https://github.com/BC-SECURITY/Empire/blob/51d6a6a59c6b596b11acf8d305887c58c89b9a2e/empire/server/listeners/http/listener.py#L135-L137
 author: elhoim
 date: 2026-11-09
 tags:
