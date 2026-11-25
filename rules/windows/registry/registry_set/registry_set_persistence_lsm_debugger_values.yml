@@ -1,0 +1,29 @@
+title: Potential Persistence Via Local Session Manager Debugger Values
+id: c7ca36b0-a82f-4f76-abe6-5e30f00553a8
+status: experimental
+description: |
+    Detects the creation of the "DebugTS", "LSMBreakOnStart" or "Debugger" values under the "Control\Terminal Server" registry key.
+    When the Local Session Manager service starts with "DebugTS" or "LSMBreakOnStart" set to 2, it launches the debugger "ntsd" as SYSTEM and attaches it to itself.
+    As the debugger is started without a full path, an attacker can enable this debugging option and place a file named "ntsd.exe" in a directory of the search path in order to get it executed as SYSTEM at each boot.
+references:
+    - https://www.hexacorn.com/blog/2017/04/02/beyond-good-ol-run-key-part-61/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Control\Terminal Server\Debugger'
+            - '\Control\Terminal Server\DebugTS'
+            - '\Control\Terminal Server\LSMBreakOnStart'
+    condition: selection
+falsepositives:
+    - Debugging of the Remote Desktop Services components by a developer or by the vendor support
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_lsm_debugger_values/info.yml
