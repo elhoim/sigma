@@ -11,6 +11,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-1-0-interfaces
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_local_scheduled_job_creation.toml
+    - https://unit42.paloaltonetworks.com/unit42-shamoon-2-return-disttrack-wiper/
+    - https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Worm:Win32/Conficker.B
 author: elhoim
 date: 2026-11-10
 tags:
