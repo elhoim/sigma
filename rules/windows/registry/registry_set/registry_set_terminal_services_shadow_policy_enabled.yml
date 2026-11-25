@@ -10,6 +10,7 @@ description: |
 references:
     - https://blog.bitsadmin.com/spying-on-users-using-rdp-shadowing
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/lateral_movement_evasion_rdp_shadowing.toml
+    - https://woshub.com/rdp-session-shadow-to-windows-10-user/
 author: elhoim
 date: 2026-11-10
 tags:
