@@ -9,6 +9,7 @@ references:
     - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder
     - https://github.com/google-gemini/gemini-cli/blob/b9776560ea5710bc673891499aaec68c737d160a/docs/cli/gemini-md.md
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/initial_access_genai_agent_instruction_file_in_downloads.toml
+    - https://labs.cloudsecurityalliance.org/research/csa-research-note-agent-instruction-file-poisoning-20261027/
 author: elhoim
 date: 2026-11-10
 tags:
