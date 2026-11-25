@@ -16,6 +16,7 @@ description: |
 references:
     - https://www.elastic.co/security-labs/grimresource
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_via_mmc_console_file_unusual_path.toml
+    - https://www.securonix.com/blog/analyzing-fluxconsole-using-tax-themed-lures-threat-actors-exploit-windows-management-console-to-deliver-backdoor-payloads/
 author: elhoim
 date: 2026-11-09
 tags:
