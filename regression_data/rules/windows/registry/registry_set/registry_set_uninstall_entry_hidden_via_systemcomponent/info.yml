@@ -1,0 +1,13 @@
+id: eaf24da2-c2b9-4d71-b369-d9462b024e2e
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 7cc00add-54f5-4ed1-906c-abb697e26e41
+      title: Potential Installed Program Concealment Via SystemComponent Registry Value
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_uninstall_entry_hidden_via_systemcomponent/7cc00add-54f5-4ed1-906c-abb697e26e41.evtx
