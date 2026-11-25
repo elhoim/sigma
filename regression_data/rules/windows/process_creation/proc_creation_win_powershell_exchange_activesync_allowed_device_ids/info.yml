@@ -1,0 +1,13 @@
+id: 381cd8e6-9a85-42e3-b1f1-101eaca14f4c
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: efbe4a33-b40f-4078-a45c-a731796a95ef
+      title: Potential Mailbox Access Persistence Via Exchange ActiveSyncAllowedDeviceIDs
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_exchange_activesync_allowed_device_ids/efbe4a33-b40f-4078-a45c-a731796a95ef.evtx
