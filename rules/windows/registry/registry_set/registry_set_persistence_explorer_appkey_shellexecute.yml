@@ -8,6 +8,8 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2018/07/06/beyond-good-ol-run-key-part-80/
     - https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-appcommand
+    - http://web.archive.org/web/20180313140036/http://blog.airbuscybersecurity.com/post/2015/06/Latest-improvements-in-PlugX
+    - http://ashish.vashisht.net/2008/01/configuring-keyboard-multimedia-keys.html
 author: elhoim
 date: 2026-11-12
 tags:
