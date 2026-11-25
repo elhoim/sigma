@@ -1,0 +1,13 @@
+id: 79d21d93-171e-4f82-8896-9a69e6bba840
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 6e8b84ab-b4f9-4f5f-b7d4-3f7405fb6610
+      title: Potential Persistence Via Uncommon Service Provider Registry Keys
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_uncommon_service_provider_keys/6e8b84ab-b4f9-4f5f-b7d4-3f7405fb6610.evtx
