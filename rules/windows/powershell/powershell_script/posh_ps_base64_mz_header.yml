@@ -11,6 +11,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_posh_portable_executable.toml
+    - https://github.com/PowerShellMafia/PowerSploit/blob/d943001a7defb5e0d1657085a77a0e78609be58f/Exfiltration/Invoke-Mimikatz.ps1
+    - https://github.com/BC-SECURITY/Empire/blob/51d6a6a59c6b596b11acf8d305887c58c89b9a2e/empire/server/data/module_source/management/Invoke-PSInject.ps1
 author: elhoim
 date: 2026-11-10
 tags:
