@@ -9,6 +9,7 @@ references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_suspicious_dnshostname_update.toml
     - https://www.thehacker.recipes/ad/movement/adcs/certifried
     - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4742
+    - https://github.com/ly4k/Certipy/blob/3ae34426c58d266a1979ff9607514c3d7fe1aa21/certipy/commands/account.py#L274
 author: elhoim
 date: 2026-11-09
 tags:
