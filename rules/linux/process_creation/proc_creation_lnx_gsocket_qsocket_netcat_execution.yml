@@ -8,6 +8,8 @@ references:
     - https://github.com/hackerschoice/gsocket/blob/95f814d46a713c024bc79ba7a816fd4cdb0d624a/README.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/gsocket.md
     - https://github.com/LOTTunnels/LOTTunnels.github.io/blob/d6fc42602ff543595b49b6f735f1e353be66bc35/_lottunnels/Binaries/qsocket.md
+    - https://isc.sans.edu/diary/32816
+    - https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/hacktool.sh.netcat.b
 author: elhoim
 date: 2026-11-13
 tags:
