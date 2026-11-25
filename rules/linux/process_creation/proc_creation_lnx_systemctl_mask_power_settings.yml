@@ -12,7 +12,6 @@ references:
     - https://linux-audit.com/systemd/faq/what-is-the-difference-between-systemctl-disable-and-systemctl-mask/
 tags:
     - attack.persistence
-    - attack.impact
     - attack.t1653
 logsource:
     category: process_creation
