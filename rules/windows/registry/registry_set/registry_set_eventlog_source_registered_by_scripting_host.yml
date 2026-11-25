@@ -11,6 +11,9 @@ references:
     - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/25a1848d-1b23-4835-a5a1-09f77f91ffd8.yaml
     - https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventlog.createeventsource
     - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-eventlog
+    - https://github.com/improsec/SharpEventPersist/blob/fd4b4224bf6ef06655134eb98c1ca0c77ac64971/SharpEventPersist/Program.cs
+    - https://www.blackhillsinfosec.com/windows-event-logs-for-red-teams/
+    - https://securelist.com/a-new-secret-stash-for-fileless-malware/106393/
 author: elhoim
 date: 2026-11-09
 tags:
