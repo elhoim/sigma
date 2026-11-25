@@ -1,0 +1,13 @@
+id: 7c303782-a476-4ae3-976d-8003e591fd48
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 5a75fc35-fbd3-4672-86d7-ed22775f391c
+      title: Potential ROT Encoded Python Script Execution - Codec Bytecode Creation
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_python_rot_codec_bytecode_creation/5a75fc35-fbd3-4672-86d7-ed22775f391c.evtx
