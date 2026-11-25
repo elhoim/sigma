@@ -1,0 +1,13 @@
+id: 4c840fca-8659-49f2-821e-fd6a88550991
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 5f7ce18d-842d-4ffb-8944-e4dac3c7bf50
+      title: Potential Malicious Office Add-In Opened From Suspicious Location Or Parent
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_office_addin_load_from_susp_location_or_parent/5f7ce18d-842d-4ffb-8944-e4dac3c7bf50.evtx
