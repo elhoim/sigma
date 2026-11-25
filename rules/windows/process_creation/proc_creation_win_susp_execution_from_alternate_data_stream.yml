@@ -12,6 +12,9 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows/win32/fileio/file-streams
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_unusual_dir_ads.toml
+    - https://www.crowdstrike.com/en-us/blog/big-game-hunting-the-evolution-of-indrik-spider-from-dridex-wire-fraud-to-bitpaymer-targeted-ransomware/
+    - https://www.morphisec.com/blog/bitpaymer-ransomware-with-new-custom-packer-framework/
+    - https://isc.sans.edu/diary/31990
 author: elhoim
 date: 2026-11-10
 tags:
