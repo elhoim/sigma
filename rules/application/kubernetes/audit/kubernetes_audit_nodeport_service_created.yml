@@ -7,6 +7,8 @@ description: |
 references:
     - https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
     - https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Exposed%20sensitive%20interfaces/
+    - https://www.hunters.security/en/blog/kubernetes-security-guide
+    - https://madhuakula.com/kubernetes-goat/docs/scenarios/scenario-8/misconfigured-nodeport-exposed-service-in-kubernetes/welcome/
 author: elhoim
 date: 2026-10-15
 tags:
