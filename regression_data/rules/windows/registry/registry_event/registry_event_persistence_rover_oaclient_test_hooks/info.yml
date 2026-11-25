@@ -1,0 +1,13 @@
+id: 05de3f2f-b85f-491e-bc10-f0d44e3ab444
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: d1c201af-5c10-4bff-b31b-1a67f5a7c247
+      title: Potential Persistence Via Rover Or OASys Test Hook Registry Keys
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_event/registry_event_persistence_rover_oaclient_test_hooks/d1c201af-5c10-4bff-b31b-1a67f5a7c247.evtx
