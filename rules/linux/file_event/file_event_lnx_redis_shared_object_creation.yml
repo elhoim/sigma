@@ -9,6 +9,8 @@ description: |
 references:
     - https://github.com/n0b0dyCN/redis-rogue-server
     - https://redis.io/docs/latest/commands/module-load/
+    - https://github.com/n0b0dyCN/redis-rogue-server/blob/d60f03d62a5e1e875dc72bf26ba211d7de31ad9e/redis-rogue-server.py
+    - https://www.aquasec.com/blog/headcrab-attacks-servers-worldwide/
 author: elhoim
 date: 2026-10-15
 tags:
