@@ -13,6 +13,8 @@ references:
     - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/9f0361b2-edcf-4dd4-b507-cc54d7019c47.yaml
     - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/6e30f32f-1647-400a-bca5-d2582bd0d060.yaml
     - https://github.com/TheMagicClaw/LOLAPI/blob/da78421569588bd30f1254bd1c0dc493fb3985c4/yaml/92c77267-2cf0-4931-a217-3203d2fd6428.yaml
+    - https://enigma0x3.net/2017/09/11/lateral-movement-using-excel-application-and-dcom/
+    - https://github.com/outflanknl/Excel4-DCOM/blob/b3a9cf69e991d12a9e55112c228f93eaa2619318/Invoke-Excel4DCOM.ps1
 author: elhoim
 date: 2026-11-09
 tags:
