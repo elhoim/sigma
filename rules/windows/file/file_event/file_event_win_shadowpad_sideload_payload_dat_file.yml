@@ -7,6 +7,8 @@ description: |
     The double extension ".dll.dat" names are not used by the legitimate products.
 references:
     - https://www.hexacorn.com/blog/2023/02/25/beyond-good-ol-run-key-part-141/
+    - https://www.sophos.com/en-us/research/shadowpad-malware-analysis
+    - https://st.drweb.com/static/new-www/news/2020/october/Study_of_the_ShadowPad_APT_backdoor_and_its_relation_to_PlugX_en.pdf
 author: elhoim
 date: 2026-11-12
 tags:
