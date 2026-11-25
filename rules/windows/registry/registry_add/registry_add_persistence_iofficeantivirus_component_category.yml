@@ -8,6 +8,7 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2018/08/04/beyond-good-ol-run-key-part-83/
     - https://learn.microsoft.com/en-us/windows/win32/com/categorizing-by-component-capabilities
+    - https://www.enhanceie.com/ie/IOfficeAntiVirusInCSharp.asp
 author: elhoim
 date: 2026-11-12
 tags:
