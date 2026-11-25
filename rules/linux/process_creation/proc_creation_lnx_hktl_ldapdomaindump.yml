@@ -11,6 +11,7 @@ references:
     - https://github.com/dirkjanm/ldapdomaindump
     - https://www.thehacker.recipes/ad/recon/ldap
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1087.002/T1087.002.md
+    - https://www.fox-it.com/nl/research/relaying-credentials-everywhere-with-ntlmrelayx/
 author: elhoim
 date: 2026-10-01
 tags:
