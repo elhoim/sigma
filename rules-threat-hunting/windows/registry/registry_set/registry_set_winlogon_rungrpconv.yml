@@ -7,6 +7,7 @@ description: |
     An attacker can set the value together with a planted "grpconv.exe", or a planted "imm.dll" that "grpconv.exe" tries to load, in order to get code executed at logon.
 references:
     - https://www.hexacorn.com/blog/2014/06/18/beyond-good-ol-run-key-part-13/
+    - https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=TrojanDownloader:Win32/Bredolab.G
 author: elhoim
 date: 2026-11-12
 tags:
