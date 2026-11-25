@@ -1,0 +1,44 @@
+title: System.IO.Compression Native Image Loaded By Process Outside Program Files
+id: d03fcc99-9a12-450e-b2fb-a420fbca488c
+status: experimental
+description: |
+    Detects the .NET compression assemblies "System.IO.Compression.ni.dll" or "System.IO.Compression.FileSystem.ni.dll" being loaded by a process that is not installed under Program Files and is not one of the known .NET hosts (mscorsvw, sdiagnhost, w3wp, the Defender for Endpoint OpenHandleCollector).
+    These libraries back ZipFile/ZipArchive; a script host or a binary running from a user, temp or ProgramData folder loading them is the moment collected data is being compressed for staging or exfiltration (Compress-Archive, .NET ZipFile in PowerShell or C# loaders).
+references:
+    - https://learn.microsoft.com/en-us/dotnet/api/system.io.compression.zipfile
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/collection_archive_data_zip_imageload.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.collection
+    - attack.t1560.002
+    - detection.threat-hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - '\System.IO.Compression.ni.dll'
+            - '\System.IO.Compression.FileSystem.ni.dll'
+    filter_main_program_files:
+        Image|startswith:
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+    filter_main_known_hosts:
+        - Image:
+              - 'C:\Windows\System32\inetsrv\w3wp.exe'
+              - 'C:\Windows\System32\sdiagnhost.exe'
+              - 'C:\Windows\SysWOW64\inetsrv\w3wp.exe'
+        - Image|startswith:
+              - 'C:\Windows\Microsoft.NET\Framework\'
+              - 'C:\Windows\Microsoft.NET\Framework64\'
+          Image|endswith: '\mscorsvw.exe'
+    filter_optional_mde_open_handle_collector:
+        Image|startswith: 'C:\ProgramData\Microsoft\Windows Defender Advanced Threat Protection\DataCollection\'
+        Image|endswith: '\OpenHandleCollector.exe'
+    condition: selection and not 1 of filter_*
+falsepositives:
+    - PowerShell scripts using Compress-Archive or Expand-Archive and any .NET application running from the user profile or ProgramData; baseline the common images before alerting
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/image_load/image_load_dll_system_io_compression_uncommon_process/info.yml
