@@ -11,6 +11,8 @@ references:
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1087.002/T1087.002.md
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1069.002/T1069.002.md
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1136.002/T1136.002.md
+    - https://hacktricks.wiki/en/network-services-pentesting/pentesting-ldap.html
+    - https://specterops.io/blog/2021/06/02/an-introduction-to-manual-active-directory-querying-with-dsquery-and-ldapsearch/
 author: elhoim
 date: 2026-10-01
 tags:
