@@ -9,6 +9,8 @@ description: |
     Adversaries may attach to the main process of a container to interact with it, similar to exec.
 references:
     - https://kubernetes.io/docs/reference/kubectl/generated/kubectl_attach/
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/kubernetes-security/kubernetes-privilege-escalation/workload-and-pod-access.html
+    - https://breachroad.com/en/blog/kubernetes-rbac-privilege-escalation/
 author: elhoim
 date: 2026-10-15
 tags:
