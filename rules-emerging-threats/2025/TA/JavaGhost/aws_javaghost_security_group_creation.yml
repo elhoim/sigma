@@ -7,6 +7,9 @@ description: |
 references:
     - https://unit42.paloaltonetworks.com/javaghost-cloud-phishing/
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSecurityGroup.html
+    - https://securitylabs.datadoghq.com/articles/following-attackers-trail-in-aws-methodology-findings-in-the-wild/
+    - https://securitylabs.datadoghq.com/articles/tales-from-the-cloud-trenches-the-attacker-doth-persist-too-much/
+    - https://threats.wiz.io/all-incidents/javaghost-ses-abuse
 author: elhoim
 date: 2026-10-15
 tags:

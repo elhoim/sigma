@@ -6,6 +6,8 @@ description: |
     Disabling Security Hub stops the aggregation of security findings, which adversaries may use to avoid detection.
 references:
     - https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_DisableSecurityHub.html
+    - https://github.com/HackTricks-wiki/hacktricks-cloud/blob/49dae1447e92cf1a65390b52f95fed6c15f41d2f/src/pentesting-cloud/aws-security/aws-post-exploitation/aws-security-hub-post-exploitation/README.md
+    - https://tocconsulting.fr/security-cards/securityhub
 author: elhoim
 date: 2026-10-15
 tags:

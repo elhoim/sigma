@@ -6,6 +6,8 @@ description: |
     Leaving the organization removes the account from the reach of organization-wide guardrails such as Service Control Policies, organization CloudTrail trails and delegated security services.
 references:
     - https://docs.aws.amazon.com/organizations/latest/APIReference/API_LeaveOrganization.html
+    - https://aws.amazon.com/blogs/security/cirt-insights-how-to-help-prevent-unauthorized-account-removals-from-aws-organizations/
+    - https://github.com/DataDog/stratus-red-team/blob/2e8d01329f7a7492e8e6c46737a7548730758bfd/v2/internal/attacktechniques/aws/defense-evasion/organizations-leave/main.go
 author: elhoim
 date: 2026-10-15
 tags:
