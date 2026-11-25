@@ -1,0 +1,72 @@
+title: Taskbar Pinned Shortcut Or Jump List File Written By Uncommon Process
+id: e9532b8a-d71e-479c-9137-3f2f332a11fb
+status: experimental
+description: |
+    Detects the creation or replacement of a shortcut in the "User Pinned\TaskBar" folder by a process other than the Windows shell and common browser installers, and the creation of Jump List files ("AutomaticDestinations" and "CustomDestinations") by a script host or a proxy execution binary.
+    Pinned taskbar shortcuts and Jump List entries are ordinary shell links that the user clicks every day. An attacker can replace the target of a pinned application or add a task to a Jump List so that his program is started together with, or instead of, the expected application, a persistence that depends on user interaction and creates no autostart entry.
+    Windows offers no supported interface for a program to pin itself, so a direct write to these locations by an unexpected process is worth a review of the shortcut target.
+references:
+    - https://www.hexacorn.com/blog/2014/03/02/beyond-good-ol-run-key-part-9/
+    - https://www.hexacorn.com/blog/2014/02/21/beyond-good-ol-run-key-part-8-2/
+    - https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1547.009
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_pinned:
+        TargetFilename|contains: '\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\'
+        TargetFilename|endswith: '.lnk'
+    filter_main_pinned_shell:
+        Image:
+            - 'C:\Windows\explorer.exe'
+            - 'C:\Windows\System32\ie4uinit.exe'
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_optional_pinned_edge:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Microsoft\Edge\Application\'
+            - 'C:\Program Files (x86)\Microsoft\EdgeUpdate\'
+            - 'C:\Program Files\Microsoft\Edge\Application\'
+        Image|endswith:
+            - '\msedge.exe'
+            - '\setup.exe'
+    filter_optional_pinned_chrome:
+        Image|startswith:
+            - 'C:\Program Files (x86)\Google\Chrome\Application\'
+            - 'C:\Program Files\Google\Chrome\Application\'
+        Image|endswith:
+            - '\chrome.exe'
+            - '\setup.exe'
+    filter_optional_pinned_firefox:
+        Image:
+            - 'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+            - 'C:\Program Files\Mozilla Firefox\firefox.exe'
+    selection_jumplist_target:
+        TargetFilename|contains:
+            - '\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\'
+            - '\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations\'
+        TargetFilename|endswith:
+            - '.automaticDestinations-ms'
+            - '.customDestinations-ms'
+    selection_jumplist_image:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+    condition: (selection_pinned and not 1 of filter_main_pinned_* and not 1 of filter_optional_pinned_*) or all of selection_jumplist_*
+falsepositives:
+    - Installers and updaters of browsers, collaboration tools or office suites that refresh their own pinned shortcut
+    - Profile management, roaming profile or backup software that restores the user profile
+    - Logon scripts of administrators that deploy a taskbar layout by copying shortcuts
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_taskbar_pinned_shortcut_jumplist_uncommon_writer/info.yml
