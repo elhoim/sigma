@@ -6,9 +6,8 @@ references:
     - https://lab52.io/blog/2344-2/
 author: X__Junior (Nextron Systems)
 date: 2023-07-13
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

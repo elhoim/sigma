@@ -6,10 +6,8 @@ references:
     - https://www.bleepingcomputer.com/news/security/hackers-are-now-hiding-malware-in-windows-event-logs/
 author: frack113
 date: 2022-05-09
-modified: 2026-05-18
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.001

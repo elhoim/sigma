@@ -7,9 +7,8 @@ references:
     - http://www.windowexe.com/bbs/board.php?q=jsschhlp-exe-c-program-files-common-files-justsystem-jsschhlp-jsschhlp
 author: frack113
 date: 2022-12-14
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

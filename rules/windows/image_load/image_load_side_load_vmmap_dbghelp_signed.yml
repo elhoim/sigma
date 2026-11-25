@@ -9,9 +9,8 @@ references:
     - https://techcommunity.microsoft.com/t5/sysinternals-blog/zoomit-v7-1-procdump-2-0-for-linux-process-explorer-v17-05/ba-p/3884766
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2023-09-05
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

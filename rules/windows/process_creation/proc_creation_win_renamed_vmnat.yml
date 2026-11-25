@@ -8,8 +8,6 @@ author: elhoim
 date: 2022-09-09
 modified: 2026-11-22
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.001

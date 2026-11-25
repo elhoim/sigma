@@ -6,9 +6,8 @@ references:
     - https://decoded.avast.io/martinchlumecky/png-steganography/
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022-12-01
+modified: 2026-11-15
 tags:
-    - attack.persistence
-    - attack.privilege-escalation
     - attack.execution
     - attack.stealth
     - attack.t1574.001

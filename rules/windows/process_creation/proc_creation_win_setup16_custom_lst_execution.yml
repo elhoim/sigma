@@ -9,9 +9,8 @@ references:
     - https://www.hexacorn.com/blog/2024/10/12/the-sweet16-the-oldbin-lolbin-called-setup16-exe/
 author: frack113
 date: 2024-12-01
+modified: 2026-11-15
 tags:
-    - attack.privilege-escalation
-    - attack.persistence
     - attack.execution
     - attack.stealth
     - attack.t1574.005
