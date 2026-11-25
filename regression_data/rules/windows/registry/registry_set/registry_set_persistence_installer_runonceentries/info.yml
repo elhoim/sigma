@@ -1,0 +1,13 @@
+id: 68b5b413-300e-4b2d-873e-3be65a77e01c
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: c4a86c16-2649-455c-8de9-2ab8be9dc3fb
+      title: Potential Persistence Via Windows Installer RunOnceEntries Registry Key
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_installer_runonceentries/c4a86c16-2649-455c-8de9-2ab8be9dc3fb.evtx
