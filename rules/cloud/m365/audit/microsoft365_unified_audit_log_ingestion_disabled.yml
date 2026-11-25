@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/set-adminauditlogconfig?view=exchange-ps
     - https://learn.microsoft.com/en-us/purview/audit-log-enable-disable
+    - https://servtep.github.io/MCADDF/06_Evasion/EVADE-IMPAIR-007_Audit_Log.html
+    - https://github.com/Gerenios/AADInternals/blob/6ed6d308061138544a7fb10276433b3da2b27b56/PSRP.ps1#L478
 author: elhoim
 date: 2026-10-15
 tags:
