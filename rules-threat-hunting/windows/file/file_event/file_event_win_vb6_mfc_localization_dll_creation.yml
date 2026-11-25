@@ -1,0 +1,35 @@
+title: Visual Basic 6 Or MFC Localization DLL Creation
+id: f0d90def-9682-4f90-a253-ba3fd44100d4
+status: experimental
+description: |
+    Detects the creation of a localization satellite DLL of the Visual Basic 6 runtime ("vb6<language>.dll" or "vbame.dll") in a system directory, or of a generic MFC localization DLL ("MFC<version>LOC.dll").
+    The Visual Basic 6 runtime "msvbvm60.dll" and the MFC libraries up to version 10 load these resource libraries as code when an application starts, depending on the language of the system.
+    An attacker can plant a DLL with such a name in order to get it loaded by every Visual Basic 6 or legacy MFC application.
+    Hunting hypothesis: such a file written by a process that is not an installer (msiexec.exe or a setup program), or with a language code that does not match the system language, is a planted DLL rather than a localized runtime.
+    A later image load of the same file by a Visual Basic 6 or MFC application confirms the hijack.
+references:
+    - https://www.hexacorn.com/blog/2015/01/01/beyond-good-ol-run-key-part-20/
+    - https://www.hexacorn.com/blog/2015/01/03/beyond-good-ol-run-key-part-21/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574.001
+    - detection.threat-hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_vb6:
+        TargetFilename|re|i: '\\(System32|SysWOW64)\\(vb6[a-z]{2,3}|vbame)\.dll$'
+    selection_mfc:
+        TargetFilename|re|i: '\\mfc[0-9]{2,3}u?loc\.dll$'
+    condition: 1 of selection_*
+falsepositives:
+    - Installers of legacy applications that deploy the localized resources of the Visual Basic 6 runtime
+    - Legacy MFC applications that ship their translated resources as an MFC localization DLL
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/file/file_event/file_event_win_vb6_mfc_localization_dll_creation/info.yml
