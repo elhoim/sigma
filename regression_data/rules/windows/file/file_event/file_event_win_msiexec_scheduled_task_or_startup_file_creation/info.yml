@@ -1,0 +1,13 @@
+id: d804dda3-8b92-472c-812d-c3dd3096130a
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: a8614b1e-b127-48e7-a66b-e0dc91e8aa0b
+      title: Potential Persistence Via Windows Installer - Scheduled Task Or Startup File Created By Msiexec
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_msiexec_scheduled_task_or_startup_file_creation/a8614b1e-b127-48e7-a66b-e0dc91e8aa0b.evtx
