@@ -10,6 +10,7 @@ description: |
 references:
     - https://specterops.io/blog/2018/06/11/the-tale-of-settingcontent-ms-files/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/execution_settingcontent_ms_file_creation.toml
+    - https://www.proofpoint.com/us/threat-insight/post/ta505-abusing-settingcontent-ms-within-pdf-files-distribute-flawedammyy-rat
 author: elhoim
 date: 2026-11-11
 tags:
