@@ -1,0 +1,35 @@
+title: SQL Server Management Studio Add-In Registration
+id: 786b471d-6079-43b8-bd26-6b4ac90d9249
+status: experimental
+description: |
+    Detects the registration of an add-in for SQL Server Management Studio under the "Tools\Shell\Addins" registry key by a process other than Windows Installer.
+    Older versions of SQL Server Management Studio load the libraries registered under this key, per user or per machine, at startup.
+    An attacker can register a DLL there to run code each time a database administrator opens the tool, in the context of an account that usually holds high privileges on database servers. Commercial add-ins register themselves here, so the registered library has to be reviewed.
+references:
+    - https://www.hexacorn.com/blog/2019/09/28/beyond-good-ol-run-key-part-117/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1546
+    - detection.threat-hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\Microsoft\Microsoft SQL Server\'
+            - '\Tools\Shell\Addins\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Installation or update of SQL Server Management Studio add-ins such as query formatting or source control tools by an installer that is not based on Windows Installer
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/registry/registry_set/registry_set_ssms_addin_registration/info.yml
