@@ -8,6 +8,8 @@ references:
     - https://cloud.google.com/compute/docs/reference/rest/v1/disks/createSnapshot
     - https://cloud.google.com/compute/docs/reference/rest/v1/regionDisks/createSnapshot
     - https://cloud.google.com/compute/docs/reference/rest/v1/snapshots/insert
+    - https://securitylabs.datadoghq.com/cloud-security-atlas/attacks/sharing-compute-disk/
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/gcp-security/gcp-post-exploitation/gcp-compute-post-exploitation.html
 author: elhoim
 date: 2026-10-15
 tags:
