@@ -11,6 +11,8 @@ description: |
 references:
     - http://web.archive.org/web/20230329160957/https://blog.menasec.net/2019/11/hunting-for-suspicious-use-of.html
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/command_and_control_teamviewer_remote_file_copy.toml
+    - https://www.huntress.com/blog/ransomware-deployment-attempts-via-teamviewer
+    - https://www.bleepingcomputer.com/news/security/teamviewer-abused-to-breach-networks-in-new-ransomware-attacks/
 author: elhoim
 date: 2026-11-10
 tags:
