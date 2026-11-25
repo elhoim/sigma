@@ -8,6 +8,9 @@ references:
     - https://slapopotamus.github.io/HuntPack/hunts/Arrayref-RustCrate-SupplyChain-Hunt.html
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/Rust_Build_Toolchain_Spawning_Interpreter_or_Downloader.yml
     - https://github.com/rust-lang/cargo/blob/5c18b2672ae2f81c7ca02542e90fca492b7036a8/src/compiler/layout.rs
+    - https://safedep.io/arrayref-proc-macro1-rust-build-time-malware/
+    - https://www.socket.dev/blog/popular-rust-crates-compromised
+    - https://research.jfrog.com/post/arrayref-proc-macro1-crates-io/
 author: elhoim
 date: 2026-11-10
 tags:
