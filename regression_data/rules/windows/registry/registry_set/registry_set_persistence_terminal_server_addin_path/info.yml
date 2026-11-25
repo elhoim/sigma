@@ -1,0 +1,13 @@
+id: 1daa0efe-ba58-453f-bd96-1864e0ae3cee
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: badafd93-1995-40ed-8e06-8718e3a8e970
+      title: Potential Persistence Via Terminal Server Add-in Path Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_terminal_server_addin_path/badafd93-1995-40ed-8e06-8718e3a8e970.evtx
