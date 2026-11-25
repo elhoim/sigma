@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
     - https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/inviting-people-to-manage-your-enterprise
+    - https://www.abstract.security/blog/uncovering-compromised-git-admins-how-to-detect-actors-like-thecom
+    - https://www.githubforensics.com/en/blog/github-organization-compromised
 author: elhoim
 date: 2026-10-15
 tags:

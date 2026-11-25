@@ -7,6 +7,10 @@ description: |
 references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
     - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+    - https://socket.dev/blog/hardening-github-actions-against-insider-threats
+    - https://github.com/synacktiv/nord-stream/blob/06d9ae0851d2eb6dd6f16b5a9dd7138bb29c4e03/nordstream/cicd/github.py#L318-L340
+    - https://www.synacktiv.com/publications/cicd-secrets-extraction-tips-and-tricks
+    - https://www.githubforensics.com/en/blog/branch-protection-ruleset-tampering
 author: elhoim
 date: 2026-10-15
 tags:

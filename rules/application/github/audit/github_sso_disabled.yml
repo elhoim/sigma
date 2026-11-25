@@ -7,6 +7,9 @@ description: |
 references:
     - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise
     - https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-saml-single-sign-on-for-your-organization
+    - https://www.abstract.security/blog/uncovering-compromised-git-admins-how-to-detect-actors-like-thecom
+    - https://nhimg.org/github-audit-log-detection-guide
+    - https://www.githubforensics.com/en/blog/github-organization-compromised
 author: elhoim
 date: 2026-10-15
 tags:
