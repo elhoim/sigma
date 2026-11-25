@@ -16,9 +16,12 @@ references:
     - https://promptintel.novahunting.ai/molt
 author: Marco Pedrinazzi (@pedrinazziM) (InTheCyber)
 date: 2026-02-03
+modified: 2026-11-15
 tags:
     - attack.execution
+    - attack.initial-access
     - attack.t1059.007
+    - attack.t1195.001
 logsource:
     product: windows
     category: process_creation
