@@ -7,6 +7,7 @@ description: |
     The drive type is not available in the file events, so the root of any drive from D: to Z: is used (A: and B: are left out as floppy drive letters).
 references:
     - https://www.hexacorn.com/blog/2015/10/16/enter-sandbox-part-10-removable-devices-clickbait-file-names/
+    - https://www.welivesecurity.com/es/malware/cuales-fueron-los-malware-mas-activos-en-latinoamerica-2025/
 author: elhoim
 date: 2026-11-12
 tags:
