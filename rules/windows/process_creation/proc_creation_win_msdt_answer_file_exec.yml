@@ -11,7 +11,6 @@ modified: 2025-10-29
 tags:
     - attack.stealth
     - attack.t1218
-    - attack.execution
 logsource:
     category: process_creation
     product: windows
@@ -26,3 +25,4 @@ detection:
 falsepositives:
     - Possible undocumented parents of "msdt" other than "pcwrun".
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_msdt_answer_file_exec/info.yml

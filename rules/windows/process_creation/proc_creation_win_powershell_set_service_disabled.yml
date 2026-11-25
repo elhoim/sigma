@@ -7,7 +7,6 @@ references:
 author: Nasreddine Bencherchali (Nextron Systems)
 date: 2023-03-04
 tags:
-    - attack.execution
     - attack.defense-impairment
     - attack.t1685
 logsource:
@@ -28,3 +27,4 @@ detection:
 falsepositives:
     - False positives may occur with troubleshooting scripts
 level: medium
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_set_service_disabled/info.yml

@@ -8,8 +8,9 @@ author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022-06-13
 tags:
     - attack.stealth
-    - attack.t1218
     - attack.execution
+    - attack.t1218
+    - attack.t1203
 logsource:
     category: process_creation
     product: windows
@@ -21,3 +22,4 @@ detection:
 falsepositives:
     - Unlikely
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_lolbin_pcwrun_follina/info.yml

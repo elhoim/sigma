@@ -9,7 +9,6 @@ author: Florian Roth (Nextron Systems)
 date: 2022-01-11
 modified: 2024-11-23
 tags:
-    - attack.execution
     - attack.stealth
     - attack.t1218
 logsource:

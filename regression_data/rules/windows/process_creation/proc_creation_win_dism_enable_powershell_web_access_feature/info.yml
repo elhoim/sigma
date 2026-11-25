@@ -1,0 +1,13 @@
+id: 31832f58-b4de-4e82-90d1-3365ec653edc
+description: Atomic Red Team replay of real events captured on the lab VMs (T1685-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 7e8f2d3b-9c1a-4f67-b9e8-8d9006e0e51f
+      title: PowerShell Web Access Feature Enabled Via DISM
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_dism_enable_powershell_web_access_feature/7e8f2d3b-9c1a-4f67-b9e8-8d9006e0e51f.evtx
