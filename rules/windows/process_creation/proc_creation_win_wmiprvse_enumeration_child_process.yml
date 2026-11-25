@@ -12,6 +12,9 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-architecture
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_enumeration_via_wmiprvse.toml
+    - https://github.com/fortra/impacket/blob/4f0ad416307672921acfba50f72ebc88616b06f6/examples/wmiexec.py
+    - https://redcanary.com/threat-detection-report/techniques/windows-management-instrumentation/
+    - https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-Management-Instrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf
 author: elhoim
 date: 2026-11-11
 tags:
