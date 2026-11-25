@@ -11,6 +11,7 @@ references:
     - https://learn.microsoft.com/en-us/windows/win32/services/service-security-and-access-rights
     - https://www.ired.team/offensive-security/privilege-escalation/weak-service-permissions
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_reg_service_imagepath_mod.toml
+    - https://www.hackingarticles.in/windows-privilege-escalation-server-operator-group/
 author: elhoim
 date: 2026-11-10
 tags:
