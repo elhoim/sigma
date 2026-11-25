@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/microsoftteams/audit-app-management-activities
     - https://learn.microsoft.com/en-us/purview/audit-log-activities#teams-activities
+    - https://www.paloaltonetworks.com/blog/?p=348763
+    - https://cyberdom.blog/inside-the-microsoft-teams-attack-matrix-unpacking-the-the-frontier-in-collaboration-threats/
 author: elhoim
 date: 2026-10-15
 tags:

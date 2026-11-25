@@ -9,6 +9,10 @@ references:
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-mailboxpermission?view=exchange-ps
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-recipientpermission?view=exchange-ps
     - https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-mailboxfolderpermission?view=exchange-ps
+    - https://practical365.com/using-audit-logs-and-the-graph-api-to-investigate-security-incidents-in-exchange-online/
+    - https://unit42.paloaltonetworks.com/custom-rats-target-southeast-asia-governments/
+    - https://expel.com/blog/seven-ways-to-spot-business-email-compromise-office-365/
+    - https://www.waterisac.org/wp-content/uploads/2021/02/PwC-Business_Email_Compromise-Guide-2dc.pdf
 author: elhoim
 date: 2026-10-15
 tags:
