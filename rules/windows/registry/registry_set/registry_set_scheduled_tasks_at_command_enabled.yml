@@ -8,6 +8,9 @@ references:
     - https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-scheduledjob
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/at
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_scheduledjobs_at_protocol_enabled.toml
+    - https://whiteknightlabs.com/2023/06/26/navigating-stealthy-wmi-lateral-movement/
+    - https://kwcsec.gitbook.io/the-red-team-handbook/techniques/lateral-movement/at
+    - https://github.com/mez-0/MoveScheduler/blob/81ebf843f3e93c1e01e994425dd89c5d4e407865/README.md
 author: elhoim
 date: 2026-11-09
 tags:
