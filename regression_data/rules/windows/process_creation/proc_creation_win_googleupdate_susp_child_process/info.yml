@@ -1,0 +1,13 @@
+id: 6234377b-4978-45af-9264-75273cd720c7
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 84b1ecf9-6eff-4004-bafb-bae5c0e251b2
+      title: Potentially Suspicious GoogleUpdate Child Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_googleupdate_susp_child_process/84b1ecf9-6eff-4004-bafb-bae5c0e251b2.evtx

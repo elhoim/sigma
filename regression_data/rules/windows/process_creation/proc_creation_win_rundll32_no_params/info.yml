@@ -1,0 +1,13 @@
+id: 87752b64-4756-4ac2-bcab-22def74c197b
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 1775e15e-b61b-4d14-a1a3-80981298085a
+      title: Rundll32 Execution Without CommandLine Parameters
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_rundll32_no_params/1775e15e-b61b-4d14-a1a3-80981298085a.evtx
