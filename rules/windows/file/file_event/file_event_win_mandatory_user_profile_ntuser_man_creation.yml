@@ -8,6 +8,9 @@ description: |
 references:
     - https://deceptiq.com/blog/ntuser-man-registry-persistence
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/persistence_suspicious_user_mandatory_profile_file.toml
+    - https://www.praetorian.com/blog/corrupting-the-hive-mind-persistence-through-forgotten-windows-internals/
+    - https://ipurple.team/2026/08/11/mandatory-user-profile/
+    - https://0xfuzz.com/blog/ntuser-man-persistence
 author: elhoim
 date: 2026-11-10
 tags:
