@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-organization
     - https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities
+    - https://github.com/HackTricks-wiki/hacktricks-cloud/blob/2191a33356076d0232462d44a0556d8ccf4f18f5/src/pentesting-cloud/azure-security/az-persistence/az-entra-id-governance-persistence.md
+    - https://securitylabs.datadoghq.com/articles/entra-access-packages-part-1-privileges/
 author: elhoim
 date: 2026-10-15
 tags:

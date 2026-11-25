@@ -7,6 +7,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/azure/container-instances/container-instances-exec
     - https://learn.microsoft.com/en-us/azure/role-based-access-control/permissions/containers
+    - https://unit42.paloaltonetworks.com/azure-container-instances/
+    - https://github.com/HackTricks-wiki/hacktricks-cloud/blob/2191a33356076d0232462d44a0556d8ccf4f18f5/src/pentesting-cloud/azure-security/az-privilege-escalation/az-container-instances-apps-jobs-privesc.md
 author: elhoim
 date: 2026-10-15
 tags:
