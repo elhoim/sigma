@@ -1,0 +1,13 @@
+id: 15db35b3-7d78-47d3-9142-ac728ece8a8d
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 2efaa747-3c04-43e8-9746-feafbb41752a
+      title: Potential Print Spooler Exploitation - SPL File Created By Uncommon Process
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/file/file_event/file_event_win_print_spooler_spl_file_by_uncommon_process/2efaa747-3c04-43e8-9746-feafbb41752a.evtx
