@@ -1,0 +1,13 @@
+id: 87c35b94-5d0b-46a9-a114-763f119227d0
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 4340f78c-ad2c-4b66-b30c-7e039a1260cd
+      title: Suspicious Bulk Force Stop Of Hyper-V Virtual Machines Via PowerShell
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_powershell_hyperv_bulk_vm_force_stop/4340f78c-ad2c-4b66-b30c-7e039a1260cd.evtx
