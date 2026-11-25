@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DeleteThreatIntelSet.html
     - https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DeletePublishingDestination.html
+    - https://hackingthe.cloud/aws/avoiding-detection/modify-guardduty-config/
+    - https://benjitrapp.github.io/attacks/2022-04-01-Hacking-GuardDuty
 author: elhoim
 date: 2026-10-15
 tags:

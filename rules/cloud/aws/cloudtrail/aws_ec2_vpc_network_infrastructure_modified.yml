@@ -8,6 +8,8 @@ references:
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateInternetGateway.html
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateVpcPeeringConnection.html
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteSubnet.html
+    - https://specterops.io/blog/2020/03/11/through-the-looking-glass/
+    - https://github.com/HackTricks-wiki/hacktricks-cloud/blob/d61d68d7a7740adf955d4e3746a81955ca7058bf/src/pentesting-cloud/aws-security/aws-persistence/aws-ec2-persistence/README.md
 author: elhoim
 date: 2026-10-15
 tags:

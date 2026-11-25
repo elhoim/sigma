@@ -8,6 +8,10 @@ references:
     - https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
     - https://docs.aws.amazon.com/resource-explorer/latest/apireference/API_Search.html
     - https://docs.aws.amazon.com/ses/latest/APIReference/API_GetSendQuota.html
+    - https://unit42.paloaltonetworks.com/javaghost-cloud-phishing
+    - https://securitylabs.datadoghq.com/articles/tales-from-the-cloud-trenches-the-attacker-doth-persist-too-much/
+    - https://securitylabs.datadoghq.com/articles/enumerating-aws-the-quiet-way-cloudtrail-free-discovery-with-resource-explorer/
+    - https://hackingthe.cloud/aws/enumeration/enumerate_services_via_aws_backup/
 author: elhoim
 date: 2026-10-15
 tags:

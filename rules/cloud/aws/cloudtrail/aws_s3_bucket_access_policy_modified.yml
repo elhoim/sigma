@@ -8,6 +8,9 @@ references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketPolicy.html
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketCors.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging-s3-info.html
+    - https://github.com/DataDog/stratus-red-team/blob/2e8d01329f7a7492e8e6c46737a7548730758bfd/v2/internal/attacktechniques/aws/exfiltration/s3-backdoor-bucket-policy/main.go
+    - https://summitroute.com/blog/2021/08/03/S3_backups_and_other_strategies_for_ensuring_data_durability_through_ransomware_attacks/
+    - https://unit42.paloaltonetworks.com/shinyhunters-ransomware-extortion/
 author: elhoim
 date: 2026-10-15
 tags:

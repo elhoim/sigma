@@ -6,6 +6,8 @@ description: |
     Firehose streams frequently deliver logs to SIEM or archive storage, and adversaries may redirect them to stop log delivery or to exfiltrate the streamed data.
 references:
     - https://docs.aws.amazon.com/firehose/latest/APIReference/API_UpdateDestination.html
+    - https://tocconsulting.fr/security-cards/kinesis
+    - https://nhimg.org/amazon-kinesis-security-guide
 author: elhoim
 date: 2026-10-15
 tags:

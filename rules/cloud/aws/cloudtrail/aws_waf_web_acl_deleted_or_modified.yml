@@ -7,6 +7,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/waf/latest/APIReference/API_DeleteWebACL.html
     - https://docs.aws.amazon.com/waf/latest/APIReference/API_UpdateWebACL.html
+    - https://threats.mitigant.io/techniques/?id=waf-count-mode
+    - https://easttimor.github.io/aws-incident-response/
 author: elhoim
 date: 2026-10-15
 tags:

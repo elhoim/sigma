@@ -10,6 +10,8 @@ description: |
 references:
     - https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html
     - https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html
+    - https://rhinosecuritylabs.com/aws/s3-ransomware-part-2-prevention-and-defense/
+    - https://panther.com/blog/detecting-and-hunting-for-cloud-ransomware-part-1-aws-s3
 author: elhoim
 date: 2026-10-15
 tags:

@@ -7,6 +7,9 @@ description: |
 references:
     - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ExecuteCommand.html
     - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html
+    - https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/aws-privilege-escalation/aws-ecs-privesc/index.html
+    - https://aws-samples.github.io/threat-technique-catalog-for-aws/Techniques/T1496.A006.html
+    - https://nhimg.org/amazon-ecs-and-fargate-security-guide
 author: elhoim
 date: 2026-10-15
 tags:
