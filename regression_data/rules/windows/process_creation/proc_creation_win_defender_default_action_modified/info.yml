@@ -1,0 +1,13 @@
+id: ea0afbd2-c941-4a54-8499-28058c44d15b
+description: N/A
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 1e8a9b4d-3c2a-4f9b-8d1e-7c6a5b4f3d2e
+      title: PowerShell Defender Threat Severity Default Action Set to 'Allow' or 'NoAction'
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_defender_default_action_modified/1e8a9b4d-3c2a-4f9b-8d1e-7c6a5b4f3d2e.evtx
