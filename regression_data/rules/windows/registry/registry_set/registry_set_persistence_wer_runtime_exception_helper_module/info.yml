@@ -1,0 +1,13 @@
+id: 55db0743-3ac8-41d4-af28-1542eeba35e1
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 03c0bd87-3db3-4a54-b7eb-5a25b9ca6bde
+      title: Potential Persistence Via WER Runtime Exception Helper Module Registration
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_wer_runtime_exception_helper_module/03c0bd87-3db3-4a54-b7eb-5a25b9ca6bde.evtx
