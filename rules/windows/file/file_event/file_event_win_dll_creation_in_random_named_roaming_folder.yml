@@ -6,6 +6,7 @@ description: |
     Legitimate software stores Roaming data under vendor or product names; a random alphanumeric folder holding a freshly written DLL, which the loader then registers with a scheduled task running "rundll32 <dll>,DllRegisterServer", is a staging pattern of malware loaders.
 references:
     - https://redcanary.com/threat-detection-report/threats/cleanuploader/
+    - https://www.sekoia.com/blog/oysterloader-unmasked-the-multi-stage-evasion-loader
 author: elhoim
 date: 2026-11-09
 tags:
