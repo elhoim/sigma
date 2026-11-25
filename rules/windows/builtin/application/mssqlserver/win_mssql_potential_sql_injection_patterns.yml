@@ -8,6 +8,9 @@ references:
     - https://learn.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions
     - https://owasp.org/www-community/attacks/SQL_Injection
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/initial_access_mssql_potential_sql_injection.toml
+    - https://github.com/sqlmapproject/sqlmap/blob/c9fbd7a34c5df37fcf10f153fd8eb9d04d35b7f1/data/xml/payloads/error_based.xml#L541
+    - https://github.com/sqlmapproject/sqlmap/blob/c9fbd7a34c5df37fcf10f153fd8eb9d04d35b7f1/plugins/dbms/mssqlserver/syntax.py#L15
+    - https://github.com/swisskyrepo/PayloadsAllTheThings/blob/38716075f02f13979f0594427c05e48c9e9f704e/SQL%20Injection/MSSQL%20Injection.md
 author: elhoim
 date: 2026-11-09
 tags:
