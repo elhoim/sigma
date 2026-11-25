@@ -1,0 +1,13 @@
+id: 3bebcbb0-8f0f-4426-a1db-7f1960b54ad6
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: 9f28c683-09ed-407f-8bfb-1e3279fdba60
+      title: Potential Legacy AT Scheduled Jobs Re-Enabled Via Registry
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_scheduled_tasks_at_command_enabled/9f28c683-09ed-407f-8bfb-1e3279fdba60.evtx
