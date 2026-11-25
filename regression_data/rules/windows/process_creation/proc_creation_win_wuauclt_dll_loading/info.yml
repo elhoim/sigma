@@ -1,0 +1,13 @@
+id: 7f968ffa-d117-4117-898b-510842b6c6ef
+description: Atomic Red Team replay of real events captured on the lab VMs (T1218-3 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: af77cf95-c469-471c-b6a0-946c685c4798
+      title: Proxy Execution Via Wuauclt.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_wuauclt_dll_loading/af77cf95-c469-471c-b6a0-946c685c4798.evtx
