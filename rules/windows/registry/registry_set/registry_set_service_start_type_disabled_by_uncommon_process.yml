@@ -11,6 +11,8 @@ references:
     - https://learn.microsoft.com/en-us/windows-hardware/drivers/install/hklm-system-currentcontrolset-services-registry-tree
     - https://learn.microsoft.com/en-us/windows/win32/services/service-configuration
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/defense_evasion_service_disabled_registry.toml
+    - https://github.com/jeremybeaume/tools/blob/fb48c2dbb3d75c28c2b028c1a60ea87d6eacfcc0/disable-defender.ps1
+    - https://github.com/qtkite/defender-control/blob/53f3c78644acd998336dedacaaddb301f1b08775/src/defender-control/dcontrol.cpp
 author: elhoim
 date: 2026-11-11
 tags:
