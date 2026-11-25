@@ -1,0 +1,31 @@
+title: Total Commander Parallel Port Driver Installation
+id: cb97adf8-2b1f-46d0-b899-8ee13d3d38b1
+status: experimental
+description: |
+    Detects the execution of Total Commander with the "/INSTALLDRIVER" or "/INSTALLDRIVERQ" command line switch.
+    The switch installs the parallel port kernel driver of Total Commander as a service named "cglptnt", whose driver file is copied to the drivers directory.
+    The driver is only needed for the legacy parallel port file transfer, so its installation is uncommon and the copied driver file could be replaced by an attacker.
+references:
+    - https://www.hexacorn.com/blog/2018/06/10/beyond-good-ol-run-key-part-79/
+    - https://www.ghisler.ch/wiki/index.php/Command_line_parameters
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1543.003
+    - detection.threat-hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\TOTALCMD.EXE'
+            - '\TOTALCMD64.EXE'
+        CommandLine|contains: 'INSTALLDRIVER'
+    condition: selection
+falsepositives:
+    - Legitimate installation of the parallel port driver by a Total Commander user or by a deployment script
+level: low
+regression_tests_path: regression_data/rules-threat-hunting/windows/process_creation/proc_creation_win_totalcmd_parallel_port_driver_install/info.yml
