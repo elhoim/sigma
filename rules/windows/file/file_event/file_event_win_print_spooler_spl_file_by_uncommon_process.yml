@@ -8,6 +8,7 @@ references:
     - https://windows-internals.com/printdemon-cve-2020-1048/
     - https://www.safebreach.com/blog/how-we-bypassed-cve-2020-1048-patch-and-got-cve-2020-1337/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_printspooler_suspicious_spl_file.toml
+    - https://voidsec.com/cve-2020-1337-printdemon-is-dead-long-live-printdemon/
 author: elhoim
 date: 2026-11-09
 tags:
