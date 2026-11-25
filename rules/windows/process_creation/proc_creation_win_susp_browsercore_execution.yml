@@ -1,0 +1,38 @@
+title: Suspicious BrowserCore.EXE Execution Without Native Messaging Origin
+id: fc561507-0036-44a4-9cfa-0c1cfdadf516
+related:
+    - id: 8a4519e8-e64a-40b6-ae85-ba8ad2177559
+      type: similar
+status: experimental
+description: |
+    Detects the execution of "BrowserCore.exe", the Windows native messaging host that returns Entra ID (Azure AD) Primary Refresh Token (PRT) SSO cookies to the "Windows Accounts" browser extension, without the "chrome-extension://" origin argument.
+    Chromium-based browsers always pass the origin of the calling extension on the command line (through "cmd.exe" or directly).
+    Tools such as ROADtoken, PRTRemote or the ANIMO PrtExtractor start "BrowserCore.exe" themselves, without any argument, and feed a crafted "GetCookies" request on its standard input to obtain a PRT cookie that allows the hijacking of the user's cloud session.
+    The sibling rule "Renamed BrowserCore.EXE Execution" only covers renamed copies of the binary.
+references:
+    - https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/
+    - https://specterops.io/blog/2020/07/14/requesting-azure-ad-request-tokens-on-azure-ad-joined-machines-for-browser-sso/
+    - https://github.com/dirkjanm/ROADtoken/blob/48f75b691a4f7fa9ab7606ec592531c5952f52ed/Program.cs
+    - https://github.com/dmcxblue/ANIMO/blob/4fba360889b03690d7f5fa200213c9f3bec18b07/helpers/scripts/GrabTokenAzureAD/PrtExtractor.cs
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/credential_access_entraid_prt_via_browsercore.toml
+author: elhoim
+date: 2026-11-09
+tags:
+    - attack.credential-access
+    - attack.t1528
+    - attack.t1539
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - Image|endswith: '\BrowserCore.exe'
+        - OriginalFileName: 'BrowserCore.exe'
+    filter_main_native_messaging:
+        CommandLine|contains: 'chrome-extension://'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - In-house or third-party SSO helpers that drive "BrowserCore.exe" directly instead of going through the browser extension
+    - Process creation events without command line logging
+level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_susp_browsercore_execution/info.yml
