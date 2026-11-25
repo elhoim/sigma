@@ -7,6 +7,8 @@ description: |
     Unlike "Files With System Process Name In Unsuspected Locations", this rule looks at the writing process rather than the name of the written file.
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_system_critical_proc_abnormal_file_activity.toml
+    - https://cloud.google.com/blog/topics/threat-intelligence/wannacry-ransomware-campaign
+    - https://www.pandasecurity.com/en/mediacenter/src/uploads/2017/05/WannaCry_Report-en.pdf
 author: elhoim
 date: 2026-11-09
 tags:
