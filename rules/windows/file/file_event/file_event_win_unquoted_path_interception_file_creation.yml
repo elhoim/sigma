@@ -8,6 +8,9 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2016/03/26/beyond-good-ol-run-key-part-37/
     - https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
+    - https://blackpointcyber.com/blog/unlocking-the-mystery-of-unquoted-service-paths-another-opportunity-for-privilege-escalation/
+    - https://ired.team/offensive-security/privilege-escalation/unquoted-service-paths
+    - https://devblogs.microsoft.com/oldnewthing/20240723-00/?p=110032
 author: elhoim
 date: 2026-11-12
 tags:
