@@ -13,6 +13,8 @@ references:
     - https://www.elastic.co/security-labs/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
     - https://www.elastic.co/security-labs/hunting-for-lateral-movement-using-event-query-language
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_from_unusual_path_cmdline.toml
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-325a
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a
 author: elhoim
 date: 2026-11-09
 tags:
