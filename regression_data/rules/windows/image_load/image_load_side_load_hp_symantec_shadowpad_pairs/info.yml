@@ -1,0 +1,13 @@
+id: 7e9dbd47-3404-4137-b148-e15ae4dbdd04
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: c30ede32-670a-4356-aa04-3a760a241aec
+      title: Potential HP Or Symantec DLL Sideloading - Hpqhvsei And RasTls
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/image_load/image_load_side_load_hp_symantec_shadowpad_pairs/c30ede32-670a-4356-aa04-3a760a241aec.evtx
