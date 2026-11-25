@@ -11,6 +11,7 @@ description: |
 references:
     - https://www.crowdstrike.com/en-us/blog/anatomy-of-alpha-spider-ransomware/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_root_dir_ads_creation.toml
+    - https://cqureacademy.com/blog/alternate-data-streams/
 author: elhoim
 date: 2026-11-10
 tags:
