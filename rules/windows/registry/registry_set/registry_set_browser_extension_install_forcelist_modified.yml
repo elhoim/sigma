@@ -12,6 +12,8 @@ references:
     - https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/extensioninstallforcelist
     - https://www.malwarebytes.com/blog/news/2022/06/forced-chrome-extensions-keep-reappearing
     - https://redcanary.com/threat-detection-report/trends/browser-threats/
+    - https://www.connectwise.com/blog/smash-jacker
+    - https://cyberinsider.com/trojan-infects-300000-chrome-and-edge-users-with-unremovable-extensions/
 author: elhoim
 date: 2026-11-09
 tags:
