@@ -10,6 +10,8 @@ references:
     - https://gtfobins.org/gtfobins/systemctl/
     - https://www.elastic.co/security-labs/primer-on-persistence-mechanisms
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1569.003/T1569.003.md
+    - https://0xdf.gitlab.io/2019/11/09/htb-jarvis.html
+    - https://pberba.github.io/security/2022/01/30/linux-threat-hunting-for-persistence-systemd-timers-cron/
 author: elhoim
 date: 2026-10-01
 tags:
