@@ -16,6 +16,9 @@ description: |
 references:
     - https://www.proofpoint.com/us/blog/threat-insight/threat-actor-abuses-cloudflare-tunnels-deliver-rats
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_scripting_remote_webdav.toml
+    - https://www.securonix.com/blog/analyzing_serpentinecloud-threat-actors-abuse-cloudflare-tunnels-threat-research/
+    - https://cofense.com/blog/abusing-windows-file-explorer-and-webdav-for-malware-delivery
+    - https://www.trendmicro.com/en_gb/research/26/a/analyzing-a-a-multi-stage-asyncrat-campaign-via-mdr.html
 author: elhoim
 date: 2026-11-10
 tags:
