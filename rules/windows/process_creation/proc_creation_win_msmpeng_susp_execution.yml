@@ -10,6 +10,7 @@ description: |
 references:
     - https://www.sophos.com/en-us/blog/independence-day-revil-uses-supply-chain-exploit-to-attack-hundreds-of-businesses/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_windefend_unusual_path.toml
+    - https://www.huntress.com/blog/rapid-response-kaseya-vsa-mass-msp-ransomware-incident
 author: elhoim
 date: 2026-11-09
 tags:
