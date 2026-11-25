@@ -11,6 +11,9 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2020/10/19/beyond-good-ol-run-key-part-130/
     - https://learn.microsoft.com/en-us/windows/win32/api/winsvc/ns-winsvc-service_failure_actionsw
+    - https://pentestlab.blog/2020/01/22/persistence-modify-existing-service/
+    - https://ipurple.team/2026/07/06/windows-service/
+    - https://www.zerosalarium.com/2026/02/Defense-Evasion-The-service-run-failed-successfully.html
 author: elhoim
 date: 2026-11-12
 tags:
