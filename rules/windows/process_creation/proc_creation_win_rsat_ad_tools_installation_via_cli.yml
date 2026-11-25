@@ -14,6 +14,7 @@ references:
     - https://learn.microsoft.com/en-us/windows-server/administration/install-remote-server-administration-tools
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+    - https://thedfirreport.com/2023/04/03/malicious-iso-file-leads-to-domain-wide-ransomware/
 author: elhoim
 date: 2026-11-10
 tags:
