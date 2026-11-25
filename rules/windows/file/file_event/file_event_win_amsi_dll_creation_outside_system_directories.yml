@@ -11,6 +11,7 @@ description: |
 references:
     - https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell/blob/0ea6512afe012ec063c86f50974001e445daa6a8/README.md
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_amsi_bypass_dllhijack.toml
+    - https://github.com/samratashok/nishang/blob/d745bdb20a81efe1ba3c447538d552c2b73b0f64/Bypass/Invoke-AmsiBypass.ps1
 author: elhoim
 date: 2026-11-10
 tags:
