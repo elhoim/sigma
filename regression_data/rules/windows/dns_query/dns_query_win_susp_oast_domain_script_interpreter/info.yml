@@ -1,0 +1,13 @@
+id: 231e5794-b5d1-4d09-97cb-a1afffa65f55
+description: N/A
+date: 2026-11-09
+author: elhoim
+rule_metadata:
+    - id: 632e7533-e458-48eb-9876-132f4f714288
+      title: Suspicious DNS Query To OAST Domain From Script Interpreter
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/dns_query/dns_query_win_susp_oast_domain_script_interpreter/632e7533-e458-48eb-9876-132f4f714288.evtx
