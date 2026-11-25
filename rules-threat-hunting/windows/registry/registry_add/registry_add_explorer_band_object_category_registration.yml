@@ -8,6 +8,7 @@ description: |
 references:
     - https://www.hexacorn.com/blog/2017/12/30/beyond-good-ol-run-key-part-70/
     - https://learn.microsoft.com/en-us/windows/win32/shell/band-objects
+    - http://web.archive.org/web/20240119092008/https://www.codeproject.com/Articles/39189/Shell-Extensibility-Explorer-Desk-Band-Tray-Notifi
 author: elhoim
 date: 2026-11-12
 tags:
