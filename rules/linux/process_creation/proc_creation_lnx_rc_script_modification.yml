@@ -8,6 +8,8 @@ description: |
 references:
     - https://www.elastic.co/security-labs/sequel-on-persistence-mechanisms
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1037.004/T1037.004.md
+    - https://github.com/Aegrah/PANIX/blob/98e2e502e08b30b6364f798ae77d3f015853260f/modules/setup_rc_local_backdoor.sh
+    - https://intezer.com/blog/research/hiddenwasp-malware-targeting-linux-systems/
 author: elhoim
 date: 2026-10-01
 tags:
