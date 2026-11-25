@@ -11,6 +11,8 @@ description: |
 references:
     - https://securelist.com/the-gentlemen-raas/120447/
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/the_gentlemen_raas_custom_backdoors_and_evolving_tactics.yml
+    - https://www.trendaisecurity.com/en-us/resources-insights/trendai-security-blog/unmasking-the-gentlemen-ransomware
+    - https://www.acronis.com/en/tru/posts/the-gentlemen-a-closer-look-at-a-not-so-gentle-ransomware-as-a-service-operation/
 author: elhoim
 date: 2026-11-09
 tags:
