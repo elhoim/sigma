@@ -12,9 +12,10 @@ tags:
     - attack.execution
     - attack.lateral-movement
     - attack.persistence
+    - attack.t1053.002
+    - attack.t1021.002
     - car.2013-05-004
     - car.2015-04-001
-    - attack.t1053.002
 logsource:
     product: windows
     service: security
