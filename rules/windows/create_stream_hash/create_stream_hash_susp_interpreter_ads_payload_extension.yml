@@ -15,6 +15,8 @@ references:
     - https://oddvar.moe/2018/01/14/putting-data-in-alternate-data-streams-and-how-to-execute-it/
     - https://github.com/redcanaryco/atomic-red-team/blob/9f6a1eab36d561272cf9f34c61dd80263db3ce8e/atomics/T1564.004/T1564.004.md
     - https://github.com/trustedsec/SysmonCommunityGuide/blob/bde5de34c30521837013b586d8de17677722fa90/chapters/file-stream-creation-hash.md
+    - https://www.ired.team/offensive-security/defense-evasion/t1096-alternate-data-streams
+    - https://blog.talosintelligence.com/2020/05/astaroth-analysis.html
 author: elhoim
 date: 2026-11-09
 tags:
