@@ -10,6 +10,9 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/rundll32
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/execution_command_shell_via_rundll32.toml
+    - https://thedfirreport.com/2021/11/29/continuing-the-bazar-ransomware-story/
+    - https://thedfirreport.com/2022/08/08/bumblebee-roasts-its-way-to-domain-admin/
+    - https://thedfirreport.com/2021/05/12/conti-ransomware/
 author: elhoim
 date: 2026-11-09
 tags:
