@@ -1,0 +1,55 @@
+title: Potential Persistence Via Dbghelp Auxiliary DLL Registry Values
+id: 3929cb54-9c6d-4b9c-a902-ed91e8489620
+status: experimental
+description: |
+    Detects the registration of a library under the "KnownManagedDebuggingDlls" or "MiniDumpAuxiliaryDlls" keys by a process other than Windows Installer or the Windows servicing stack, and a Sysinternals "DbgHelpPath" setting that points to a user writable or remote location.
+    "dbghelp.dll" enumerates the two HKLM keys and loads the listed libraries with LoadLibrary when a debugger or a minidump writer, for example Windows Error Reporting or a tool calling MiniDumpWriteDump, handles a process. Only the .NET runtimes register their data access components ("mscordacwks.dll", "mscordaccore.dll") there, through their installers.
+    Sysinternals tools such as VMMap, Process Explorer and Process Monitor load the "dbghelp.dll" named by their "DbgHelpPath" value at startup.
+    An attacker can add an entry to have a DLL loaded into diagnostic and administration tools, often running elevated.
+references:
+    - https://www.hexacorn.com/blog/2019/08/26/beyond-good-ol-run-key-part-113/
+    - https://www.hexacorn.com/blog/2014/12/04/beyond-good-ol-run-key-part-19/
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_dbghelp:
+        TargetObject|contains:
+            - '\Microsoft\Windows NT\CurrentVersion\KnownManagedDebuggingDlls\'
+            - '\Microsoft\Windows NT\CurrentVersion\MiniDumpAuxiliaryDlls\'
+    filter_main_dbghelp_msiexec:
+        Image:
+            - 'C:\Windows\System32\msiexec.exe'
+            - 'C:\Windows\SysWOW64\msiexec.exe'
+    filter_main_dbghelp_trustedinstaller:
+        Image: 'C:\Windows\servicing\TrustedInstaller.exe'
+    filter_main_dbghelp_tiworker:
+        Image|startswith: 'C:\Windows\WinSxS\'
+        Image|endswith: '\TiWorker.exe'
+    selection_sysinternals_key:
+        TargetObject|contains|all:
+            - '\Software\Sysinternals\'
+            - '\DbgHelpPath'
+    selection_sysinternals_value:
+        - Details|contains:
+              - ':\PerfLogs\'
+              - ':\ProgramData\'
+              - ':\Temp\'
+              - ':\Users\'
+              - ':\Windows\Tasks\'
+              - ':\Windows\Temp\'
+        - Details|startswith: '\\\\'
+    condition: (selection_dbghelp and not 1 of filter_main_dbghelp_*) or all of selection_sysinternals_*
+falsepositives:
+    - .NET runtime or SDK installations that do not use Windows Installer, for example a script based installation that registers "mscordaccore.dll"
+    - Analysts who point a Sysinternals tool to a "dbghelp.dll" of the Debugging Tools for Windows unpacked in their profile
+level: medium
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_dbghelp_auxiliary_dlls/info.yml

@@ -1,0 +1,13 @@
+id: 16cc4fa5-106c-4cd8-94bc-1be8f618f24c
+description: N/A
+date: 2026-11-12
+author: elhoim
+rule_metadata:
+    - id: 3929cb54-9c6d-4b9c-a902-ed91e8489620
+      title: Potential Persistence Via Dbghelp Auxiliary DLL Registry Values
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/registry/registry_set/registry_set_persistence_dbghelp_auxiliary_dlls/3929cb54-9c6d-4b9c-a902-ed91e8489620.evtx
