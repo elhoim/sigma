@@ -7,6 +7,8 @@ description: |
 references:
     - https://developer.okta.com/docs/reference/api/event-types/
     - https://developer.okta.com/docs/guides/refresh-tokens/main/#refresh-token-reuse-detection
+    - https://nhimg.org/how-to-detect-use-of-a-stolen-oauth-refresh-token
+    - https://workos.com/blog/token-replay-attacks
 author: elhoim
 date: 2026-10-15
 tags:
