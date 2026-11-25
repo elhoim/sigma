@@ -11,6 +11,7 @@ references:
     - https://learn.microsoft.com/en-us/windows/win32/api/lmshare/nf-lmshare-netsessionenum
     - https://github.com/BC-SECURITY/Empire/blob/9259e5106986847d2bb770c4289c0c0f1adf2344/data/module_source/situational_awareness/network/powerview.ps1
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/discovery_posh_suspicious_api_functions.toml
+    - https://github.com/PowerShellMafia/PowerSploit/blob/d943001a7defb5e0d1657085a77a0e78609be58f/Recon/PowerView.ps1
 author: elhoim
 date: 2026-11-11
 tags:
