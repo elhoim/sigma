@@ -8,6 +8,8 @@ description: |
 references:
     - https://modelcontextprotocol.io/docs/getting-started/intro
     - https://github.com/ByteRay-Labs/Query-Hub/blob/a453fcb09118894840a4e00b0db0f9807ba8441d/queries/shadow_mcp_server_activity_via_common_runtime_interpreters.yml
+    - https://jfrog.com/blog/2025-6514-critical-mcp-remote-rce-vulnerability/
+    - https://snyk.io/blog/malicious-mcp-server-on-npm-postmark-mcp-harvests-emails/
 author: elhoim
 date: 2026-11-09
 tags:
