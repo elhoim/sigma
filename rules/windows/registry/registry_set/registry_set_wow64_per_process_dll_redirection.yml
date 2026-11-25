@@ -1,0 +1,40 @@
+title: Suspicious WOW64 Per-Process CPU Emulation DLL Registration
+id: fd1be901-2530-442b-8e4a-a27c81c41377
+status: experimental
+description: |
+    Detects a value written under the "SOFTWARE\Microsoft\Wow64" registry key for an architecture ("x86", "arm", "amd64") with data other than the emulation libraries shipped with Windows.
+    The WOW64 layer reads this key to find the CPU emulation library for a 32-bit process. Besides the default value ("wow64cpu.dll" on x64), a value named after an executable makes WOW64 load the given library instead when that program starts.
+    The library is a 64-bit DLL loaded into the 32-bit process before the program runs and it can be given as a UNC path. An attacker can use it for persistence and code injection into a chosen application. Windows does not create per-process values on x64 systems.
+references:
+    - https://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/
+    - https://wbenny.github.io/2018/11/04/wow64-internals.html
+author: elhoim
+date: 2026-11-12
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.stealth
+    - attack.t1574
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\SOFTWARE\Microsoft\Wow64\amd64\'
+            - '\SOFTWARE\Microsoft\Wow64\arm\'
+            - '\SOFTWARE\Microsoft\Wow64\x86\'
+    filter_main_empty:
+        Details: '(Empty)'
+    filter_main_default_libraries:
+        Details:
+            - 'wow64cpu.dll'
+            - 'wowarmhw.dll'
+            - 'xtajit.dll'
+            - 'xtajit64.dll'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unlikely
+level: high
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_wow64_per_process_dll_redirection/info.yml
