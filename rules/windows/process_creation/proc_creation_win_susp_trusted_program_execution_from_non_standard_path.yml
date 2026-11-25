@@ -11,6 +11,8 @@ description: |
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_suspicious_explorer_winword.toml
     - https://www.elastic.co/security-labs/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion
+    - https://www.acronis.com/en-us/cyber-protection-center/posts/operation-worddrone-drone-manufacturers-are-being-targeted-in-taiwan/
+    - https://community.fortinet.com/t5/Blogs/How-Attackers-Masquerade-and-Abuse-Digital-Signatures-in-DLL/ba-p/420095
 author: elhoim
 date: 2026-11-09
 tags:
