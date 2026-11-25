@@ -1,0 +1,77 @@
+title: Potential Azure WireServer Access By Shell, LOLBin Or Scripting Process
+id: f0f2beea-7db1-48e9-a255-070b94d55c8a
+status: experimental
+description: |
+    Detects a network connection to the Azure WireServer / HostGAPlugin address 168.63.129.16 on TCP port 80 or 32526 initiated by a command shell, a scripting runtime, a download utility, a LOLBin, or a binary running from a user or ProgramData directory.
+    Only the Azure guest agent and its extension handlers talk to this host-only endpoint.
+    An adversary with code execution on an Azure VM queries it to retrieve the VM GoalState, the transport certificates that decrypt extension protectedSettings, and the HostGAPlugin vmSettings, which can expose credentials and storage SAS tokens.
+references:
+    - https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16
+    - https://cybercx.com.au/blog/azure-ssrf-metadata/
+    - https://www.netspi.com/blog/technical-blog/cloud-pentesting/decrypting-vm-extension-settings-with-azure-wireserver/
+    - https://cloud.google.com/blog/topics/threat-intelligence/escalating-privileges-azure-kubernetes-services
+    - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/cross-platform/credential_access_azure_wireserver_unusual_process_connection.toml
+author: elhoim
+date: 2026-11-10
+tags:
+    - attack.credential-access
+    - attack.discovery
+    - attack.t1082
+    - attack.t1552.005
+    - attack.t1580
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_dst:
+        Initiated: 'true'
+        DestinationIp: '168.63.129.16'
+        DestinationPort:
+            - 80
+            - 32526
+    selection_img_name:
+        Image|endswith:
+            - '\bitsadmin.exe'
+            - '\bun.exe'
+            - '\certutil.exe'
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\curl.exe'
+            - '\deno.exe'
+            - '\java.exe'
+            - '\javaw.exe'
+            - '\lua.exe'
+            - '\mshta.exe'
+            - '\nc.exe'
+            - '\nc64.exe'
+            - '\ncat.exe'
+            - '\node.exe'
+            - '\openssl.exe'
+            - '\perl.exe'
+            - '\php.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\python.exe'
+            - '\pythonw.exe'
+            - '\regsvr32.exe'
+            - '\ruby.exe'
+            - '\rundll32.exe'
+            - '\socat.exe'
+            - '\wget.exe'
+            - '\wscript.exe'
+    selection_img_path:
+        Image|contains:
+            - ':\Users\'
+            - ':\ProgramData\'
+    filter_main_guest_agent:
+        Image|startswith:
+            - 'C:\WindowsAzure\GuestAgent'
+            - 'C:\WindowsAzure\Packages\'
+            - 'C:\WindowsAzure\SecAgent\'
+            - 'C:\Packages\Plugins\'
+    condition: selection_dst and 1 of selection_img_* and not 1 of filter_main_*
+falsepositives:
+    - In-house inventory or health-check scripts that query the WireServer with PowerShell or curl
+    - Troubleshooting by administrators following Microsoft guidance to test connectivity to 168.63.129.16
+level: medium
+regression_tests_path: regression_data/rules/windows/network_connection/net_connection_win_azure_wireserver_access_by_shell_or_scripting_process/info.yml
