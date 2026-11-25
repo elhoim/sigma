@@ -1,0 +1,23 @@
+id: da868081-fbca-4542-8b47-cfcccc2e92fe
+description: Atomic Red Team replay of real events captured on the lab VMs (T1574.011-1 and others)
+date: 2026-11-08
+author: elhoim
+rule_metadata:
+    - id: 0f9c21f1-6a73-4b0e-9809-cb562cb8d981
+      title: Potential Privilege Escalation via Service Permissions Weakness
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_registry_privilege_escalation_via_service_key/0f9c21f1-6a73-4b0e-9809-cb562cb8d981.evtx
+    - name: Atomic Red Team replay 02 (T1574.011-1, event 1) - selection CommandLine \FailureCommand
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_registry_privilege_escalation_via_service_key-art02/0f9c21f1-6a73-4b0e-9809-cb562cb8d981.evtx
+    - name: Atomic Red Team replay 03 (T1574.011-1, event 1) - selection CommandLine \ServiceDll
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_registry_privilege_escalation_via_service_key-art03/0f9c21f1-6a73-4b0e-9809-cb562cb8d981.evtx

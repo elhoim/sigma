@@ -15,7 +15,7 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.stealth
-    - attack.t1574.011
+    - attack.t1564
 logsource:
     product: windows
     category: ps_script
@@ -33,3 +33,4 @@ falsepositives:
     - Rare intended use of hidden services
     - Rare FP could occur due to the non linearity of the ScriptBlockText log
 level: high
+regression_tests_path: regression_data/rules/windows/powershell/powershell_script/posh_ps_using_set_service_to_hide_services/info.yml

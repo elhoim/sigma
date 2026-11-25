@@ -20,7 +20,7 @@ tags:
     - attack.privilege-escalation
     - attack.execution
     - attack.stealth
-    - attack.t1574.011
+    - attack.t1564
 logsource:
     category: process_creation
     product: windows
@@ -42,3 +42,4 @@ detection:
 falsepositives:
     - Unknown
 level: high
+regression_tests_path: regression_data/rules/windows/process_creation/proc_creation_win_sc_sdset_hide_sevices/info.yml
