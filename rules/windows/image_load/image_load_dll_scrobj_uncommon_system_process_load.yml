@@ -10,6 +10,8 @@ description: |
 references:
     - https://lolbas-project.github.io/lolbas/Binaries/Regsvr32/
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_suspicious_scrobj_load.toml
+    - https://www.ired.team/offensive-security/code-execution/t1117-regsvr32-aka-squiblydoo
+    - https://uptycs.com/blog/attackers-increasingly-adopting-regsvr32-utility-execution-via-office-documents
 author: elhoim
 date: 2026-11-09
 tags:
