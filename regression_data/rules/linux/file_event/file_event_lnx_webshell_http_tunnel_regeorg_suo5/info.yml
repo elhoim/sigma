@@ -1,0 +1,12 @@
+id: bfd8fb8f-eec1-4ac7-8bb3-ebd8a68050e9
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: 19437dc1-6fcf-4889-84f9-78d429c5d98b
+      title: Potential HTTP Tunnel Webshell File Creation - ReGeorg, Neo-reGeorg, Suo5 - Linux
+regression_tests_info:
+    - name: Positive Detection Test
+      type: json
+      match_count: 1
+      path: regression_data/rules/linux/file_event/file_event_lnx_webshell_http_tunnel_regeorg_suo5/19437dc1-6fcf-4889-84f9-78d429c5d98b.json

@@ -1,0 +1,12 @@
+id: ec2b1602-50b2-42fe-b755-e91d91be52e8
+description: N/A
+date: 2026-11-13
+author: elhoim
+rule_metadata:
+    - id: ae6f04cc-6492-426e-801e-15cdfe33e0d4
+      title: HackTool - ReGeorg, Neo-reGeorg Or Suo5 Client Execution - Linux
+regression_tests_info:
+    - name: Positive Detection Test
+      type: json
+      match_count: 1
+      path: regression_data/rules/linux/process_creation/proc_creation_lnx_hktl_regeorg_neoreg_suo5_client/ae6f04cc-6492-426e-801e-15cdfe33e0d4.json
