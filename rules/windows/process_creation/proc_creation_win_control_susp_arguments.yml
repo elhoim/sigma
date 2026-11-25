@@ -12,6 +12,9 @@ description: |
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/defense_evasion_execution_control_panel_suspicious_args.toml
     - https://lolbas-project.github.io/lolbas/Binaries/Control/
+    - https://www.microsoft.com/en-us/security/blog/2021/09/15/analyzing-attacks-that-exploit-the-mshtml-cve-2021-40444-vulnerability/
+    - https://0patch.com/blog/micropatches-for-file-extension-url
+    - https://github.com/klezVirus/CVE-2021-40444/blob/f0a08b11fb58ef2f1c789474800f3cd5136052ef/README.md
 author: elhoim
 date: 2026-11-10
 tags:
