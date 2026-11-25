@@ -8,7 +8,6 @@ references:
 author: Romain Gaillard (@romain-gaillard)
 date: 2024-07-29
 tags:
-    - attack.persistence
     - attack.exfiltration
     - attack.t1020
     - attack.t1537
