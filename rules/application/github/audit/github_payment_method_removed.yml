@@ -1,0 +1,23 @@
+title: GitHub Payment Method Removed
+id: 9917b975-2c3a-4767-b22f-41ba4d51a9a3
+status: experimental
+description: |
+    Detects when a payment method is removed from a GitHub organization or enterprise account.
+    Removing the payment method can cause paid features and services such as GitHub Actions minutes, Advanced Security or seats to be suspended, and could be used by a threat actor to disrupt operations.
+references:
+    - https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise#payment_method
+author: elhoim
+date: 2026-10-15
+tags:
+    - attack.impact
+logsource:
+    product: github
+    service: audit
+    definition: 'Requirements: The audit log streaming feature must be enabled to be able to receive such logs. You can enable following the documentation here: https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-audit-log-streaming'
+detection:
+    selection:
+        action: 'payment_method.remove'
+    condition: selection
+falsepositives:
+    - Legitimate replacement of a payment method by a billing manager.
+level: low
