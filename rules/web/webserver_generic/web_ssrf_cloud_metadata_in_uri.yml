@@ -9,6 +9,8 @@ references:
     - https://cloud.google.com/compute/docs/metadata/querying-metadata
     - https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service
     - https://github.com/swisskyrepo/PayloadsAllTheThings/blob/38716075f02f13979f0594427c05e48c9e9f704e/Server%20Side%20Request%20Forgery/SSRF-Cloud-Instances.md
+    - https://isc.sans.edu/diary/33260
+    - https://securitylabs.datadoghq.com/cloud-security-atlas/attacks/stealing-ec2-instance-role-credentials
 author: elhoim
 date: 2026-10-15
 tags:
