@@ -13,6 +13,7 @@ description: |
 references:
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules/windows/privilege_escalation_make_token_local.toml
     - https://www.elastic.co/blog/how-attackers-abuse-access-token-manipulation
+    - https://github.com/antonioCoco/RunasCs/blob/a1e47b55952fadd46bf097be74a6efbcbe846c2b/RunasCs.cs#L1878
 author: elhoim
 date: 2026-11-09
 tags:
