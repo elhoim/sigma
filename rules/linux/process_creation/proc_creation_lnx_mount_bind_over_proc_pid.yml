@@ -8,6 +8,9 @@ description: |
 references:
     - https://righteousit.com/2024/07/24/hiding-linux-processes-with-bind-mounts/
     - https://github.com/redcanaryco/atomic-red-team/blob/388942adbd9641f4dfdcf079d7efe9a75ec0ac43/atomics/T1036.004/T1036.004.md
+    - https://dfir.ch/posts/slash-proc/
+    - https://www.jakoblell.com/blog/2014/05/07/hacking-contest-process-hiding-with-mount/
+    - https://www.group-ib.com/blog/linux-pro-manipulation/
 author: elhoim
 date: 2026-10-01
 tags:
