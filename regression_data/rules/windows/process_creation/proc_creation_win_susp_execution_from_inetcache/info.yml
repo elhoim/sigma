@@ -1,0 +1,13 @@
+id: ab2f895c-5177-4dea-8669-f5647b3bd446
+description: N/A
+date: 2026-11-10
+author: elhoim
+rule_metadata:
+    - id: a9957f8e-f2de-466c-850a-40fa0edfb714
+      title: Suspicious Execution From INetCache Folder
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_susp_execution_from_inetcache/a9957f8e-f2de-466c-850a-40fa0edfb714.evtx
