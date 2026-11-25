@@ -10,6 +10,8 @@ description: |
 references:
     - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/at
     - https://github.com/elastic/detection-rules/blob/f4ef34b1c996da53880053dd497ca546c1b0bbfa/rules_building_block/lateral_movement_at.toml
+    - https://www.sophos.com/en-us/blog/where-you-at-indicators-of-lateral-movement-using-at-exe-on-windows-7-systems
+    - https://www.jpcert.or.jp/english/pub/sr/20170612ac-ir_research_en.pdf
 author: elhoim
 date: 2026-11-09
 tags:
