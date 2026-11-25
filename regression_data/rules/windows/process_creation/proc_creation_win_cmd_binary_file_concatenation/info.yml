@@ -1,0 +1,13 @@
+id: c7738270-0a52-41b2-aaa5-719dc17a5149
+description: N/A
+date: 2026-11-11
+author: elhoim
+rule_metadata:
+    - id: 495c6dcf-712e-4182-907d-10410a8abf72
+      title: Binary File Concatenation Via Cmd.EXE
+regression_tests_info:
+    - name: Positive Detection Test
+      type: evtx
+      provider: Microsoft-Windows-Sysmon
+      match_count: 1
+      path: regression_data/rules/windows/process_creation/proc_creation_win_cmd_binary_file_concatenation/495c6dcf-712e-4182-907d-10410a8abf72.evtx
